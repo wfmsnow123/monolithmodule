@@ -228,8 +228,12 @@ class FantasyCalendarLoginMenu extends foundry.applications.api.ApplicationV2 {
       return this;
     }
     try {
-      const user = await request('/user', { auth: true });
-      ui.notifications.info(`Fantasy-Calendar: token válido (${user?.username ?? 'conta conectada'}).`);
+      // changeDate with count 0 needs a valid token for this calendar and changes nothing
+      // (/user rejects personal access tokens, so it cannot be used to validate).
+      const hash = get(S.HASH);
+      if (!hash) throw new Error('preencha antes o hash do calendário');
+      const res = await request(`/calendar/${hash}/changeDate`, { method: 'POST', auth: true, body: { unit: 'days', count: 0 } });
+      ui.notifications.info(`Fantasy-Calendar: token válido. Data no site: ${res?.date_string ?? '?'}.`);
     } catch (err) {
       ui.notifications.warn(`Fantasy-Calendar: o site recusou o token (${err.message}).`);
     }
