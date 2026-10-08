@@ -4,6 +4,7 @@ import { registrarModificadorEnfase, registrarEnfaseNasRolagens } from "./enfase
 import { registrarDescanso, instalarLeituraDeAjustes } from "./descanso.mjs";
 import { registrarStatusQueima, registrarGanchosMedidas } from "./medidas.mjs";
 import { MedidasApp, HUD, registrarBotoesDoChat } from "./apps.mjs";
+import { registrarConfigSobrecarga, registrarGanchosSobrecarga, aplicarLimitesSobrecarga, avisarCargaVariante } from "./sobrecarga.mjs";
 
 Hooks.once("init", () => {
   game.settings.register(ID, "mostrarHud", {
@@ -17,6 +18,8 @@ Hooks.once("init", () => {
   game.settings.register(ID, "posicaoHud", { scope: "client", config: false, type: Object, default: {} });
   game.settings.register(ID, "hudRecolhido", { scope: "client", config: false, type: Boolean, default: false });
 
+  registrarConfigSobrecarga();
+  registrarGanchosSobrecarga();
   configurarExaustao();
   registrarExaustao();
   registrarModificadorEnfase();
@@ -54,12 +57,16 @@ Hooks.once("init", () => {
   });
 });
 
-Hooks.once("setup", () => instalarLeituraDeAjustes());
+Hooks.once("setup", () => {
+  instalarLeituraDeAjustes();
+  aplicarLimitesSobrecarga();
+});
 
 Hooks.once("ready", async () => {
   HUD.montar();
   await migrarExaustao();
   avisarConflitos();
+  avisarCargaVariante();
 });
 
 Hooks.on("updateActor", (actor) => {
