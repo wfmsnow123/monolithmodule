@@ -1,0 +1,584 @@
+import { CalendarManager } from '../calendar/_module.mjs';
+import { ASSETS } from '../constants.mjs';
+import { NoteManager, addCustomPreset, getAllPresets } from '../notes/_module.mjs';
+import { localize, log } from '../utils/_module.mjs';
+import BaseImporter from './base-importer.mjs';
+
+/** @type {Object<string, string>} Map S&S season icon strings to FontAwesome classes. */
+const SEASON_ICON_MAP = {
+  spring: 'fa-seedling',
+  summer: 'fa-sun',
+  fall: 'fa-leaf',
+  autumn: 'fa-leaf',
+  winter: 'fa-snowflake'
+};
+
+/**
+ * Importer for Seasons & Stars module data.
+ * @extends BaseImporter
+ */
+export default class SeasonsStarsImporter extends BaseImporter {
+  static id = 'seasons-stars';
+  static label = 'CALENDARIA.Importer.SeasonsStars.Name';
+  static icon = 'fa-star';
+  static description = 'CALENDARIA.Importer.SeasonsStars.Description';
+  static supportsFileUpload = true;
+  static supportsLiveImport = true;
+  static moduleId = 'seasons-and-stars';
+  static fileExtensions = ['.json'];
+
+  /** @type {object[]} S&S note categories extracted during load. */
+  #ssNoteCategories = [];
+
+  /**
+   * Check if the provided data is in S&S format.
+   * @param {object} data - Data to check
+   * @returns {boolean} True if data appears to be S&S format
+   */
+  static isSSFormat(data) {
+    return !!(data.id && data.translations && (data.months || data.weekdays || data.year));
+  }
+
+  /**
+   * Load calendar data from installed Seasons & Stars module.
+   * @returns {Promise<object>} Raw S&S calendar data
+   */
+  async loadFromModule() {
+    if (!this.constructor.detect()) throw new Error(localize('CALENDARIA.Importer.SeasonsStars.NotInstalled'));
+    const calendarData = game.settings.get('seasons-and-stars', 'activeCalendarData');
+    if (!calendarData) throw new Error(localize('CALENDARIA.Importer.SeasonsStars.NoCalendar'));
+    let worldEvents = [];
+    worldEvents = game.settings.get('seasons-and-stars', 'worldEvents') || [];
+    const journalNotes = [];
+    for (const entry of game.journal ?? []) {
+      const flags = entry.flags?.['seasons-and-stars'];
+      if (flags?.calendarNote) journalNotes.push({ ...entry.toObject(), flags: entry.flags });
+    }
+    const catConfig = game.settings.get('seasons-and-stars', 'noteCategories') || {};
+    this.#ssNoteCategories = Object.entries(catConfig).map(([id, cat]) => ({ id, name: cat.name || id, color: cat.color || '#868e96', icon: cat.icon || 'fa-tag' }));
+    let currentDate = null;
+    if (game.seasonsStars?.api?.getCurrentDate) {
+      const ssDate = game.seasonsStars.api.getCurrentDate();
+      if (ssDate) {
+        const dateObj = ssDate.toObject?.() ?? ssDate;
+        currentDate = { year: dateObj.year, month: dateObj.month ?? 0, dayOfMonth: dateObj.day ?? 0, hour: dateObj.time?.hour ?? 0, minute: dateObj.time?.minute ?? 0 };
+      }
+    }
+    if (!currentDate) currentDate = this.#worldTimeToDate(game.time.worldTime, calendarData);
+    return { calendar: calendarData, worldEvents, journalNotes, currentDate };
+  }
+
+  /**
+   * Extract current date from S&S data for preservation after import.
+   * @param {object} data - Raw S&S data
+   * @returns {{year: number, month: number, dayOfMonth: number}|null} Current date
+   */
+  extractCurrentDate(data) {
+    if (data.currentDate) return data.currentDate;
+    const calendar = data.calendar || data;
+    if (calendar.year?.currentYear !== undefined) return { year: calendar.year.currentYear, month: 0, dayOfMonth: 0, hour: 0, minute: 0 };
+    return null;
+  }
+
+  /**
+   * Convert worldTime to date components using S&S calendar data.
+   * @param {number} worldTime - Raw world time in seconds
+   * @param {object} calendar - S&S calendar data
+   * @returns {{year: number, month: number, dayOfMonth: number, hour: number, minute: number}} Date components
+   */
+  #worldTimeToDate(worldTime, calendar) {
+    const hoursPerDay = calendar.time?.hoursInDay ?? 24;
+    const minutesPerHour = calendar.time?.minutesInHour ?? 60;
+    const secondsPerMinute = calendar.time?.secondsInMinute ?? 60;
+    const secondsPerDay = hoursPerDay * minutesPerHour * secondsPerMinute;
+    const months = calendar.months || [];
+    const daysPerYear = months.reduce((sum, m) => sum + (m.days || m.length || 30), 0);
+    const totalDays = Math.floor(worldTime / secondsPerDay);
+    let year = Math.floor(totalDays / daysPerYear);
+    let dayOfYear = totalDays % daysPerYear;
+    if (totalDays < 0) {
+      year = Math.floor(totalDays / daysPerYear);
+      dayOfYear = ((totalDays % daysPerYear) + daysPerYear) % daysPerYear;
+    }
+    let month = 0;
+    let remainingDays = dayOfYear;
+    for (let i = 0; i < months.length; i++) {
+      const monthDays = months[i].days || months[i].length || 30;
+      if (remainingDays < monthDays) {
+        month = i;
+        break;
+      }
+      remainingDays -= monthDays;
+      month = i + 1;
+    }
+    const timeOfDay = ((worldTime % secondsPerDay) + secondsPerDay) % secondsPerDay;
+    const secondsPerHour = minutesPerHour * secondsPerMinute;
+    const hour = Math.floor(timeOfDay / secondsPerHour);
+    const minute = Math.floor((timeOfDay % secondsPerHour) / secondsPerMinute);
+    return { year, month, dayOfMonth: remainingDays, hour, minute };
+  }
+
+  /**
+   * Transform Seasons & Stars data into CalendariaCalendar format.
+   * @param {object} data - Raw S&S export data or calendar object
+   * @returns {Promise<object>} CalendariaCalendar-compatible data
+   */
+  async transform(data) {
+    const calendar = data.calendar || data;
+    const label = calendar.translations?.en?.label || calendar.id || 'Imported Calendar';
+    log(3, 'Transforming Seasons & Stars data:', label);
+    if (calendar.variants) log(2, localize('CALENDARIA.Importer.SeasonsStars.Warning.Variants'));
+    const weekdays = this.#transformWeekdays(calendar.weekdays);
+    const months = this.#transformMonths(calendar.months);
+    const daysPerYear = months.reduce((sum, m) => sum + m.days, 0);
+    return {
+      name: label,
+      days: { values: weekdays, ...this.#transformTime(calendar.time), daysPerYear },
+      months: { values: months },
+      years: this.#transformYears(calendar.year),
+      leapYearConfig: this.#transformLeapYear(calendar.leapYear),
+      seasons: { values: this.#transformSeasons(calendar.seasons, months) },
+      moons: this.#transformMoons(calendar.moons),
+      eras: this.#transformEras(calendar.year),
+      festivals: this.#transformIntercalary(calendar.intercalary, calendar.months),
+      daylight: this.#transformDaylight(calendar.solarAnchors, months),
+      currentDate: this.#transformCurrentDate(calendar.year),
+      amPmNotation: this.#transformAmPmNotation(calendar.time),
+      canonicalHours: this.#transformCanonicalHours(calendar.canonicalHours),
+      weeks: this.#transformWeeks(calendar.weeks),
+      dateFormats: this.#transformDateFormats(calendar.dateFormats),
+      metadata: { id: calendar.id, description: calendar.translations?.en?.description || '', system: calendar.translations?.en?.setting || 'Unknown', importedFrom: 'seasons-stars' }
+    };
+  }
+
+  /**
+   * Transform S&S weekdays to Calendaria format.
+   * @param {object[]} weekdays - S&S weekdays array
+   * @returns {object[]} Calendaria weekdays array
+   */
+  #transformWeekdays(weekdays = []) {
+    if (!weekdays?.length) {
+      return [
+        { name: 'CALENDARIA.Weekday.Sunday', abbreviation: 'CALENDARIA.Weekday.SundayShort', ordinal: 1 },
+        { name: 'CALENDARIA.Weekday.Monday', abbreviation: 'CALENDARIA.Weekday.MondayShort', ordinal: 2 },
+        { name: 'CALENDARIA.Weekday.Tuesday', abbreviation: 'CALENDARIA.Weekday.TuesdayShort', ordinal: 3 },
+        { name: 'CALENDARIA.Weekday.Wednesday', abbreviation: 'CALENDARIA.Weekday.WednesdayShort', ordinal: 4 },
+        { name: 'CALENDARIA.Weekday.Thursday', abbreviation: 'CALENDARIA.Weekday.ThursdayShort', ordinal: 5 },
+        { name: 'CALENDARIA.Weekday.Friday', abbreviation: 'CALENDARIA.Weekday.FridayShort', ordinal: 6 },
+        { name: 'CALENDARIA.Weekday.Saturday', abbreviation: 'CALENDARIA.Weekday.SaturdayShort', ordinal: 7 }
+      ];
+    }
+    return weekdays.map((day, index) => ({ name: day.name, abbreviation: day.abbreviation || day.name.substring(0, 2), ordinal: index + 1 }));
+  }
+
+  /**
+   * Transform S&S months to Calendaria format.
+   * @param {object[]} months - S&S months array
+   * @returns {object[]} Calendaria months array
+   */
+  #transformMonths(months = []) {
+    return months.map((month, index) => ({ name: month.name, abbreviation: month.abbreviation || month.name.substring(0, 3), days: month.length ?? month.days ?? 30, ordinal: index + 1 }));
+  }
+
+  /**
+   * Transform S&S time configuration.
+   * @param {object} time - S&S time config
+   * @returns {object} Calendaria time config
+   */
+  #transformTime(time = {}) {
+    return { hoursPerDay: time.hoursInDay ?? 24, minutesPerHour: time.minutesInHour ?? 60, secondsPerMinute: time.secondsInMinute ?? 60 };
+  }
+
+  /**
+   * Transform S&S year config to Calendaria format.
+   * @param {object} year - S&S year config
+   * @returns {object} Calendaria years config
+   */
+  #transformYears(year = {}) {
+    return { yearZero: year.epoch ?? 0, firstWeekday: year.startDay ?? 0 };
+  }
+
+  /**
+   * Transform S&S leap year config to Calendaria format.
+   * @param {object} leapYear - S&S leap year config
+   * @returns {object|null} Calendaria leapYearConfig
+   */
+  #transformLeapYear(leapYear = {}) {
+    if (!leapYear.rule || leapYear.rule === 'none') return null;
+    if (leapYear.rule === 'gregorian') return { rule: 'gregorian', start: leapYear.offset ?? 0 };
+    if (leapYear.rule === 'custom') return { rule: 'simple', interval: leapYear.interval ?? 4, start: leapYear.offset ?? 0 };
+    return null;
+  }
+
+  /**
+   * Transform S&S seasons to Calendaria format.
+   * @param {object[]} seasons - S&S seasons array
+   * @param {object[]} months - Transformed months array
+   * @returns {object[]} Calendaria seasons array
+   */
+  #transformSeasons(seasons = [], months = []) {
+    if (!seasons.length) return [];
+    let dayIndex = 0;
+    const monthStartDays = months.map((m) => {
+      const start = dayIndex;
+      dayIndex += m.days || 0;
+      return start;
+    });
+    const daysInYear = dayIndex;
+    return seasons.map((season) => {
+      const startMonthIdx = (season.startMonth ?? 1) - 1;
+      const endMonthIdx = (season.endMonth ?? season.startMonth ?? 1) - 1;
+      const dayStart = (monthStartDays[startMonthIdx] ?? 0) + ((season.startDay ?? 1) - 1);
+      const dayEnd = (monthStartDays[endMonthIdx] ?? 0) + ((season.endDay ?? months[endMonthIdx]?.days ?? 1) - 1);
+      return { name: season.name, dayStart: dayStart % daysInYear, dayEnd: dayEnd % daysInYear, color: this.#mapSeasonColor(season.icon), icon: SEASON_ICON_MAP[season.icon] || '' };
+    });
+  }
+
+  /**
+   * Map S&S season icon to color.
+   * @param {string} icon - S&S season icon
+   * @returns {string} Hex color
+   */
+  #mapSeasonColor(icon) {
+    const colorMap = { winter: '#87CEEB', spring: '#90EE90', summer: '#FFD700', fall: '#DEB887', autumn: '#DEB887' };
+    return colorMap[icon] || '#888888';
+  }
+
+  /**
+   * Transform S&S moons to Calendaria format.
+   * @param {object[]} moons - S&S moons array
+   * @returns {object[]} Calendaria moons array
+   */
+  #transformMoons(moons = []) {
+    return moons.map((moon) => ({
+      name: moon.name,
+      cycleLength: moon.cycleLength,
+      cycleDayAdjust: 0,
+      color: moon.color || '',
+      hidden: false,
+      phases: this.#convertPhasesToPercentages(moon.phases || [], moon.cycleLength),
+      referenceDate: { year: moon.firstNewMoon?.year ?? 1, month: (moon.firstNewMoon?.month ?? 1) - 1, dayOfMonth: (moon.firstNewMoon?.day ?? 1) - 1 }
+    }));
+  }
+
+  /**
+   * Convert S&S phase lengths (days) to Calendaria percentage format.
+   * @param {object[]} phases - S&S phases array
+   * @param {number} cycleLength - Total cycle length
+   * @returns {object[]} Calendaria phases array
+   */
+  #convertPhasesToPercentages(phases, cycleLength) {
+    const totalLength = phases.reduce((sum, p) => sum + (p.length ?? 0), 0) || cycleLength;
+    let currentPosition = 0;
+    return phases.map((phase) => {
+      const start = currentPosition / totalLength;
+      currentPosition += phase.length ?? 0;
+      const end = currentPosition / totalLength;
+      return { name: phase.name, icon: this.#mapPhaseIcon(phase.icon), start, end: Math.min(end, 1) };
+    });
+  }
+
+  /**
+   * Map S&S moon phase icon to Calendaria SVG path.
+   * @param {string} ssIcon - S&S icon name
+   * @returns {string} Calendaria SVG path
+   */
+  #mapPhaseIcon(ssIcon) {
+    const iconMap = {
+      new: `${ASSETS.MOON_ICONS}/01_newmoon.svg`,
+      'waxing-crescent': `${ASSETS.MOON_ICONS}/02_waxingcrescent.svg`,
+      'first-quarter': `${ASSETS.MOON_ICONS}/03_firstquarter.svg`,
+      'waxing-gibbous': `${ASSETS.MOON_ICONS}/04_waxinggibbous.svg`,
+      full: `${ASSETS.MOON_ICONS}/05_fullmoon.svg`,
+      'waning-gibbous': `${ASSETS.MOON_ICONS}/06_waninggibbous.svg`,
+      'last-quarter': `${ASSETS.MOON_ICONS}/07_lastquarter.svg`,
+      'waning-crescent': `${ASSETS.MOON_ICONS}/08_waningcrescent.svg`
+    };
+    return iconMap[ssIcon] || `${ASSETS.MOON_ICONS}/01_newmoon.svg`;
+  }
+
+  /**
+   * Transform S&S era config from year prefix/suffix.
+   * @param {object} year - S&S year config
+   * @returns {object[]} Calendaria eras array
+   */
+  #transformEras(year = {}) {
+    const prefix = year.prefix?.trim();
+    const suffix = year.suffix?.trim();
+    if (!prefix && !suffix) return [];
+    return [{ name: suffix || prefix || 'Era', abbreviation: suffix || prefix || '', startYear: -999999, endYear: null, format: prefix ? 'prefix' : 'suffix' }];
+  }
+
+  /**
+   * Transform S&S intercalary days to Calendaria festivals.
+   * @param {object[]} intercalary - S&S intercalary array
+   * @param {object[]} months - S&S months array
+   * @returns {object[]} Calendaria festivals array
+   */
+  #transformIntercalary(intercalary = [], months = []) {
+    const festivals = [];
+    const monthNames = months.map((m) => m.name);
+    for (const item of intercalary) {
+      let monthIndex, dayInMonth;
+      if (item.after) {
+        monthIndex = monthNames.indexOf(item.after) + 1;
+        dayInMonth = 1;
+      } else if (item.before) {
+        monthIndex = monthNames.indexOf(item.before);
+        if (monthIndex > 0) {
+          const prevMonth = months[monthIndex - 1];
+          dayInMonth = prevMonth.days ?? prevMonth.length ?? 1;
+        } else {
+          monthIndex = months.length;
+          dayInMonth = months[months.length - 1]?.days ?? 1;
+        }
+      } else {
+        continue;
+      }
+      const dayCount = item.days ?? 1;
+      for (let d = 0; d < dayCount; d++) {
+        const festival = { name: dayCount > 1 ? `${item.name} (Day ${d + 1})` : item.name, month: monthIndex, dayOfMonth: dayInMonth + d - 1 };
+        if (item.leapYearOnly) festival.leapYearOnly = true;
+        if (item.countsForWeekdays === false) festival.countsForWeekday = false;
+        festivals.push(festival);
+      }
+    }
+    return festivals;
+  }
+
+  /**
+   * Transform S&S solar anchors to Calendaria daylight config.
+   * @param {object[]} solarAnchors - S&S solar anchors array
+   * @param {object[]} months - Transformed months array
+   * @returns {object|null} Calendaria daylight config
+   */
+  #transformDaylight(solarAnchors = [], months = []) {
+    if (!solarAnchors.length) return { enabled: false };
+    const winterSolstice = solarAnchors.find((a) => a.subtype === 'winter' && a.type === 'solstice');
+    const summerSolstice = solarAnchors.find((a) => a.subtype === 'summer' && a.type === 'solstice');
+    if (!winterSolstice || !summerSolstice) return { enabled: false };
+    const parseTime = (timeStr) => {
+      const [h, m] = (timeStr || '0:0').split(':').map(Number);
+      return h + m / 60;
+    };
+    const winterDaylight = parseTime(winterSolstice.sunset) - parseTime(winterSolstice.sunrise);
+    const summerDaylight = parseTime(summerSolstice.sunset) - parseTime(summerSolstice.sunrise);
+    let dayIndex = 0;
+    const monthStartDays = months.map((m) => {
+      const start = dayIndex;
+      dayIndex += m.days || 0;
+      return start;
+    });
+    const winterDay = winterSolstice.month && winterSolstice.day ? (monthStartDays[winterSolstice.month - 1] ?? 0) + (winterSolstice.day - 1) : 355;
+    const summerDay = summerSolstice.month && summerSolstice.day ? (monthStartDays[summerSolstice.month - 1] ?? 0) + (summerSolstice.day - 1) : 172;
+    return { enabled: true, shortestDay: Math.round(winterDaylight), longestDay: Math.round(summerDaylight), winterSolstice: winterDay, summerSolstice: summerDay };
+  }
+
+  /**
+   * Transform S&S current date.
+   * @param {object} year - S&S year config
+   * @returns {object} Calendaria current date
+   */
+  #transformCurrentDate(year = {}) {
+    return { year: year.currentYear ?? 1 };
+  }
+
+  /**
+   * Transform S&S AM/PM notation.
+   * @param {object} time - S&S time config
+   * @returns {object|null} Calendaria amPmNotation
+   */
+  #transformAmPmNotation(time = {}) {
+    if (!time.amPmNotation) return null;
+    return { am: time.amPmNotation.am ?? 'AM', pm: time.amPmNotation.pm ?? 'PM' };
+  }
+
+  /**
+   * Transform S&S canonical hours.
+   * @param {object[]} canonicalHours - S&S canonical hours array
+   * @returns {object[]} Calendaria canonical hours array
+   */
+  #transformCanonicalHours(canonicalHours = []) {
+    if (!canonicalHours?.length) return [];
+    return canonicalHours.map((hour) => ({ name: hour.name, abbreviation: hour.abbreviation || hour.name.substring(0, 2), startHour: hour.startHour ?? 0, endHour: hour.endHour ?? 0 }));
+  }
+
+  /**
+   * Transform S&S named weeks configuration.
+   * @param {object} weeks - S&S weeks config
+   * @returns {object|null} Calendaria weeks config
+   */
+  #transformWeeks(weeks = {}) {
+    if (!weeks.names?.length) return null;
+    return {
+      enabled: true,
+      type: weeks.type || 'month-based',
+      names: weeks.names.map((name, index) => ({
+        name: typeof name === 'string' ? name : name.name,
+        abbreviation: typeof name === 'string' ? name.substring(0, 2) : name.abbreviation || name.name.substring(0, 2),
+        ordinal: index + 1
+      }))
+    };
+  }
+
+  /**
+   * Transform S&S date formats.
+   * @param {object} dateFormats - S&S date formats
+   * @returns {object|null} Calendaria date formats
+   */
+  #transformDateFormats(dateFormats = {}) {
+    if (!dateFormats.short && !dateFormats.long) return null;
+    return { short: dateFormats.short || null, long: dateFormats.long || null };
+  }
+
+  /**
+   * Extract notes/events from S&S export data.
+   * @param {object} data - Raw S&S export data
+   * @returns {Promise<object[]>} Array of note data objects
+   */
+  async extractNotes(data) {
+    const calendar = data.calendar || data;
+    const events = Array.isArray(calendar.events) ? calendar.events : [];
+    const worldEvents = Array.isArray(data.worldEvents) ? data.worldEvents : [];
+    const journalNotes = Array.isArray(data.journalNotes) ? data.journalNotes : [];
+    const allEvents = [...events, ...worldEvents];
+    log(3, `Extracting ${allEvents.length} events + ${journalNotes.length} journal notes from Seasons & Stars data`);
+    const notes = allEvents.map((event) => this.#transformEvent(event));
+    for (const entry of journalNotes) {
+      const flags = entry.flags?.['seasons-and-stars'];
+      if (!flags?.startDate) continue;
+      const sd = flags.startDate;
+      const content = entry.pages?.[0]?.text?.content || '';
+      notes.push({
+        name: entry.name,
+        content,
+        startDate: { year: sd.year ?? 1, month: (sd.month ?? 1) - 1, dayOfMonth: (sd.day ?? 1) - 1 },
+        endDate: flags.endDate ? { year: flags.endDate.year ?? 1, month: (flags.endDate.month ?? 1) - 1, dayOfMonth: (flags.endDate.day ?? 1) - 1 } : null,
+        allDay: flags.allDay ?? true,
+        repeat: flags.recurring?.type === 'yearly' ? 'yearly' : flags.recurring?.type === 'monthly' ? 'monthly' : flags.recurring?.type === 'weekly' ? 'weekly' : 'never',
+        categories: flags.category ? [flags.category] : [],
+        visibility: entry.ownership?.default === 0 ? 'hidden' : 'visible',
+        originalId: entry._id,
+        suggestedType: content?.trim() ? 'note' : 'festival'
+      });
+    }
+    return notes;
+  }
+
+  /**
+   * Transform a single S&S event to Calendaria note format.
+   * @param {object} event - S&S event
+   * @returns {object} Calendaria note data
+   */
+  #transformEvent(event) {
+    const note = {
+      name: event.name,
+      content: event.description || '',
+      visibility: event.visibility === 'gm-only' ? 'hidden' : 'visible',
+      color: event.color || '#888888',
+      icon: event.icon || 'fas fa-calendar-day',
+      suggestedType: 'note'
+    };
+    const rec = event.recurrence;
+    if (rec) {
+      if (rec.type === 'fixed') {
+        note.repeat = 'yearly';
+        note.startDate = { year: event.startYear ?? 1, month: (rec.month ?? 1) - 1, dayOfMonth: (rec.day ?? 1) - 1 };
+      } else if (rec.type === 'ordinal') {
+        note.repeat = 'yearly';
+        note.startDate = { year: event.startYear ?? 1, month: (rec.month ?? 1) - 1, dayOfMonth: 0 };
+        note.importWarnings = [`Ordinal recurrence (${rec.occurrence} ${rec.weekday} of month) imported as first of month`];
+        log(2, localize('CALENDARIA.Importer.SeasonsStars.Warning.OrdinalRecurrence'));
+      } else if (rec.type === 'interval') {
+        note.repeat = 'yearly';
+        note.interval = rec.intervalYears;
+        note.startDate = { year: rec.anchorYear ?? 1, month: (rec.month ?? 1) - 1, dayOfMonth: (rec.day ?? 1) - 1 };
+      }
+    }
+    if (!note.startDate && event.startDate) note.startDate = { year: event.startDate.year ?? 1, month: (event.startDate.month ?? 1) - 1, dayOfMonth: (event.startDate.day ?? 1) - 1 };
+    if (event.duration) {
+      const match = event.duration.match(/^(\d+)([dhmsw])$/);
+      if (match) {
+        const [, value, unit] = match;
+        const durationMap = { s: 1, m: 60, h: 3600, d: 86400, w: 604800 };
+        note.duration = parseInt(value) * (durationMap[unit] || 1);
+      }
+    }
+    return note;
+  }
+
+  /**
+   * Import notes into Calendaria.
+   * @param {object[]} notes - Extracted note data
+   * @param {object} options - Import options
+   * @param {string} options.calendarId - Target calendar ID
+   * @returns {Promise<{success: boolean, count: number, errors: string[]}>} - Note data for import
+   * @override
+   */
+  async importNotes(notes, options = {}) {
+    const { calendarId } = options;
+    const errors = [];
+    let count = 0;
+    log(3, `Starting note import: ${notes.length} notes to calendar ${calendarId}`);
+    if (this.#ssNoteCategories.length) await this.#importNoteCategories(this.#ssNoteCategories);
+    const calendar = CalendarManager.getCalendar(calendarId);
+    const yearZero = calendar?.years?.yearZero ?? 0;
+    for (const note of notes) {
+      try {
+        const startDate = note.startDate ? { ...note.startDate, year: note.startDate.year + yearZero } : { year: yearZero, month: 0, dayOfMonth: 0 };
+        const noteData = { startDate, allDay: true, repeat: note.repeat || 'never', categories: note.categories || [], visibility: note.visibility || 'visible' };
+        const page = await NoteManager.createNote({ name: note.name, content: note.content || '', noteData, calendarId, openSheet: false });
+        if (page) count++;
+        else errors.push(`Failed to create note: ${note.name}`);
+      } catch (error) {
+        errors.push(`Error creating note "${note.name}": ${error.message}`);
+      }
+    }
+    log(3, `Note import complete: ${count}/${notes.length} imported, ${errors.length} errors`);
+    return { success: errors.length === 0, count, errors };
+  }
+
+  /**
+   * Count notes in raw S&S data.
+   * @param {object} data - Raw S&S export data
+   * @returns {number} Total note count
+   */
+  #countNotes(data) {
+    const calendar = data.calendar || data;
+    const events = calendar.events?.length || 0;
+    const worldEvents = data.worldEvents?.length || 0;
+    const journalNotes = data.journalNotes?.length || 0;
+    return events + worldEvents + journalNotes;
+  }
+
+  /**
+   * Import S&S note categories as Calendaria custom presets.
+   * @param {object[]} ssCategories - S&S note category definitions
+   */
+  async #importNoteCategories(ssCategories) {
+    const existing = getAllPresets();
+    const existingIds = new Set(existing.map((c) => c.id));
+    for (const cat of ssCategories) {
+      const id = cat.name
+        .toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^\da-z-]/g, '');
+      if (!existingIds.has(id)) {
+        await addCustomPreset(cat.name, cat.color, cat.icon || 'fa-tag');
+        log(3, `Imported S&S note category: ${cat.name}`);
+      }
+    }
+  }
+
+  /**
+   * Generate preview data with S&S-specific note counts.
+   * @param {object} rawData - Raw S&S export data
+   * @param {object} transformedData - Transformed calendar data
+   * @returns {object} Preview data with additional S&S-specific fields
+   */
+  getPreviewData(rawData, transformedData) {
+    const preview = super.getPreviewData(rawData, transformedData);
+    preview.noteCount = this.#countNotes(rawData);
+    return preview;
+  }
+}

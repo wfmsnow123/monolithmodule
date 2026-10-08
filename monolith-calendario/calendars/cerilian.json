@@ -1,0 +1,935 @@
+{
+  "id": "cerilian",
+  "name": "CALENDARIA.Calendar.Cerilian.Name",
+  "years": {
+    "yearZero": 551,
+    "firstWeekday": 0
+  },
+  "months": {
+    "values": {
+      "dayofrebirthmon0": {
+        "name": "Day of Rebirth",
+        "abbreviation": "Reb",
+        "ordinal": 1,
+        "days": 1,
+        "type": "intercalary"
+      },
+      "sarimiere0000000": {
+        "name": "Sarimiere",
+        "abbreviation": "Sar",
+        "ordinal": 2,
+        "days": 32
+      },
+      "talienir00000000": {
+        "name": "Talienir",
+        "abbreviation": "Tal",
+        "ordinal": 3,
+        "days": 32
+      },
+      "roelir0000000000": {
+        "name": "Roelir",
+        "abbreviation": "Roe",
+        "ordinal": 4,
+        "days": 32
+      },
+      "nightoffiremont0": {
+        "name": "Night of Fire",
+        "abbreviation": "Fir",
+        "ordinal": 5,
+        "days": 1,
+        "type": "intercalary"
+      },
+      "haelynir00000000": {
+        "name": "Haelynir",
+        "abbreviation": "Hae",
+        "ordinal": 6,
+        "days": 32
+      },
+      "anarire000000000": {
+        "name": "Anarire",
+        "abbreviation": "Ana",
+        "ordinal": 7,
+        "days": 32
+      },
+      "deismir000000000": {
+        "name": "Deismir",
+        "abbreviation": "Dei",
+        "ordinal": 8,
+        "days": 32
+      },
+      "venerationsleep0": {
+        "name": "Veneration of the Sleeping",
+        "abbreviation": "Vos",
+        "ordinal": 9,
+        "days": 1,
+        "type": "intercalary"
+      },
+      "erntenir00000000": {
+        "name": "Erntenir",
+        "abbreviation": "Ern",
+        "ordinal": 10,
+        "days": 32
+      },
+      "sehnir0000000000": {
+        "name": "Sehnir",
+        "abbreviation": "Seh",
+        "ordinal": 11,
+        "days": 32
+      },
+      "emmanir000000000": {
+        "name": "Emmanir",
+        "abbreviation": "Emm",
+        "ordinal": 12,
+        "days": 32
+      },
+      "eveofthedeadmon0": {
+        "name": "Eve of the Dead",
+        "abbreviation": "Eod",
+        "ordinal": 13,
+        "days": 1,
+        "type": "intercalary"
+      },
+      "keltier000000000": {
+        "name": "Keltier",
+        "abbreviation": "Kel",
+        "ordinal": 14,
+        "days": 32
+      },
+      "faniele000000000": {
+        "name": "Faniele",
+        "abbreviation": "Fan",
+        "ordinal": 15,
+        "days": 32
+      },
+      "pasiphiel0000000": {
+        "name": "Pasiphiel",
+        "abbreviation": "Pas",
+        "ordinal": 16,
+        "days": 32
+      }
+    }
+  },
+  "days": {
+    "values": {
+      "firstday00000000": {
+        "name": "Firlen",
+        "ordinal": 1,
+        "abbreviation": "Fir"
+      },
+      "seconday00000000": {
+        "name": "Renlen",
+        "ordinal": 2,
+        "abbreviation": "Ren"
+      },
+      "thirdday00000000": {
+        "name": "Dielen",
+        "ordinal": 3,
+        "abbreviation": "Die"
+      },
+      "fourthday0000000": {
+        "name": "Varilen",
+        "ordinal": 4,
+        "abbreviation": "Var"
+      },
+      "fifthday00000000": {
+        "name": "Branlen",
+        "ordinal": 5,
+        "abbreviation": "Bra"
+      },
+      "sixthday00000000": {
+        "name": "Barlen",
+        "ordinal": 6,
+        "abbreviation": "Bar"
+      },
+      "seventhday000000": {
+        "name": "Mierlen",
+        "ordinal": 7,
+        "abbreviation": "Mie"
+      },
+      "eighthday0000000": {
+        "name": "Taelen",
+        "ordinal": 8,
+        "abbreviation": "Tae",
+        "isRestDay": true
+      }
+    },
+    "daysPerYear": 388,
+    "hoursPerDay": 24,
+    "minutesPerHour": 60,
+    "secondsPerMinute": 60
+  },
+  "festivals": {
+    "dayofrebirth0000": {
+      "name": "Day of Rebirth",
+      "month": 0,
+      "countsForWeekday": false,
+      "icon": "fa-seedling",
+      "color": "#32CD32",
+      "description": "Vernal equinox marking the new year and the rebirth of spring across Cerilia.",
+      "dayOfMonth": 0,
+      "duration": 1,
+      "leapYearOnly": false,
+      "conditionTree": {
+        "type": "group",
+        "mode": "and",
+        "children": [
+          {
+            "type": "condition",
+            "field": "month",
+            "op": "==",
+            "value": 1
+          },
+          {
+            "type": "condition",
+            "field": "day",
+            "op": "==",
+            "value": 1
+          }
+        ]
+      },
+      "allDay": true,
+      "displayStyle": "banner",
+      "visibility": "visible",
+      "silent": true,
+      "hasDuration": false,
+      "reminderType": "none",
+      "reminderOffset": 0
+    },
+    "nightoffire00000": {
+      "name": "Night of Fire",
+      "month": 4,
+      "countsForWeekday": false,
+      "icon": "fa-meteor",
+      "color": "#FF4500",
+      "description": "Summer solstice featuring a spectacular display of falling stars from an annual meteor passage.",
+      "dayOfMonth": 0,
+      "duration": 1,
+      "leapYearOnly": false,
+      "conditionTree": {
+        "type": "group",
+        "mode": "and",
+        "children": [
+          {
+            "type": "condition",
+            "field": "month",
+            "op": "==",
+            "value": 5
+          },
+          {
+            "type": "condition",
+            "field": "day",
+            "op": "==",
+            "value": 1
+          }
+        ]
+      },
+      "allDay": true,
+      "displayStyle": "banner",
+      "visibility": "visible",
+      "silent": true,
+      "hasDuration": false,
+      "reminderType": "none",
+      "reminderOffset": 0
+    },
+    "venerationofthed": {
+      "name": "Veneration of the Sleeping",
+      "month": 8,
+      "countsForWeekday": false,
+      "icon": "fa-monument",
+      "color": "#696969",
+      "description": "Autumnal equinox honoring ancestors and the long-departed who rest beneath the earth.",
+      "dayOfMonth": 0,
+      "duration": 1,
+      "leapYearOnly": false,
+      "conditionTree": {
+        "type": "group",
+        "mode": "and",
+        "children": [
+          {
+            "type": "condition",
+            "field": "month",
+            "op": "==",
+            "value": 9
+          },
+          {
+            "type": "condition",
+            "field": "day",
+            "op": "==",
+            "value": 1
+          }
+        ]
+      },
+      "allDay": true,
+      "displayStyle": "banner",
+      "visibility": "visible",
+      "silent": true,
+      "hasDuration": false,
+      "reminderType": "none",
+      "reminderOffset": 0
+    },
+    "nightofsleeping0": {
+      "name": "Eve of the Dead",
+      "month": 12,
+      "countsForWeekday": false,
+      "icon": "fa-moon",
+      "color": "#191970",
+      "description": "Winter solstice vigil when the veil between the living and dead grows thin and the land enters its deepest slumber.",
+      "dayOfMonth": 0,
+      "duration": 1,
+      "leapYearOnly": false,
+      "conditionTree": {
+        "type": "group",
+        "mode": "and",
+        "children": [
+          {
+            "type": "condition",
+            "field": "month",
+            "op": "==",
+            "value": 13
+          },
+          {
+            "type": "condition",
+            "field": "day",
+            "op": "==",
+            "value": 1
+          }
+        ]
+      },
+      "allDay": true,
+      "displayStyle": "banner",
+      "visibility": "visible",
+      "silent": true,
+      "hasDuration": false,
+      "reminderType": "none",
+      "reminderOffset": 0
+    },
+    "haelynsday000000": {
+      "name": "Haelyn's Day",
+      "month": 5,
+      "icon": "fa-crown",
+      "color": "#B8860B",
+      "description": "Festival honoring Haelyn, god of courage, justice, and rightful rulership.",
+      "dayOfMonth": 15,
+      "duration": 1,
+      "countsForWeekday": true,
+      "leapYearOnly": false,
+      "conditionTree": {
+        "type": "group",
+        "mode": "and",
+        "children": [
+          {
+            "type": "condition",
+            "field": "month",
+            "op": "==",
+            "value": 6
+          },
+          {
+            "type": "condition",
+            "field": "day",
+            "op": "==",
+            "value": 16
+          }
+        ]
+      },
+      "allDay": true,
+      "displayStyle": "banner",
+      "visibility": "visible",
+      "silent": true,
+      "hasDuration": false,
+      "reminderType": "none",
+      "reminderOffset": 0
+    },
+    "eriksmoot0000000": {
+      "name": "Erik's Moot",
+      "month": 3,
+      "icon": "fa-tree",
+      "color": "#228B22",
+      "description": "Rjurik celebration dedicated to Erik, god of forests, hunting, and wild places, observed during Roelir.",
+      "dayOfMonth": 0,
+      "duration": 1,
+      "countsForWeekday": true,
+      "leapYearOnly": false,
+      "conditionTree": {
+        "type": "group",
+        "mode": "and",
+        "children": [
+          {
+            "type": "condition",
+            "field": "month",
+            "op": "==",
+            "value": 4
+          },
+          {
+            "type": "condition",
+            "field": "day",
+            "op": "==",
+            "value": 1
+          }
+        ]
+      },
+      "allDay": true,
+      "displayStyle": "banner",
+      "visibility": "visible",
+      "silent": true,
+      "hasDuration": false,
+      "reminderType": "none",
+      "reminderOffset": 0
+    }
+  },
+  "seasons": {
+    "values": {
+      "winter0000000000": {
+        "name": "CALENDARIA.Season.Winter",
+        "icon": "fas fa-snowflake",
+        "color": "#87ceeb",
+        "seasonalType": "winter",
+        "dayStart": 291,
+        "dayEnd": 387,
+        "abbreviation": "Win"
+      },
+      "spring0000000000": {
+        "name": "CALENDARIA.Season.Spring",
+        "icon": "fas fa-seedling",
+        "color": "#90ee90",
+        "seasonalType": "spring",
+        "dayStart": 0,
+        "dayEnd": 96,
+        "abbreviation": "Spr"
+      },
+      "summer0000000000": {
+        "name": "CALENDARIA.Season.Summer",
+        "icon": "fas fa-sun",
+        "color": "#ffd700",
+        "seasonalType": "summer",
+        "dayStart": 97,
+        "dayEnd": 193,
+        "abbreviation": "Sum"
+      },
+      "autumn0000000000": {
+        "name": "CALENDARIA.Season.Autumn",
+        "icon": "fas fa-leaf",
+        "color": "#d2691e",
+        "seasonalType": "autumn",
+        "dayStart": 194,
+        "dayEnd": 290,
+        "abbreviation": "Aut"
+      }
+    }
+  },
+  "eras": {
+    "michaelaereckoni": {
+      "name": "Michaelae Reckoning",
+      "abbreviation": "MR",
+      "startYear": 1,
+      "endYear": null
+    },
+    "haelynscount0000": {
+      "name": "Haelyn's Count",
+      "abbreviation": "HC",
+      "startYear": -973,
+      "endYear": 0
+    }
+  },
+  "moons": {
+    "themoon000000000": {
+      "name": "The Moon",
+      "cycleLength": 32,
+      "color": "#E8E8E8",
+      "phases": {
+        "newmoon000000000": {
+          "name": "CALENDARIA.MoonPhase.NewMoon",
+          "icon": "modules/monolith-calendario/assets/moon-phases/01_newmoon.svg",
+          "start": 0,
+          "end": 0.125
+        },
+        "waxingcrescent00": {
+          "name": "CALENDARIA.MoonPhase.WaxingCrescent",
+          "icon": "modules/monolith-calendario/assets/moon-phases/02_waxingcrescent.svg",
+          "start": 0.125,
+          "end": 0.25
+        },
+        "firstquarter0000": {
+          "name": "CALENDARIA.MoonPhase.FirstQuarter",
+          "icon": "modules/monolith-calendario/assets/moon-phases/03_firstquarter.svg",
+          "start": 0.25,
+          "end": 0.375
+        },
+        "waxinggibbous000": {
+          "name": "CALENDARIA.MoonPhase.WaxingGibbous",
+          "icon": "modules/monolith-calendario/assets/moon-phases/04_waxinggibbous.svg",
+          "start": 0.375,
+          "end": 0.5
+        },
+        "fullmoon00000000": {
+          "name": "CALENDARIA.MoonPhase.FullMoon",
+          "icon": "modules/monolith-calendario/assets/moon-phases/05_fullmoon.svg",
+          "start": 0.5,
+          "end": 0.625
+        },
+        "waninggibbous000": {
+          "name": "CALENDARIA.MoonPhase.WaningGibbous",
+          "icon": "modules/monolith-calendario/assets/moon-phases/06_waninggibbous.svg",
+          "start": 0.625,
+          "end": 0.75
+        },
+        "lastquarter00000": {
+          "name": "CALENDARIA.MoonPhase.LastQuarter",
+          "icon": "modules/monolith-calendario/assets/moon-phases/07_lastquarter.svg",
+          "start": 0.75,
+          "end": 0.875
+        },
+        "waningcrescent00": {
+          "name": "CALENDARIA.MoonPhase.WaningCrescent",
+          "icon": "modules/monolith-calendario/assets/moon-phases/08_waningcrescent.svg",
+          "start": 0.875,
+          "end": 1
+        }
+      },
+      "referenceDate": {
+        "year": 0,
+        "month": 1,
+        "dayOfMonth": 0
+      }
+    }
+  },
+  "daylight": {
+    "enabled": true,
+    "shortestDay": 8,
+    "longestDay": 16,
+    "winterSolstice": 291,
+    "summerSolstice": 97
+  },
+  "cycles": {},
+  "canonicalHours": {},
+  "weeks": {
+    "enabled": false,
+    "type": "year-based",
+    "names": {}
+  },
+  "amPmNotation": {
+    "am": "Ante Meridiem",
+    "pm": "Post Meridiem",
+    "amAbbr": "AM",
+    "pmAbbr": "PM"
+  },
+  "dateFormats": {
+    "short": "D MMM",
+    "long": "D MMMM, Y",
+    "full": "MMMM D, Y",
+    "time": "HH:mm",
+    "time12": "h:mm a",
+    "weekHeader": "[Week] W [of] MMMM, Y",
+    "yearHeader": "Y",
+    "yearLabel": "Y G"
+  },
+  "metadata": {
+    "id": "cerilian",
+    "description": "CALENDARIA.Calendar.Cerilian.Description",
+    "author": "calendaria",
+    "system": "Birthright"
+  },
+  "weather": {
+    "activeZone": "temperate",
+    "zones": {
+      "temperate000000": {
+        "id": "temperate",
+        "name": "CALENDARIA.Weather.Climate.Temperate",
+        "description": "CALENDARIA.Weather.Climate.TemperateDesc",
+        "windSpeedRange": {
+          "min": 0,
+          "max": 3
+        },
+        "windDirections": {
+          "W": 20,
+          "WSW": 15,
+          "SW": 12,
+          "WNW": 10,
+          "NW": 8,
+          "S": 8,
+          "N": 5,
+          "NNW": 5,
+          "E": 4,
+          "SE": 4,
+          "NE": 3,
+          "SSW": 3,
+          "SSE": 1,
+          "ESE": 1,
+          "ENE": 1
+        },
+        "brightnessMultiplier": 1,
+        "shortestDay": 8,
+        "longestDay": 16,
+        "temperatures": {
+          "_default": {
+            "min": 8,
+            "max": 20
+          },
+          "Winter": {
+            "min": -5,
+            "max": 5
+          },
+          "Spring": {
+            "min": 8,
+            "max": 18
+          },
+          "Summer": {
+            "min": 18,
+            "max": 30
+          },
+          "Autumn": {
+            "min": 8,
+            "max": 18
+          }
+        },
+        "presets": {
+          "rain00000000000": {
+            "id": "rain",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          },
+          "drizzle00000000": {
+            "id": "drizzle",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          },
+          "partlycloudy000": {
+            "id": "partly-cloudy",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          },
+          "clear0000000000": {
+            "id": "clear",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          },
+          "mist00000000000": {
+            "id": "mist",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          },
+          "cloudy000000000": {
+            "id": "cloudy",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          },
+          "thunderstorm000": {
+            "id": "thunderstorm",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          },
+          "fog000000000000": {
+            "id": "fog",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          },
+          "windy0000000000": {
+            "id": "windy",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          },
+          "snow00000000000": {
+            "id": "snow",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          },
+          "blizzard0000000": {
+            "id": "blizzard",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          },
+          "overcast0000000": {
+            "id": "overcast",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          }
+        },
+        "seasonOverrides": {
+          "Winter": {
+            "temperatures": {
+              "min": -5,
+              "max": 5
+            },
+            "presets": {
+              "snow": {
+                "id": "snow",
+                "chance": 26,
+                "enabled": true
+              },
+              "blizzard": {
+                "id": "blizzard",
+                "chance": 11,
+                "enabled": true
+              },
+              "fog": {
+                "id": "fog",
+                "chance": 11,
+                "enabled": true
+              },
+              "overcast": {
+                "id": "overcast",
+                "chance": 16,
+                "enabled": true
+              },
+              "clear": {
+                "id": "clear",
+                "chance": 11,
+                "enabled": true
+              },
+              "rain": {
+                "id": "rain",
+                "chance": 5,
+                "enabled": true
+              },
+              "cloudy": {
+                "id": "cloudy",
+                "chance": 11,
+                "enabled": true
+              },
+              "mist": {
+                "id": "mist",
+                "chance": 5,
+                "enabled": true
+              },
+              "drizzle": {
+                "id": "drizzle",
+                "chance": 5,
+                "enabled": true
+              },
+              "partly-cloudy": {
+                "id": "partly-cloudy",
+                "chance": 0,
+                "enabled": false
+              },
+              "thunderstorm": {
+                "id": "thunderstorm",
+                "chance": 0,
+                "enabled": false
+              },
+              "windy": {
+                "id": "windy",
+                "chance": 0,
+                "enabled": false
+              }
+            }
+          },
+          "Spring": {
+            "temperatures": {
+              "min": 8,
+              "max": 18
+            },
+            "presets": {
+              "rain": {
+                "id": "rain",
+                "chance": 25,
+                "enabled": true
+              },
+              "drizzle": {
+                "id": "drizzle",
+                "chance": 19,
+                "enabled": true
+              },
+              "partly-cloudy": {
+                "id": "partly-cloudy",
+                "chance": 19,
+                "enabled": true
+              },
+              "clear": {
+                "id": "clear",
+                "chance": 13,
+                "enabled": true
+              },
+              "mist": {
+                "id": "mist",
+                "chance": 13,
+                "enabled": true
+              },
+              "cloudy": {
+                "id": "cloudy",
+                "chance": 13,
+                "enabled": true
+              },
+              "thunderstorm": {
+                "id": "thunderstorm",
+                "chance": 0,
+                "enabled": false
+              },
+              "fog": {
+                "id": "fog",
+                "chance": 0,
+                "enabled": false
+              },
+              "windy": {
+                "id": "windy",
+                "chance": 0,
+                "enabled": false
+              },
+              "snow": {
+                "id": "snow",
+                "chance": 0,
+                "enabled": false
+              },
+              "blizzard": {
+                "id": "blizzard",
+                "chance": 0,
+                "enabled": false
+              },
+              "overcast": {
+                "id": "overcast",
+                "chance": 0,
+                "enabled": false
+              }
+            }
+          },
+          "Summer": {
+            "temperatures": {
+              "min": 18,
+              "max": 30
+            },
+            "presets": {
+              "clear": {
+                "id": "clear",
+                "chance": 35,
+                "enabled": true
+              },
+              "partly-cloudy": {
+                "id": "partly-cloudy",
+                "chance": 24,
+                "enabled": true
+              },
+              "thunderstorm": {
+                "id": "thunderstorm",
+                "chance": 12,
+                "enabled": true
+              },
+              "rain": {
+                "id": "rain",
+                "chance": 12,
+                "enabled": true
+              },
+              "cloudy": {
+                "id": "cloudy",
+                "chance": 6,
+                "enabled": true
+              },
+              "mist": {
+                "id": "mist",
+                "chance": 6,
+                "enabled": true
+              },
+              "drizzle": {
+                "id": "drizzle",
+                "chance": 6,
+                "enabled": true
+              },
+              "fog": {
+                "id": "fog",
+                "chance": 0,
+                "enabled": false
+              },
+              "windy": {
+                "id": "windy",
+                "chance": 0,
+                "enabled": false
+              },
+              "snow": {
+                "id": "snow",
+                "chance": 0,
+                "enabled": false
+              },
+              "blizzard": {
+                "id": "blizzard",
+                "chance": 0,
+                "enabled": false
+              },
+              "overcast": {
+                "id": "overcast",
+                "chance": 0,
+                "enabled": false
+              }
+            }
+          },
+          "Autumn": {
+            "temperatures": {
+              "min": 8,
+              "max": 18
+            },
+            "presets": {
+              "cloudy": {
+                "id": "cloudy",
+                "chance": 24,
+                "enabled": true
+              },
+              "rain": {
+                "id": "rain",
+                "chance": 18,
+                "enabled": true
+              },
+              "fog": {
+                "id": "fog",
+                "chance": 18,
+                "enabled": true
+              },
+              "partly-cloudy": {
+                "id": "partly-cloudy",
+                "chance": 12,
+                "enabled": true
+              },
+              "windy": {
+                "id": "windy",
+                "chance": 12,
+                "enabled": true
+              },
+              "mist": {
+                "id": "mist",
+                "chance": 6,
+                "enabled": true
+              },
+              "drizzle": {
+                "id": "drizzle",
+                "chance": 6,
+                "enabled": true
+              },
+              "clear": {
+                "id": "clear",
+                "chance": 6,
+                "enabled": true
+              },
+              "thunderstorm": {
+                "id": "thunderstorm",
+                "chance": 0,
+                "enabled": false
+              },
+              "snow": {
+                "id": "snow",
+                "chance": 0,
+                "enabled": false
+              },
+              "blizzard": {
+                "id": "blizzard",
+                "chance": 0,
+                "enabled": false
+              },
+              "overcast": {
+                "id": "overcast",
+                "chance": 0,
+                "enabled": false
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

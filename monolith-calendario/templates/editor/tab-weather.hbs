@@ -1,0 +1,66 @@
+<section class="tab {{tab.cssClass}}" data-tab="{{tab.id}}" data-group="{{tab.group}}">
+
+  <fieldset class="season-climate-section">
+    <legend data-tooltip aria-label="{{localize 'CALENDARIA.Editor.Weather.SeasonClimateHint'}}">
+      {{localize "CALENDARIA.Editor.Weather.SeasonClimate"}}
+    </legend>
+    {{#if seasonClimateList.length}}
+      <div class="items-list season-climate-list">
+        {{#each seasonClimateList}}
+          <div class="item flexrow">
+            <i class="{{#if this.icon}}{{this.icon}}{{else}}fas fa-cloud-sun{{/if}}" style="color: {{this.color}}"></i>
+            <span class="item-name">{{localize this.name}}</span>
+            <div class="item-controls">
+              <button type="button" data-action="editSeasonClimate" data-key="{{this.key}}" data-tooltip
+                aria-label="{{localize 'CALENDARIA.Editor.Tooltip.EditSeasonClimate'}}">
+                <i class="fas fa-pen-to-square"></i>
+              </button>
+            </div>
+          </div>
+        {{/each}}
+      </div>
+    {{else}}
+      <p class="hint">{{localize "CALENDARIA.Editor.Weather.NoSeasons"}}</p>
+    {{/if}}
+  </fieldset>
+
+  <fieldset>
+    <legend data-tooltip aria-label="{{localize 'CALENDARIA.Editor.Weather.ZoneClimateHint'}}">
+      {{localize "CALENDARIA.Editor.Weather.ZoneClimate"}}
+    </legend>
+    {{#if zoneList.length}}
+      <div class="items-list zone-climate-list">
+        {{#each zoneList}}
+          <div class="item flexrow">
+            <input type="text" name="weather.zones.{{this.key}}.name" value="{{this.name}}" class="col-name">
+            <div class="item-controls col-controls">
+              <button type="button" data-action="editZoneClimate" data-key="{{this.key}}"
+                class="{{#if this.hasPresets}}toggled{{/if}}" data-tooltip
+                aria-label="{{localize 'CALENDARIA.Editor.Weather.Zone.EditClimate'}}">
+                <i class="fas fa-cloud-sun"></i>
+              </button>
+              <button type="button" data-action="duplicateZone" data-key="{{this.key}}" data-tooltip
+                aria-label="{{localize 'CALENDARIA.Editor.Weather.Zone.Duplicate'}}">
+                <i class="fas fa-copy"></i>
+              </button>
+              <button type="button" data-action="addZone" data-key="{{this.key}}" data-tooltip
+                aria-label="{{localize 'CALENDARIA.Editor.Weather.Zone.Add'}}">
+                <i class="fas fa-plus"></i>
+              </button>
+              <button type="button" data-action="deleteZone" data-key="{{this.key}}" data-tooltip
+                aria-label="{{localize 'CALENDARIA.Editor.Weather.Zone.Delete'}}">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        {{/each}}
+      </div>
+    {{else}}
+      <div class="add-first-item">
+        <button type="button" data-action="addZone" data-key="">
+          <i class="fas fa-plus"></i> {{localize "CALENDARIA.Editor.Weather.Zone.Add"}}
+        </button>
+      </div>
+    {{/if}}
+  </fieldset>
+</section>

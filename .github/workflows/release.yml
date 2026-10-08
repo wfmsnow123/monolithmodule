@@ -1,0 +1,73 @@
+name: Release
+
+# Publica um módulo quando uma tag de versão é enviada:
+#   monolith-regras-v<versão>       -> monolith-regras
+#   monolith-calendario-v<versão>   -> monolith-calendario (compila e roda os testes antes)
+# A versão da tag precisa ser igual à "version" do module.json do módulo.
+
+on:
+  push:
+    tags:
+      - 'monolith-regras-v*'
+      - 'monolith-calendario-v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Identificar o módulo
+        id: mod
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          case "$TAG" in
+            monolith-regras-v*) MOD=monolith-regras ;;
+            monolith-calendario-v*) MOD=monolith-calendario ;;
+            *) echo "Tag desconhecida: $TAG"; exit 1 ;;
+          esac
+          VER="${TAG#${MOD}-v}"
+          JSONVER=$(jq -r .version "$MOD/module.json")
+          if [ "$VER" != "$JSONVER" ]; then echo "A tag ($VER) não bate com module.json ($JSONVER)"; exit 1; fi
+          echo "mod=$MOD" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Node
+        if: steps.mod.outputs.mod == 'monolith-calendario'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: monolith-calendario/package-lock.json
+
+      - name: Compilar e testar o calendário
+        if: steps.mod.outputs.mod == 'monolith-calendario'
+        working-directory: monolith-calendario
+        run: |
+          npm ci --ignore-scripts
+          npm test
+          npm run build
+          cp README-MONOLITH.md dist/README.md
+          rm -f dist/*.map
+          mkdir -p ../build
+          mv dist ../build/monolith-calendario
+
+      - name: Empacotar regras
+        if: steps.mod.outputs.mod == 'monolith-regras'
+        run: |
+          mkdir -p build
+          cp -r monolith-regras build/monolith-regras
+
+      - name: Zip e release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MOD: ${{ steps.mod.outputs.mod }}
+          TAG: ${{ steps.mod.outputs.tag }}
+        run: |
+          cd build
+          zip -qr "$MOD.zip" "$MOD"
+          cp "$MOD/module.json" module.json
+          gh release create "$TAG" "$MOD.zip" module.json --title "$TAG" --notes "Instale pelo manifest: https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/main/$MOD/module.json"

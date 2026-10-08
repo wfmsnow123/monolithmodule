@@ -1,0 +1,122 @@
+[
+ {
+  "year": 1978,
+  "month": 8,
+  "day": 10,
+  "epoch": 712329,
+  "weekday": 2,
+  "weekdayName": "Lexen",
+  "telunia": 9,
+  "pilas": 9,
+  "season": 3,
+  "seasonDay": 115
+ },
+ {
+  "year": 1978,
+  "month": 8,
+  "day": 11,
+  "epoch": 712330,
+  "weekday": 3,
+  "weekdayName": "Varn",
+  "telunia": 10,
+  "pilas": 10,
+  "season": 3,
+  "seasonDay": 116
+ },
+ {
+  "year": 1978,
+  "month": 0,
+  "day": 1,
+  "epoch": 712080,
+  "weekday": 5,
+  "weekdayName": "Solmar",
+  "telunia": 0,
+  "pilas": 0,
+  "season": 1,
+  "seasonDay": 106
+ },
+ {
+  "year": 0,
+  "month": 0,
+  "day": 1,
+  "epoch": 0,
+  "weekday": 0,
+  "weekdayName": "Primar",
+  "telunia": 0,
+  "pilas": 0,
+  "season": 3,
+  "seasonDay": 106
+ },
+ {
+  "year": 1500,
+  "month": 0,
+  "day": 1,
+  "epoch": 540000,
+  "weekday": 6,
+  "weekdayName": "Umbra",
+  "telunia": 0,
+  "pilas": 0,
+  "season": 3,
+  "seasonDay": 106
+ },
+ {
+  "year": 1979,
+  "month": 11,
+  "day": 30,
+  "epoch": 712799,
+  "weekday": 3,
+  "weekdayName": "Varn",
+  "telunia": 23,
+  "pilas": 19,
+  "season": 3,
+  "seasonDay": 105
+ },
+ {
+  "year": -1,
+  "month": 11,
+  "day": 30,
+  "epoch": -1,
+  "weekday": 6,
+  "weekdayName": "Umbra",
+  "telunia": 1,
+  "pilas": 1,
+  "season": 3,
+  "seasonDay": 105
+ },
+ {
+  "year": -2500,
+  "month": 2,
+  "day": 3,
+  "epoch": -899938,
+  "weekday": 3,
+  "weekdayName": "Varn",
+  "telunia": 10,
+  "pilas": 18,
+  "season": 0,
+  "seasonDay": 48
+ },
+ {
+  "year": 1978,
+  "month": 3,
+  "day": 15,
+  "epoch": 712184,
+  "weekday": 4,
+  "weekdayName": "Keld",
+  "telunia": 8,
+  "pilas": 4,
+  "season": 2,
+  "seasonDay": 90
+ },
+ {
+  "year": 2001,
+  "month": 6,
+  "day": 7,
+  "epoch": 720546,
+  "weekday": 1,
+  "weekdayName": "Marten",
+  "telunia": 18,
+  "pilas": 6,
+  "season": 0,
+  "seasonDay": 52
+ }
+]

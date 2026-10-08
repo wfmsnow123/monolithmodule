@@ -1,0 +1,169 @@
+<div class="bar-wrapper{{#if trayUp}} tray-up{{/if}}">
+  <div class="bar{{#if locked}} locked{{/if}}{{#if borderGlow}}{{#if hasEvents}} has-events{{/if}}{{/if}}"
+    {{#if borderGlow}}{{#if hasEvents}}style="--event-glow: {{firstEventColor}};" {{/if}}{{/if}}>
+    <div class="section left">
+      <div class="btn-group left" role="group" aria-label="{{localize 'CALENDARIA.HUD.NoteActions'}}">
+        <button type="button" class="btn" data-action="openNoteViewer" data-tooltip
+          aria-label="{{localize 'CALENDARIA.NoteViewer.OpenNoteViewer'}}">
+          <i class="fa-solid fa-book-open"></i>
+        </button>
+        <button type="button" class="btn" data-action="addNote" data-tooltip
+          aria-label="{{localize 'CALENDARIA.Common.AddNote'}}">
+          <i class="fa-solid fa-calendar-plus"></i>
+        </button>
+        {{#if showChronicleButton}}
+          <button type="button" class="btn" data-action="openChronicle" data-tooltip
+            aria-label="{{localize 'CALENDARIA.Common.OpenChronicle'}}">
+            <i class="fa-solid fa-scroll"></i>
+          </button>
+        {{/if}}
+        {{{widgets.buttonsLeft}}}
+        {{#if hasEvents}}
+          <div class="events">
+            {{#each liveEvents}}
+              <div class="event-icon-wrapper" data-action="openEvent" data-event-id="{{this.id}}"
+                data-parent-id="{{this.parentId}}" data-tooltip-html="{{{this.tooltipHtml}}}"
+                style="--event-color: {{this.color}};">
+                {{#if this.iconIsImage}}
+                  {{#if this.iconIsSvg}}
+                    <img src="{{this.icon}}" alt="" class="event-icon tinted">
+                  {{else}}
+                    <img src="{{this.icon}}" alt="" class="event-icon">
+                  {{/if}}
+                {{else}}
+                  <i class="{{this.icon}} event-icon"></i>
+                {{/if}}
+              </div>
+            {{/each}}
+          </div>
+        {{/if}}
+      </div>
+      <div class="info-panel">
+        <span class="date{{#if dateCompressed}} compressed{{/if}}" {{#if canChangeDateTime}} data-action="setDate"
+          {{/if}} {{#if dateEquivalentHtml}}data-tooltip-html="{{{dateEquivalentHtml}}}" {{else}}data-tooltip
+          aria-label="{{dateDisplay}}{{#if canChangeDateTime}} ({{localize 'CALENDARIA.HUD.ClickToSetDate'}}){{/if}}"
+          {{/if}}>{{{dateDisplayHtml}}}</span>
+      </div>
+    </div>
+    <div class="center">
+      {{#if useSliceMode}}
+        <div class="slice" {{#if canChangeDateTime}}role="button" tabindex="0" data-action="openSunDial" data-tooltip
+          aria-label="{{localize 'CALENDARIA.HUD.ClickToSetTime'}}" {{/if}}>
+          <canvas class="slice-canvas"></canvas>
+          <div class="slice-overlay">
+            <span class="time">{{{timeHtml}}}</span>
+            {{#if canChangeDateTime}}
+              <button type="button" class="play-btn{{#if clockLocked}} clock-locked{{/if}}" data-action="toggleTimeFlow"
+                aria-pressed="{{isPlaying}}" data-tooltip
+                aria-label="{{#if clockDisabled}}{{localize 'CALENDARIA.TimeClock.Disabled'}}{{else if clockLocked}}{{localize 'CALENDARIA.TimeClock.Locked'}}{{else if isPlaying}}{{localize 'CALENDARIA.HUD.PauseTime'}}{{else}}{{localize 'CALENDARIA.TimeKeeper.Start'}}{{/if}}">
+                <i
+                  class="fa-solid {{#if clockLocked}}fa-lock{{else}}{{#if isPlaying}}fa-pause{{else}}fa-play{{/if}}{{/if}}"></i>
+              </button>
+            {{/if}}
+          </div>
+        </div>
+      {{else}}
+        <div class="time-wrapper">
+          <span class="time">{{{timeHtml}}}</span>
+          {{#if canChangeDateTime}}
+            <button type="button" class="play-btn{{#if clockLocked}} clock-locked{{/if}}" data-action="toggleTimeFlow"
+              aria-pressed="{{isPlaying}}" data-tooltip
+              aria-label="{{#if clockDisabled}}{{localize 'CALENDARIA.TimeClock.Disabled'}}{{else if clockLocked}}{{localize 'CALENDARIA.TimeClock.Locked'}}{{else if isPlaying}}{{localize 'CALENDARIA.HUD.PauseTime'}}{{else}}{{localize 'CALENDARIA.TimeKeeper.Start'}}{{/if}}">
+              <i
+                class="fa-solid {{#if clockLocked}}fa-lock{{else}}{{#if isPlaying}}fa-pause{{else}}fa-play{{/if}}{{/if}}"></i>
+            </button>
+          {{/if}}
+        </div>
+      {{/if}}
+    </div>
+    <div class="section right">
+      <div class="indicators">
+        {{{widgets.weatherIndicator}}}
+        {{{widgets.seasonIndicator}}}
+        {{{widgets.eraIndicator}}}
+        {{{widgets.cycleIndicator}}}
+        {{{widgets.indicators}}}
+      </div>
+      <div class="btn-group right" role="group" aria-label="{{localize 'CALENDARIA.HUD.CalendarActions'}}">
+        {{{widgets.buttonsRight}}}
+        {{#if (eq hudCalendarButton "minical")}}
+          {{#if canViewMiniCal}}
+            <button type="button" class="btn" data-action="openMiniCal" data-tooltip
+              aria-label="{{localize 'CALENDARIA.Common.OpenMiniCal'}}">
+              <i class="fa-solid fa-calendar"></i>
+            </button>
+          {{/if}}
+        {{else}}
+          {{#if canViewBigCal}}
+            <button type="button" class="btn" data-action="showBigCal" data-tooltip
+              aria-label="{{localize 'CALENDARIA.Common.OpenBigCal'}}">
+              <i class="fa-solid fa-calendar-days"></i>
+            </button>
+          {{/if}}
+        {{/if}}
+        <button type="button" class="btn" data-action="openSettings" data-tooltip
+          aria-label="{{localize 'CALENDARIA.HUD.Settings.Name'}}">
+          <i class="fa-solid fa-gear"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  {{#if canChangeDateTime}}
+    <div class="tray{{#if stickyTray}} visible{{/if}}">
+      <button type="button" class="time-btn time-shortcut" data-action="toSunrise" data-tooltip
+        aria-label="{{localize 'CALENDARIA.HUD.Sunrise'}}">
+        <i class="fa-solid fa-sun"></i>
+      </button>
+      <button type="button" class="time-btn time-shortcut" data-action="toMidday" data-tooltip
+        aria-label="{{localize 'CALENDARIA.HUD.Midday'}}">
+        <i class="fa-solid fa-cloud-sun"></i>
+      </button>
+      {{#if customJumps.dec2}}
+        <button type="button" class="time-btn custom-jump" data-action="customDec2" data-tooltip
+          aria-label="{{customJumps.dec2}}">
+          {{customJumps.dec2}}
+        </button>
+      {{/if}}
+      {{#if customJumps.dec1}}
+        <button type="button" class="time-btn custom-jump" data-action="customDec1" data-tooltip
+          aria-label="{{customJumps.dec1}}">
+          {{customJumps.dec1}}
+        </button>
+      {{/if}}
+      <button type="button" class="time-btn" data-action="reverse" data-tooltip
+        aria-label="{{localize 'CALENDARIA.HUD.Reverse'}}">
+        <i class="fa-solid fa-backward"></i>
+      </button>
+      <select class="select" data-action="setIncrement" aria-label="{{localize 'CALENDARIA.HUD.TimeIncrement'}}">
+        {{#each increments}}
+          <option value="{{key}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+        {{/each}}
+      </select>
+      <button type="button" class="time-btn" data-action="forward" data-tooltip
+        aria-label="{{localize 'CALENDARIA.HUD.Forward'}}">
+        <i class="fa-solid fa-forward"></i>
+      </button>
+      {{#if customJumps.inc1}}
+        <button type="button" class="time-btn custom-jump" data-action="customInc1" data-tooltip
+          aria-label="+{{customJumps.inc1}}">
+          +{{customJumps.inc1}}
+        </button>
+      {{/if}}
+      {{#if customJumps.inc2}}
+        <button type="button" class="time-btn custom-jump" data-action="customInc2" data-tooltip
+          aria-label="+{{customJumps.inc2}}">
+          +{{customJumps.inc2}}
+        </button>
+      {{/if}}
+      <button type="button" class="time-btn time-shortcut" data-action="toSunset" data-tooltip
+        aria-label="{{localize 'CALENDARIA.HUD.Sunset'}}">
+        <i class="fa-solid fa-cloud-moon"></i>
+      </button>
+      <button type="button" class="time-btn time-shortcut" data-action="toMidnight" data-tooltip
+        aria-label="{{localize 'CALENDARIA.HUD.Midnight'}}">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+      {{{widgets.tray}}}
+    </div>
+  {{/if}}
+</div>

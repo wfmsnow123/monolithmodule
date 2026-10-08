@@ -1,0 +1,532 @@
+import { CalendarManager } from '../../calendar/_module.mjs';
+import { COMPASS_DIRECTIONS, MODULE, PRECIPITATION_TYPES, SETTINGS, TEMPLATES, WEATHER_PERIODS, WIND_SPEEDS } from '../../constants.mjs';
+import { getAvailableFxPresets, isFXMasterActive } from '../../integrations/_module.mjs';
+import { getAvailableMacros, localize, log } from '../../utils/_module.mjs';
+import { WEATHER_CATEGORIES, WeatherManager, fromDisplayUnit, getPreset, getPresetsByCategory, getTemperatureUnit, rollPresetTemperature, toDisplayUnit } from '../../weather/_module.mjs';
+import { CalendarEditor, WeatherProbabilityDialog } from '../_module.mjs';
+
+const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
+
+/**
+ * Map a 0-1 intensity to a descriptive label.
+ * @param {number} value - Intensity value (0-1)
+ * @returns {string} Localized intensity label
+ */
+function getPrecipIntensityLabel(value) {
+  if (value <= 0) return localize('CALENDARIA.Common.None');
+  if (value <= 0.25) return localize('CALENDARIA.Common.Light');
+  if (value <= 0.5) return localize('CALENDARIA.Common.Moderate');
+  if (value <= 0.75) return localize('CALENDARIA.Weather.Precipitation.IntensityHeavy');
+  return localize('CALENDARIA.Weather.Precipitation.IntensityTorrential');
+}
+
+/**
+ * Weather picker application with selectable presets.
+ */
+export default class WeatherPickerApp extends HandlebarsApplicationMixin(ApplicationV2) {
+  /** @type {string|null} Selected preset ID (null = none selected) */
+  #selectedPresetId = null;
+
+  /** @type {string|null} Selected intraday period (null = current period) */
+  #selectedPeriod = null;
+
+  /** @type {boolean} Whether user has edited custom fields */
+  #customEdited = false;
+
+  /** @type {string|null} Custom weather label input */
+  #customLabel = null;
+
+  /** @type {string|null} Custom weather temperature input */
+  #customTemp = null;
+
+  /** @type {string|null} Custom weather icon input */
+  #customIcon = null;
+
+  /** @type {string|null} Custom weather color input */
+  #customColor = null;
+
+  /** @type {number|string|null} Wind speed (0-5 scale or 'random') */
+  #windSpeed = null;
+
+  /** @type {number|null} Wind direction (degrees) */
+  #windDirection = null;
+
+  /** @type {string|null} Precipitation type (or 'random') */
+  #precipType = null;
+
+  /** @type {number|null} Precipitation intensity (0-1) */
+  #precipIntensity = null;
+
+  /** @type {string|null} FXMaster preset override */
+  #fxPreset = null;
+
+  /** @type {string|null} Sound effect override */
+  #soundFx = null;
+
+  /** @type {string|null} FXMaster density override */
+  #fxDensity = null;
+
+  /** @type {string|null} FXMaster speed override */
+  #fxSpeed = null;
+
+  /** @type {string|null} FXMaster color override (hex) */
+  #fxColor = null;
+
+  /** @type {string|null} Effect macro ID */
+  #fxMacro = null;
+
+  /** @override */
+  static DEFAULT_OPTIONS = {
+    id: 'calendaria-weather-picker',
+    classes: ['calendaria', 'weather-picker', 'standard-form'],
+    tag: 'form',
+    window: {
+      title: 'CALENDARIA.Weather.Picker.Title',
+      icon: 'fas fa-cloud-sun',
+      resizable: false,
+      controls: [{ action: 'openWeatherSettings', icon: 'fa-solid fa-gear', label: 'CALENDARIA.Weather.Picker.OpenSettings' }]
+    },
+    position: { width: 'auto', height: 'auto' },
+    form: { handler: WeatherPickerApp._onSave, submitOnChange: false, closeOnSubmit: false },
+    actions: {
+      selectWeather: WeatherPickerApp._onSelectWeather,
+      randomWeather: WeatherPickerApp._onRandomWeather,
+      clearWeather: WeatherPickerApp._onClearWeather,
+      viewProbabilities: WeatherPickerApp._onViewProbabilities,
+      openWeatherSettings: WeatherPickerApp._onOpenWeatherSettings,
+      selectPeriod: WeatherPickerApp._onSelectPeriod
+    }
+  };
+
+  /** @override */
+  static PARTS = { content: { template: TEMPLATES.WEATHER.PICKER }, footer: { template: TEMPLATES.WEATHER.PICKER_FOOTER } };
+
+  /** @override */
+  async close(options) {
+    this.#selectedPresetId = null;
+    this.#selectedPeriod = null;
+    this.#customEdited = false;
+    this.#customLabel = null;
+    this.#customTemp = null;
+    this.#customIcon = null;
+    this.#customColor = null;
+    this.#windSpeed = null;
+    this.#windDirection = null;
+    this.#precipType = null;
+    this.#precipIntensity = null;
+    this.#fxPreset = null;
+    this.#soundFx = null;
+    this.#fxDensity = null;
+    this.#fxSpeed = null;
+    this.#fxColor = null;
+    this.#fxMacro = null;
+    return super.close(options);
+  }
+
+  /** @override */
+  async _prepareContext(options) {
+    const context = await super._prepareContext(options);
+    const customPresets = WeatherManager.getCustomPresets();
+    const zones = WeatherManager.getCalendarZones() || [];
+    const scene = game.scenes?.active;
+    const sceneZone = WeatherManager.getActiveZone(null, scene);
+    const selectedZoneId = sceneZone?.id ?? null;
+    context.sceneZoneName = sceneZone ? localize(sceneZone.name) : localize('CALENDARIA.Weather.Picker.NoZone');
+    context.zoneOptions = [];
+    for (const z of zones) context.zoneOptions.push({ value: z.id, label: localize(z.name), selected: z.id === selectedZoneId });
+    context.zoneOptions.sort((a, b) => a.label.localeCompare(b.label, game.i18n.lang));
+    context.intradayEnabled = game.settings.get(MODULE.ID, SETTINGS.INTRADAY_WEATHER);
+    if (context.intradayEnabled) {
+      const currentPeriod = WeatherManager.getCurrentPeriod();
+      const selected = this.#selectedPeriod ?? currentPeriod;
+      context.periods = Object.values(WEATHER_PERIODS).map((p) => ({ id: p.id, label: localize(p.label), icon: p.icon, selected: p.id === selected, isCurrent: p.id === currentPeriod }));
+      context.selectedPeriod = selected;
+    }
+    const enabledPresetIds = new Set();
+    if (sceneZone?.presets) {
+      const calendar = CalendarManager.getActiveCalendar();
+      const currentSeason = calendar?.getCurrentSeason?.(game.time.components);
+      const seasonPresets = currentSeason ? (sceneZone.seasonOverrides?.[currentSeason.name]?.presets ?? {}) : {};
+      for (const p of Object.values(sceneZone.presets)) {
+        const seasonP = seasonPresets[p.id];
+        if ((seasonP?.enabled ?? p.enabled) !== false) enabledPresetIds.add(p.id);
+      }
+    }
+    const hasZoneFilter = sceneZone && enabledPresetIds.size > 0;
+    context.categories = [];
+    context.selectedPresetId = this.#selectedPresetId;
+    const calendarId = CalendarManager.getActiveCalendar()?.metadata?.id;
+    const notActiveLabel = localize('CALENDARIA.Weather.Picker.NotActiveInZone');
+    const categoryIds = ['standard', 'severe', 'environmental', 'fantasy'];
+    for (const categoryId of categoryIds) {
+      const category = WEATHER_CATEGORIES[categoryId];
+      const presets = getPresetsByCategory(categoryId, customPresets);
+      if (presets.length === 0) continue;
+      const mappedPresets = presets
+        .map((p) => {
+          const label = WeatherManager.resolveDisplayLabel(p.id, p.label, calendarId, selectedZoneId);
+          const description = p.description ? localize(p.description) : label;
+          const zoneEnabled = !hasZoneFilter || enabledPresetIds.has(p.id);
+          const tooltip = zoneEnabled ? description : `${description} ${notActiveLabel}`;
+          return { id: p.id, label, tooltip, icon: p.icon, color: p.color, selected: p.id === this.#selectedPresetId, zoneEnabled };
+        })
+        .sort((a, b) => {
+          if (a.zoneEnabled !== b.zoneEnabled) return a.zoneEnabled ? -1 : 1;
+          return a.label.localeCompare(b.label, game.i18n.lang);
+        });
+      context.categories.push({ id: categoryId, label: localize(category.label), presets: mappedPresets });
+    }
+    if (customPresets.length > 0) {
+      const mappedCustom = customPresets
+        .map((p) => {
+          const label = WeatherManager.resolveDisplayLabel(p.id, p.label, calendarId, selectedZoneId);
+          const description = p.description ? (p.description.startsWith('CALENDARIA.') ? localize(p.description) : p.description) : label;
+          const zoneEnabled = !hasZoneFilter || enabledPresetIds.has(p.id);
+          const tooltip = zoneEnabled ? description : `${description} ${notActiveLabel}`;
+          return { id: p.id, label, tooltip, icon: p.icon, color: p.color, selected: p.id === this.#selectedPresetId, zoneEnabled };
+        })
+        .sort((a, b) => {
+          if (a.zoneEnabled !== b.zoneEnabled) return a.zoneEnabled ? -1 : 1;
+          return a.label.localeCompare(b.label, game.i18n.lang);
+        });
+      if (mappedCustom.length > 0) {
+        context.categories.push({ id: 'custom', label: localize(WEATHER_CATEGORIES.custom.label), presets: mappedCustom });
+      }
+    }
+    context.temperatureUnit = getTemperatureUnit() === 'fahrenheit' ? '°F' : '°C';
+    const currentWeather = WeatherManager.getCurrentWeather(selectedZoneId);
+    const currentTemp = WeatherManager.getTemperature(selectedZoneId);
+    context.selectedZoneId = selectedZoneId;
+    const resolvedLabel = currentWeather?.id ? WeatherManager.resolveDisplayLabel(currentWeather.id, currentWeather.label, calendarId, selectedZoneId) : '';
+    context.customLabel = this.#customLabel ?? resolvedLabel;
+    context.customTemp = this.#customTemp ?? (currentTemp != null ? toDisplayUnit(currentTemp) : '');
+    context.customIcon = this.#customIcon ?? (currentWeather?.icon || 'fa-question');
+    context.customColor = this.#customColor ?? (currentWeather?.color || '#888888');
+    const activeWindSpeed = this.#windSpeed ?? currentWeather?.wind?.speed ?? 0;
+    context.windSpeedRandom = this.#windSpeed === 'random';
+    context.windSpeedOptions = Object.values(WIND_SPEEDS).map((w) => ({ value: w.value, label: localize(w.label), kph: w.kph, selected: !context.windSpeedRandom && activeWindSpeed === w.value }));
+    context.compassDirections = Object.entries(COMPASS_DIRECTIONS).map(([id, deg]) => ({
+      id,
+      degrees: deg,
+      label: localize(`CALENDARIA.Weather.Wind.Dir.${id}`),
+      selected: (this.#windDirection ?? currentWeather?.wind?.direction) === deg
+    }));
+    const activePrecipType = this.#precipType ?? currentWeather?.precipitation?.type ?? null;
+    context.precipTypeRandom = this.#precipType === 'random';
+    context.precipitationTypes = [
+      { value: '', label: localize('CALENDARIA.Common.None'), selected: !context.precipTypeRandom && !activePrecipType },
+      ...Object.entries(PRECIPITATION_TYPES)
+        .filter(([, v]) => v !== null)
+        .map(([, v]) => ({ value: v, label: localize(`CALENDARIA.Weather.Precipitation.${v.charAt(0).toUpperCase() + v.slice(1)}`), selected: !context.precipTypeRandom && activePrecipType === v }))
+    ];
+    context.precipIntensity = this.#precipIntensity ?? currentWeather?.precipitation?.intensity ?? 0;
+    context.precipIntensityLabel = getPrecipIntensityLabel(context.precipIntensity);
+    context.hasFXMaster = isFXMasterActive();
+    if (context.hasFXMaster) {
+      const currentFxPreset = this.#fxPreset !== null ? this.#fxPreset : (currentWeather?.fxPreset ?? '');
+      context.fxPreset = currentFxPreset;
+      const fxPresets = getAvailableFxPresets();
+      context.fxPresetOptions = [
+        { value: '', label: localize('CALENDARIA.Common.None'), selected: !currentFxPreset },
+        ...fxPresets.map((p) => ({ value: p.value, label: p.label, selected: p.value === currentFxPreset }))
+      ];
+      const fxLevels = ['very-low', 'low', 'medium', 'high', 'very-high'];
+      const currentFxDensity = this.#fxDensity !== null ? this.#fxDensity : (currentWeather?.fxDensity ?? '');
+      context.fxDensityOptions = [
+        { value: '', label: localize('CALENDARIA.Common.Default'), selected: !currentFxDensity },
+        ...fxLevels.map((v) => ({ value: v, label: localize(`CALENDARIA.FxParam.${v}`), selected: v === currentFxDensity }))
+      ];
+      const currentFxSpeed = this.#fxSpeed !== null ? this.#fxSpeed : (currentWeather?.fxSpeed ?? '');
+      context.fxSpeedOptions = [
+        { value: '', label: localize('CALENDARIA.Common.Default'), selected: !currentFxSpeed },
+        ...fxLevels.map((v) => ({ value: v, label: localize(`CALENDARIA.FxParam.${v}`), selected: v === currentFxSpeed }))
+      ];
+      context.fxColor = this.#fxColor !== null ? this.#fxColor : (currentWeather?.fxColor ?? '');
+    }
+    context.soundFx = this.#soundFx !== null ? this.#soundFx : (currentWeather?.soundFx ?? '');
+    const currentFxMacro = this.#fxMacro !== null ? this.#fxMacro : (currentWeather?.fxMacro ?? '');
+    const macros = getAvailableMacros();
+    context.fxMacroOptions = [
+      { value: '', label: localize('CALENDARIA.Common.None'), selected: !currentFxMacro },
+      ...macros.map((m) => ({ value: m.id, label: m.name, selected: m.id === currentFxMacro }))
+    ];
+    return context;
+  }
+
+  /** @override */
+  _onRender(context, options) {
+    super._onRender?.(context, options);
+    const zoneSelect = this.element.querySelector('select[name="sceneZone"]');
+    if (zoneSelect) {
+      zoneSelect.addEventListener('change', async (e) => {
+        const zoneId = e.target.value || null;
+        await WeatherManager.setSceneZoneOverride(game.scenes?.active, zoneId);
+        this.render();
+      });
+    }
+    for (const input of this.element.querySelectorAll('.details input')) {
+      input.addEventListener('input', () => {
+        this.#customEdited = true;
+        this.#selectedPresetId = null;
+        for (const btn of this.element.querySelectorAll('.weather-btn.active')) btn.classList.remove('active');
+      });
+    }
+    const soundPickerBtn = this.element.querySelector('.sound-file-picker');
+    if (soundPickerBtn) {
+      soundPickerBtn.addEventListener('click', () => {
+        const input = this.element.querySelector('input[name="soundFx"]');
+        const fp = new foundry.applications.apps.FilePicker({
+          type: 'audio',
+          current: input?.value || 'modules/monolith-calendario/assets/sound/',
+          callback: (path) => {
+            if (input) input.value = path;
+            this.#customEdited = true;
+            this.#selectedPresetId = null;
+          }
+        });
+        fp.browse();
+      });
+    }
+    const precipSlider = this.element.querySelector('[name="precipIntensity"]');
+    if (precipSlider) {
+      const label = precipSlider.nextElementSibling;
+      precipSlider.addEventListener('input', () => {
+        if (label) label.textContent = getPrecipIntensityLabel(parseFloat(precipSlider.value));
+      });
+    }
+  }
+
+  /**
+   * Handle save button. Applies selected preset or custom weather.
+   * @param {Event} _event - The submit event
+   * @param {HTMLFormElement} _form - The form element
+   * @param {object} formData - The form data
+   */
+  static async _onSave(_event, _form, formData) {
+    const fd = formData.object;
+    const compassValues = Object.values(COMPASS_DIRECTIONS);
+    const windSpeed = fd.windSpeed === 'random' ? Math.floor(Math.random() * 6) : parseInt(fd.windSpeed ?? 0);
+    const windDirCompass = fd.windDirectionCompass;
+    const windDir = windDirCompass !== '' && windDirCompass != null ? parseFloat(windDirCompass) : compassValues[Math.floor(Math.random() * compassValues.length)];
+    const precipTypes = Object.values(PRECIPITATION_TYPES).filter((v) => v !== null);
+    const precipType = fd.precipType === 'random' ? precipTypes[Math.floor(Math.random() * precipTypes.length)] : fd.precipType || null;
+    const precipIntensity = fd.precipType === 'random' ? Math.round(Math.random() * 20) / 20 : parseFloat(fd.precipIntensity ?? 0);
+    const windData = { speed: windSpeed, direction: windDir, forced: false };
+    const precipData = { type: precipType, intensity: precipType ? precipIntensity : 0 };
+    const sceneZone = WeatherManager.getActiveZone(null, game.scenes?.active);
+    const zoneId = sceneZone?.id ?? null;
+    const fxPreset = fd.fxPreset || null;
+    const soundFx = fd.soundFx || null;
+    const fxMacro = fd.fxMacro || null;
+    const fxDensity = fd.fxDensity || null;
+    const fxSpeed = fd.fxSpeed || null;
+    const fxColor = fd.fxColor || null;
+    if (this.#selectedPresetId && !this.#customEdited) {
+      const preset = getPreset(this.#selectedPresetId, WeatherManager.getCustomPresets());
+      const nativeFx = preset?.fxPreset || '';
+      const userPickedFx = this.#fxPreset || '';
+      const fxOverride = userPickedFx !== nativeFx ? userPickedFx || null : undefined;
+      const nativeSound = preset?.soundFx || '';
+      const userPickedSound = this.#soundFx || '';
+      const soundOverride = userPickedSound !== nativeSound ? userPickedSound || null : undefined;
+      const nativeMacro = preset?.fxMacro || '';
+      const userPickedMacro = this.#fxMacro || '';
+      const macroOverride = userPickedMacro !== nativeMacro ? userPickedMacro || null : undefined;
+      const temp = fd.customTemp;
+      const temperature = temp != null && temp !== '' ? fromDisplayUnit(parseInt(temp, 10)) : undefined;
+      const periodOpts = {};
+      if (game.settings.get(MODULE.ID, SETTINGS.INTRADAY_WEATHER)) periodOpts.period = this.#selectedPeriod ?? WeatherManager.getCurrentPeriod();
+      await WeatherManager.setWeather(this.#selectedPresetId, {
+        temperature,
+        wind: windData,
+        precipitation: precipData,
+        fxPreset: fxOverride,
+        soundFx: soundOverride,
+        fxMacro: macroOverride,
+        fxDensity,
+        fxSpeed,
+        fxColor,
+        zoneId,
+        ...periodOpts
+      });
+    } else {
+      const data = foundry.utils.expandObject(fd);
+      const label = data.customLabel?.trim();
+      if (label) {
+        const temp = data.customTemp;
+        const icon = data.customIcon?.trim() || 'fa-question';
+        const color = data.customColor || '#888888';
+        const temperature = temp != null && temp !== '' ? fromDisplayUnit(parseInt(temp, 10)) : null;
+        const periodField = game.settings.get(MODULE.ID, SETTINGS.INTRADAY_WEATHER) ? (this.#selectedPeriod ?? WeatherManager.getCurrentPeriod()) : undefined;
+        await WeatherManager.setCustomWeather({
+          label,
+          temperature,
+          icon,
+          color,
+          wind: windData,
+          precipitation: precipData,
+          fxPreset,
+          soundFx,
+          fxMacro,
+          fxDensity,
+          fxSpeed,
+          fxColor,
+          zoneId,
+          period: periodField
+        });
+      }
+    }
+    log(3, `Weather applied: ${this.#selectedPresetId ?? 'custom'}`);
+    if (fd.saveAsPreset) {
+      const data = foundry.utils.expandObject(fd);
+      const label = data.customLabel?.trim();
+      if (label) {
+        const preset = this.#selectedPresetId ? getPreset(this.#selectedPresetId, WeatherManager.getCustomPresets()) : null;
+        await WeatherManager.addCustomPreset({
+          id: `custom-${Date.now()}`,
+          label,
+          description: '',
+          icon: data.customIcon?.trim() || preset?.icon || 'fa-question',
+          color: data.customColor || preset?.color || '#888888',
+          wind: windData,
+          precipitation: precipData,
+          tempMin: data.customTemp != null && data.customTemp !== '' ? fromDisplayUnit(parseInt(data.customTemp, 10)) : null,
+          tempMax: data.customTemp != null && data.customTemp !== '' ? fromDisplayUnit(parseInt(data.customTemp, 10)) : null,
+          fxPreset,
+          soundFx,
+          fxMacro,
+          fxDensity,
+          fxSpeed,
+          fxColor,
+          inertiaWeight: preset?.inertiaWeight ?? 1,
+          chance: preset?.chance ?? 1,
+          darknessPenalty: preset?.darknessPenalty ?? 0
+        });
+      }
+    }
+    await this.close();
+  }
+
+  /**
+   * Select a weather preset — populates custom fields for preview/editing.
+   * @param {PointerEvent} _event - The click event
+   * @param {HTMLElement} target - The clicked element
+   */
+  static _onSelectPeriod(_event, target) {
+    this.#selectedPeriod = target.dataset.periodId;
+    this.render();
+  }
+
+  /**
+   * Select a weather preset.
+   * @param {PointerEvent} _event - The click event
+   * @param {HTMLElement} target - The clicked element
+   */
+  static _onSelectWeather(_event, target) {
+    const presetId = target.dataset.presetId;
+    const preset = getPreset(presetId, WeatherManager.getCustomPresets());
+    if (!preset) return;
+    this.#selectedPresetId = presetId;
+    this.#customEdited = false;
+    const calendar = CalendarManager.getActiveCalendar();
+    const calendarId = calendar?.metadata?.id;
+    const sceneZone = WeatherManager.getActiveZone(null, game.scenes?.active);
+    const zoneId = sceneZone?.id ?? null;
+    this.#customLabel = WeatherManager.resolveDisplayLabel(presetId, preset.label, calendarId, zoneId);
+    const seasonData = calendar?.getCurrentSeason?.(game.time.components);
+    const rolled = rollPresetTemperature({
+      presetId,
+      seasonClimate: seasonData?.climate ?? null,
+      zoneConfig: sceneZone ?? null,
+      season: seasonData?.name ?? null,
+      customPresets: WeatherManager.getCustomPresets()
+    });
+    this.#customTemp = String(toDisplayUnit(rolled));
+    const visualOverrides = (game.settings.get(MODULE.ID, SETTINGS.WEATHER_VISUAL_OVERRIDES) || {})[presetId] || {};
+    this.#customIcon = visualOverrides.icon ?? preset.icon ?? 'fa-question';
+    this.#customColor = visualOverrides.color ?? preset.color ?? '#888888';
+    this.#windSpeed = preset.wind?.speed ?? 0;
+    this.#windDirection = preset.wind?.direction ?? null;
+    this.#precipType = preset.precipitation?.type ?? null;
+    this.#precipIntensity = preset.precipitation?.intensity ?? 0;
+    this.#fxPreset = (visualOverrides.fxPreset !== undefined ? visualOverrides.fxPreset : preset.fxPreset) || '';
+    this.#soundFx = (visualOverrides.soundFx !== undefined ? visualOverrides.soundFx : preset.soundFx) || '';
+    this.#fxMacro = (visualOverrides.fxMacro !== undefined ? visualOverrides.fxMacro : preset.fxMacro) || '';
+    this.#fxDensity = preset.fxDensity || '';
+    this.#fxSpeed = preset.fxSpeed || '';
+    this.#fxColor = preset.fxColor || '';
+    this.render();
+  }
+
+  /**
+   * Generate random weather.
+   * @param {PointerEvent} _event - The click event
+   * @param {HTMLElement} _target - The clicked element
+   */
+  static async _onRandomWeather(_event, _target) {
+    const sceneZone = WeatherManager.getActiveZone(null, game.scenes?.active);
+    const zoneId = sceneZone?.id ?? null;
+    const weather = await WeatherManager.generateAndSetWeather({ zoneId, randomize: true });
+    this.#selectedPresetId = weather?.id ?? null;
+    this.#customEdited = false;
+    this.#customLabel = null;
+    this.#customTemp = null;
+    this.#customIcon = null;
+    this.#customColor = null;
+    this.#windSpeed = weather?.wind?.speed ?? null;
+    this.#windDirection = weather?.wind?.direction ?? null;
+    this.#precipType = weather?.precipitation?.type ?? null;
+    this.#precipIntensity = weather?.precipitation?.intensity ?? null;
+    this.#fxPreset = weather?.fxPreset ?? null;
+    this.#soundFx = weather?.soundFx ?? null;
+    this.#fxMacro = weather?.fxMacro ?? null;
+    this.#fxDensity = weather?.fxDensity ?? null;
+    this.#fxSpeed = weather?.fxSpeed ?? null;
+    this.#fxColor = weather?.fxColor ?? null;
+    log(3, 'Random weather generated');
+    this.render();
+  }
+
+  /**
+   * Open the Weather Probability dialog.
+   */
+  static _onViewProbabilities() {
+    WeatherProbabilityDialog.open();
+  }
+
+  /**
+   * Open the calendar editor to the weather tab.
+   */
+  static _onOpenWeatherSettings() {
+    const calendarId = CalendarManager.getActiveCalendar()?.metadata?.id;
+    if (!calendarId) return;
+    new CalendarEditor({ calendarId, initialTab: 'weather' }).render(true);
+  }
+
+  /**
+   * Clear current weather and reset custom fields.
+   * @param {PointerEvent} _event - The click event
+   * @param {HTMLElement} _target - The clicked element
+   */
+  static async _onClearWeather(_event, _target) {
+    await WeatherManager.clearWeather();
+    log(3, 'Weather cleared');
+    this.#selectedPresetId = null;
+    this.#customEdited = false;
+    this.#customLabel = '';
+    this.#customTemp = '';
+    this.#customIcon = '';
+    this.#customColor = '#888888';
+    this.#windSpeed = 0;
+    this.#windDirection = null;
+    this.#precipType = null;
+    this.#precipIntensity = 0;
+    this.#fxPreset = null;
+    this.#soundFx = null;
+    this.#fxMacro = null;
+    this.#fxDensity = null;
+    this.#fxSpeed = null;
+    this.#fxColor = null;
+    this.render();
+  }
+}

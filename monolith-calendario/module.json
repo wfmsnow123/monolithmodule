@@ -1,0 +1,113 @@
+{
+  "authors": [
+    {
+      "name": "Tyler (Calendaria original)",
+      "url": "https://github.com/Sayshal"
+    },
+    {
+      "name": "snowxd (fork Monolith)"
+    }
+  ],
+  "bugs": "https://github.com/wfmsnow123/monolithmodule/issues",
+  "changelog": "https://github.com/wfmsnow123/monolithmodule/releases",
+  "compatibility": {
+    "minimum": "13.351",
+    "verified": "14.361"
+  },
+  "description": "Calendário de Monolith. Fork do Calendaria (Tyler/Sayshal, MIT) com luas e estações fiéis ao Fantasy-Calendar.com e sincronização com o site.",
+  "documentTypes": {
+    "JournalEntryPage": {
+      "calendarnote": {
+        "htmlFields": [
+          "text.content"
+        ]
+      }
+    }
+  },
+  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-calendario-v1.0.17-monolith.1/monolith-calendario.zip",
+  "esmodules": [
+    "calendaria.mjs"
+  ],
+  "styles": [
+    "styles/calendaria.css"
+  ],
+  "flags": {
+    "hotReload": {
+      "extensions": [
+        "css",
+        "html",
+        "hbs",
+        "json"
+      ],
+      "paths": [
+        "styles",
+        "lang",
+        "templates"
+      ]
+    }
+  },
+  "id": "monolith-calendario",
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    },
+    {
+      "lang": "pt-BR",
+      "name": "Português (Brasil)",
+      "path": "lang/pt-BR.json"
+    },
+    {
+      "lang": "de",
+      "name": "German",
+      "path": "lang/de.json"
+    },
+    {
+      "lang": "tr",
+      "name": "Türkçe",
+      "path": "lang/tr.json"
+    },
+    {
+      "lang": "it",
+      "name": "Italian",
+      "path": "lang/it.json"
+    },
+    {
+      "lang": "ru",
+      "name": "Russian",
+      "path": "lang/ru.json"
+    },
+    {
+      "lang": "pl",
+      "name": "Polish",
+      "path": "lang/pl.json"
+    },
+    {
+      "lang": "fr",
+      "name": "Français",
+      "path": "lang/fr.json"
+    },
+    {
+      "lang": "es",
+      "name": "Español",
+      "path": "lang/es.json"
+    }
+  ],
+  "license": "https://github.com/wfmsnow123/monolithmodule/blob/main/monolith-calendario/LICENSE",
+  "manifest": "https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-calendario/module.json",
+  "readme": "https://github.com/wfmsnow123/monolithmodule/blob/main/monolith-calendario/README-MONOLITH.md",
+  "relationships": {
+    "conflicts": [
+      {
+        "id": "calendaria",
+        "type": "module",
+        "reason": "Este módulo é um fork do Calendaria e o substitui. Não ative os dois juntos."
+      }
+    ]
+  },
+  "socket": true,
+  "title": "Monolith: Calendário",
+  "url": "https://github.com/wfmsnow123/monolithmodule",
+  "version": "1.0.17-monolith.1"
+}

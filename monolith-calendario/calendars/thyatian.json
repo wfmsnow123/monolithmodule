@@ -1,0 +1,907 @@
+{
+  "id": "thyatian",
+  "name": "CALENDARIA.Calendar.Thyatian.Name",
+  "years": {
+    "yearZero": 1000,
+    "firstWeekday": 0
+  },
+  "months": {
+    "values": {
+      "nuwmont000000000": {
+        "name": "Nuwmont",
+        "abbreviation": "Nuw",
+        "ordinal": 1,
+        "days": 28
+      },
+      "vatermont0000000": {
+        "name": "Vatermont",
+        "abbreviation": "Vat",
+        "ordinal": 2,
+        "days": 28
+      },
+      "thaumont00000000": {
+        "name": "Thaumont",
+        "abbreviation": "Tha",
+        "ordinal": 3,
+        "days": 28
+      },
+      "flaurmont0000000": {
+        "name": "Flaurmont",
+        "abbreviation": "Fla",
+        "ordinal": 4,
+        "days": 28
+      },
+      "yarthmont0000000": {
+        "name": "Yarthmont",
+        "abbreviation": "Yar",
+        "ordinal": 5,
+        "days": 28
+      },
+      "klarmont00000000": {
+        "name": "Klarmont",
+        "abbreviation": "Kla",
+        "ordinal": 6,
+        "days": 28
+      },
+      "felmont000000000": {
+        "name": "Felmont",
+        "abbreviation": "Fel",
+        "ordinal": 7,
+        "days": 28
+      },
+      "fyrmont000000000": {
+        "name": "Fyrmont",
+        "abbreviation": "Fyr",
+        "ordinal": 8,
+        "days": 28
+      },
+      "ambyrmont0000000": {
+        "name": "Ambyrmont",
+        "abbreviation": "Amb",
+        "ordinal": 9,
+        "days": 28
+      },
+      "sviftmont0000000": {
+        "name": "Sviftmont",
+        "abbreviation": "Svi",
+        "ordinal": 10,
+        "days": 28
+      },
+      "eirmont000000000": {
+        "name": "Eirmont",
+        "abbreviation": "Eir",
+        "ordinal": 11,
+        "days": 28
+      },
+      "kaldmont00000000": {
+        "name": "Kaldmont",
+        "abbreviation": "Kal",
+        "ordinal": 12,
+        "days": 28
+      }
+    }
+  },
+  "days": {
+    "values": {
+      "lunadain00000000": {
+        "name": "Lunadain",
+        "ordinal": 1,
+        "abbreviation": "Lun"
+      },
+      "gromdain00000000": {
+        "name": "Gromdain",
+        "ordinal": 2,
+        "abbreviation": "Gro"
+      },
+      "tserdain00000000": {
+        "name": "Tserdain",
+        "ordinal": 3,
+        "abbreviation": "Tse"
+      },
+      "moldain000000000": {
+        "name": "Moldain",
+        "ordinal": 4,
+        "abbreviation": "Mol"
+      },
+      "nytdain000000000": {
+        "name": "Nytdain",
+        "ordinal": 5,
+        "abbreviation": "Nyt"
+      },
+      "loshdain00000000": {
+        "name": "Loshdain",
+        "ordinal": 6,
+        "abbreviation": "Los"
+      },
+      "soladain00000000": {
+        "name": "Soladain",
+        "ordinal": 7,
+        "abbreviation": "Sol",
+        "isRestDay": true
+      }
+    },
+    "daysPerYear": 336,
+    "hoursPerDay": 24,
+    "minutesPerHour": 60,
+    "secondsPerMinute": 60
+  },
+  "festivals": {
+    "newyearsday00000": {
+      "name": "New Year's Day",
+      "month": 0,
+      "icon": "fa-glass-cheers",
+      "color": "#FFD700",
+      "description": "New year festival and the anniversary of Emperor Zendrolion Tatriokanitas's coronation. Celebrated across the Empire with parades and winter festivities; in AC 1000 the Millennium Celebration makes the observance especially grand.",
+      "dayOfMonth": 0,
+      "duration": 1,
+      "countsForWeekday": true,
+      "leapYearOnly": false,
+      "conditionTree": {
+        "type": "group",
+        "mode": "and",
+        "children": [
+          {
+            "type": "condition",
+            "field": "month",
+            "op": "==",
+            "value": 1
+          },
+          {
+            "type": "condition",
+            "field": "day",
+            "op": "==",
+            "value": 1
+          }
+        ]
+      },
+      "allDay": true,
+      "displayStyle": "banner",
+      "visibility": "visible",
+      "silent": true,
+      "hasDuration": false,
+      "reminderType": "none",
+      "reminderOffset": 0
+    },
+    "springrevel00000": {
+      "name": "First Day of Spring",
+      "month": 2,
+      "icon": "fa-seedling",
+      "color": "#90EE90",
+      "description": "The traditional start of spring and the opening of the shipping season across Thyatis, Karameikos, and the Known World.",
+      "dayOfMonth": 0,
+      "duration": 1,
+      "countsForWeekday": true,
+      "leapYearOnly": false,
+      "conditionTree": {
+        "type": "group",
+        "mode": "and",
+        "children": [
+          {
+            "type": "condition",
+            "field": "month",
+            "op": "==",
+            "value": 3
+          },
+          {
+            "type": "condition",
+            "field": "day",
+            "op": "==",
+            "value": 1
+          }
+        ]
+      },
+      "allDay": true,
+      "displayStyle": "banner",
+      "visibility": "visible",
+      "silent": true,
+      "hasDuration": false,
+      "reminderType": "none",
+      "reminderOffset": 0
+    },
+    "midyearfestival0": {
+      "name": "Mid-Year Festival",
+      "month": 5,
+      "icon": "fa-sun",
+      "color": "#FFA500",
+      "description": "Summer solstice celebration marking the halfway point of the year.",
+      "dayOfMonth": 27,
+      "duration": 1,
+      "countsForWeekday": true,
+      "leapYearOnly": false,
+      "conditionTree": {
+        "type": "group",
+        "mode": "and",
+        "children": [
+          {
+            "type": "condition",
+            "field": "month",
+            "op": "==",
+            "value": 6
+          },
+          {
+            "type": "condition",
+            "field": "day",
+            "op": "==",
+            "value": 28
+          }
+        ]
+      },
+      "allDay": true,
+      "displayStyle": "banner",
+      "visibility": "visible",
+      "silent": true,
+      "hasDuration": false,
+      "reminderType": "none",
+      "reminderOffset": 0
+    },
+    "harvestfestival0": {
+      "name": "Autumn's Arrival",
+      "month": 8,
+      "icon": "fa-wheat-awn",
+      "color": "#DAA520",
+      "description": "First day of autumn and the traditional start of the harvest season across Thyatis and Karameikos.",
+      "dayOfMonth": 0,
+      "duration": 1,
+      "countsForWeekday": true,
+      "leapYearOnly": false,
+      "conditionTree": {
+        "type": "group",
+        "mode": "and",
+        "children": [
+          {
+            "type": "condition",
+            "field": "month",
+            "op": "==",
+            "value": 9
+          },
+          {
+            "type": "condition",
+            "field": "day",
+            "op": "==",
+            "value": 1
+          }
+        ]
+      },
+      "allDay": true,
+      "displayStyle": "banner",
+      "visibility": "visible",
+      "silent": true,
+      "hasDuration": false,
+      "reminderType": "none",
+      "reminderOffset": 0
+    },
+    "coronationday000": {
+      "name": "Beast's Day",
+      "month": 6,
+      "icon": "fa-paw",
+      "color": "#8B4513",
+      "description": "Traladaran holiday commemorating the last battle between King Halav and the Beast-Men. Widely observed across Karameikos with feasting and reenactments.",
+      "dayOfMonth": 0,
+      "duration": 1,
+      "countsForWeekday": true,
+      "leapYearOnly": false,
+      "conditionTree": {
+        "type": "group",
+        "mode": "and",
+        "children": [
+          {
+            "type": "condition",
+            "field": "month",
+            "op": "==",
+            "value": 7
+          },
+          {
+            "type": "condition",
+            "field": "day",
+            "op": "==",
+            "value": 1
+          }
+        ]
+      },
+      "allDay": true,
+      "displayStyle": "banner",
+      "visibility": "visible",
+      "silent": true,
+      "hasDuration": false,
+      "reminderType": "none",
+      "reminderOffset": 0
+    },
+    "wintersolstice00": {
+      "name": "Day of Dread",
+      "month": 11,
+      "icon": "fa-skull",
+      "color": "#2F2F2F",
+      "description": "The most ominous day of the Mystaran year. On 28 Kaldmont no spell may be cast successfully anywhere on Mystara; magic simply fails. The origin of the phenomenon is unknown and feared, and most people remain indoors.",
+      "dayOfMonth": 27,
+      "duration": 1,
+      "countsForWeekday": true,
+      "leapYearOnly": false,
+      "conditionTree": {
+        "type": "group",
+        "mode": "and",
+        "children": [
+          {
+            "type": "condition",
+            "field": "month",
+            "op": "==",
+            "value": 12
+          },
+          {
+            "type": "condition",
+            "field": "day",
+            "op": "==",
+            "value": 28
+          }
+        ]
+      },
+      "allDay": true,
+      "displayStyle": "banner",
+      "visibility": "visible",
+      "silent": true,
+      "hasDuration": false,
+      "reminderType": "none",
+      "reminderOffset": 0
+    },
+    "firstdayofsummer": {
+      "name": "First Day of Summer",
+      "month": 5,
+      "icon": "fa-sun",
+      "color": "#FFD700",
+      "description": "The traditional start of summer across the Known World.",
+      "dayOfMonth": 0,
+      "duration": 1,
+      "countsForWeekday": true,
+      "leapYearOnly": false,
+      "conditionTree": {
+        "type": "group",
+        "mode": "and",
+        "children": [
+          {
+            "type": "condition",
+            "field": "month",
+            "op": "==",
+            "value": 6
+          },
+          {
+            "type": "condition",
+            "field": "day",
+            "op": "==",
+            "value": 1
+          }
+        ]
+      },
+      "allDay": true,
+      "displayStyle": "banner",
+      "visibility": "visible",
+      "silent": true,
+      "hasDuration": false,
+      "reminderType": "none",
+      "reminderOffset": 0
+    },
+    "firstdayofwinter": {
+      "name": "First Day of Winter",
+      "month": 11,
+      "icon": "fa-snowflake",
+      "color": "#B0E0E6",
+      "description": "The traditional start of winter across Thyatis and the Known World.",
+      "dayOfMonth": 0,
+      "duration": 1,
+      "countsForWeekday": true,
+      "leapYearOnly": false,
+      "conditionTree": {
+        "type": "group",
+        "mode": "and",
+        "children": [
+          {
+            "type": "condition",
+            "field": "month",
+            "op": "==",
+            "value": 12
+          },
+          {
+            "type": "condition",
+            "field": "day",
+            "op": "==",
+            "value": 1
+          }
+        ]
+      },
+      "allDay": true,
+      "displayStyle": "banner",
+      "visibility": "visible",
+      "silent": true,
+      "hasDuration": false,
+      "reminderType": "none",
+      "reminderOffset": 0
+    }
+  },
+  "seasons": {
+    "values": {
+      "winter0000000000": {
+        "name": "CALENDARIA.Season.Winter",
+        "icon": "fas fa-snowflake",
+        "color": "#87ceeb",
+        "seasonalType": "winter",
+        "dayStart": 308,
+        "dayEnd": 55,
+        "abbreviation": "Win"
+      },
+      "spring0000000000": {
+        "name": "CALENDARIA.Season.Spring",
+        "icon": "fas fa-seedling",
+        "color": "#90ee90",
+        "seasonalType": "spring",
+        "dayStart": 56,
+        "dayEnd": 139,
+        "abbreviation": "Spr"
+      },
+      "summer0000000000": {
+        "name": "CALENDARIA.Season.Summer",
+        "icon": "fas fa-sun",
+        "color": "#ffd700",
+        "seasonalType": "summer",
+        "dayStart": 140,
+        "dayEnd": 223,
+        "abbreviation": "Sum"
+      },
+      "autumn0000000000": {
+        "name": "CALENDARIA.Season.Autumn",
+        "icon": "fas fa-leaf",
+        "color": "#d2691e",
+        "seasonalType": "autumn",
+        "dayStart": 224,
+        "dayEnd": 307,
+        "abbreviation": "Aut"
+      }
+    }
+  },
+  "eras": {
+    "aftercrowning000": {
+      "name": "After Crowning",
+      "abbreviation": "AC",
+      "startYear": 1,
+      "endYear": null
+    },
+    "beforecrowning00": {
+      "name": "Before Crowning",
+      "abbreviation": "BC",
+      "startYear": -9999,
+      "endYear": 0
+    }
+  },
+  "moons": {
+    "matera0000000000": {
+      "name": "Matera",
+      "cycleLength": 28,
+      "color": "#E8E8E8",
+      "phases": {
+        "newmoon000000000": {
+          "name": "CALENDARIA.MoonPhase.NewMoon",
+          "icon": "modules/monolith-calendario/assets/moon-phases/01_newmoon.svg",
+          "start": 0,
+          "end": 0.125
+        },
+        "waxingcrescent00": {
+          "name": "CALENDARIA.MoonPhase.WaxingCrescent",
+          "icon": "modules/monolith-calendario/assets/moon-phases/02_waxingcrescent.svg",
+          "start": 0.125,
+          "end": 0.25
+        },
+        "firstquarter0000": {
+          "name": "CALENDARIA.MoonPhase.FirstQuarter",
+          "icon": "modules/monolith-calendario/assets/moon-phases/03_firstquarter.svg",
+          "start": 0.25,
+          "end": 0.375
+        },
+        "waxinggibbous000": {
+          "name": "CALENDARIA.MoonPhase.WaxingGibbous",
+          "icon": "modules/monolith-calendario/assets/moon-phases/04_waxinggibbous.svg",
+          "start": 0.375,
+          "end": 0.5
+        },
+        "fullmoon00000000": {
+          "name": "CALENDARIA.MoonPhase.FullMoon",
+          "icon": "modules/monolith-calendario/assets/moon-phases/05_fullmoon.svg",
+          "start": 0.5,
+          "end": 0.625
+        },
+        "waninggibbous000": {
+          "name": "CALENDARIA.MoonPhase.WaningGibbous",
+          "icon": "modules/monolith-calendario/assets/moon-phases/06_waninggibbous.svg",
+          "start": 0.625,
+          "end": 0.75
+        },
+        "lastquarter00000": {
+          "name": "CALENDARIA.MoonPhase.LastQuarter",
+          "icon": "modules/monolith-calendario/assets/moon-phases/07_lastquarter.svg",
+          "start": 0.75,
+          "end": 0.875
+        },
+        "waningcrescent00": {
+          "name": "CALENDARIA.MoonPhase.WaningCrescent",
+          "icon": "modules/monolith-calendario/assets/moon-phases/08_waningcrescent.svg",
+          "start": 0.875,
+          "end": 1
+        }
+      },
+      "referenceDate": {
+        "year": 0,
+        "month": 0,
+        "dayOfMonth": 13
+      }
+    }
+  },
+  "daylight": {
+    "enabled": true,
+    "shortestDay": 8,
+    "longestDay": 16,
+    "winterSolstice": 322,
+    "summerSolstice": 154
+  },
+  "cycles": {},
+  "canonicalHours": {},
+  "weeks": {
+    "enabled": false,
+    "type": "year-based",
+    "names": {}
+  },
+  "amPmNotation": {
+    "am": "Ante Meridiem",
+    "pm": "Post Meridiem",
+    "amAbbr": "AM",
+    "pmAbbr": "PM"
+  },
+  "dateFormats": {
+    "short": "D MMM",
+    "long": "D MMMM, Y",
+    "full": "MMMM D, Y",
+    "time": "HH:mm",
+    "time12": "h:mm a",
+    "weekHeader": "[Week] W [of] MMMM, Y",
+    "yearHeader": "Y",
+    "yearLabel": "Y G"
+  },
+  "metadata": {
+    "id": "thyatian",
+    "description": "CALENDARIA.Calendar.Thyatian.Description",
+    "author": "calendaria",
+    "system": "Mystara"
+  },
+  "weather": {
+    "activeZone": "subtropical",
+    "zones": {
+      "subtropical0000": {
+        "id": "subtropical",
+        "name": "CALENDARIA.Weather.Climate.Subtropical",
+        "description": "CALENDARIA.Weather.Climate.SubtropicalDesc",
+        "windSpeedRange": {
+          "min": 0,
+          "max": 3
+        },
+        "windDirections": {
+          "SW": 18,
+          "SSW": 15,
+          "S": 12,
+          "WSW": 10,
+          "W": 8,
+          "SE": 8,
+          "SSE": 6,
+          "E": 5,
+          "NW": 4,
+          "N": 3,
+          "NE": 3,
+          "NNE": 2,
+          "NNW": 2,
+          "WNW": 2,
+          "ENE": 1,
+          "ESE": 1
+        },
+        "brightnessMultiplier": 1.05,
+        "shortestDay": 10,
+        "longestDay": 14,
+        "temperatures": {
+          "_default": {
+            "min": 12,
+            "max": 28
+          },
+          "Winter": {
+            "min": 5,
+            "max": 17
+          },
+          "Spring": {
+            "min": 15,
+            "max": 28
+          },
+          "Summer": {
+            "min": 22,
+            "max": 35
+          },
+          "Autumn": {
+            "min": 15,
+            "max": 28
+          }
+        },
+        "presets": {
+          "clear0000000000": {
+            "id": "clear",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          },
+          "partlycloudy000": {
+            "id": "partly-cloudy",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          },
+          "cloudy000000000": {
+            "id": "cloudy",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          },
+          "rain00000000000": {
+            "id": "rain",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          },
+          "drizzle00000000": {
+            "id": "drizzle",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          },
+          "thunderstorm000": {
+            "id": "thunderstorm",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          },
+          "sunshower000000": {
+            "id": "sunshower",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          },
+          "mist00000000000": {
+            "id": "mist",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          },
+          "fog000000000000": {
+            "id": "fog",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          }
+        },
+        "seasonOverrides": {
+          "Winter": {
+            "temperatures": {
+              "min": 5,
+              "max": 17
+            },
+            "presets": {
+              "clear": {
+                "id": "clear",
+                "chance": 13,
+                "enabled": true
+              },
+              "partly-cloudy": {
+                "id": "partly-cloudy",
+                "chance": 20,
+                "enabled": true
+              },
+              "cloudy": {
+                "id": "cloudy",
+                "chance": 27,
+                "enabled": true
+              },
+              "rain": {
+                "id": "rain",
+                "chance": 20,
+                "enabled": true
+              },
+              "mist": {
+                "id": "mist",
+                "chance": 13,
+                "enabled": true
+              },
+              "fog": {
+                "id": "fog",
+                "chance": 7,
+                "enabled": true
+              },
+              "drizzle": {
+                "id": "drizzle",
+                "chance": 0,
+                "enabled": false
+              },
+              "thunderstorm": {
+                "id": "thunderstorm",
+                "chance": 0,
+                "enabled": false
+              },
+              "sunshower": {
+                "id": "sunshower",
+                "chance": 0,
+                "enabled": false
+              }
+            }
+          },
+          "Spring": {
+            "temperatures": {
+              "min": 15,
+              "max": 28
+            },
+            "presets": {
+              "clear": {
+                "id": "clear",
+                "chance": 29,
+                "enabled": true
+              },
+              "partly-cloudy": {
+                "id": "partly-cloudy",
+                "chance": 29,
+                "enabled": true
+              },
+              "cloudy": {
+                "id": "cloudy",
+                "chance": 21,
+                "enabled": true
+              },
+              "rain": {
+                "id": "rain",
+                "chance": 21,
+                "enabled": true
+              },
+              "drizzle": {
+                "id": "drizzle",
+                "chance": 0,
+                "enabled": false
+              },
+              "thunderstorm": {
+                "id": "thunderstorm",
+                "chance": 0,
+                "enabled": false
+              },
+              "sunshower": {
+                "id": "sunshower",
+                "chance": 0,
+                "enabled": false
+              },
+              "mist": {
+                "id": "mist",
+                "chance": 0,
+                "enabled": false
+              },
+              "fog": {
+                "id": "fog",
+                "chance": 0,
+                "enabled": false
+              }
+            }
+          },
+          "Summer": {
+            "temperatures": {
+              "min": 22,
+              "max": 35
+            },
+            "presets": {
+              "clear": {
+                "id": "clear",
+                "chance": 23,
+                "enabled": true
+              },
+              "partly-cloudy": {
+                "id": "partly-cloudy",
+                "chance": 18,
+                "enabled": true
+              },
+              "cloudy": {
+                "id": "cloudy",
+                "chance": 9,
+                "enabled": true
+              },
+              "rain": {
+                "id": "rain",
+                "chance": 23,
+                "enabled": true
+              },
+              "drizzle": {
+                "id": "drizzle",
+                "chance": 9,
+                "enabled": true
+              },
+              "thunderstorm": {
+                "id": "thunderstorm",
+                "chance": 14,
+                "enabled": true
+              },
+              "sunshower": {
+                "id": "sunshower",
+                "chance": 5,
+                "enabled": true
+              },
+              "mist": {
+                "id": "mist",
+                "chance": 0,
+                "enabled": false
+              },
+              "fog": {
+                "id": "fog",
+                "chance": 0,
+                "enabled": false
+              }
+            }
+          },
+          "Autumn": {
+            "temperatures": {
+              "min": 15,
+              "max": 28
+            },
+            "presets": {
+              "clear": {
+                "id": "clear",
+                "chance": 21,
+                "enabled": true
+              },
+              "partly-cloudy": {
+                "id": "partly-cloudy",
+                "chance": 29,
+                "enabled": true
+              },
+              "cloudy": {
+                "id": "cloudy",
+                "chance": 29,
+                "enabled": true
+              },
+              "rain": {
+                "id": "rain",
+                "chance": 21,
+                "enabled": true
+              },
+              "drizzle": {
+                "id": "drizzle",
+                "chance": 0,
+                "enabled": false
+              },
+              "thunderstorm": {
+                "id": "thunderstorm",
+                "chance": 0,
+                "enabled": false
+              },
+              "sunshower": {
+                "id": "sunshower",
+                "chance": 0,
+                "enabled": false
+              },
+              "mist": {
+                "id": "mist",
+                "chance": 0,
+                "enabled": false
+              },
+              "fog": {
+                "id": "fog",
+                "chance": 0,
+                "enabled": false
+              }
+            }
+          }
+        },
+        "colorShift": {
+          "dawnHue": 30,
+          "duskHue": 15,
+          "nightHue": 230,
+          "transitionMinutes": 50
+        },
+        "environmentBase": {
+          "hue": 40,
+          "saturation": 0.5
+        }
+      }
+    }
+  }
+}

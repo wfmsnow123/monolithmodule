@@ -1,0 +1,65 @@
+<div class="note-viewer-results">
+  {{#if notes.length}}
+    <div class="note-list">
+      {{#each notes}}
+        {{#if this.groupHeaderLabel}}<div class="note-group-header">{{this.groupHeaderLabel}}</div>{{/if}}
+        <div class="note-row{{#if this.selected}} selected{{/if}}" data-note-id="{{this.id}}"
+          data-preset="{{this.presetId}}" data-visibility="{{this.visibility}}"
+          data-display-style="{{this.displayStyle}}" style="--note-color: {{this.color}}">
+          {{#if ../selectionMode}}
+            <input type="checkbox" class="note-select-checkbox" {{#if this.selected}}checked{{/if}} />
+          {{/if}}
+          <div class="note-color" style="background-color: {{this.color}};"></div>
+          {{#if this.iconIsImage}}
+            {{#if this.iconIsSvg}}
+              <img src="{{this.icon}}" alt="" class="note-icon"
+                style="filter: drop-shadow(0px 1000px 0 {{this.color}}); transform: translateY(-1000px);">
+            {{else}}
+              <img src="{{this.icon}}" alt="" class="note-icon">
+            {{/if}}
+          {{else}}
+            <i class="{{this.icon}} note-icon" style="color: {{this.color}};"></i>
+          {{/if}}
+          <div class="note-info">
+            <span class="note-name">{{this.name}}</span>
+            <span class="note-date">{{this.dateLabel}}</span>
+          </div>
+          <span class="note-tags">
+            {{#each this.presetBadges}}
+              <i class="{{this.icon}} tag-preset" style="color: {{this.color}};" data-tooltip="{{this.label}}"></i>
+            {{/each}}
+            {{#if this.isHidden}}
+              <i class="fas fa-eye-slash tag-visibility" data-tooltip="{{localize 'CALENDARIA.Common.Hidden'}}"></i>
+            {{else if this.isSecret}}
+              <i class="fas fa-eye-low-vision tag-visibility"
+                data-tooltip="{{localize 'CALENDARIA.Note.Visibility.Secret'}}"></i>
+            {{/if}}
+            {{#if this.hasDuration}}
+              <i class="fas fa-arrows-left-right tag-duration"
+                data-tooltip="{{localize 'CALENDARIA.Common.HasDuration'}}"></i>
+            {{/if}}
+            {{#if this.isRecurring}}
+              <i class="fas fa-rotate tag-recurrence"
+                data-tooltip="{{localize 'CALENDARIA.NoteViewer.Filter.IsRecurring'}}"></i>
+            {{/if}}
+            {{#if this.isFestival}}
+              <i class="fas fa-star tag-festival"
+                data-tooltip="{{localize 'CALENDARIA.NoteViewer.Filter.IsFestival'}}"></i>
+            {{/if}}
+          </span>
+        </div>
+      {{/each}}
+    </div>
+  {{else}}
+    <div class="note-viewer-empty">
+      <i class="fas fa-book-open empty-icon"></i>
+      {{#if hasActiveFilters}}
+        <p>{{localize "CALENDARIA.NoteViewer.NoResults"}}</p>
+      {{else if totalNotes}}
+        <p>{{localize "CALENDARIA.NoteViewer.NoResults"}}</p>
+      {{else}}
+        <p>{{localize "CALENDARIA.NoteViewer.EmptyState"}}</p>
+      {{/if}}
+    </div>
+  {{/if}}
+</div>

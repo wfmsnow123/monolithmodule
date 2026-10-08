@@ -1,0 +1,1191 @@
+.calendaria {
+  &.calendar-note-sheet {
+    color: var(--calendaria-text);
+    background: var(--calendaria-bg);
+
+    .window-header {
+      border-color: var(--calendaria-border);
+      color: var(--calendaria-text);
+      background: var(--calendaria-bg-lighter);
+    }
+
+    .window-header .header-controls {
+      gap: 0.25rem;
+      display: flex;
+      align-items: center;
+      margin-right: auto;
+      margin-left: 0;
+
+      .header-divider {
+        width: 0.0625rem;
+        height: 1rem;
+        margin: 0 0.125rem;
+        background: var(--calendaria-border);
+      }
+    }
+
+    .window-header button.header-control {
+      --button-background-color: var(--calendaria-bg);
+      --button-focus-outline-color: none;
+      --button-hover-background-color: var(--calendaria-bg-hover);
+      --button-hover-text-color: var(--calendaria-text);
+      --button-text-color: var(--calendaria-text-dim);
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 1.5rem;
+      height: 1.5rem;
+      min-height: unset;
+      padding: 0;
+      border: none;
+      border-radius: 0.25rem;
+      color: var(--calendaria-text-dim);
+      font-size: var(--font-size-12, 0.75rem);
+      text-transform: none;
+      background: var(--calendaria-bg);
+      box-shadow: none;
+
+      &:hover,
+      &:focus {
+        color: var(--calendaria-text);
+        background: var(--calendaria-bg-hover);
+        box-shadow: none;
+      }
+    }
+
+    &.minimized .window-title {
+      visibility: visible;
+    }
+
+    &.view-mode .window-content {
+      padding: 0;
+    }
+
+    &.edit-mode .window-content {
+      gap: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 0.5rem;
+
+      nav.sheet-tabs {
+        gap: 0;
+        display: flex;
+        flex-shrink: 0;
+        flex-direction: row;
+        width: 100%;
+        min-width: unset;
+        max-width: unset;
+        padding: 0;
+        border-right: none;
+        border-bottom: 0.0625rem solid var(--calendaria-border);
+        overflow: hidden;
+
+        .tab-group {
+          gap: 0;
+          display: flex;
+          flex-direction: row;
+          width: 100%;
+        }
+
+        [data-tab] {
+          gap: 0.375rem;
+          display: flex;
+          flex: 1;
+          justify-content: center;
+          align-items: center;
+          padding: 0.5rem 0.25rem;
+          border-bottom: 0.125rem solid transparent;
+          border-radius: 0;
+          color: var(--calendaria-text-dim);
+          font-size: var(--font-size-12);
+          text-transform: uppercase;
+          letter-spacing: 0.03em;
+
+          &.active {
+            border-bottom-color: var(--calendaria-accent);
+            color: var(--calendaria-text);
+          }
+        }
+      }
+
+      section.tab {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+
+        &.active[data-tab='content'] {
+          display: flex;
+          flex-direction: column;
+          overflow-y: hidden;
+        }
+      }
+    }
+  }
+
+  .calendar-note-view {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+
+    .note-accent-bar {
+      flex-shrink: 0;
+      width: 100%;
+      height: 0.25rem;
+    }
+
+    .note-body {
+      gap: 1rem;
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+
+    .note-header {
+      gap: 0.75rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .note-icon {
+      display: flex;
+      flex-shrink: 0;
+      justify-content: center;
+      align-items: center;
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      background: color-mix(in srgb, var(--note-color, var(--calendaria-primary)) 15%, var(--calendaria-bg));
+
+      .theme-light & {
+        background: color-mix(in srgb, var(--note-color, var(--calendaria-primary)) 8%, var(--calendaria-bg));
+      }
+
+      i {
+        color: var(--note-color, var(--calendaria-text));
+        font-size: 1.5rem;
+      }
+
+      img {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+      }
+
+      img.tinted {
+        filter: drop-shadow(0 62.5rem 0 var(--note-color, var(--calendaria-text)));
+        transform: translateY(-62.5rem);
+      }
+    }
+
+    .note-header-text {
+      gap: 0.125rem;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .note-title {
+      margin: 0;
+      overflow: hidden;
+      color: var(--calendaria-text-heading);
+      font-weight: 700;
+      font-size: 1.25rem;
+      line-height: 1.2;
+      font-family: var(--font-primary);
+      text-overflow: ellipsis;
+    }
+
+    .visibility-label {
+      gap: 0.25rem;
+      display: inline-flex;
+      align-items: center;
+      color: var(--calendaria-text-dim);
+      font-size: var(--font-size-11);
+
+      i {
+        font-size: var(--font-size-10);
+      }
+    }
+
+    .note-metadata {
+      gap: 0.375rem;
+      display: flex;
+      flex-direction: column;
+      padding: 0.625rem 0.75rem;
+      border: 0.0625rem solid color-mix(in srgb, var(--note-color, var(--calendaria-primary)) 12%, var(--calendaria-border));
+      border-radius: 0.375rem;
+      background: color-mix(in srgb, var(--note-color, var(--calendaria-primary)) 6%, var(--calendaria-bg-lighter, var(--calendaria-bg)));
+
+      .theme-light & {
+        background: color-mix(in srgb, var(--note-color, var(--calendaria-primary)) 4%, var(--calendaria-bg));
+      }
+    }
+
+    .metadata-row {
+      gap: 0.5rem;
+      display: flex;
+      align-items: center;
+      font-size: var(--font-size-13);
+      line-height: 1.4;
+
+      > i:first-child {
+        flex-shrink: 0;
+        width: 1rem;
+        color: var(--note-color, var(--calendaria-text-dim));
+        font-size: var(--font-size-12);
+        text-align: center;
+      }
+
+      .meta-arrow {
+        color: var(--calendaria-text-dim);
+        font-size: var(--font-size-10);
+      }
+
+      .time-separator {
+        color: var(--calendaria-text-dim);
+      }
+
+      &.equivalent {
+        opacity: 0.75;
+        font-size: var(--font-size-12);
+      }
+
+      .calendar-name {
+        font-weight: 600;
+      }
+    }
+
+    .equivalent-dates {
+      gap: 0.25rem;
+      display: flex;
+      flex-direction: column;
+      padding-top: 0.375rem;
+      border-top: 0.0625rem solid color-mix(in srgb, var(--note-color, var(--calendaria-primary)) 10%, var(--calendaria-border-light));
+    }
+
+    .note-presets {
+      gap: 0.375rem;
+      display: flex;
+      flex-wrap: wrap;
+
+      .preset-tag {
+        gap: 0.375rem;
+        display: inline-flex;
+        align-items: center;
+        padding: 0.1875rem 0.625rem;
+        border: 0.0625rem solid color-mix(in srgb, var(--preset-color, var(--calendaria-divider)) 25%, var(--calendaria-border));
+        border-radius: 1rem;
+        font-size: var(--font-size-12);
+        background: color-mix(in srgb, var(--preset-color, var(--calendaria-primary)) 8%, var(--calendaria-bg));
+      }
+
+      .preset-dot {
+        display: inline-block;
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 50%;
+        background: var(--preset-color, var(--calendaria-primary));
+      }
+    }
+
+    .note-content {
+      flex: 1;
+      padding-top: 0.75rem;
+      border-top: 0.0625rem solid var(--calendaria-border-light, var(--calendaria-border));
+      line-height: 1.6;
+
+      &:empty::before {
+        color: var(--calendaria-text-dim);
+        font-style: italic;
+        content: 'No content';
+      }
+    }
+  }
+
+  .note-tab-content,
+  .note-tab-schedule,
+  .note-tab-settings {
+    gap: 0.5rem;
+    display: flex;
+    flex-direction: column;
+
+    select,
+    input[type='text'],
+    input[type='number'],
+    button:not(.header-control) {
+      box-sizing: border-box;
+      height: 2rem;
+    }
+
+    select,
+    input[type='text'],
+    input[type='number'] {
+      border-color: var(--calendaria-border);
+      color: var(--calendaria-text);
+      background: var(--calendaria-input-bg);
+    }
+
+    select option {
+      color: var(--calendaria-text);
+      background: var(--calendaria-bg);
+    }
+
+    input[type='checkbox'],
+    input[type='checkbox']:checked,
+    input[type='checkbox']:indeterminate {
+      --checkbox-background-color: var(--calendaria-input-bg);
+      --checkbox-border-color: var(--calendaria-border);
+      --checkbox-checked-color: var(--calendaria-primary);
+      --checkbox-checkmark-color: var(--calendaria-text-on-color);
+
+      width: var(--checkbox-size);
+      height: var(--checkbox-size);
+      border: 0.0625rem solid var(--calendaria-border);
+      border-radius: 0.1875rem;
+
+      &:checked,
+      &:indeterminate {
+        border-color: transparent;
+      }
+    }
+
+    fieldset {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin: 0;
+      padding: 0.5rem;
+      border: 0.0625rem solid var(--calendaria-border);
+      border-radius: 0.25rem;
+
+      legend {
+        color: var(--calendaria-text);
+        font-weight: 600;
+        font-size: var(--font-size-12);
+      }
+    }
+
+    input[type='text']:not(prose-mirror *),
+    input[type='number']:not(prose-mirror *),
+    select:not(prose-mirror *) {
+      border-radius: 0.1875rem;
+    }
+
+    button:not(prose-mirror *) {
+      border: 0.0625rem solid var(--calendaria-border);
+      border-radius: 0.1875rem;
+    }
+
+    .hint {
+      margin: 0 0 0.375rem;
+      color: var(--calendaria-text-dim);
+      font-style: italic;
+      font-size: var(--font-size-10);
+    }
+
+    .inline-form {
+      gap: 0.375rem;
+      display: flex;
+      align-items: center;
+
+      select {
+        flex: 1;
+        min-width: 6.25rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      input[type='number'] {
+        width: 4.375rem;
+      }
+    }
+
+    .inline-form,
+    .form-group-stacked {
+      select,
+      input {
+        height: 2rem;
+        min-height: 2rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.1875rem;
+        font-size: var(--font-size-11);
+        line-height: 1;
+      }
+    }
+
+    .form-group-stacked {
+      gap: 0.125rem;
+      display: flex;
+      flex-direction: column;
+
+      label {
+        font-weight: 500;
+        font-size: var(--font-size-11);
+      }
+
+      select {
+        width: 100%;
+      }
+    }
+
+    .add-btn {
+      gap: 0.25rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 2rem;
+      height: 2rem;
+      padding: 0;
+      border: 0.0625rem solid var(--calendaria-border);
+      border-radius: 0.1875rem;
+      color: var(--calendaria-text);
+      font-size: var(--font-size-11);
+      cursor: pointer;
+      background: var(--calendaria-input-bg);
+
+      &:hover {
+        color: var(--calendaria-text-heading);
+        background: var(--calendaria-bg-hover);
+      }
+    }
+
+    .tag-list {
+      gap: 0.375rem;
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 0.5rem;
+    }
+
+    .tag {
+      gap: 0.375rem;
+      display: inline-flex;
+      align-items: center;
+      max-width: 100%;
+      padding: 0.25rem 0.5rem;
+      border: 0.0625rem solid var(--calendaria-border-light);
+      border-radius: 1rem;
+      font-size: var(--font-size-11);
+      background: var(--calendaria-bg-hover);
+
+      .theme-light & {
+        background: color-mix(in srgb, var(--calendaria-text) 8%, transparent);
+      }
+
+      .tag-value {
+        overflow: hidden;
+        color: var(--calendaria-text);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+
+    .remove-btn {
+      margin: 0;
+      padding: 0;
+      border: none;
+      color: var(--calendaria-text-dim);
+      line-height: 1;
+      cursor: pointer;
+      background: none;
+
+      &:hover {
+        color: var(--calendaria-error);
+      }
+
+      i {
+        font-size: var(--font-size-10);
+      }
+    }
+
+    .festival-banner {
+      gap: 0.5rem;
+      display: flex;
+      align-items: center;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.25rem;
+      color: var(--calendaria-festival-text);
+      font-size: var(--font-size-11);
+      background: var(--calendaria-festival-bg);
+
+      i {
+        color: var(--calendaria-warning);
+      }
+
+      a[data-action] {
+        color: var(--calendaria-festival-text);
+        font-weight: 600;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .note-tab-content {
+    flex: 1;
+    min-height: 0;
+
+    .form-row-header {
+      gap: 0.5rem;
+      grid-template-columns: 1fr auto;
+      display: grid;
+    }
+
+    .emblem-controls {
+      gap: 0.5rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .icon-picker {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      cursor: pointer;
+      overflow: hidden;
+
+      &:hover .icon-preview {
+        opacity: 0.8;
+      }
+    }
+
+    .icon-preview {
+      font-size: 1.5rem;
+    }
+
+    img.icon-preview {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+
+    color-picker.color-input {
+      width: 10.5rem;
+      background: transparent;
+      align-items: stretch;
+
+      input[type='text'] {
+        flex: 1;
+        min-width: 0;
+      }
+
+      input[type='color'] {
+        flex: 0 0 auto;
+        width: 1.5rem;
+        height: 100%;
+        padding: 0;
+        border: none;
+        border-radius: 0 0.25rem 0.25rem 0;
+      }
+
+      input[type='color']::-webkit-color-swatch-wrapper {
+        padding: 0;
+      }
+
+      input[type='color']::-webkit-color-swatch,
+      input[type='color']::-moz-color-swatch {
+        border: none;
+        border-radius: 0 0.25rem 0.25rem 0;
+      }
+    }
+
+    .editor-fieldset {
+      flex: 1;
+      min-height: 31.25rem;
+
+      prose-mirror {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        min-height: 0;
+        overflow: hidden;
+
+        .editor-menu {
+          border-color: var(--calendaria-border);
+          color: var(--calendaria-text);
+          background: var(--calendaria-bg-lighter);
+
+          /* Content auto-saves on tab/mode change and close, so the editor's own save button is redundant. */
+          li:has(> button[data-action='save']) {
+            display: none;
+          }
+
+          button {
+            color: var(--calendaria-text-dim);
+
+            &:hover {
+              color: var(--calendaria-text);
+              background: var(--calendaria-bg-hover);
+            }
+
+            &.active {
+              color: var(--calendaria-text);
+              background: var(--calendaria-bg-hover);
+            }
+          }
+
+          .pm-dropdown ul {
+            border: 0.0625rem solid var(--calendaria-border);
+            color: var(--calendaria-text);
+            background: var(--calendaria-bg);
+
+            li {
+              color: var(--calendaria-text);
+
+              &:hover {
+                background: var(--calendaria-bg-hover);
+              }
+
+              &.divider {
+                border-color: var(--calendaria-border-light);
+              }
+            }
+
+            ul {
+              border: 0.0625rem solid var(--calendaria-border);
+              background: var(--calendaria-bg);
+            }
+          }
+        }
+
+        .editor-container {
+          flex: 1;
+          min-height: 28rem;
+          overflow-y: auto;
+          color: var(--calendaria-text);
+          background: var(--calendaria-input-bg);
+
+          textarea {
+            color: var(--calendaria-text);
+            background: var(--calendaria-input-bg);
+          }
+        }
+      }
+    }
+  }
+
+  .note-tab-schedule {
+    .repeat-end-group {
+      gap: 0.25rem;
+      display: flex;
+      align-items: center;
+
+      .clear-btn {
+        width: 1.75rem;
+        height: 1.75rem;
+        padding: 0;
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 0.0625rem solid var(--calendaria-border);
+        border-radius: 0.25rem;
+        background: var(--calendaria-input-bg);
+        color: var(--calendaria-text);
+        cursor: pointer;
+      }
+
+      .clear-btn:hover {
+        border-color: var(--calendaria-accent);
+        color: var(--calendaria-accent);
+      }
+    }
+
+    .schedule-mode-fieldset {
+      margin-bottom: 0.5rem;
+
+      .schedule-mode-options {
+        gap: 0.5rem;
+        display: flex;
+      }
+
+      .mode-option {
+        gap: 0.5rem;
+        flex: 1;
+        padding: 0.5rem 0.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: var(--font-size-12);
+        border: 0.0625rem solid var(--calendaria-border);
+        border-radius: 0.25rem;
+        background: var(--calendaria-input-bg);
+        color: var(--calendaria-text);
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          border-color 0.15s;
+      }
+
+      .mode-option:hover:not(:disabled) {
+        border-color: var(--calendaria-accent);
+      }
+
+      .mode-option.active {
+        border-color: var(--calendaria-accent);
+        background: color-mix(in srgb, var(--calendaria-accent) 15%, transparent);
+        color: var(--calendaria-accent);
+      }
+
+      .mode-option:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+
+    .form-row-dates {
+      gap: 0.5rem;
+      grid-template-columns: minmax(10rem, 1fr) minmax(10rem, 1fr) auto;
+      display: grid;
+    }
+
+    .form-row-dates--recurring {
+      grid-template-columns: minmax(10rem, 1fr) minmax(10rem, 1fr) auto auto;
+    }
+
+    .duration-days-label {
+      gap: 0.125rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-weight: normal;
+      font-size: var(--font-size-10);
+      white-space: nowrap;
+      cursor: pointer;
+
+      input[type='number'] {
+        width: 3.5rem;
+      }
+    }
+
+    .date-fieldset,
+    .repeat-end-fieldset {
+      gap: 0.25rem;
+      display: flex;
+      flex-direction: column;
+
+      .form-group {
+        gap: 0.375rem;
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    .date-picker-btn {
+      gap: 0.375rem;
+      display: flex;
+      flex: 1;
+      align-items: center;
+      min-width: 0;
+      height: 2rem;
+      padding: 0.125rem 0.375rem;
+      border: 0.0625rem solid var(--calendaria-border);
+      border-radius: 0.1875rem;
+      color: var(--calendaria-text);
+      font-size: var(--font-size-11);
+      line-height: 1.4;
+      cursor: pointer;
+      background: var(--calendaria-input-bg);
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: default;
+        pointer-events: none;
+      }
+
+      &:hover:not(:disabled) {
+        background: var(--calendaria-bg-hover);
+      }
+
+      i {
+        flex-shrink: 0;
+        font-size: var(--font-size-10);
+      }
+
+      span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+
+    .time-fieldset .time-grid {
+      gap: 0.25rem 0.375rem;
+      grid-template-columns: auto 1fr auto;
+      display: grid;
+      align-items: center;
+
+      > label {
+        font-weight: 600;
+        font-size: var(--font-size-11);
+      }
+
+      .time-inputs {
+        gap: 0.125rem;
+        display: flex;
+        align-items: center;
+
+        input {
+          width: 2rem !important;
+          padding: 0.125rem 0.25rem;
+          border-radius: 0.1875rem;
+          font-size: var(--font-size-11);
+          text-align: center;
+        }
+
+        .time-separator {
+          font-weight: 600;
+        }
+      }
+
+      .all-day-label {
+        gap: 0.125rem;
+        grid-column: 3;
+        grid-row: 1 / 3;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding-left: 0.5rem;
+        font-weight: normal;
+        font-size: var(--font-size-10);
+        cursor: pointer;
+
+        input[type='checkbox'] {
+          margin: 0;
+        }
+      }
+    }
+
+    .conditions-fieldset {
+      .condition-actions {
+        gap: 0.5rem;
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.5rem;
+      }
+
+      .cb-open-builder {
+        gap: 0.375rem;
+        display: inline-flex;
+        align-items: center;
+        padding: 0.375rem 0.625rem;
+        border: 0.0625rem solid var(--calendaria-border);
+        border-radius: 0.25rem;
+        color: var(--calendaria-text);
+        font-size: var(--font-size-11);
+        cursor: pointer;
+        background: transparent;
+
+        &:hover {
+          border-color: var(--calendaria-primary);
+          color: var(--calendaria-title-text, var(--calendaria-text));
+          background: var(--calendaria-bg-hover);
+        }
+      }
+
+      .preset-group {
+        flex: 1;
+
+        select {
+          width: 100%;
+        }
+      }
+
+      .condition-groups {
+        gap: 0.375rem;
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      .condition-group {
+        gap: 0.375rem;
+        display: inline-flex;
+        align-items: center;
+        width: fit-content;
+        padding: 0.25rem 0.375rem;
+        border: 0.0625rem solid var(--calendaria-border-light);
+        border-radius: 0.25rem;
+        background: var(--calendaria-bg-hover);
+
+        .theme-light & {
+          background: unset;
+        }
+
+        .group-mode {
+          flex-shrink: 0;
+          padding: 0.125rem 0.375rem;
+          border-radius: 0.1875rem;
+          color: var(--calendaria-title-text, var(--calendaria-text));
+          font-weight: 600;
+          font-size: var(--font-size-10);
+          text-transform: uppercase;
+          background: var(--calendaria-bg-hover);
+
+          .theme-light & {
+            background: unset;
+          }
+        }
+
+        .group-pills {
+          gap: 0.25rem;
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+        }
+
+        .condition-pill {
+          padding: 0.125rem 0.5rem;
+          border-radius: 1rem;
+          font-size: var(--font-size-11);
+          cursor: context-menu;
+          background: var(--calendaria-bg-hover);
+
+          .theme-light & {
+            background: rgb(0 0 0 / 10%);
+          }
+        }
+
+        .condition-group {
+          border-style: dashed;
+          background: var(--calendaria-bg-hover);
+
+          .theme-light & {
+            background: unset;
+          }
+        }
+      }
+    }
+
+    .schedule-row {
+      gap: 0.5rem;
+      grid-template-columns: 1fr auto;
+      display: grid;
+      align-items: stretch;
+    }
+
+    .max-occurrences-fieldset {
+      justify-content: flex-start;
+    }
+
+    .occurrences-fieldset {
+      .occurrence-list {
+        gap: 0.25rem;
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        li {
+          gap: 0.5rem;
+          display: flex;
+          align-items: center;
+          padding: 0.25rem 0.5rem;
+          border-radius: 0.1875rem;
+          font-size: var(--font-size-11);
+          background: var(--calendaria-bg-hover);
+
+          .theme-light & {
+            background: rgb(0 0 0 / 10%);
+          }
+
+          i {
+            color: var(--calendaria-text-dim);
+            font-size: var(--font-size-10);
+          }
+        }
+      }
+    }
+  }
+
+  .note-tab-settings {
+    .settings-row {
+      gap: 0.5rem;
+      display: flex;
+      align-items: flex-start;
+
+      > fieldset {
+        flex: 0 1 auto;
+        min-width: 0;
+      }
+
+      > .macro-fieldset {
+        flex: 1 1 auto;
+      }
+    }
+
+    .presets-fieldset {
+      .inline-form {
+        align-items: flex-end;
+      }
+
+      multi-select {
+        flex: 1;
+        align-self: flex-end;
+
+        .tags {
+          gap: 0.25rem;
+          display: flex;
+          flex-wrap: wrap;
+          min-height: 1.5rem;
+          max-height: 1.5rem;
+          padding-right: 0.25rem;
+          overflow-y: auto;
+        }
+
+        select {
+          height: 1.625rem !important;
+          padding: 0.125rem 0.375rem !important;
+          border-radius: 0.1875rem;
+          font-size: var(--font-size-11) !important;
+          line-height: 1.4 !important;
+        }
+
+        .tag {
+          padding: 0.125rem 0.375rem;
+          font-size: var(--font-size-10);
+          cursor: pointer;
+
+          &:hover {
+            background: var(--calendaria-border-light);
+          }
+        }
+      }
+
+      .new-preset-input {
+        align-self: flex-end;
+        width: 10rem;
+        padding: 0.125rem 0.375rem;
+        border-radius: 0.1875rem;
+        color: var(--calendaria-text);
+        font-size: var(--font-size-11);
+        line-height: 1.4;
+
+        &::placeholder {
+          color: var(--calendaria-text-dim);
+          font-style: italic;
+        }
+      }
+
+      .add-btn {
+        align-self: flex-end;
+      }
+    }
+
+    .visibility-group,
+    .display-style-group {
+      gap: 0.5rem;
+      display: flex;
+      align-items: center;
+
+      label {
+        gap: 0.25rem;
+        display: flex;
+        align-items: center;
+        font-size: var(--font-size-11);
+        cursor: pointer;
+      }
+
+      .visibility-label {
+        gap: 0.25rem;
+        display: flex;
+        align-items: center;
+        font-size: var(--font-size-11);
+      }
+    }
+
+    .reminder-controls {
+      gap: 0.75rem;
+      display: flex;
+      flex-wrap: wrap;
+
+      .form-group-stacked {
+        flex: 1 1 auto;
+        min-width: 7.5rem;
+
+        label {
+          margin-bottom: 0.25rem;
+          font-size: var(--font-size-11);
+        }
+
+        .inline-form {
+          gap: 0.25rem;
+          display: flex;
+          align-items: center;
+
+          input[type='number'] {
+            flex: 0 0 auto;
+            width: 3.75rem;
+          }
+
+          .hint {
+            color: var(--calendaria-text-dim);
+            font-size: var(--font-size-10);
+          }
+        }
+      }
+
+      .reminder-users {
+        flex: 1 1 100%;
+      }
+    }
+
+    .ownership-fieldset:disabled {
+      opacity: 0.45;
+    }
+
+    .ownership-list {
+      gap: 0.375rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ownership-row {
+      gap: 0.75rem;
+      display: flex;
+      align-items: center;
+      padding: 0.375rem 0.5rem;
+      border-radius: 0.25rem;
+      background: var(--calendaria-bg-hover);
+
+      .theme-light & {
+        background: color-mix(in srgb, var(--calendaria-text) 8%, transparent);
+      }
+
+      .user-name {
+        gap: 0.5rem;
+        display: flex;
+        flex: 1;
+        align-items: center;
+        font-weight: 500;
+        font-size: var(--font-size-12);
+      }
+
+      select {
+        width: 8rem;
+      }
+
+      .ownership-locked {
+        gap: 0.25rem;
+        display: flex;
+        align-items: center;
+        color: var(--calendaria-text-dim);
+        font-style: italic;
+        font-size: var(--font-size-11);
+
+        i {
+          font-size: var(--font-size-10);
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,3 @@
+## Bug Fixes
+
+- Calendars with no months now expose a Days Per Year field in the editor, and saving a monthless calendar keeps that value instead of resetting it to zero.

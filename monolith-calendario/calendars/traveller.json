@@ -1,0 +1,528 @@
+{
+  "id": "traveller",
+  "name": "CALENDARIA.Calendar.Traveller.Name",
+  "years": {
+    "yearZero": 1105,
+    "firstWeekday": 0
+  },
+  "months": {
+    "values": {}
+  },
+  "days": {
+    "values": {
+      "wonday0000000000": {
+        "name": "Wonday",
+        "abbreviation": "Wo",
+        "ordinal": 1
+      },
+      "tuday00000000000": {
+        "name": "Tuday",
+        "abbreviation": "Tu",
+        "ordinal": 2
+      },
+      "thirday000000000": {
+        "name": "Thirday",
+        "abbreviation": "Th",
+        "ordinal": 3
+      },
+      "forday0000000000": {
+        "name": "Forday",
+        "abbreviation": "Fo",
+        "ordinal": 4
+      },
+      "fiday00000000000": {
+        "name": "Fiday",
+        "abbreviation": "Fi",
+        "ordinal": 5
+      },
+      "sixday0000000000": {
+        "name": "Sixday",
+        "abbreviation": "Si",
+        "ordinal": 6
+      },
+      "senday0000000000": {
+        "name": "Senday",
+        "abbreviation": "Se",
+        "ordinal": 7,
+        "isRestDay": true
+      }
+    },
+    "daysPerYear": 365,
+    "hoursPerDay": 24,
+    "minutesPerHour": 60,
+    "secondsPerMinute": 60
+  },
+  "seasons": {
+    "values": {}
+  },
+  "eras": {
+    "imperialcalendar": {
+      "name": "Imperial Calendar",
+      "abbreviation": "IC",
+      "startYear": 0,
+      "endYear": null
+    }
+  },
+  "moons": {},
+  "festivals": {
+    "holiday000000000": {
+      "name": "Holiday",
+      "dayOfYear": 0,
+      "countsForWeekday": false,
+      "icon": "fa-rocket",
+      "color": "#4169E1",
+      "description": "Intercalary day commemorating the founding of the Third Imperium, dedicated to leisure.",
+      "duration": 1,
+      "leapYearOnly": false,
+      "conditionTree": {
+        "type": "condition",
+        "field": "dayOfYear",
+        "op": "==",
+        "value": 1
+      },
+      "allDay": true,
+      "displayStyle": "banner",
+      "visibility": "visible",
+      "silent": true,
+      "hasDuration": false,
+      "reminderType": "none",
+      "reminderOffset": 0
+    }
+  },
+  "daylight": {
+    "enabled": false
+  },
+  "cycles": {},
+  "canonicalHours": {},
+  "weeks": {
+    "enabled": true,
+    "type": "year-based",
+    "names": {}
+  },
+  "amPmNotation": {
+    "am": "Ante Meridiem",
+    "pm": "Post Meridiem",
+    "amAbbr": "AM",
+    "pmAbbr": "PM"
+  },
+  "dateFormats": {
+    "short": "DDD-yyyy",
+    "long": "DDD-yyyy GGGG",
+    "full": "EEEE, DDD-yyyy GGGG",
+    "time": "HH:mm",
+    "time12": "h:mm a",
+    "weekHeader": "[Week] W [of] MMMM, Y",
+    "yearHeader": "Y",
+    "yearLabel": "Y G"
+  },
+  "metadata": {
+    "id": "traveller",
+    "description": "CALENDARIA.Calendar.Traveller.Description",
+    "author": "calendaria",
+    "system": "Traveller"
+  },
+  "weather": {
+    "activeZone": "temperate",
+    "zones": {
+      "temperate000000": {
+        "id": "temperate",
+        "name": "CALENDARIA.Weather.Climate.Temperate",
+        "description": "CALENDARIA.Weather.Climate.TemperateDesc",
+        "windSpeedRange": {
+          "min": 0,
+          "max": 3
+        },
+        "windDirections": {
+          "W": 20,
+          "WSW": 15,
+          "SW": 12,
+          "WNW": 10,
+          "NW": 8,
+          "S": 8,
+          "N": 5,
+          "NNW": 5,
+          "E": 4,
+          "SE": 4,
+          "NE": 3,
+          "SSW": 3,
+          "SSE": 1,
+          "ESE": 1,
+          "ENE": 1
+        },
+        "brightnessMultiplier": 1,
+        "shortestDay": 8,
+        "longestDay": 16,
+        "temperatures": {
+          "_default": {
+            "min": 8,
+            "max": 20
+          },
+          "Spring": {
+            "min": 8,
+            "max": 18
+          },
+          "Summer": {
+            "min": 18,
+            "max": 30
+          },
+          "Autumn": {
+            "min": 8,
+            "max": 18
+          },
+          "Winter": {
+            "min": -5,
+            "max": 5
+          }
+        },
+        "presets": {
+          "rain00000000000": {
+            "id": "rain",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          },
+          "drizzle00000000": {
+            "id": "drizzle",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          },
+          "partlycloudy000": {
+            "id": "partly-cloudy",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          },
+          "clear0000000000": {
+            "id": "clear",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          },
+          "mist00000000000": {
+            "id": "mist",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          },
+          "cloudy000000000": {
+            "id": "cloudy",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          },
+          "thunderstorm000": {
+            "id": "thunderstorm",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          },
+          "fog000000000000": {
+            "id": "fog",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          },
+          "windy0000000000": {
+            "id": "windy",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          },
+          "snow00000000000": {
+            "id": "snow",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          },
+          "blizzard0000000": {
+            "id": "blizzard",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          },
+          "overcast0000000": {
+            "id": "overcast",
+            "enabled": true,
+            "tempMin": null,
+            "tempMax": null
+          }
+        },
+        "seasonOverrides": {
+          "Spring": {
+            "temperatures": {
+              "min": 8,
+              "max": 18
+            },
+            "presets": {
+              "rain": {
+                "id": "rain",
+                "chance": 25,
+                "enabled": true
+              },
+              "drizzle": {
+                "id": "drizzle",
+                "chance": 19,
+                "enabled": true
+              },
+              "partly-cloudy": {
+                "id": "partly-cloudy",
+                "chance": 19,
+                "enabled": true
+              },
+              "clear": {
+                "id": "clear",
+                "chance": 13,
+                "enabled": true
+              },
+              "mist": {
+                "id": "mist",
+                "chance": 13,
+                "enabled": true
+              },
+              "cloudy": {
+                "id": "cloudy",
+                "chance": 13,
+                "enabled": true
+              },
+              "thunderstorm": {
+                "id": "thunderstorm",
+                "chance": 0,
+                "enabled": false
+              },
+              "fog": {
+                "id": "fog",
+                "chance": 0,
+                "enabled": false
+              },
+              "windy": {
+                "id": "windy",
+                "chance": 0,
+                "enabled": false
+              },
+              "snow": {
+                "id": "snow",
+                "chance": 0,
+                "enabled": false
+              },
+              "blizzard": {
+                "id": "blizzard",
+                "chance": 0,
+                "enabled": false
+              },
+              "overcast": {
+                "id": "overcast",
+                "chance": 0,
+                "enabled": false
+              }
+            }
+          },
+          "Summer": {
+            "temperatures": {
+              "min": 18,
+              "max": 30
+            },
+            "presets": {
+              "clear": {
+                "id": "clear",
+                "chance": 35,
+                "enabled": true
+              },
+              "partly-cloudy": {
+                "id": "partly-cloudy",
+                "chance": 24,
+                "enabled": true
+              },
+              "thunderstorm": {
+                "id": "thunderstorm",
+                "chance": 12,
+                "enabled": true
+              },
+              "rain": {
+                "id": "rain",
+                "chance": 12,
+                "enabled": true
+              },
+              "cloudy": {
+                "id": "cloudy",
+                "chance": 6,
+                "enabled": true
+              },
+              "mist": {
+                "id": "mist",
+                "chance": 6,
+                "enabled": true
+              },
+              "drizzle": {
+                "id": "drizzle",
+                "chance": 6,
+                "enabled": true
+              },
+              "fog": {
+                "id": "fog",
+                "chance": 0,
+                "enabled": false
+              },
+              "windy": {
+                "id": "windy",
+                "chance": 0,
+                "enabled": false
+              },
+              "snow": {
+                "id": "snow",
+                "chance": 0,
+                "enabled": false
+              },
+              "blizzard": {
+                "id": "blizzard",
+                "chance": 0,
+                "enabled": false
+              },
+              "overcast": {
+                "id": "overcast",
+                "chance": 0,
+                "enabled": false
+              }
+            }
+          },
+          "Autumn": {
+            "temperatures": {
+              "min": 8,
+              "max": 18
+            },
+            "presets": {
+              "cloudy": {
+                "id": "cloudy",
+                "chance": 24,
+                "enabled": true
+              },
+              "rain": {
+                "id": "rain",
+                "chance": 18,
+                "enabled": true
+              },
+              "fog": {
+                "id": "fog",
+                "chance": 18,
+                "enabled": true
+              },
+              "partly-cloudy": {
+                "id": "partly-cloudy",
+                "chance": 12,
+                "enabled": true
+              },
+              "windy": {
+                "id": "windy",
+                "chance": 12,
+                "enabled": true
+              },
+              "mist": {
+                "id": "mist",
+                "chance": 6,
+                "enabled": true
+              },
+              "drizzle": {
+                "id": "drizzle",
+                "chance": 6,
+                "enabled": true
+              },
+              "clear": {
+                "id": "clear",
+                "chance": 6,
+                "enabled": true
+              },
+              "thunderstorm": {
+                "id": "thunderstorm",
+                "chance": 0,
+                "enabled": false
+              },
+              "snow": {
+                "id": "snow",
+                "chance": 0,
+                "enabled": false
+              },
+              "blizzard": {
+                "id": "blizzard",
+                "chance": 0,
+                "enabled": false
+              },
+              "overcast": {
+                "id": "overcast",
+                "chance": 0,
+                "enabled": false
+              }
+            }
+          },
+          "Winter": {
+            "temperatures": {
+              "min": -5,
+              "max": 5
+            },
+            "presets": {
+              "snow": {
+                "id": "snow",
+                "chance": 26,
+                "enabled": true
+              },
+              "blizzard": {
+                "id": "blizzard",
+                "chance": 11,
+                "enabled": true
+              },
+              "fog": {
+                "id": "fog",
+                "chance": 11,
+                "enabled": true
+              },
+              "overcast": {
+                "id": "overcast",
+                "chance": 16,
+                "enabled": true
+              },
+              "clear": {
+                "id": "clear",
+                "chance": 11,
+                "enabled": true
+              },
+              "rain": {
+                "id": "rain",
+                "chance": 5,
+                "enabled": true
+              },
+              "cloudy": {
+                "id": "cloudy",
+                "chance": 11,
+                "enabled": true
+              },
+              "mist": {
+                "id": "mist",
+                "chance": 5,
+                "enabled": true
+              },
+              "drizzle": {
+                "id": "drizzle",
+                "chance": 5,
+                "enabled": true
+              },
+              "partly-cloudy": {
+                "id": "partly-cloudy",
+                "chance": 0,
+                "enabled": false
+              },
+              "thunderstorm": {
+                "id": "thunderstorm",
+                "chance": 0,
+                "enabled": false
+              },
+              "windy": {
+                "id": "windy",
+                "chance": 0,
+                "enabled": false
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "id": "monolith-regras",
+  "title": "Monolith: Regras da Casa",
+  "description": "Regras de Monolith para dnd5e: Exaustão de 10 níveis, Inspiração Heróica, Medidas Desesperadas, Queima de Alma, Ênfase e os descansos Fôlego, Vigília e Descanso Completo. Compatível com Tidy 5e Sheets e Rest Recovery for 5E.",
+  "version": "0.1.0",
+  "authors": [
+    {
+      "name": "snowxd"
+    }
+  ],
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13.351"
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "dnd5e",
+        "type": "system",
+        "compatibility": {
+          "minimum": "5.2.0"
+        }
+      }
+    ],
+    "recommends": [
+      {
+        "id": "tidy5e-sheet",
+        "type": "module",
+        "reason": "Botões de cabeçalho e exaustão de 10 níveis na ficha Tidy."
+      },
+      {
+        "id": "rest-recovery",
+        "type": "module",
+        "reason": "Os descansos de Monolith usam as regras de recuperação do Rest Recovery."
+      }
+    ]
+  },
+  "esmodules": [
+    "scripts/main.mjs"
+  ],
+  "styles": [
+    "styles/monolith.css"
+  ],
+  "socket": true,
+  "url": "https://github.com/wfmsnow123/monolithmodule",
+  "manifest": "https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-regras/module.json",
+  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-regras-v0.1.0/monolith-regras.zip"
+}

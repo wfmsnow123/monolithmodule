@@ -1,0 +1,297 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { _setCurrentDate } from '../../scripts/notes/date-utils.mjs';
+import NoteManager from '../../scripts/notes/note-manager.mjs';
+import { isRecurringMatch } from '../../scripts/notes/recurrence.mjs';
+import ReminderScheduler from '../../scripts/time/reminder-scheduler.mjs';
+import { CalendariaSocket } from '../../scripts/utils/socket.mjs';
+
+vi.mock('../../scripts/utils/logger.mjs', () => ({ log: vi.fn() }));
+vi.mock('../../scripts/utils/localization.mjs', () => ({
+  localize: vi.fn((key) => key),
+  format: vi.fn((key, data) => {
+    let result = key;
+    for (const [k, v] of Object.entries(data || {})) result = result.replace(`{${k}}`, String(v));
+    return result;
+  })
+}));
+vi.mock('../../scripts/utils/socket.mjs', () => ({CalendariaSocket: { isPrimaryGM: vi.fn(() => true), emit: vi.fn() }}));
+vi.mock('../../scripts/constants.mjs', async (importOriginal) => ({ ...(await importOriginal()),MODULE: { ID: 'monolith-calendario' },HOOKS: {EVENT_TRIGGERED: 'calendaria.eventTriggered',REMINDER_RECEIVED: 'calendaria.reminderReceived'},SOCKET_TYPES: { REMINDER_NOTIFY: 'reminderNotify' }}));
+vi.mock('../../scripts/notes/date-utils.mjs', () => {
+  let currentDate = { year: 1, month: 0, dayOfMonth: 0, hour: 12, minute: 0 };
+  return {
+    getCurrentDate: vi.fn(() => currentDate),
+    _setCurrentDate: (d) => {
+      currentDate = d;
+    }
+  };
+});
+vi.mock('../../scripts/notes/note-manager.mjs', () => ({
+  default: {
+    getAllNotes: vi.fn(() => []),
+    getFullNote: vi.fn(() => null),
+    isInitialized: vi.fn(() => true)
+  }
+}));
+vi.mock('../../scripts/calendar/calendar-manager.mjs', () => ({
+  default: {
+    getActiveCalendar: vi.fn(() => ({
+      monthsArray: Array.from({ length: 12 }, (_, i) => ({ name: `Month ${i}`, days: 30 })),
+      days: { hoursPerDay: 24, minutesPerHour: 60, secondsPerMinute: 60 },
+      years: { yearZero: 0 },
+      getDaysInMonth: vi.fn(() => 30),
+      metadata: { id: 'gregorian' }
+    }))
+  }
+}));
+vi.mock('../../scripts/calendar/calendar-registry.mjs', () => ({
+  default: { getActiveId: vi.fn(() => 'gregorian') }
+}));
+vi.mock('../../scripts/notes/recurrence.mjs', () => ({
+  isRecurringMatch: vi.fn(() => false)
+}));
+
+const makeNote = (id, name, startDate, flagOverrides = {}) => ({
+  id,
+  name,
+  calendarId: null,
+  journalId: `j-${id}`,
+  visible: true,
+  flagData: {
+    startDate,
+    endDate: null,
+    allDay: false,
+    repeat: 'never',
+    reminderOffset: 1,
+    reminderType: 'toast',
+    reminderTargets: 'all',
+    reminderUsers: [],
+    categories: [],
+    color: '#4a9eff',
+    icon: 'fas fa-bell',
+    iconType: 'fontawesome',
+    visibility: 'visible',
+    silent: false,
+    author: null,
+    ...flagOverrides
+  }
+});
+let worldTimeBase = 0;
+const WT = () => worldTimeBase + ReminderScheduler.CHECK_INTERVAL + 1;
+
+beforeEach(() => {
+  worldTimeBase += 1_000_000;
+  CalendariaSocket.isPrimaryGM.mockReturnValue(true);
+  CalendariaSocket.emit.mockClear();
+  NoteManager.isInitialized.mockReturnValue(true);
+  NoteManager.getAllNotes.mockReturnValue([]);
+  isRecurringMatch.mockReturnValue(false);
+  _setCurrentDate({ year: 0, month: 0, dayOfMonth: 98, hour: 0, minute: 0 });
+  ReminderScheduler.initialize();
+  _setCurrentDate({ year: 1, month: 0, dayOfMonth: 0, hour: 12, minute: 0 });
+  ReminderScheduler.onUpdateWorldTime(worldTimeBase, 0);
+  Hooks.callAll.mockClear();
+  Hooks.on.mockClear();
+  CalendariaSocket.emit.mockClear();
+  NoteManager.getAllNotes.mockClear();
+  ui.notifications.info.mockClear();
+});
+
+describe('ReminderScheduler.onUpdateWorldTime()', () => {
+  it('does nothing when not primary GM', () => {
+    CalendariaSocket.isPrimaryGM.mockReturnValue(false);
+    ReminderScheduler.onUpdateWorldTime(WT(), 300);
+    expect(NoteManager.getAllNotes).not.toHaveBeenCalled();
+  });
+  it('does nothing when NoteManager not initialized', () => {
+    NoteManager.isInitialized.mockReturnValue(false);
+    ReminderScheduler.onUpdateWorldTime(WT(), 300);
+    expect(NoteManager.getAllNotes).not.toHaveBeenCalled();
+  });
+  it('checks reminders after CHECK_INTERVAL', () => {
+    const note = makeNote('r1', 'Reminder', { year: 1, month: 0, dayOfMonth: 0, hour: 14, minute: 0 }, { reminderOffset: 1 });
+    NoteManager.getAllNotes.mockReturnValue([note]);
+    _setCurrentDate({ year: 1, month: 0, dayOfMonth: 0, hour: 13, minute: 0 });
+    ReminderScheduler.onUpdateWorldTime(WT(), ReminderScheduler.CHECK_INTERVAL);
+    expect(CalendariaSocket.emit).toHaveBeenCalled();
+  });
+  it('clears fired set on date change', () => {
+    const note = makeNote('r1', 'Reminder', { year: 1, month: 0, dayOfMonth: 1, hour: 14, minute: 0 }, { reminderOffset: 1 });
+    NoteManager.getAllNotes.mockReturnValue([note]);
+    _setCurrentDate({ year: 1, month: 0, dayOfMonth: 0, hour: 23, minute: 0 });
+    ReminderScheduler.initialize();
+    _setCurrentDate({ year: 1, month: 0, dayOfMonth: 1, hour: 13, minute: 0 });
+    ReminderScheduler.onUpdateWorldTime(WT(), ReminderScheduler.CHECK_INTERVAL);
+    expect(CalendariaSocket.emit).toHaveBeenCalled();
+  });
+  it('clears fired set on time reversal', () => {
+    const note = makeNote('r1', 'Reminder', { year: 1, month: 0, dayOfMonth: 0, hour: 14, minute: 0 }, { reminderOffset: 1 });
+    NoteManager.getAllNotes.mockReturnValue([note]);
+    _setCurrentDate({ year: 1, month: 0, dayOfMonth: 0, hour: 13, minute: 0 });
+    const wt = WT();
+    ReminderScheduler.onUpdateWorldTime(wt, 100);
+    ReminderScheduler.onUpdateWorldTime(wt - 500, -500);
+  });
+});
+
+describe('ReminderScheduler — non-recurring timed events', () => {
+  it('fires reminder when current time is within offset window', () => {
+    const note = makeNote('r1', 'Meeting', { year: 1, month: 0, dayOfMonth: 0, hour: 14, minute: 0 }, { reminderOffset: 1 });
+    NoteManager.getAllNotes.mockReturnValue([note]);
+    _setCurrentDate({ year: 1, month: 0, dayOfMonth: 0, hour: 13, minute: 0 });
+    ReminderScheduler.onUpdateWorldTime(WT(), ReminderScheduler.CHECK_INTERVAL);
+    expect(CalendariaSocket.emit).toHaveBeenCalled();
+  });
+  it('does not fire before offset window', () => {
+    const note = makeNote('r1', 'Meeting', { year: 1, month: 0, dayOfMonth: 0, hour: 14, minute: 0 }, { reminderOffset: 1 });
+    NoteManager.getAllNotes.mockReturnValue([note]);
+    _setCurrentDate({ year: 1, month: 0, dayOfMonth: 0, hour: 10, minute: 0 });
+    ReminderScheduler.onUpdateWorldTime(WT(), ReminderScheduler.CHECK_INTERVAL);
+    expect(CalendariaSocket.emit).not.toHaveBeenCalled();
+  });
+  it('does not fire after event time', () => {
+    const note = makeNote('r1', 'Meeting', { year: 1, month: 0, dayOfMonth: 0, hour: 14, minute: 0 }, { reminderOffset: 1 });
+    NoteManager.getAllNotes.mockReturnValue([note]);
+    _setCurrentDate({ year: 1, month: 0, dayOfMonth: 0, hour: 15, minute: 0 });
+    ReminderScheduler.onUpdateWorldTime(WT(), ReminderScheduler.CHECK_INTERVAL);
+    expect(CalendariaSocket.emit).not.toHaveBeenCalled();
+  });
+  it('skips silent events', () => {
+    const note = makeNote('r1', 'Silent', { year: 1, month: 0, dayOfMonth: 0, hour: 14, minute: 0 }, { reminderOffset: 1, silent: true });
+    NoteManager.getAllNotes.mockReturnValue([note]);
+    _setCurrentDate({ year: 1, month: 0, dayOfMonth: 0, hour: 13, minute: 0 });
+    ReminderScheduler.onUpdateWorldTime(WT(), ReminderScheduler.CHECK_INTERVAL);
+    expect(CalendariaSocket.emit).not.toHaveBeenCalled();
+  });
+  it('skips notes with negative reminderOffset', () => {
+    const note = makeNote('r1', 'No Remind', { year: 1, month: 0, dayOfMonth: 0, hour: 14, minute: 0 }, { reminderOffset: -1 });
+    NoteManager.getAllNotes.mockReturnValue([note]);
+    _setCurrentDate({ year: 1, month: 0, dayOfMonth: 0, hour: 13, minute: 0 });
+    ReminderScheduler.onUpdateWorldTime(WT(), ReminderScheduler.CHECK_INTERVAL);
+    expect(CalendariaSocket.emit).not.toHaveBeenCalled();
+  });
+});
+
+describe('ReminderScheduler — all-day non-recurring', () => {
+  it('fires all-day reminder with 0 offset on event day', () => {
+    const note = makeNote('r1','Holiday',{ year: 1, month: 0, dayOfMonth: 0 },{allDay: true,reminderOffset: 0,endDate: null});
+    NoteManager.getAllNotes.mockReturnValue([note]);
+    _setCurrentDate({ year: 1, month: 0, dayOfMonth: 0, hour: 8, minute: 0 });
+    ReminderScheduler.onUpdateWorldTime(WT(), ReminderScheduler.CHECK_INTERVAL);
+  });
+});
+
+describe('ReminderScheduler — recurring events', () => {
+  it('fires recurring reminder when occursToday and within offset window', () => {
+    isRecurringMatch.mockReturnValue(true);
+    const note = makeNote('r1','Weekly Meeting',{ year: 1, month: 0, dayOfMonth: 0, hour: 14, minute: 0 },{repeat: 'weekly',reminderOffset: 1});
+    NoteManager.getAllNotes.mockReturnValue([note]);
+    _setCurrentDate({ year: 1, month: 0, dayOfMonth: 0, hour: 13, minute: 30 });
+    ReminderScheduler.onUpdateWorldTime(WT(), ReminderScheduler.CHECK_INTERVAL);
+    expect(CalendariaSocket.emit).toHaveBeenCalled();
+  });
+  it('fires all-day recurring reminder with 0 offset', () => {
+    isRecurringMatch.mockReturnValue(true);
+    const note = makeNote('r1','Monthly Holiday',{ year: 1, month: 0, dayOfMonth: 0 },{repeat: 'monthly',allDay: true,reminderOffset: 0});
+    NoteManager.getAllNotes.mockReturnValue([note]);
+    _setCurrentDate({ year: 1, month: 0, dayOfMonth: 0, hour: 8, minute: 0 });
+    ReminderScheduler.onUpdateWorldTime(WT(), ReminderScheduler.CHECK_INTERVAL);
+    expect(CalendariaSocket.emit).toHaveBeenCalled();
+  });
+  it('does not fire when recurring but does not occur today', () => {
+    isRecurringMatch.mockReturnValue(false);
+    const note = makeNote('r1','Weekly',{ year: 1, month: 0, dayOfMonth: 2, hour: 14, minute: 0 },{repeat: 'weekly',reminderOffset: 1});
+    NoteManager.getAllNotes.mockReturnValue([note]);
+    _setCurrentDate({ year: 1, month: 0, dayOfMonth: 0, hour: 13, minute: 0 });
+    ReminderScheduler.onUpdateWorldTime(WT(), ReminderScheduler.CHECK_INTERVAL);
+    expect(CalendariaSocket.emit).not.toHaveBeenCalled();
+  });
+});
+
+describe('ReminderScheduler.handleReminderNotify()', () => {
+  it('shows toast for current user in targets', () => {
+    ReminderScheduler.handleReminderNotify({type: 'toast',noteId: 'n1',noteName: 'Event',message: 'Reminder!',targets: ['test-user'],icon: 'fas fa-bell',color: '#4a9eff'});
+    expect(ui.notifications.info).toHaveBeenCalled();
+  });
+  it('ignores if user not in targets', () => {
+    ReminderScheduler.handleReminderNotify({type: 'toast',noteId: 'n1',noteName: 'Event',message: 'Reminder!',targets: ['other-user']});
+    expect(ui.notifications.info).not.toHaveBeenCalled();
+  });
+});
+
+describe('ReminderScheduler — calendar filtering', () => {
+  it('skips notes from a different calendar', () => {
+    const note = makeNote('r1', 'Note', { year: 1, month: 0, dayOfMonth: 0, hour: 14, minute: 0 }, { reminderOffset: 1 });
+    note.calendarId = 'other-calendar';
+    NoteManager.getAllNotes.mockReturnValue([note]);
+    _setCurrentDate({ year: 1, month: 0, dayOfMonth: 0, hour: 13, minute: 0 });
+    ReminderScheduler.onUpdateWorldTime(WT(), ReminderScheduler.CHECK_INTERVAL);
+    expect(CalendariaSocket.emit).not.toHaveBeenCalled();
+  });
+});
+
+describe('ReminderScheduler — multi-day offsets', () => {
+  it('fires timed reminder N days before event (48h offset on 18:41 event)', () => {
+    const note = makeNote('r1', 'Distant Meeting', { year: 1, month: 0, dayOfMonth: 4, hour: 18, minute: 41 }, { reminderOffset: 48 });
+    NoteManager.getAllNotes.mockReturnValue([note]);
+    _setCurrentDate({ year: 1, month: 0, dayOfMonth: 2, hour: 18, minute: 45 });
+    ReminderScheduler.onUpdateWorldTime(WT(), ReminderScheduler.CHECK_INTERVAL);
+    expect(CalendariaSocket.emit).toHaveBeenCalled();
+  });
+  it('does not fire timed multi-day reminder before reminder moment', () => {
+    const note = makeNote('r1', 'Distant Meeting', { year: 1, month: 0, dayOfMonth: 4, hour: 18, minute: 41 }, { reminderOffset: 48 });
+    NoteManager.getAllNotes.mockReturnValue([note]);
+    _setCurrentDate({ year: 1, month: 0, dayOfMonth: 2, hour: 17, minute: 0 });
+    ReminderScheduler.onUpdateWorldTime(WT(), ReminderScheduler.CHECK_INTERVAL);
+    expect(CalendariaSocket.emit).not.toHaveBeenCalled();
+  });
+  it('does not fire timed multi-day reminder one day late', () => {
+    const note = makeNote('r1', 'Distant Meeting', { year: 1, month: 0, dayOfMonth: 4, hour: 18, minute: 41 }, { reminderOffset: 48 });
+    NoteManager.getAllNotes.mockReturnValue([note]);
+    _setCurrentDate({ year: 1, month: 0, dayOfMonth: 3, hour: 18, minute: 45 });
+    ReminderScheduler.onUpdateWorldTime(WT(), ReminderScheduler.CHECK_INTERVAL);
+    expect(CalendariaSocket.emit).not.toHaveBeenCalled();
+  });
+  it('fires all-day reminder N days before event (48h offset)', () => {
+    const note = makeNote('r1', 'Holiday', { year: 1, month: 0, dayOfMonth: 4 }, { allDay: true, reminderOffset: 48, endDate: null });
+    NoteManager.getAllNotes.mockReturnValue([note]);
+    _setCurrentDate({ year: 1, month: 0, dayOfMonth: 2, hour: 0, minute: 0 });
+    ReminderScheduler.onUpdateWorldTime(WT(), ReminderScheduler.CHECK_INTERVAL);
+    expect(CalendariaSocket.emit).toHaveBeenCalled();
+  });
+  it('fires reminder at exactly 24h boundary on timed event', () => {
+    const note = makeNote('r1', 'Tomorrow Meeting', { year: 1, month: 0, dayOfMonth: 3, hour: 18, minute: 0 }, { reminderOffset: 24 });
+    NoteManager.getAllNotes.mockReturnValue([note]);
+    _setCurrentDate({ year: 1, month: 0, dayOfMonth: 2, hour: 18, minute: 0 });
+    ReminderScheduler.onUpdateWorldTime(WT(), ReminderScheduler.CHECK_INTERVAL);
+    expect(CalendariaSocket.emit).toHaveBeenCalled();
+  });
+  it('fires recurring weekly reminder 48h before next occurrence', () => {
+    isRecurringMatch.mockImplementation((_flagData, date) => date.dayOfMonth === 4);
+    const note = makeNote('r1', 'Weekly', { year: 1, month: 0, dayOfMonth: 4, hour: 18, minute: 41 }, { repeat: 'weekly', reminderOffset: 48 });
+    NoteManager.getAllNotes.mockReturnValue([note]);
+    _setCurrentDate({ year: 1, month: 0, dayOfMonth: 2, hour: 18, minute: 45 });
+    ReminderScheduler.onUpdateWorldTime(WT(), ReminderScheduler.CHECK_INTERVAL);
+    expect(CalendariaSocket.emit).toHaveBeenCalled();
+  });
+  it('regression: same-day sub-24h offset still fires correctly', () => {
+    const note = makeNote('r1', 'Meeting', { year: 1, month: 0, dayOfMonth: 0, hour: 18, minute: 41 }, { reminderOffset: 6 });
+    NoteManager.getAllNotes.mockReturnValue([note]);
+    _setCurrentDate({ year: 1, month: 0, dayOfMonth: 0, hour: 12, minute: 45 });
+    ReminderScheduler.onUpdateWorldTime(WT(), ReminderScheduler.CHECK_INTERVAL);
+    expect(CalendariaSocket.emit).toHaveBeenCalled();
+  });
+});
+
+describe('ReminderScheduler — performance', () => {
+  it('processes 5000 notes within 250ms', () => {
+    const notes = Array.from({ length: 5000 }, (_, i) =>
+      makeNote(`r${i}`, `Note ${i}`, { year: 1, month: 0, dayOfMonth: (i % 28) + 1, hour: 14, minute: 0 }, { reminderOffset: (i % 200) + 1 })
+    );
+    NoteManager.getAllNotes.mockReturnValue(notes);
+    _setCurrentDate({ year: 1, month: 0, dayOfMonth: 0, hour: 13, minute: 0 });
+    const start = performance.now();
+    ReminderScheduler.onUpdateWorldTime(WT(), ReminderScheduler.CHECK_INTERVAL);
+    const elapsed = performance.now() - start;
+    expect(elapsed).toBeLessThan(250);
+  });
+});

@@ -1,0 +1,127 @@
+<section class="tab {{tab.cssClass}}" data-tab="{{tab.id}}" data-group="{{tab.group}}">
+  <fieldset data-section="default-preset">
+    <legend>{{localize "CALENDARIA.Settings.NoteDefaults.Legend"}}</legend>
+    <div class="form-group">
+      <label>{{localize "CALENDARIA.Settings.DefaultNotePreset.Name"}}</label>
+      <div class="form-fields">
+        <select name="defaultNotePreset">
+          {{#each defaultNotePresetOptions}}
+            <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <p class="hint">{{localize "CALENDARIA.Settings.DefaultNotePreset.Hint"}}</p>
+    </div>
+    <div class="form-group">
+      <label>{{localize "CALENDARIA.Settings.NoteOpenMode.Name"}}</label>
+      <div class="form-fields">
+        <select name="noteOpenMode">
+          {{#each noteOpenModeOptions}}
+            <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <p class="hint">{{localize "CALENDARIA.Settings.NoteOpenMode.Hint"}}</p>
+    </div>
+  </fieldset>
+  {{#if isGM}}
+    <fieldset data-section="presets">
+      <legend>{{localize "CALENDARIA.SettingsPanel.Section.Presets"}}</legend>
+      <div class="form-group">
+        <label>{{localize "CALENDARIA.SettingsPanel.OpenPresetManager"}}</label>
+        <div class="form-fields">
+          <button type="button" data-action="openPresetManager" class="open-manager-btn">
+            <i class="fas fa-tags"></i>
+            {{localize "CALENDARIA.SettingsPanel.OpenPresetManager"}}
+          </button>
+        </div>
+        <p class="hint">{{localize "CALENDARIA.SettingsPanel.Hint.Presets"}}</p>
+      </div>
+    </fieldset>
+    <fieldset data-section="visibility">
+      <legend>{{localize "CALENDARIA.Common.Visibility"}}</legend>
+      <div class="form-group">
+        <label>{{localize "CALENDARIA.Settings.ShowSecretNotes.Name"}}</label>
+        <input type="checkbox" name="showSecretNotes" {{#if showSecretNotes}}checked{{/if}} data-tooltip
+          aria-label="{{localize 'CALENDARIA.Settings.ShowSecretNotes.Hint'}}">
+        <p class="hint">{{localize "CALENDARIA.Settings.ShowSecretNotes.Hint"}}</p>
+      </div>
+    </fieldset>
+    <fieldset data-section="festivals">
+      <legend>{{localize "CALENDARIA.Common.Festivals"}}</legend>
+      <div class="form-group">
+        <label>{{localize "CALENDARIA.Settings.SyncFestivals.Name"}}</label>
+        <div class="form-fields">
+          <button type="button" data-action="syncFestivals" class="open-manager-btn">
+            <i class="fas fa-sync"></i>
+            {{localize "CALENDARIA.Settings.SyncFestivals.Name"}}
+          </button>
+        </div>
+        <p class="hint">{{localize "CALENDARIA.Settings.SyncFestivals.Hint"}}</p>
+      </div>
+    </fieldset>
+  {{/if}}
+  <fieldset data-section="enricher-reference">
+    <legend>{{localize "CALENDARIA.SettingsPanel.Section.Enrichers"}}</legend>
+    <div class="form-group">
+      <label>{{localize "CALENDARIA.SettingsPanel.OpenEnricherReference"}}</label>
+      <div class="form-fields">
+        <button type="button" data-action="openEnricherReference" class="open-manager-btn">
+          <i class="fas fa-wand-magic-sparkles"></i>
+          {{localize "CALENDARIA.SettingsPanel.OpenEnricherReference"}}
+        </button>
+      </div>
+      <p class="hint">{{localize "CALENDARIA.SettingsPanel.Hint.Enrichers"}}</p>
+    </div>
+  </fieldset>
+  {{#if isGM}}
+    <fieldset data-section="display-formats">
+      <legend>
+        {{localize "CALENDARIA.SettingsPanel.Section.DisplayFormats"}}
+        <button type="button" class="legend-help" data-action="showTokenReference" data-context-type="date" data-tooltip
+          aria-label="{{localize "CALENDARIA.SettingsPanel.FormatHelp.Tooltip"}}"><i
+            class="fa-solid fa-question"></i></button>
+      </legend>
+      <p class="hint section-hint">{{localize "CALENDARIA.SettingsPanel.Hint.FormatSettings"}}</p>
+      {{#each formatLocations}}
+        <div class="format-location" data-location="{{id}}">
+          <div class="form-group">
+            <label>{{label}}</label>
+          </div>
+          <div class="format-row">
+            <div class="format-column">
+              <span class="format-label">{{localize "CALENDARIA.Format.GMFormat"}} <span class="format-preview"
+                  data-location="{{id}}" data-role="gm"></span></span>
+              <select name="displayFormats.{{id}}.gmPreset" data-location="{{id}}" data-role="gm">
+                {{#each gmPresetOptions}}
+                  <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+                {{/each}}
+              </select>
+              <input type="text" name="displayFormats.{{id}}.gmCustom" value="{{#if isCustomGM}}{{gmFormat}}{{/if}}"
+                placeholder="D MMMM YYYY" class="format-custom-input {{#unless isCustomGM}}hidden{{/unless}}"
+                data-location="{{id}}" data-role="gm">
+            </div>
+            <div class="format-column">
+              <span class="format-label">{{localize "CALENDARIA.Format.PlayerFormat"}} <span class="format-preview"
+                  data-location="{{id}}" data-role="player"></span></span>
+              <select name="displayFormats.{{id}}.playerPreset" data-location="{{id}}" data-role="player">
+                {{#each playerPresetOptions}}
+                  <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+                {{/each}}
+              </select>
+              <input type="text" name="displayFormats.{{id}}.playerCustom"
+                value="{{#if isCustomPlayer}}{{playerFormat}}{{/if}}" placeholder="D MMMM YYYY"
+                class="format-custom-input {{#unless isCustomPlayer}}hidden{{/unless}}" data-location="{{id}}"
+                data-role="player">
+            </div>
+          </div>
+        </div>
+      {{/each}}
+    </fieldset>
+  {{else}}
+    <div class="info-box">
+      <i class="fas fa-info-circle"></i>
+      <p>{{localize "CALENDARIA.SettingsPanel.NotesTab.PlayerMessage"}}</p>
+    </div>
+  {{/if}}
+</section>

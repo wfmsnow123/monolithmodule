@@ -1,0 +1,9 @@
+<div class="calendaria chat-announcement">
+  <div class="announcement-date">{{dateRange}}</div>
+  {{#if content}}
+    <div class="announcement-content">{{content}}</div>
+  {{/if}}
+  <a class="open-note" data-action="openNote" data-note-id="{{noteId}}" data-journal-id="{{journalId}}">
+    {{{iconHtml}}} {{localize "CALENDARIA.Common.OpenNote"}}
+  </a>
+</div>

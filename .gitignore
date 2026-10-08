@@ -1,0 +1,9 @@
+node_modules/
+dist/
+build/
+coverage/
+*.zip
+*.map
+.env
+GitHubInfo*.md
+*credenciais*

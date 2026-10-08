@@ -1,0 +1,179 @@
+import { CalendarManager } from '../../calendar/_module.mjs';
+
+/**
+ * Get the current phase position (0-1) for a moon at a given date.
+ * @param {object} moon - Moon definition (must be an entry in `calendar.moonsArray`)
+ * @param {object} date - Date to check { year, month, dayOfMonth }
+ * @param {object} calendar - Calendar instance (optional, uses active if not provided)
+ * @returns {number} Phase position from 0 to 1
+ */
+export function getMoonPhasePosition(moon, date, calendar = null) {
+  calendar = calendar || CalendarManager.getActiveCalendar();
+  if (!calendar || !moon) return 0;
+  const moonIndex = calendar.moonsArray?.indexOf(moon) ?? -1;
+  if (moonIndex < 0) return 0;
+  const phase = calendar.getMoonPhase(moonIndex, date);
+  return Number.isFinite(phase?.position) ? phase.position : 0;
+}
+
+/**
+ * Get drawing info for a moon: its phase position plus whether it is in its true Full or New band.
+ * @param {object} moon - Moon definition (must be an entry in `calendar.moonsArray`)
+ * @param {object} date - Date to check { year, month, dayOfMonth }
+ * @param {object} [calendar] - Calendar instance (uses active if not provided)
+ * @returns {{position: number, isFull: boolean, isNew: boolean}} Render info
+ */
+export function getMoonRenderInfo(moon, date, calendar = null) {
+  calendar = calendar || CalendarManager.getActiveCalendar();
+  if (!calendar || !moon) return { position: 0, isFull: false, isNew: false };
+  const moonIndex = calendar.moonsArray?.indexOf(moon) ?? -1;
+  if (moonIndex < 0) return { position: 0, isFull: false, isNew: false };
+  const phase = calendar.getMoonPhase(moonIndex, date);
+  const position = Number.isFinite(phase?.position) ? phase.position : 0;
+  const phases = moon.phases ? Object.values(moon.phases) : [];
+  const current = phases[phase?.phaseIndex ?? -1];
+  const inBand = (p, x) => (p.end > p.start ? x >= p.start && x < p.end : x >= p.start || x < p.end);
+  return { position, isFull: !!current && inBand(current, 0.5), isNew: !!current && inBand(current, 0) };
+}
+
+/**
+ * Check if a moon is in its full phase at a given date.
+ * @param {object} moon - Moon definition
+ * @param {object} date - Date to check
+ * @param {object} calendar - Calendar instance (optional)
+ * @returns {boolean} True if moon is full
+ */
+export function isMoonFull(moon, date, calendar = null) {
+  const position = getMoonPhasePosition(moon, date, calendar);
+  return position >= 0.5 && position < 0.625;
+}
+
+/**
+ * Check if a moon is in its new phase at a given date.
+ * @param {object} moon - Moon definition
+ * @param {object} date - Date to check
+ * @param {object} calendar - Calendar instance (optional)
+ * @returns {boolean} True if moon is new
+ */
+export function isNewMoon(moon, date, calendar = null) {
+  const position = getMoonPhasePosition(moon, date, calendar);
+  return position >= 0 && position < 0.125;
+}
+
+/**
+ * Find the next date when all moons are simultaneously full (Convergence).
+ * @param {Array} moons - Array of moon definitions
+ * @param {object} startDate - Date to start searching from { year, month, dayOfMonth }
+ * @param {object} options - Search options
+ * @param {number} options.maxDays - Maximum days to search (default: 1000)
+ * @param {object} options.calendar - Calendar instance (optional)
+ * @returns {object|null} Next convergence date { year, month, dayOfMonth }, or null if not found within maxDays
+ */
+export function getNextConvergence(moons, startDate, options = {}) {
+  const { maxDays = 1000, calendar: providedCalendar } = options;
+  const calendar = providedCalendar || CalendarManager.getActiveCalendar();
+  if (!calendar || !moons || moons.length === 0) return null;
+  if (moons.length === 1) return getNextFullMoon(moons[0], startDate, { maxDays, calendar });
+  let currentDate = { ...startDate };
+  for (let i = 0; i < maxDays; i++) {
+    const allFull = moons.every((moon) => isMoonFull(moon, currentDate, calendar));
+    if (allFull) return currentDate;
+    currentDate = addOneDay(currentDate, calendar);
+  }
+  return null;
+}
+
+/**
+ * Find the next full moon date for a single moon.
+ * @param {object} moon - Moon definition
+ * @param {object} startDate - Date to start searching from
+ * @param {object} options - Search options
+ * @returns {object|null} Next full moon date { year, month, dayOfMonth }
+ */
+export function getNextFullMoon(moon, startDate, options = {}) {
+  const { maxDays = 1000, calendar: providedCalendar } = options;
+  const calendar = providedCalendar || CalendarManager.getActiveCalendar();
+  if (!calendar || !moon) return null;
+  let currentDate = { ...startDate };
+  for (let i = 0; i < maxDays; i++) {
+    if (isMoonFull(moon, currentDate, calendar)) return currentDate;
+    currentDate = addOneDay(currentDate, calendar);
+  }
+  return null;
+}
+
+/**
+ * Get all convergences within a date range.
+ * @param {Array} moons - Array of moon definitions
+ * @param {object} startDate - Range start date
+ * @param {object} endDate - Range end date
+ * @param {object} options - Search options
+ * @returns {Array} Array of convergence dates { year, month, dayOfMonth }
+ */
+export function getConvergencesInRange(moons, startDate, endDate, options = {}) {
+  const calendar = options.calendar || CalendarManager.getActiveCalendar();
+  if (!calendar || !moons || moons.length === 0) return [];
+  const convergences = [];
+  let currentDate = { ...startDate };
+  let maxIterations = 10000;
+  while (compareDates(currentDate, endDate) <= 0 && maxIterations-- > 0) {
+    const allFull = moons.every((moon) => isMoonFull(moon, currentDate, calendar));
+    if (allFull) {
+      convergences.push({ ...currentDate });
+      for (let skip = 0; skip < 5; skip++) currentDate = addOneDay(currentDate, calendar);
+    } else {
+      currentDate = addOneDay(currentDate, calendar);
+    }
+  }
+  return convergences;
+}
+
+/**
+ * Convert a date to an absolute day number for comparison.
+ * @param {object} date - Date { year, month, dayOfMonth }
+ * @param {object} calendar - Calendar instance
+ * @returns {number} Absolute day number
+ */
+export function dateToDayNumber(date, calendar) {
+  const daysPerYear = calendar.days?.daysPerYear ?? 365;
+  const months = calendar.monthsArray ?? [];
+  let dayNumber = date.year * daysPerYear;
+  for (let m = 0; m < date.month && m < months.length; m++) dayNumber += months[m]?.days ?? 30;
+  dayNumber += date.dayOfMonth ?? 0;
+  return dayNumber;
+}
+
+/**
+ * Add one day to a date.
+ * @param {object} date - Date to increment { year, month, dayOfMonth }
+ * @param {object} calendar - Calendar instance
+ * @returns {object} New date { year, month, dayOfMonth }
+ */
+export function addOneDay(date, calendar) {
+  const months = calendar.monthsArray ?? [];
+  let { year, month } = date;
+  let dayOfMonth = (date.dayOfMonth ?? 0) + 1;
+  const daysInMonth = months[month]?.days ?? 30;
+  if (dayOfMonth >= daysInMonth) {
+    dayOfMonth = 0;
+    month++;
+    if (month >= months.length) {
+      month = 0;
+      year++;
+    }
+  }
+  return { year, month, dayOfMonth };
+}
+
+/**
+ * Compare two dates.
+ * @param {object} date1 - First date
+ * @param {object} date2 - Second date
+ * @returns {number} -1 if date1 < date2, 0 if equal, 1 if date1 > date2
+ */
+export function compareDates(date1, date2) {
+  if (date1.year !== date2.year) return date1.year < date2.year ? -1 : 1;
+  if (date1.month !== date2.month) return date1.month < date2.month ? -1 : 1;
+  if (date1.dayOfMonth !== date2.dayOfMonth) return date1.dayOfMonth < date2.dayOfMonth ? -1 : 1;
+  return 0;
+}
