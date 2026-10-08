@@ -9,7 +9,11 @@ import { ID } from "./util.mjs";
  */
 const FISICAS = new Set(["str", "dex", "con"]);
 
+/** Com o Monolith: Encumbrance ativo, ele cuida da carga e esta parte fica desligada. */
+const ENCUMBRANCE = () => !!game.modules.get("monolith-encumbrance")?.active;
+
 export function registrarConfigSobrecarga() {
+  if (ENCUMBRANCE()) return;
   game.settings.register(ID, "sobrecargaAtiva", {
     name: "Sobrecarga: desvantagem quando severamente sobrecarregado",
     hint: "Ataques, testes de habilidade e testes de resistência de Força, Destreza e Constituição ganham desvantagem. Exige a carga variante do dnd5e.",
@@ -29,6 +33,7 @@ export function registrarConfigSobrecarga() {
 
 /** Aplica multiplicadores personalizados (na unidade de peso usada pelo mundo). */
 export function aplicarLimitesSobrecarga() {
+  if (ENCUMBRANCE()) return;
   const t = CONFIG.DND5E.encumbrance?.threshold;
   if (!t) return;
   const metric = game.settings.get("dnd5e", "metricWeightUnits");
@@ -48,6 +53,7 @@ function ativo() {
 }
 
 export function registrarGanchosSobrecarga() {
+  if (ENCUMBRANCE()) return;
   const marcar = (config, actor, ability) => {
     if (!ativo() || !severamente(actor) || !FISICAS.has(ability)) return;
     config.disadvantage = true;
@@ -73,6 +79,7 @@ export function registrarGanchosSobrecarga() {
 }
 
 export function avisarCargaVariante() {
+  if (ENCUMBRANCE()) return;
   if (!game.user.isGM) return;
   if (game.settings.get(ID, "sobrecargaAtiva") && game.settings.get("dnd5e", "encumbrance") !== "variant") {
     ui.notifications.warn("Monolith: a Sobrecarga precisa da carga variante do dnd5e (Configurações do sistema > Regras de Carga > Variante).");

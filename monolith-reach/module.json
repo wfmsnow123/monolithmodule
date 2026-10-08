@@ -1,0 +1,19 @@
+{
+  "id": "monolith-reach",
+  "title": "Monolith: Reach",
+  "description": "Jogadores só abrem portas, acionam tiles do Monk's Active Tiles e interruptores do Light Switch se o token estiver ao alcance (5 pés, em qualquer direção, por padrão). Inclui uma tecla para interagir com a porta mais próxima.",
+  "version": "0.1.0",
+  "authors": [{ "name": "snowxd" }],
+  "compatibility": { "minimum": "13", "verified": "13.351" },
+  "relationships": {
+    "recommends": [
+      { "id": "monks-active-tiles", "type": "module", "reason": "Alcance também para tiles clicáveis." },
+      { "id": "light-switch", "type": "module", "reason": "Alcance também para interruptores de luz." }
+    ],
+    "conflicts": [{ "id": "foundryvtt-arms-reach", "type": "module", "reason": "Os dois limitam a interação com portas; use só um." }]
+  },
+  "esmodules": ["scripts/main.mjs"],
+  "url": "https://github.com/wfmsnow123/monolithmodule",
+  "manifest": "https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-reach/module.json",
+  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-reach-v0.1.0/monolith-reach.zip"
+}

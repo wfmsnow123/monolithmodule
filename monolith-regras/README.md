@@ -28,7 +28,7 @@ Funciona no HUD do token, na ficha do dnd5e e nas duas fichas Tidy.
 - Cair a 0 PV com falhas marcadas preenche o Fio; três marcadas é morte.
 - Queimando: não rola salvaguardas; dano aplicado soma uma falha (botão para crítico); início do turno soma Perdição.
 
-**Sobrecarga.** Usa a carga variante do dnd5e (limites e redução de deslocamento) e acrescenta a desvantagem em ataques, testes de habilidade e testes de resistência de Força, Destreza e Constituição quando o personagem está severamente sobrecarregado. Os multiplicadores podem ser trocados nas configurações (0 mantém o padrão do dnd5e: 5 e 10 x Força em libras, ou 2,5 e 5 x Força em quilos). Substitui o Variant Encumbrance + Midi.
+**Sobrecarga.** Usa a carga variante do dnd5e (limites e redução de deslocamento) e acrescenta a desvantagem em ataques, testes de habilidade e testes de resistência de Força, Destreza e Constituição quando o personagem está severamente sobrecarregado. Os multiplicadores podem ser trocados nas configurações (0 mantém o padrão do dnd5e: 5 e 10 x Força em libras, ou 2,5 e 5 x Força em quilos). Substitui o Variant Encumbrance + Midi. Se o **Monolith: Encumbrance** estiver ativo, esta parte se desliga e ele assume a carga.
 
 **Ênfase.** Modificador de dado `ef`: `/r 2d20ef + 3`. Apostar e o botão do Mestre armam a próxima rolagem de d20 do personagem com Ênfase.
 

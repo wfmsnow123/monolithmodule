@@ -1,15 +1,14 @@
 name: Release
 
 # Publica um módulo quando uma tag de versão é enviada:
-#   monolith-regras-v<versão>       -> monolith-regras
-#   monolith-calendario-v<versão>   -> monolith-calendario (compila e roda os testes antes)
+#   <pasta-do-módulo>-v<versão>, ex.: monolith-regras-v0.3.0, monolith-reach-v0.1.0
+#   monolith-calendario é compilado e testado antes; os outros são empacotados como estão.
 # A versão da tag precisa ser igual à "version" do module.json do módulo.
 
 on:
   push:
     tags:
-      - 'monolith-regras-v*'
-      - 'monolith-calendario-v*'
+      - 'monolith-*-v*'
 
 permissions:
   contents: write
@@ -24,11 +23,8 @@ jobs:
         id: mod
         run: |
           TAG="${GITHUB_REF_NAME}"
-          case "$TAG" in
-            monolith-regras-v*) MOD=monolith-regras ;;
-            monolith-calendario-v*) MOD=monolith-calendario ;;
-            *) echo "Tag desconhecida: $TAG"; exit 1 ;;
-          esac
+          MOD="${TAG%%-v[0-9]*}"
+          if [ ! -f "$MOD/module.json" ]; then echo "Pasta de módulo não encontrada para a tag: $TAG"; exit 1; fi
           VER="${TAG#${MOD}-v}"
           JSONVER=$(jq -r .version "$MOD/module.json")
           if [ "$VER" != "$JSONVER" ]; then echo "A tag ($VER) não bate com module.json ($JSONVER)"; exit 1; fi
@@ -55,11 +51,13 @@ jobs:
           mkdir -p ../build
           mv dist ../build/monolith-calendario
 
-      - name: Empacotar regras
-        if: steps.mod.outputs.mod == 'monolith-regras'
+      - name: Empacotar módulo sem compilação
+        if: steps.mod.outputs.mod != 'monolith-calendario'
+        env:
+          MOD: ${{ steps.mod.outputs.mod }}
         run: |
           mkdir -p build
-          cp -r monolith-regras build/monolith-regras
+          cp -r "$MOD" "build/$MOD"
 
       - name: Zip e release
         env:
