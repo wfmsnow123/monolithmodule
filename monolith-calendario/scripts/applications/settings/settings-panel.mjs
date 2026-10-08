@@ -1,3 +1,4 @@
+import { FantasyCalendarApp } from '../../integrations/fantasy-calendar-sync.mjs';
 import { BUNDLED_CALENDARS, CalendarManager, CalendarRegistry } from '../../calendar/_module.mjs';
 import { HOOKS, MODULE, SETTINGS, TEMPLATES } from '../../constants.mjs';
 import { FestivalManager } from '../../festivals/_module.mjs';
@@ -80,6 +81,7 @@ export class SettingsPanel extends HandlebarsApplicationMixin(ApplicationV2) {
     actions: {
       openCalendarEditor: SettingsPanel.#onOpenCalendarEditor,
       openImporter: SettingsPanel.#onOpenImporter,
+      openFantasyCalendar: SettingsPanel.#onOpenFantasyCalendar,
       openSetDateDialog: SettingsPanel.#onOpenSetDateDialog,
       printCurrentMonth: SettingsPanel.#onPrintCurrentMonth,
       printCurrentYear: SettingsPanel.#onPrintCurrentYear,
@@ -2345,6 +2347,13 @@ export class SettingsPanel extends HandlebarsApplicationMixin(ApplicationV2) {
    */
   static async #onOpenImporter(_event, _target) {
     new ImporterApp().render(true);
+  }
+
+  /**
+   * Monolith fork: open the Fantasy-Calendar connection window.
+   */
+  static async #onOpenFantasyCalendar() {
+    new FantasyCalendarApp().render(true);
   }
 
   /**

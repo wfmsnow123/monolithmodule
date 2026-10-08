@@ -19,11 +19,12 @@ Calendário da campanha Monolith para Foundry VTT 13 (13.351+).
 1. Desative o **Calendaria** original, se estiver instalado. Os dois não podem ficar ativos juntos (o módulo declara conflito).
 2. Copie a pasta `monolith-calendario` para `Data/modules/` e ative no mundo.
 3. Importe o calendário: Calendário > Importar > Fantasy-Calendar > escolha `monolithcalendar.json` (exportado do site). Importe também as notas (os 87 eventos).
-4. Em Configurar Módulos > Monolith: Calendário:
-   - **hash do calendário**: o código no fim do link do calendário no site;
-   - **puxar a data do site**: ligado;
-   - **sincronizar também a hora**: deixe desligado enquanto o relógio estiver desativado no site;
-   - para enviar avanços ao site, use **Conectar ao Fantasy-Calendar** (gera o token da conta; a senha não é guardada) e ligue **enviar avanços**.
+4. Abra **Configurações do Calendaria** (aba Início) e clique em **Fantasy-Calendar**, ou use Configurar Definições > Monolith: Calendário > **Conexão com o Fantasy-Calendar**. Na janela:
+   - **Hash do calendário**: o código no fim do link do calendário no site;
+   - **Puxar a data do site**: ligado;
+   - **Sincronizar também a hora**: desligado enquanto o relógio estiver desativado no site;
+   - para enviar avanços ao site, cole um **token de acesso pessoal** (contas Premium, em app.fantasy-calendar.com/profile/api-tokens) e ligue **Enviar avanços**;
+   - **Testar conexão** confirma a leitura e o token.
 
 Console: `CALENDARIA.fantasyCalendar.status()`, `.pull()`, `.push()`.
 
