@@ -4,10 +4,11 @@ Dois módulos para a mesa de Monolith (Foundry 13, dnd5e 5.2).
 
 | Módulo | O que faz | Manifest (cole em Instalar Módulo) |
 | :--- | :--- | :--- |
-| **Monolith: Regras da Casa** (`monolith-regras`) | Exaustão de 10 níveis, Inspiração Heróica, Medidas Desesperadas, Queima de Alma, Ênfase, descansos Fôlego/Vigília/Completo. Compatível com Tidy 5e e Rest Recovery. | `https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-regras/module.json` |
+| **Monolith: Regras da Casa** (`monolith-regras`) | Exaustão de 10 níveis, Inspiração Heróica, Medidas Desesperadas, Queima de Alma, Ênfase. Compatível com Tidy 5e. | `https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-regras/module.json` |
 | **Monolith: Calendário** (`monolith-calendario`) | Fork do [Calendaria](https://github.com/Sayshal/Calendaria) (Tyler/Sayshal, MIT) com luas e estações fiéis ao Fantasy-Calendar.com e sincronização com o site. | `https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-calendario/module.json` |
 | **Monolith: Encumbrance** (`monolith-encumbrance`) | Carga configurável: faixas por Força, deslocamento, desvantagens por habilidade e efeitos livres. Substitui o Variant Encumbrance. | `https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-encumbrance/module.json` |
 | **Monolith: Reach** (`monolith-reach`) | Portas, tiles do Monk's Active Tiles e interruptores do Light Switch só ao alcance do token (5 pés). | `https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-reach/module.json` |
+| **Monolith: Resting Rules** (`monolith-resting`) | Fôlego, Vigília e Descanso Completo prontos no dnd5e, com limites por dia, acampamento Exposto e Dormir é para os Fracos. Substitui o Rest Recovery. | `https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-resting/module.json` |
 
 O Monolith: Calendário substitui o Calendaria; não ative os dois juntos. Créditos e notas para os autores originais em [monolith-calendario/README-MONOLITH.md](monolith-calendario/README-MONOLITH.md).
 

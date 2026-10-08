@@ -19,10 +19,7 @@ Foundry 13, dnd5e 5.2 (regras legadas 2014). Compatível com Tidy 5e Sheets (Cl�
 - 10: morte.
 Funciona no HUD do token, na ficha do dnd5e e nas duas fichas Tidy.
 
-**Descansos.** O Mestre pede o descanso pelo painel (ícone de cama): Fôlego, Vigília (com ou sem sono inteiro, ou Agitada) ou Descanso Completo. Cada jogador recebe o pedido e o diálogo do Rest Recovery abre normalmente; o módulo ajusta as regras do Rest Recovery só durante aquele descanso:
-- Fôlego: características de descanso curto, 1 espaço de pacto, Dado de Vida gratuito.
-- Vigília: características e espaços, sem PV, metade dos Dados de Vida, apaga 1 falha marcada (2 com sono inteiro); sono inteiro também tira 1 de Exaustão e dá o Dado de Vida gratuito. Agitada: metade das características e espaços, nada acima do 3º círculo.
-- Completo: tudo, -2 de Exaustão, apaga todas as falhas marcadas.
+**Descansos.** Ficam no módulo **Monolith: Resting Rules**. O ícone de cama do painel abre o pedido de descanso dele, e ao fim de uma Vigília ou Descanso Completo este módulo apaga as falhas marcadas do Fio (1 na Vigília, 2 com sono inteiro, todas no Completo) e as Medidas armadas.
 
 **Medidas Desesperadas.** Janela por personagem, aberta pelo botão no cabeçalho da ficha (dnd5e ou Tidy) ou pelo retrato no painel. Mostra o Fio (✖ marcada, ● comum), as Medidas disponíveis quando Sangrando, as Medidas armadas, a Queima de Alma, Recusar a Morte, a Inspiração Heróica de quem está morrendo e O Nome que Fica.
 - Cair a 0 PV com falhas marcadas preenche o Fio; três marcadas é morte.
@@ -33,7 +30,7 @@ Funciona no HUD do token, na ficha do dnd5e e nas duas fichas Tidy.
 **Ênfase.** Modificador de dado `ef`: `/r 2d20ef + 3`. Apostar e o botão do Mestre armam a próxima rolagem de d20 do personagem com Ênfase.
 
 ## Antes de usar
-- Desligue a opção **One D&D exhaustion** do Rest Recovery. O módulo pergunta isso ao Mestre ao abrir o mundo.
+- Use o **Monolith: Resting Rules** no lugar do Rest Recovery. Se o Rest Recovery continuar ativo, desligue a opção **One D&D exhaustion** dele (o módulo pergunta ao abrir o mundo).
 - Os contadores antigos do custom-dnd5e (Desgaste de Alma, Conta Diferida, Pontos de Corrupção) podem ser removidos.
 - A Perdição fica numa marca do módulo, visível no painel de Medidas (configurável).
 

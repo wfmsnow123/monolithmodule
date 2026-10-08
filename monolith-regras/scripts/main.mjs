@@ -1,7 +1,6 @@
 import { ID } from "./util.mjs";
 import { configurarExaustao, registrarExaustao, configurarTidyExaustao, migrarExaustao, NIVEIS } from "./exaustao.mjs";
 import { registrarModificadorEnfase, registrarEnfaseNasRolagens } from "./enfase.mjs";
-import { registrarDescanso, instalarLeituraDeAjustes } from "./descanso.mjs";
 import { registrarStatusQueima, registrarGanchosMedidas } from "./medidas.mjs";
 import { MedidasApp, HUD, registrarBotoesDoChat } from "./apps.mjs";
 import { registrarConfigSobrecarga, registrarGanchosSobrecarga, aplicarLimitesSobrecarga, avisarCargaVariante } from "./sobrecarga.mjs";
@@ -26,7 +25,6 @@ Hooks.once("init", () => {
   registrarEnfaseNasRolagens();
   registrarStatusQueima();
   registrarGanchosMedidas();
-  registrarDescanso();
   registrarBotoesDoChat();
 
   // O custom-dnd5e pode reconstruir as condições no "ready"; garante os 10 níveis.
@@ -58,7 +56,6 @@ Hooks.once("init", () => {
 });
 
 Hooks.once("setup", () => {
-  instalarLeituraDeAjustes();
   aplicarLimitesSobrecarga();
 });
 
@@ -77,6 +74,14 @@ Hooks.on("updateActor", (actor) => {
 Hooks.on("createActiveEffect", (eff) => { if (eff.parent instanceof Actor) MedidasApp.atualizar(eff.parent); });
 Hooks.on("deleteActiveEffect", (eff) => { if (eff.parent instanceof Actor) MedidasApp.atualizar(eff.parent); });
 Hooks.on("updateUser", () => HUD.render());
+
+// Fim de descanso (Monolith: Resting Rules): o Fio perde falhas marcadas e as Medidas armadas expiram.
+Hooks.on("monolithResting.restCompleted", async (actor, tipo, { sonoInteiro } = {}) => {
+  if (!actor.isOwner || tipo === "folego") return;
+  const marcadas = actor.getFlag(ID, "marcadas") ?? 0;
+  const apagar = tipo === "completo" ? marcadas : sonoInteiro ? 2 : 1;
+  await actor.update({ [`flags.${ID}.marcadas`]: Math.max(0, marcadas - apagar), [`flags.${ID}.armadas`]: [] });
+});
 
 async function avisarConflitos() {
   if (!game.user.isGM) return;

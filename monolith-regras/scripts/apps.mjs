@@ -4,7 +4,6 @@ import {
   queimarAlma, encerrarQueima, danoNaQueima, inspiracaoDoMoribundo, nomeQueFica
 } from "./medidas.mjs";
 import { armarEnfase, rolarEnfaseSolta } from "./enfase.mjs";
-import { abrirPedidoDeDescanso } from "./descanso.mjs";
 import { DESCRICOES } from "./exaustao.mjs";
 
 const { ApplicationV2 } = foundry.applications.api;
@@ -230,6 +229,12 @@ export const HUD = {
     });
   }
 };
+
+function abrirPedidoDeDescanso() {
+  const api = game.modules.get("monolith-resting");
+  if (!api?.active) return ui.notifications.warn("Ative o módulo Monolith: Resting Rules para pedir descansos.");
+  return api.api?.abrirPedido();
+}
 
 /* ---------- Inspiração e Inspiração Heróica ---------- */
 
