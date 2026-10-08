@@ -17,6 +17,8 @@ import { MODULE } from '../constants.mjs';
 import { log } from '../utils/_module.mjs';
 
 const API = 'https://app.fantasy-calendar.com/api/v1';
+/** Calendário de Monolith no Fantasy-Calendar (embutido: módulo de uso pessoal). */
+const MONOLITH_HASH = 'eebf9d7a7158b0bc734c8d5420e8e66d';
 const S = {
   HASH: 'fcHash',
   PULL: 'fcPull',
@@ -41,26 +43,26 @@ export function registerFantasyCalendarSettings() {
   game.settings.register(MODULE.ID, S.HASH, {
     name: 'Fantasy-Calendar: hash do calendário',
     hint: 'O código no fim do link do calendário (app.fantasy-calendar.com/calendars/<hash>). Deixe vazio para desligar a sincronização.',
-    scope: 'world', config: true, type: String, default: '', onChange: () => restart()
+    scope: 'world', config: false, type: String, default: MONOLITH_HASH, onChange: () => restart()
   });
   game.settings.register(MODULE.ID, S.PULL, {
     name: 'Fantasy-Calendar: puxar a data do site',
     hint: 'Quando a data muda no site, o Foundry acompanha.',
-    scope: 'world', config: true, type: Boolean, default: true, onChange: () => restart()
+    scope: 'world', config: false, type: Boolean, default: true, onChange: () => restart()
   });
   game.settings.register(MODULE.ID, S.PUSH, {
     name: 'Fantasy-Calendar: enviar avanços do Foundry para o site',
     hint: 'Precisa de um token de acesso pessoal do site (contas Premium), salvo no menu "Token do Fantasy-Calendar".',
-    scope: 'world', config: true, type: Boolean, default: false
+    scope: 'world', config: false, type: Boolean, default: true
   });
   game.settings.register(MODULE.ID, S.CLOCK, {
     name: 'Fantasy-Calendar: sincronizar também a hora',
     hint: 'Desligado: só o dia é sincronizado e a hora do Foundry é preservada (use se o relógio do calendário no site está desativado).',
-    scope: 'world', config: true, type: Boolean, default: false
+    scope: 'world', config: false, type: Boolean, default: false
   });
   game.settings.register(MODULE.ID, S.POLL, {
     name: 'Fantasy-Calendar: intervalo de verificação (segundos)',
-    scope: 'world', config: true, type: Number, default: 60, range: { min: 15, max: 3600, step: 15 }, onChange: () => restart()
+    scope: 'world', config: false, type: Number, default: 60, range: { min: 15, max: 3600, step: 15 }, onChange: () => restart()
   });
   game.settings.register(MODULE.ID, S.TOKEN, { scope: 'client', config: false, type: String, default: '' });
   game.settings.register(MODULE.ID, S.LAST, { scope: 'world', config: false, type: Object, default: {} });
@@ -169,14 +171,14 @@ async function pull(force = false, stamp = null) {
 }
 
 function onWorldTimeChanged() {
-  if (applyingRemote || !isLeader() || !get(S.PUSH) || !get(S.HASH)) return;
+  if (applyingRemote || !isLeader() || !get(S.PUSH) || !get(S.HASH) || !get(S.TOKEN)) return;
   clearTimeout(pushTimer);
   pushTimer = setTimeout(() => pushNow(), 2000);
 }
 
 async function pushNow() {
   const calendar = CalendarManager.getActiveCalendar();
-  if (!calendar || !isLeader()) return;
+  if (!calendar || !isLeader() || !get(S.TOKEN)) return;
   const spd = (calendar.days?.hoursPerDay ?? 24) * (calendar.days?.minutesPerHour ?? 60) * (calendar.days?.secondsPerMinute ?? 60);
   const now = game.time.worldTime;
   const last = get(S.LAST) ?? {};
@@ -215,9 +217,9 @@ function status() {
 export class FantasyCalendarApp extends foundry.applications.api.ApplicationV2 {
   static DEFAULT_OPTIONS = {
     id: 'monolith-fantasy-calendar',
-    classes: ['calendaria', 'monolith-fc'],
+    classes: ['mono', 'monolith-fc'],
     tag: 'form',
-    window: { title: 'Conexão com o Fantasy-Calendar', icon: 'fas fa-link', resizable: true },
+    window: { title: 'Fantasy-Calendar', icon: 'fas fa-link', resizable: true },
     position: { width: 520, height: 'auto' },
     form: { handler: FantasyCalendarApp.#onSubmit, closeOnSubmit: false, submitOnChange: false },
     actions: { test: FantasyCalendarApp.#onTest, pullNow: FantasyCalendarApp.#onPull, clearToken: FantasyCalendarApp.#onClearToken }
@@ -240,25 +242,26 @@ export class FantasyCalendarApp extends foundry.applications.api.ApplicationV2 {
   }
 
   async _renderHTML(ctx) {
-    const chk = (v) => (v ? 'checked' : '');
     const esc = (v) => foundry.utils.escapeHTML(String(v ?? ''));
-    return `<section class="standard-form" style="padding:8px">
-      <p class="hint">Cole o código do calendário (o fim do link <i>app.fantasy-calendar.com/calendars/&lt;hash&gt;</i>). O Foundry passa a acompanhar a data do site. Para o Foundry também mudar a data do site, cole um token de acesso pessoal (Premium, em <i>app.fantasy-calendar.com/profile/api-tokens</i>).</p>
-      <div class="form-group"><label>Hash do calendário</label><div class="form-fields"><input type="text" name="hash" value="${esc(ctx.hash)}" placeholder="eebf9d7a..."></div></div>
-      <div class="form-group"><label>Data no site agora</label><div class="form-fields"><span>${esc(ctx.siteDate ?? (ctx.hash ? '...' : 'preencha o hash'))}</span></div></div>
-      <div class="form-group"><label>Puxar a data do site</label><div class="form-fields"><input type="checkbox" name="pull" ${chk(ctx.pull)}></div></div>
-      <div class="form-group"><label>Sincronizar também a hora</label><div class="form-fields"><input type="checkbox" name="clock" ${chk(ctx.clock)}></div><p class="hint">Deixe desligado se o relógio do calendário estiver desativado no site.</p></div>
-      <div class="form-group"><label>Verificar a cada (segundos)</label><div class="form-fields"><input type="number" name="poll" min="15" max="3600" step="15" value="${esc(ctx.poll)}"></div></div>
-      <hr>
-      <div class="form-group"><label>Enviar avanços do Foundry para o site</label><div class="form-fields"><input type="checkbox" name="push" ${chk(ctx.push)}></div></div>
-      <div class="form-group"><label>Token de acesso pessoal</label><div class="form-fields"><input type="password" name="token" autocomplete="off" placeholder="${ctx.hasToken ? 'token salvo neste navegador' : 'cole o token aqui'}"></div><p class="hint">Fica salvo só neste navegador. Deixe vazio para manter o atual.</p></div>
-      <footer class="form-footer" style="display:flex;gap:6px;flex-wrap:wrap">
-        <button type="submit"><i class="fas fa-save"></i> Salvar</button>
-        <button type="button" data-action="test"><i class="fas fa-plug"></i> Testar conexão</button>
-        <button type="button" data-action="pullNow"><i class="fas fa-download"></i> Puxar a data agora</button>
-        ${ctx.hasToken ? '<button type="button" data-action="clearToken"><i class="fas fa-trash"></i> Apagar token</button>' : ''}
+    const chk = (v) => (v ? 'checked' : '');
+    return `<div class="mono-root" style="background:transparent">
+      <div class="mono-notice mono-notice--info" style="margin-bottom:var(--space-3)">
+        <p class="mono-notice__title">Monolith no Fantasy-Calendar</p>
+        <p class="mono-notice__body">Data no site agora: <b>${esc(ctx.siteDate ?? '...')}</b>. O Foundry acompanha o site${ctx.hasToken ? ' e envia os avanços de tempo de volta' : '; para enviar os avanços de volta, cole o token abaixo'}.</p>
+      </div>
+      <h3 class="mono-heading">Sincronização</h3>
+      <label class="mono-field"><span class="mono-field__label">Puxar a data do site</span><input class="mono-toggle" type="checkbox" role="switch" name="pull" ${chk(ctx.pull)}><p class="mono-field__hint">Verifica o site a cada ${esc(ctx.poll)} segundos.</p></label>
+      <label class="mono-field"><span class="mono-field__label">Enviar avanços para o site</span><input class="mono-toggle" type="checkbox" role="switch" name="push" ${chk(ctx.push)}><p class="mono-field__hint">Só funciona com o token salvo neste navegador.</p></label>
+      <label class="mono-field"><span class="mono-field__label">Sincronizar também a hora</span><input class="mono-check" type="checkbox" name="clock" ${chk(ctx.clock)}><p class="mono-field__hint">Desligado: só o dia muda, a hora do Foundry fica.</p></label>
+      <label class="mono-field"><span class="mono-field__label">Token de acesso pessoal</span><input class="mono-input" type="password" name="token" autocomplete="off" placeholder="${ctx.hasToken ? 'salvo neste navegador' : 'cole o token aqui'}"><p class="mono-field__hint">Fica só neste navegador. Vazio mantém o atual.</p></label>
+      <input type="hidden" name="hash" value="${esc(ctx.hash)}"><input type="hidden" name="poll" value="${esc(ctx.poll)}">
+      <footer class="mono-window__footer" style="margin:var(--space-4) calc(-1 * var(--space-4)) calc(-1 * var(--space-4))">
+        ${ctx.hasToken ? '<button type="button" class="mono-btn mono-btn--ghost" data-action="clearToken">Apagar token</button>' : ''}
+        <button type="button" class="mono-btn" data-action="pullNow">Puxar agora</button>
+        <button type="button" class="mono-btn mono-btn--secondary" data-action="test">Testar</button>
+        <button type="submit" class="mono-btn mono-btn--primary">Salvar</button>
       </footer>
-    </section>`;
+    </div>`;
   }
 
   _replaceHTML(result, content) {

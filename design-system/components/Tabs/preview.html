@@ -1,0 +1,16 @@
+<!-- @dsCard group="Navigation" height=80 subtitle="click to switch" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>preview</title>
+<style>html,body{margin:0;background:var(--void-100);} .pad{padding:16px;} .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}</style>
+</head>
+<body class="mono">
+<div class="pad"><nav class="mono-tabs" role="tablist">
+  <button class="mono-tab" role="tab" aria-selected="true">Geral</button>
+  <button class="mono-tab" role="tab" aria-selected="false">Terror</button>
+  <button class="mono-tab" role="tab" aria-selected="false">Áudio</button>
+  <button class="mono-tab" role="tab" aria-selected="false">Avançado</button>
+</nav></div>
+<script>document.querySelectorAll('[role=tab]').forEach(function(t){t.addEventListener('click',function(){t.parentNode.querySelectorAll('[role=tab]').forEach(function(x){x.setAttribute('aria-selected',x===t)})})});</script>
+</body>
+</html>

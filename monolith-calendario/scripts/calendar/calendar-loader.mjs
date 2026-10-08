@@ -3,27 +3,7 @@ import { log } from '../utils/_module.mjs';
 import { CalendarRegistry, preLocalizeCalendar } from './_module.mjs';
 
 /** @type {string[]} List of bundled calendar IDs that ship with the module. */
-export const BUNDLED_CALENDARS = [
-  'athasian',
-  'barovian',
-  'cerilian',
-  'drakkenheim',
-  'exandrian',
-  'forbidden-lands',
-  'galifar',
-  'golarion',
-  'golarion-imperial',
-  'gregorian',
-  'pact-standard',
-  'greyhawk',
-  'harptos',
-  'imperial-warhammer',
-  'krynn-elven',
-  'krynn-solamnia',
-  'renescara',
-  'thyatian',
-  'traveller'
-];
+export const BUNDLED_CALENDARS = ['gregorian'];
 
 /** @type {string} Default calendar ID to use when no calendar is selected. */
 export const DEFAULT_CALENDAR = 'gregorian';

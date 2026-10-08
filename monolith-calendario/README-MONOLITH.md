@@ -16,17 +16,14 @@ Calendário da campanha Monolith para Foundry VTT 13 (13.351+).
 
 ## Instalação
 
-1. Desative o **Calendaria** original, se estiver instalado. Os dois não podem ficar ativos juntos (o módulo declara conflito).
-2. Copie a pasta `monolith-calendario` para `Data/modules/` e ative no mundo.
-3. Importe o calendário: Calendário > Importar > Fantasy-Calendar > escolha `monolithcalendar.json` (exportado do site). Importe também as notas (os 87 eventos).
-4. Abra **Configurações do Calendaria** (aba Início) e clique em **Fantasy-Calendar**, ou use Configurar Definições > Monolith: Calendário > **Conexão com o Fantasy-Calendar**. Na janela:
-   - **Hash do calendário**: o código no fim do link do calendário no site;
-   - **Puxar a data do site**: ligado;
-   - **Sincronizar também a hora**: desligado enquanto o relógio estiver desativado no site;
-   - para enviar avanços ao site, cole um **token de acesso pessoal** (contas Premium, em app.fantasy-calendar.com/profile/api-tokens) e ligue **Enviar avanços**;
-   - **Testar conexão** confirma a leitura e o token.
+1. Desative o **Calendaria** original e o **Simple Timekeeping**, se estiverem instalados.
+2. Instale pelo manifest e ative no mundo.
+3. Na primeira abertura, o Mestre recebe o **calendário de Monolith já importado** (meses, semana, Telunia e Pilas, estações periódicas, eras, constelações e os 87 eventos), e ele vira o calendário ativo. O mundo recarrega uma vez.
+4. A sincronização com o Fantasy-Calendar já vem ligada para o calendário de Monolith: o Foundry acompanha a data do site. Para o Foundry também mudar a data do site, abra **Configurações do Calendário > Início > Fantasy-Calendar** e cole o token de acesso pessoal (fica só no seu navegador).
 
-Console: `CALENDARIA.fantasyCalendar.status()`, `.pull()`, `.push()`.
+## O que foi tirado do Calendaria
+
+Abas de Névoa de Guerra, Macros, Chat, Permissões, Tela, Módulo, Cinemáticas e Cronômetro; importadores de outros módulos (fica o do Fantasy-Calendar e o de backups do próprio calendário); os calendários de exemplo (fica o gregoriano, como reserva interna); links, rodapé e mensagem de novidades. Os temas viraram **Monolith: Abyss** e **Monolith: Ossuary**, do design system de Monolith.
 
 ## Limites conhecidos
 

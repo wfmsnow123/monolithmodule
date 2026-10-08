@@ -1,0 +1,143 @@
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=Barlow:wght@400;600&family=Bebas+Neue&family=JetBrains+Mono&display=swap");
+
+/* Monolith — component styles. Loads after tokens.css; every value is a token. */
+
+.mono, .mono-root {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ink);
+  background: var(--void-100);
+}
+.mono *, .mono-root * { box-sizing: border-box; }
+.mono :focus-visible, .mono-root :focus-visible { outline: 2px solid var(--ward); outline-offset: 2px; }
+
+/* ---------- Button ---------- */
+.mono-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-1);
+  min-height: 32px; padding: var(--space-2) var(--space-4);
+  font-family: var(--font-label); font-size: 12px; line-height: 16px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  border: 1px solid var(--void-400); border-radius: var(--radius-sm);
+  background: var(--void-200); color: var(--ink); cursor: pointer;
+}
+.mono-btn:hover { border-color: var(--ink-muted); }
+.mono-btn--primary { background: var(--blood-500); border-color: var(--blood-500); color: var(--bone); }
+.mono-btn--primary:hover { background: var(--blood-600); border-color: var(--blood-600); }
+.mono-btn--secondary { background: var(--cobalt-500); border-color: var(--cobalt-500); color: var(--bone); }
+.mono-btn--secondary:hover { background: var(--cobalt-600); border-color: var(--cobalt-600); }
+.mono-btn--ghost { background: transparent; border-color: transparent; color: var(--blood-text); }
+.mono-btn--ghost:hover { border-color: var(--void-300); }
+.mono-btn[disabled] { opacity: .45; cursor: not-allowed; }
+
+/* ---------- Window (Foundry application frame) ---------- */
+.mono-window {
+  background: var(--void-100); color: var(--ink);
+  border: 1px solid var(--void-300); border-top: 3px solid var(--blood-500);
+  border-radius: var(--radius-none); box-shadow: var(--shadow-window);
+}
+.mono-window__header {
+  display: flex; align-items: center; gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: var(--void-000); border-bottom: 1px solid var(--void-300);
+}
+.mono-window__title {
+  flex: 1; margin: 0;
+  font-family: var(--font-display); font-size: 22px; line-height: 24px; font-weight: 400;
+  letter-spacing: 0.05em; text-transform: uppercase;
+}
+.mono-window__sigil { width: 8px; height: 16px; background: var(--blood-500); }
+.mono-window__close {
+  background: none; border: 0; color: var(--ink-muted); cursor: pointer;
+  font-family: var(--font-label); font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
+}
+.mono-window__close:hover { color: var(--blood-text); }
+.mono-window__body { padding: var(--space-4); }
+.mono-window__footer {
+  display: flex; justify-content: flex-end; gap: var(--space-2);
+  padding: var(--space-3) var(--space-4); border-top: 1px solid var(--void-300); background: var(--void-000);
+}
+
+/* ---------- Section heading ---------- */
+.mono-heading {
+  display: flex; align-items: center; gap: var(--space-2);
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-display); font-size: 20px; line-height: 24px; font-weight: 400;
+  letter-spacing: 0.05em; color: var(--ink);
+}
+.mono-heading::before { content: ""; width: 4px; height: 18px; background: var(--blood-500); }
+.mono-heading::after { content: ""; flex: 1; height: 1px; background: var(--void-300); }
+
+/* ---------- Setting field ---------- */
+.mono-field {
+  display: grid; grid-template-columns: 1fr minmax(160px, 45%); gap: var(--space-1) var(--space-4);
+  align-items: center; padding: var(--space-3) 0; border-bottom: 1px solid var(--void-300);
+}
+.mono-field__label { font-weight: 600; }
+.mono-field__hint { grid-column: 1 / -1; margin: 0; font-size: 12px; line-height: 16px; color: var(--ink-muted); }
+.mono-field__hint--warn { color: var(--ichor); }
+.mono-field__key { font-family: var(--font-mono); font-size: 12px; color: var(--ink-muted); }
+
+.mono-input, .mono-select {
+  width: 100%; min-height: 32px; padding: var(--space-1) var(--space-3);
+  font: inherit; color: var(--ink);
+  background: var(--void-200); border: 1px solid var(--void-400); border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-pit);
+}
+.mono-input::placeholder { color: var(--ink-muted); }
+.mono-input[aria-invalid="true"] { border-color: var(--blood-text); }
+.mono-select { appearance: none; padding-right: var(--space-8);
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - 16px) 50%, calc(100% - 11px) 50%; background-size: 5px 5px; background-repeat: no-repeat; }
+
+.mono-check { appearance: none; width: 18px; height: 18px; margin: 0; justify-self: end;
+  border: 1px solid var(--void-400); border-radius: var(--radius-sm); background: var(--void-200); cursor: pointer; display: grid; place-content: center; }
+.mono-check:checked { background: var(--blood-500); border-color: var(--blood-500); }
+.mono-check:checked::after { content: ""; width: 8px; height: 8px; background: var(--bone); }
+
+/* ---------- Toggle ---------- */
+.mono-toggle { appearance: none; position: relative; width: 40px; height: 20px; margin: 0; justify-self: end; cursor: pointer;
+  border: 1px solid var(--void-400); border-radius: var(--radius-round); background: var(--void-200); }
+.mono-toggle::after { content: ""; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px;
+  border-radius: var(--radius-round); background: var(--ink-muted); transition: left .12s; }
+.mono-toggle:checked { background: var(--cobalt-500); border-color: var(--cobalt-500); }
+.mono-toggle:checked::after { left: 22px; background: var(--bone); }
+
+/* ---------- Tabs ---------- */
+.mono-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--void-300); }
+.mono-tab {
+  padding: var(--space-2) var(--space-4); margin-bottom: -1px;
+  font-family: var(--font-label); font-size: 12px; line-height: 16px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink-muted); background: none; border: 0; border-bottom: 2px solid transparent; cursor: pointer;
+}
+.mono-tab:hover { color: var(--ink); }
+.mono-tab[aria-selected="true"] { color: var(--cobalt-text); border-bottom-color: var(--cobalt-500); background: var(--void-200); }
+
+/* ---------- Notice ---------- */
+.mono-notice {
+  padding: var(--space-3); border: 1px solid var(--void-400); border-radius: var(--radius-sm);
+  background: var(--void-200);
+}
+.mono-notice__title { display: flex; align-items: center; gap: var(--space-2); margin: 0 0 var(--space-1);
+  font-family: var(--font-label); font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+.mono-notice__title::before { content: ""; width: 8px; height: 8px; background: var(--void-400); transform: rotate(45deg); }
+.mono-notice__body { margin: 0; color: var(--ink); }
+.mono-notice--danger { background: var(--blood-wash); border-color: var(--blood-500); }
+.mono-notice--danger .mono-notice__title { color: var(--blood-text); }
+.mono-notice--danger .mono-notice__title::before { background: var(--blood-text); }
+.mono-notice--info { background: var(--cobalt-wash); border-color: var(--cobalt-500); }
+.mono-notice--info .mono-notice__title { color: var(--cobalt-text); }
+.mono-notice--info .mono-notice__title::before { background: var(--cobalt-text); }
+.mono-notice--warn { border-color: var(--ichor); background: var(--void-100); }
+.mono-notice--warn .mono-notice__title { color: var(--ichor); }
+.mono-notice--warn .mono-notice__title::before { background: var(--ichor); }
+
+/* ---------- Badge ---------- */
+.mono-badge {
+  display: inline-block; padding: 0 var(--space-2);
+  font-family: var(--font-label); font-size: 11px; line-height: 18px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+  border: 1px solid var(--void-400); border-radius: var(--radius-sm); color: var(--ink-muted);
+}
+.mono-badge--blood { background: var(--blood-500); border-color: var(--blood-500); color: var(--bone); }
+.mono-badge--cobalt { background: var(--cobalt-500); border-color: var(--cobalt-500); color: var(--bone); }

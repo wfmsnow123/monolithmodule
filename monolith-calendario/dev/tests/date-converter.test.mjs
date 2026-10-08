@@ -8,7 +8,7 @@ vi.mock('../../scripts/utils/formatting/format-utils.mjs', () => ({ formatCustom
 const SECS_PER_MINUTE = 60;
 const SECS_PER_HOUR = 3600;
 const SECS_PER_DAY = 86400;
-const calendarsDir = join(import.meta.dirname, '../../calendars');
+const calendarsDir = join(import.meta.dirname, 'fixtures/calendars');
 const calendarFiles = readdirSync(calendarsDir).filter((f) => f.endsWith('.json'));
 
 function extractMonthDays(json) {

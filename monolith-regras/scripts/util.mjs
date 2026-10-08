@@ -50,9 +50,9 @@ export function caixasLivres(actor) {
 }
 
 export async function chat(actor, titulo, corpo, { whisperGM = false, icon = "fa-skull" } = {}) {
-  const content = `<div class="monolith-card">
+  const content = `<div class="mono-card">
     <header><i class="fas ${icon}"></i> ${titulo}</header>
-    <div class="monolith-card-body">${corpo}</div>
+    <div class="mono-card__body">${corpo}</div>
   </div>`;
   const data = { speaker: ChatMessage.getSpeaker({ actor }), content };
   if (whisperGM) data.whisper = ChatMessage.getWhisperRecipients("GM");
@@ -75,8 +75,7 @@ export async function escolherPersonagem(titulo, { excluir = null } = {}) {
     .filter(a => a.type === "character" && a.hasPlayerOwner && a.id !== excluir)
     .map(a => `<option value="${a.id}">${esc(a.name)}</option>`).join("");
   if (!opts) { ui.notifications.warn("Nenhum outro personagem disponível."); return null; }
-  const id = await foundry.applications.api.DialogV2.prompt({
-    window: { title: titulo },
+  const id = await foundry.applications.api.DialogV2.prompt({ classes: ["mono"], window: { title: titulo },
     content: `<div class="form-group"><label>Personagem</label><select name="alvo">${opts}</select></div>`,
     ok: { label: "Confirmar", callback: (ev, btn) => btn.form.elements.alvo.value }
   }).catch(() => null);
@@ -84,7 +83,6 @@ export async function escolherPersonagem(titulo, { excluir = null } = {}) {
 }
 
 export async function confirmar(titulo, texto) {
-  return foundry.applications.api.DialogV2.confirm({
-    window: { title: titulo }, content: `<p>${texto}</p>`
+  return foundry.applications.api.DialogV2.confirm({ classes: ["mono"], window: { title: titulo }, content: `<p>${texto}</p>`
   }).catch(() => false);
 }

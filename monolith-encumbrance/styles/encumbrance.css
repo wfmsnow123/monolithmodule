@@ -1,16 +1,18 @@
-.monolith-enc .window-content { padding: 8px 10px; overflow-y: auto; }
-.monolith-enc-body .hint { font-size: 0.82em; opacity: 0.8; margin: 2px 0 6px; }
-.monolith-enc-body fieldset.faixa { margin-bottom: 10px; border: 1px solid #8e1b1b; border-radius: 5px; }
-.monolith-enc-body legend { display: flex; align-items: center; gap: 6px; font-weight: bold; }
+/* Monolith: Encumbrance. Usa os tokens do design system (styles/monolith-ui.css). */
+.monolith-enc > .window-content { overflow-y: auto; }
+.monolith-enc-body .hint { font-size: 12px; line-height: 16px; color: var(--ink-muted); margin: 0 0 var(--space-3); }
+.monolith-enc-body fieldset.faixa { margin-bottom: var(--space-4); padding: var(--space-3); border: 1px solid var(--void-300); border-top: 3px solid var(--blood-500); background: var(--void-000); }
+.monolith-enc-body legend { display: flex; align-items: center; gap: var(--space-2); font-family: var(--font-display); font-size: 18px; letter-spacing: 0.05em; text-transform: uppercase; padding: 0 var(--space-1); }
 .monolith-enc-body legend img { width: 22px; height: 22px; border: none; }
-.monolith-enc-body .linha { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 6px; }
-.monolith-enc-body .linha > label { flex: 1; display: flex; gap: 6px; align-items: center; }
+.monolith-enc-body .linha { display: flex; gap: var(--space-3); align-items: flex-start; margin-bottom: var(--space-2); }
+.monolith-enc-body .linha > label { flex: 1; display: flex; gap: var(--space-2); align-items: center; font-weight: 600; }
 .monolith-enc-body .linha > label.curto { flex: 0 0 auto; }
 .monolith-enc-body label input[type="text"], .monolith-enc-body label select { flex: 1; }
-.monolith-enc-body input[type="number"] { width: 70px; flex: 0 0 auto; }
-.monolith-enc-body table.grade { width: auto; flex: 0 0 auto; border-collapse: collapse; }
-.monolith-enc-body table.grade th, .monolith-enc-body table.grade td { padding: 1px 6px; text-align: center; font-size: 0.85em; }
+.monolith-enc-body input[type="number"] { width: 72px; flex: 0 0 auto; }
+.monolith-enc-body table.grade { width: auto; flex: 0 0 auto; border-collapse: collapse; background: transparent; border: 1px solid var(--void-300); }
+.monolith-enc-body table.grade th { font-family: var(--font-label); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); background: var(--void-200); }
+.monolith-enc-body table.grade th, .monolith-enc-body table.grade td { padding: 2px var(--space-2); text-align: center; border-bottom: 1px solid var(--void-300); }
 .monolith-enc-body label.extras { flex-direction: column; align-items: stretch !important; }
-.monolith-enc-body label.extras textarea { font-family: monospace; font-size: 0.85em; }
-.monolith-enc-body .acoes, .monolith-enc-body .rodape { display: flex; gap: 6px; justify-content: flex-end; }
-.monolith-enc-body .rodape { position: sticky; bottom: 0; background: var(--color-bg, #1c1c1c); padding: 6px 0; }
+.monolith-enc-body label.extras textarea { font-family: var(--font-mono); font-size: 12px; }
+.monolith-enc-body .acoes, .monolith-enc-body .rodape { display: flex; gap: var(--space-2); justify-content: flex-end; }
+.monolith-enc-body .rodape { position: sticky; bottom: 0; background: var(--void-000); padding: var(--space-3); border-top: 1px solid var(--void-300); margin: 0 calc(-1 * var(--space-4)) calc(-1 * var(--space-4)); }

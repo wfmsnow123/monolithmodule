@@ -2,16 +2,42 @@
   "id": "monolith-encumbrance",
   "title": "Monolith: Encumbrance",
   "description": "Carga configurável para dnd5e: faixas de peso por Força, redução de deslocamento, desvantagens por habilidade e tipo de rolagem, efeitos livres e multiplicadores de peso. Substitui o Variant Encumbrance + Midi.",
-  "version": "0.1.0",
-  "authors": [{ "name": "snowxd" }],
-  "compatibility": { "minimum": "13", "verified": "13.351" },
-  "relationships": {
-    "systems": [{ "id": "dnd5e", "type": "system", "compatibility": { "minimum": "5.2.0" } }],
-    "conflicts": [{ "id": "variant-encumbrance-dnd5e", "type": "module", "reason": "Os dois calculam carga; use só um." }]
+  "version": "0.2.0",
+  "authors": [
+    {
+      "name": "snowxd"
+    }
+  ],
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13.351"
   },
-  "esmodules": ["scripts/main.mjs"],
-  "styles": ["styles/encumbrance.css"],
+  "relationships": {
+    "systems": [
+      {
+        "id": "dnd5e",
+        "type": "system",
+        "compatibility": {
+          "minimum": "5.2.0"
+        }
+      }
+    ],
+    "conflicts": [
+      {
+        "id": "variant-encumbrance-dnd5e",
+        "type": "module",
+        "reason": "Os dois calculam carga; use só um."
+      }
+    ]
+  },
+  "esmodules": [
+    "scripts/main.mjs"
+  ],
+  "styles": [
+    "styles/monolith-ui.css",
+    "styles/encumbrance.css"
+  ],
   "url": "https://github.com/wfmsnow123/monolithmodule",
   "manifest": "https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-encumbrance/module.json",
-  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-encumbrance-v0.1.0/monolith-encumbrance.zip"
+  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-encumbrance-v0.2.0/monolith-encumbrance.zip"
 }

@@ -1,0 +1,16 @@
+<!-- @dsCard group="Layout" height=220 subtitle="Foundry application frame" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>preview</title>
+<style>html,body{margin:0;background:var(--void-100);} .pad{padding:16px;} .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}</style>
+</head>
+<body class="mono">
+<div class="pad">
+<section class="mono-window" style="max-width:460px">
+  <header class="mono-window__header"><span class="mono-window__sigil"></span><h2 class="mono-window__title">Monolith · Terror</h2><button class="mono-window__close">Fechar</button></header>
+  <div class="mono-window__body"><p style="margin:0">O corpo de qualquer aplicação do módulo: formulários, listas, diálogos.</p></div>
+  <footer class="mono-window__footer"><button class="mono-btn">Cancelar</button><button class="mono-btn mono-btn--primary">Salvar</button></footer>
+</section></div>
+<script>document.querySelectorAll('[role=tab]').forEach(function(t){t.addEventListener('click',function(){t.parentNode.querySelectorAll('[role=tab]').forEach(function(x){x.setAttribute('aria-selected',x===t)})})});</script>
+</body>
+</html>

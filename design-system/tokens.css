@@ -1,0 +1,65 @@
+/* Monolith — generated from tokens.json (gerado localmente; edite o tokens.json e gere de novo) */
+
+:root, .mono, .mono-root, [data-theme="abyss"] {
+  --void-000: #07080b;
+  --void-100: #0e1016;
+  --void-200: #161a22;
+  --void-300: #2a303c;
+  --void-400: #636b7e;
+  --ink: #e6e2d8;
+  --ink-muted: #8f95a3;
+  --bone: #f1ece2;
+  --blood-500: #a3121b;
+  --blood-600: #c41d27;
+  --blood-text: #ec5960;
+  --blood-wash: #2a0b0e;
+  --cobalt-500: #28479a;
+  --cobalt-600: #3557b3;
+  --cobalt-text: #86a3e6;
+  --cobalt-wash: #0d1630;
+  --ward: #6b8ff0;
+  --ichor: #d29a3a;
+  --verdigris: #6fae99;
+  --shadow-pit: inset 0 1px 3px rgba(0,0,0,0.6);
+  --shadow-window: 0 12px 40px rgba(0,0,0,0.75);
+}
+
+[data-theme="ossuary"], body.theme-light .mono, body.theme-light .mono-root {
+  --void-000: #e9e3d6;
+  --void-100: #f4efe4;
+  --void-200: #ddd5c4;
+  --void-300: #b9ad97;
+  --void-400: #7d725f;
+  --ink: #131419;
+  --ink-muted: #4c505b;
+  --bone: #f1ece2;
+  --blood-500: #9a1018;
+  --blood-600: #7a0b12;
+  --blood-text: #8e0f16;
+  --blood-wash: #f2d9d6;
+  --cobalt-500: #22408c;
+  --cobalt-600: #1a3170;
+  --cobalt-text: #1f3c86;
+  --cobalt-wash: #dbe2f2;
+  --ward: #2f56c4;
+  --ichor: #8a5a0e;
+  --verdigris: #2e6b58;
+  --shadow-pit: inset 0 1px 2px rgba(40,30,20,0.18);
+  --shadow-window: 0 10px 30px rgba(40,30,20,0.28);
+}
+
+:root {
+  --font-display: "Bebas Neue", "Oswald", Impact, "Arial Narrow", sans-serif;
+  --font-sans: "Barlow", "Segoe UI", system-ui, sans-serif;
+  --font-label: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --radius-none: 0px;
+  --radius-sm: 2px;
+  --radius-round: 999px;
+}

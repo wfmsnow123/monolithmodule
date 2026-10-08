@@ -14,7 +14,7 @@
     "minimum": "13.351",
     "verified": "14.361"
   },
-  "description": "Calendário de Monolith. Fork do Calendaria (Tyler/Sayshal, MIT) com luas e estações fiéis ao Fantasy-Calendar.com e sincronização com o site.",
+  "description": "Calendário de Monolith para Foundry VTT: o calendário do mundo embutido, luas e estações fiéis ao Fantasy-Calendar.com, sincronização com o site e o visual do design system de Monolith. Baseado no Calendaria (Tyler/Sayshal, MIT).",
   "documentTypes": {
     "JournalEntryPage": {
       "calendarnote": {
@@ -24,7 +24,7 @@
       }
     }
   },
-  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-calendario-v1.0.17-monolith.2/monolith-calendario.zip",
+  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-calendario-v1.0.17-monolith.3/monolith-calendario.zip",
   "esmodules": [
     "calendaria.mjs"
   ],
@@ -109,5 +109,5 @@
   "socket": true,
   "title": "Monolith: Calendário",
   "url": "https://github.com/wfmsnow123/monolithmodule",
-  "version": "1.0.17-monolith.2"
+  "version": "1.0.17-monolith.3"
 }

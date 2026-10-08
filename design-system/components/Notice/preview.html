@@ -1,0 +1,15 @@
+<!-- @dsCard group="Feedback" height=300 subtitle="danger · info · warn" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>preview</title>
+<style>html,body{margin:0;background:var(--void-100);} .pad{padding:16px;} .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}</style>
+</head>
+<body class="mono">
+<div class="pad" style="display:grid;gap:8px;max-width:520px">
+  <div class="mono-notice mono-notice--danger"><p class="mono-notice__title">Ação irreversível</p><p class="mono-notice__body">Apagar este registro remove todas as cicatrizes salvas dos personagens.</p></div>
+  <div class="mono-notice mono-notice--info"><p class="mono-notice__title">Sobre este módulo</p><p class="mono-notice__body">Configure o terror por cena na aba Avançado.</p></div>
+  <div class="mono-notice mono-notice--warn"><p class="mono-notice__title">Recarregamento necessário</p><p class="mono-notice__body">As mudanças valem após recarregar o mundo.</p></div>
+</div>
+<script>document.querySelectorAll('[role=tab]').forEach(function(t){t.addEventListener('click',function(){t.parentNode.querySelectorAll('[role=tab]').forEach(function(x){x.setAttribute('aria-selected',x===t)})})});</script>
+</body>
+</html>

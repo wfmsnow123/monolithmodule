@@ -1,0 +1,17 @@
+<!-- @dsCard group="Actions" height=112 subtitle="primary · secondary · default · ghost · disabled" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>preview</title>
+<style>html,body{margin:0;background:var(--void-100);} .pad{padding:16px;} .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}</style>
+</head>
+<body class="mono">
+<div class="pad row">
+  <button class="mono-btn mono-btn--primary">Salvar</button>
+  <button class="mono-btn mono-btn--secondary">Importar</button>
+  <button class="mono-btn">Cancelar</button>
+  <button class="mono-btn mono-btn--ghost">Restaurar padrões</button>
+  <button class="mono-btn mono-btn--primary" disabled>Bloqueado</button>
+</div>
+<script>document.querySelectorAll('[role=tab]').forEach(function(t){t.addEventListener('click',function(){t.parentNode.querySelectorAll('[role=tab]').forEach(function(x){x.setAttribute('aria-selected',x===t)})})});</script>
+</body>
+</html>

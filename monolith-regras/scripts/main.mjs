@@ -87,8 +87,7 @@ async function avisarConflitos() {
   if (!game.user.isGM) return;
   const rr = game.modules.get("rest-recovery");
   if (rr?.active && game.settings.get("rest-recovery", "one-dnd-exhaustion")) {
-    const ok = await foundry.applications.api.DialogV2.confirm({
-      window: { title: "Monolith: Exaustão" },
+    const ok = await foundry.applications.api.DialogV2.confirm({ classes: ["mono"], window: { title: "Monolith: Exaustão" },
       content: `<p>A opção <b>exaustão do One D&D</b> do Rest Recovery está ligada. Ela cria um segundo efeito de -1 por nível, que somaria com a Exaustão de Monolith, e apaga os efeitos de nível (desvantagem, deslocamento, PV).</p>
         <p>Desligar agora? O mundo precisa ser recarregado depois.</p>`
     }).catch(() => false);

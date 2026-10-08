@@ -10,6 +10,7 @@ import { initializeChatCommander, initializeFXMaster } from './scripts/integrati
 import { NoteManager } from './scripts/notes/_module.mjs';
 import CalendariaSettings from './scripts/settings-handler.mjs';
 import { initializeFantasyCalendarSync, registerFantasyCalendarSettings } from './scripts/integrations/fantasy-calendar-sync.mjs';
+import { registerMonolithSeedSettings, seedMonolithCalendar } from './scripts/integrations/monolith-seed.mjs';
 import { EventScheduler, ReminderScheduler, TimeClock, TimeTracker } from './scripts/time/_module.mjs';
 import {
   CalendariaSocket,
@@ -56,12 +57,19 @@ import './styles/theme.css';
 import './styles/time-keeper.css';
 import './styles/tooltips.css';
 import './styles/weather.css';
+import './styles/monolith-ui.css';
+import './styles/monolith-calendario.css';
 
 Hooks.once('init', async () => {
+  if (!document.getElementById('monolith-fonts')) {
+    const link = Object.assign(document.createElement('link'), { id: 'monolith-fonts', rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=Barlow:wght@400;600&family=Bebas+Neue&family=JetBrains+Mono&display=swap' });
+    document.head.append(link);
+  }
   createGlobalNamespace();
   Hooks.callAll(HOOKS.INIT);
   CalendariaSettings.registerSettings();
   registerFantasyCalendarSettings();
+  registerMonolithSeedSettings();
   initializeLogger();
   registerKeybindings();
   registerHooks();
@@ -90,6 +98,7 @@ Hooks.once('ready', async () => {
   await CalendarManager.initialize();
   await runAllMigrations();
   await NoteManager.initialize();
+  await seedMonolithCalendar();
   if (game.user.isGM) {
     const activeCalendar = CalendarManager.getActiveCalendar();
     if (activeCalendar?.metadata?.id) await FestivalManager.seedFestivalNotes(activeCalendar.metadata.id, activeCalendar);
@@ -139,7 +148,6 @@ Hooks.once('ready', async () => {
   initializeChatCommander();
   initializeFXMaster();
   initializeWeatherSound();
-  await checkReleaseMessage();
   Hooks.callAll(HOOKS.READY, { api: CalendariaAPI, calendar: CalendarManager.getActiveCalendar(), version: game.modules.get('monolith-calendario')?.version });
   if (game.settings.get(MODULE.ID, SETTINGS.SHOW_TIME_KEEPER) && canViewTimeKeeper()) TimeKeeper.show({ silent: true });
   if (game.settings.get(MODULE.ID, SETTINGS.SHOW_SUN_DIAL) && canViewSunDial()) SunDial.show({ silent: true });

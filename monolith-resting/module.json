@@ -2,16 +2,42 @@
   "id": "monolith-resting",
   "title": "Monolith: Resting Rules",
   "description": "Os três descansos de Monolith prontos no dnd5e: Fôlego, Vigília (sono inteiro, Agitada, armadura) e Descanso Completo, com limites por dia, acampamento Exposto e Dormir é para os Fracos. Substitui o Rest Recovery for 5E.",
-  "version": "0.1.0",
-  "authors": [{ "name": "snowxd" }],
-  "compatibility": { "minimum": "13", "verified": "13.351" },
-  "relationships": {
-    "systems": [{ "id": "dnd5e", "type": "system", "compatibility": { "minimum": "5.2.0" } }],
-    "conflicts": [{ "id": "rest-recovery", "type": "module", "reason": "Os dois reconfiguram os descansos do dnd5e; use só um." }]
+  "version": "0.2.0",
+  "authors": [
+    {
+      "name": "snowxd"
+    }
+  ],
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13.351"
   },
-  "esmodules": ["scripts/main.mjs"],
-  "styles": ["styles/resting.css"],
+  "relationships": {
+    "systems": [
+      {
+        "id": "dnd5e",
+        "type": "system",
+        "compatibility": {
+          "minimum": "5.2.0"
+        }
+      }
+    ],
+    "conflicts": [
+      {
+        "id": "rest-recovery",
+        "type": "module",
+        "reason": "Os dois reconfiguram os descansos do dnd5e; use só um."
+      }
+    ]
+  },
+  "esmodules": [
+    "scripts/main.mjs"
+  ],
+  "styles": [
+    "styles/monolith-ui.css",
+    "styles/resting.css"
+  ],
   "url": "https://github.com/wfmsnow123/monolithmodule",
   "manifest": "https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-resting/module.json",
-  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-resting-v0.1.0/monolith-resting.zip"
+  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-resting-v0.2.0/monolith-resting.zip"
 }

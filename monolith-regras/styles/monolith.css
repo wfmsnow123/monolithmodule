@@ -1,116 +1,86 @@
-/* ===== Monolith: Regras da Casa ===== */
-:root {
-  --mono-sangue: #8e1b1b;
-  --mono-ouro: #c9a46a;
-  --mono-papel: #f4e9d8;
-  --mono-fundo: rgba(20, 12, 12, 0.92);
-}
+/* Monolith: Regras da Casa. Usa os tokens do design system (styles/monolith-ui.css). */
 
 /* ---------- Painel flutuante ---------- */
 #monolith-hud {
-  position: fixed;
-  left: 15px;
-  bottom: 120px;
-  z-index: 70;
-  width: 300px;
-  background: var(--mono-fundo);
-  border: 1px solid var(--mono-ouro);
-  border-radius: 6px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
-  color: var(--mono-papel);
-  font-size: 13px;
-  user-select: none;
+  position: fixed; left: 15px; bottom: 120px; z-index: 70; width: 300px;
+  background: var(--void-100); color: var(--ink);
+  border: 1px solid var(--void-300); border-top: 3px solid var(--blood-500); border-radius: var(--radius-none);
+  box-shadow: var(--shadow-window); font-family: var(--font-sans); font-size: 13px; user-select: none;
 }
 #monolith-hud header {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 8px;
-  border-bottom: 1px solid rgba(201, 164, 106, 0.4);
-  cursor: move;
-  font-family: var(--dnd5e-font-roboto-slab, serif);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  font-size: 11px;
+  display: flex; align-items: center; gap: var(--space-2); padding: var(--space-1) var(--space-2);
+  background: var(--void-000); border-bottom: 1px solid var(--void-300); cursor: move;
+  font-family: var(--font-display); font-size: 18px; letter-spacing: 0.05em; text-transform: uppercase;
 }
-#monolith-hud header .acoes { margin-left: auto; display: flex; gap: 8px; }
-#monolith-hud header a { cursor: pointer; color: var(--mono-ouro); }
-#monolith-hud header a:hover { color: var(--mono-papel); }
+#monolith-hud header > i { color: var(--ink-muted); font-size: 12px; }
+#monolith-hud header .acoes { margin-left: auto; display: flex; gap: var(--space-3); font-size: 13px; }
+#monolith-hud header a { cursor: pointer; color: var(--ink-muted); }
+#monolith-hud header a:hover { color: var(--blood-text); }
 #monolith-hud.recolhido ul { display: none; }
-#monolith-hud ul { list-style: none; margin: 0; padding: 4px; max-height: 50vh; overflow-y: auto; }
-#monolith-hud li {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 3px 4px;
-  border-radius: 4px;
-}
-#monolith-hud li:hover { background: rgba(201, 164, 106, 0.1); }
-#monolith-hud li.vazio { opacity: 0.6; font-style: italic; }
-#monolith-hud img { width: 26px; height: 26px; border: 1px solid var(--mono-ouro); border-radius: 3px; cursor: pointer; object-fit: cover; }
-#monolith-hud .nome { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
+#monolith-hud ul { list-style: none; margin: 0; padding: var(--space-1); max-height: 50vh; overflow-y: auto; }
+#monolith-hud li { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-1); border-bottom: 1px solid var(--void-300); }
+#monolith-hud li:last-child { border-bottom: 0; }
+#monolith-hud li:hover { background: var(--void-200); }
+#monolith-hud li.vazio { color: var(--ink-muted); font-style: italic; }
+#monolith-hud img { width: 26px; height: 26px; border: 1px solid var(--void-400); border-radius: var(--radius-none); cursor: pointer; object-fit: cover; }
+#monolith-hud .nome { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; font-weight: 600; }
 #monolith-hud button {
   width: 26px; height: 24px; line-height: 22px; padding: 0; margin: 0;
-  background: transparent; border: 1px solid rgba(201, 164, 106, 0.5); color: var(--mono-ouro);
+  background: var(--void-200); border: 1px solid var(--void-400); border-radius: var(--radius-sm); color: var(--ink-muted);
 }
+#monolith-hud button:hover { border-color: var(--ink-muted); color: var(--ink); }
 #monolith-hud button:disabled { opacity: 0.35; }
-#monolith-hud button.insp.on { color: #ffd76a; border-color: #ffd76a; box-shadow: 0 0 6px rgba(255, 215, 106, 0.6); }
+#monolith-hud button.insp.on { background: var(--blood-500); border-color: var(--blood-500); color: var(--bone); }
 #monolith-hud .her {
-  min-width: 38px; text-align: center; cursor: pointer;
-  border: 1px solid rgba(201, 164, 106, 0.5); border-radius: 3px; padding: 1px 4px;
+  min-width: 38px; text-align: center; cursor: pointer; padding: 1px var(--space-1);
+  font-family: var(--font-label); font-weight: 600; letter-spacing: 0.06em;
+  background: var(--cobalt-500); color: var(--bone); border-radius: var(--radius-sm);
 }
 #monolith-hud .ex {
-  min-width: 18px; text-align: center; border-radius: 50%;
-  background: var(--mono-sangue); color: var(--mono-papel); font-weight: bold; font-size: 11px;
+  min-width: 20px; text-align: center; padding: 0 var(--space-1);
+  font-family: var(--font-label); font-weight: 600; font-size: 11px;
+  border: 1px solid var(--ichor); color: var(--ichor); border-radius: var(--radius-sm);
 }
 
-/* ---------- Painel de Medidas ---------- */
-.monolith-medidas .window-content { padding: 8px 10px; }
-.monolith-medidas-body h2 { margin: 0; border: none; font-size: 1.2em; }
+/* ---------- Medidas Desesperadas ---------- */
+.monolith-medidas-body h2 { margin: 0; border: none; font-size: 26px; }
 .monolith-medidas-body h3 {
-  margin: 10px 0 4px; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.08em;
-  border-bottom: 1px solid var(--mono-ouro); color: var(--mono-sangue);
+  display: flex; align-items: center; gap: var(--space-2); margin: var(--space-4) 0 var(--space-2);
+  font-family: var(--font-display); font-size: 18px; letter-spacing: 0.05em; color: var(--ink); border: 0;
 }
-.monolith-medidas-body .topo { display: flex; gap: 10px; align-items: center; }
-.monolith-medidas-body .topo img { width: 48px; height: 48px; border: 1px solid var(--mono-ouro); border-radius: 4px; object-fit: cover; }
-.monolith-medidas-body .tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 3px; }
-.monolith-medidas-body .tag { font-size: 0.8em; padding: 1px 6px; border-radius: 10px; background: rgba(0, 0, 0, 0.12); }
-.monolith-medidas-body .tag.sangrando { background: #b0412e; color: #fff; }
-.monolith-medidas-body .tag.morrendo { background: #5a1414; color: #fff; }
-.monolith-medidas-body .tag.queima { background: #d9461e; color: #fff; }
-.monolith-medidas-body .tag.morto { background: #111; color: #fff; }
-.monolith-medidas-body .tag.perdicao { background: #2e2140; color: #e6d8ff; }
-.monolith-medidas-body .fio-caixas { display: flex; gap: 8px; }
+.monolith-medidas-body h3::before { content: ""; width: 4px; height: 16px; background: var(--blood-500); }
+.monolith-medidas-body h3::after { content: ""; flex: 1; height: 1px; background: var(--void-300); }
+.monolith-medidas-body .topo { display: flex; gap: var(--space-3); align-items: center; }
+.monolith-medidas-body .topo img { width: 52px; height: 52px; border: 1px solid var(--void-400); border-radius: var(--radius-none); object-fit: cover; }
+.monolith-medidas-body .tags { display: flex; flex-wrap: wrap; gap: var(--space-1); margin-top: var(--space-1); }
+.monolith-medidas-body .tag {
+  display: inline-block; padding: 0 var(--space-2); font-family: var(--font-label); font-size: 11px; line-height: 18px;
+  font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+  border: 1px solid var(--void-400); border-radius: var(--radius-sm); color: var(--ink-muted);
+}
+.monolith-medidas-body .tag.sangrando, .monolith-medidas-body .tag.morrendo, .monolith-medidas-body .tag.queima { background: var(--blood-500); border-color: var(--blood-500); color: var(--bone); }
+.monolith-medidas-body .tag.morto { background: var(--void-000); border-color: var(--blood-text); color: var(--blood-text); }
+.monolith-medidas-body .tag.perdicao { background: var(--cobalt-500); border-color: var(--cobalt-500); color: var(--bone); }
+.monolith-medidas-body .fio-caixas { display: flex; gap: var(--space-2); }
 .monolith-medidas-body .fio {
-  width: 30px; height: 30px; border: 2px solid var(--mono-sangue); border-radius: 4px;
-  display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: bold;
+  width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 600;
+  border: 1px solid var(--void-400); border-radius: var(--radius-sm); background: var(--void-200); box-shadow: var(--shadow-pit);
 }
-.monolith-medidas-body .fio.marcada { background: var(--mono-sangue); color: var(--mono-papel); }
-.monolith-medidas-body .fio.comum { color: var(--mono-sangue); }
-.monolith-medidas-body .hint { font-size: 0.8em; opacity: 0.75; margin: 3px 0; }
+.monolith-medidas-body .fio.marcada { background: var(--blood-500); border-color: var(--blood-500); color: var(--bone); box-shadow: none; }
+.monolith-medidas-body .fio.comum { color: var(--blood-text); border-color: var(--blood-text); }
+.monolith-medidas-body .hint { font-size: 12px; line-height: 16px; color: var(--ink-muted); margin: var(--space-1) 0; }
 .monolith-medidas-body ul { list-style: none; margin: 0; padding: 0; }
-.monolith-medidas-body .lista-medidas li { margin-bottom: 4px; }
+.monolith-medidas-body .lista-medidas li { padding: var(--space-1) 0; border-bottom: 1px solid var(--void-300); }
 .monolith-medidas-body .lista-medidas li.off { opacity: 0.5; }
-.monolith-medidas-body .lista-medidas button { display: flex; gap: 8px; width: 100%; text-align: left; align-items: center; }
-.monolith-medidas-body .lista-medidas .custo { color: var(--mono-sangue); min-width: 34px; font-weight: bold; }
-.monolith-medidas-body .lista-medidas .nome { font-weight: bold; }
-.monolith-medidas-body .lista-medidas p { margin: 1px 0 0 42px; font-size: 0.82em; opacity: 0.85; }
-.monolith-medidas-body .armadas li { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
-.monolith-medidas-body .armadas button { width: auto; flex: 0 0 auto; }
-.monolith-medidas-body .botoes { display: flex; flex-wrap: wrap; gap: 4px; }
+.monolith-medidas-body .lista-medidas button { display: flex; gap: var(--space-2); width: 100%; text-align: left; align-items: center; justify-content: flex-start; }
+.monolith-medidas-body .lista-medidas .custo { color: var(--blood-text); min-width: 34px; }
+.monolith-medidas-body .lista-medidas p { margin: var(--space-1) 0 0 42px; font-size: 12px; line-height: 16px; color: var(--ink-muted); }
+.monolith-medidas-body .armadas li { display: flex; justify-content: space-between; align-items: center; gap: var(--space-2); padding: var(--space-1) 0; }
+.monolith-medidas-body .botoes { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 .monolith-medidas-body .botoes button { flex: 1 1 45%; }
-.monolith-medidas-body .morte button { border-color: var(--mono-sangue); }
+.monolith-medidas-body .morte button { background: var(--blood-500); border-color: var(--blood-500); color: var(--bone); }
 
-/* ---------- Formulários e chat ---------- */
-.monolith-form fieldset { margin-bottom: 6px; }
-.monolith-check { display: flex; gap: 6px; align-items: center; margin: 2px 0; }
-.monolith-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 10px; }
-.monolith-card { border: 1px solid var(--mono-ouro); border-radius: 4px; overflow: hidden; }
-.monolith-card header {
-  background: var(--mono-sangue); color: var(--mono-papel); padding: 3px 6px;
-  font-weight: bold; letter-spacing: 0.04em;
-}
-.monolith-card-body { padding: 4px 6px; }
-.monolith-card-body p { margin: 3px 0; }
-.monolith-card-body ul { margin: 3px 0; padding-left: 18px; }
-.monolith-card-body button { margin-top: 4px; }
+/* ---------- Formulários dos diálogos ---------- */
+.monolith-form fieldset { margin-bottom: var(--space-2); }
+.monolith-check { display: flex; gap: var(--space-2); align-items: center; margin: 2px 0; }
+.monolith-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px var(--space-3); }

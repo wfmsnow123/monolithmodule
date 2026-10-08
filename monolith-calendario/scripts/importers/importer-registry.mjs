@@ -69,11 +69,6 @@ export function createImporter(id) {
  */
 export function initializeImporters() {
   registerImporter(CalendariaImporter);
-  registerImporter(SimpleCalendarImporter);
   registerImporter(FantasyCalendarImporter);
-  registerImporter(MiniCalendarImporter);
-  registerImporter(SeasonsStarsImporter);
-  registerImporter(SimpleTimekeepingImporter);
-  registerImporter(CalendariumImporter);
   log(3, `Importer registry initialized with ${IMPORTERS.size} importers`);
 }

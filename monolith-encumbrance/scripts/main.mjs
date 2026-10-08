@@ -33,8 +33,7 @@ Hooks.once("init", () => {
 Hooks.once("ready", async () => {
   game.modules.get(ID).api = { faixaAtual, pesoCarregado, limite, atualizarAtor, recalcularTodos, abrirEditor: () => new EditorFaixas().render(true) };
   if (game.user.isGM && game.settings.get("dnd5e", "encumbrance") !== "none") {
-    const ok = await foundry.applications.api.DialogV2.confirm({
-      window: { title: "Monolith: Encumbrance" },
+    const ok = await foundry.applications.api.DialogV2.confirm({ classes: ["mono"], window: { title: "Monolith: Encumbrance" },
       content: "<p>A regra de carga do dnd5e está ligada. Ela aplica sua própria redução de deslocamento, que somaria com as faixas deste módulo.</p><p>Mudar a regra de carga do dnd5e para <b>Nenhuma</b>? O peso continua sendo calculado normalmente.</p>"
     }).catch(() => false);
     if (ok) await game.settings.set("dnd5e", "encumbrance", "none");

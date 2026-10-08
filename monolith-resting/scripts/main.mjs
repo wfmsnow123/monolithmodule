@@ -170,7 +170,7 @@ Hooks.on("dnd5e.restCompleted", async (actor, result, config) => {
   if (linhas.length) {
     ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor }),
-      content: `<div class="monolith-rest-card"><header><i class="fas ${TIPOS[m.tipo].icon}"></i> ${TIPOS[m.tipo].nome}</header><ul>${linhas.map((l) => `<li>${l}</li>`).join("")}</ul></div>`
+      content: `<div class="mono-card"><header><i class="fas ${TIPOS[m.tipo].icon}"></i> ${TIPOS[m.tipo].nome}</header><ul>${linhas.map((l) => `<li>${l}</li>`).join("")}</ul></div>`
     });
   }
   Hooks.callAll("monolithResting.restCompleted", actor, m.tipo, { sonoInteiro: m.sono, agitada: m.agitada });
@@ -202,8 +202,7 @@ export async function abrirPedido() {
       <label class="mr-check"><input type="checkbox" name="avancar" checked> Avançar o relógio do mundo pela duração</label>
       <label class="mr-check"><input type="checkbox" name="ignorar"> Ignorar o limite por dia</label>
     </fieldset></div>`;
-  const dados = await foundry.applications.api.DialogV2.prompt({
-    window: { title: "Monolith: descanso", icon: "fas fa-bed" },
+  const dados = await foundry.applications.api.DialogV2.prompt({ classes: ["mono"], window: { title: "Monolith: descanso", icon: "fas fa-bed" },
     position: { width: 480 },
     content,
     render: (ev, dialog) => {
@@ -280,7 +279,7 @@ async function verificarSono() {
       await ChatMessage.create({
         speaker: ChatMessage.getSpeaker({ actor }),
         whisper: game.users.filter((u) => u.isGM || actor.testUserPermission(u, "OWNER")).map((u) => u.id),
-        content: `<div class="monolith-rest-card"><header><i class="fas fa-bed"></i> Dormir é para os Fracos</header>
+        content: `<div class="mono-card"><header><i class="fas fa-bed"></i> Dormir é para os Fracos</header>
           <p><b>${esc(actor.name)}</b> passou ${p * 24} horas sem concluir uma Vigília.</p>
           <p>Teste de resistência de Constituição <b>CD ${cd}</b>. Falha: +1 de Exaustão.</p>
           <button type="button" data-monolith-sono="${actor.id}" data-cd="${cd}"><i class="fas fa-dice-d20"></i> Rolar Constituição</button></div>`

@@ -7,7 +7,7 @@ const esc = (v) => foundry.utils.escapeHTML(String(v ?? ""));
 export class EditorFaixas extends ApplicationV2 {
   static DEFAULT_OPTIONS = {
     id: "monolith-encumbrance-editor",
-    classes: ["monolith-enc"],
+    classes: ["mono", "monolith-enc"],
     tag: "form",
     window: { title: "Monolith: Encumbrance, faixas de carga", icon: "fas fa-weight-hanging", resizable: true },
     position: { width: 720, height: 720 },
@@ -124,7 +124,7 @@ export class EditorFaixas extends ApplicationV2 {
   }
 
   static async #padrao() {
-    const ok = await foundry.applications.api.DialogV2.confirm({ window: { title: "Restaurar" }, content: "<p>Trocar todas as faixas pela regra de Monolith?</p>" }).catch(() => false);
+    const ok = await foundry.applications.api.DialogV2.confirm({ classes: ["mono"], window: { title: "Restaurar" }, content: "<p>Trocar todas as faixas pela regra de Monolith?</p>" }).catch(() => false);
     if (!ok) return;
     this.#rascunho = faixasPadrao();
     this.render();

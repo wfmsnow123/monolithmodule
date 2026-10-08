@@ -1,0 +1,54 @@
+/* Calendário de Monolith: veste as janelas e widgets com o design system (tokens em monolith-ui.css). */
+
+/* Fontes */
+.calendaria, .calendaria-hud, .calendar-note-sheet, .calendaria-cinematic {
+  font-family: var(--font-sans);
+}
+.calendaria h1, .calendaria h2, .calendaria h3, .calendaria h4,
+.calendaria .calendar-title, .calendaria .month-name, .calendaria .current-date,
+.calendaria-hud .hud-date, .calendaria-hud .hud-time {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.05em;
+}
+.calendaria .weekday, .calendaria .weekday-header, .calendaria nav.tabs a, .calendaria .tab-label,
+.calendaria button, .calendaria .settings-footer {
+  font-family: var(--font-label);
+  letter-spacing: 0.06em;
+}
+.calendaria code, .calendaria .mono { font-family: var(--font-mono); }
+
+/* Moldura das janelas: pedra negra, borda superior de sangue, cantos retos */
+.application.calendaria, .application.calendar-note-sheet {
+  border-radius: var(--radius-none);
+  border: 1px solid var(--void-300);
+  border-top: 3px solid var(--blood-500);
+  box-shadow: var(--shadow-window);
+}
+.application.calendaria > .window-header, .application.calendar-note-sheet > .window-header {
+  background: var(--void-000);
+  border-bottom: 1px solid var(--void-300);
+  border-radius: var(--radius-none);
+  color: var(--ink);
+}
+.application.calendaria > .window-header .window-title, .application.calendar-note-sheet > .window-header .window-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 20px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.application.calendaria > .window-header .window-title::before, .application.calendar-note-sheet > .window-header .window-title::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 14px;
+  margin-right: var(--space-2);
+  background: var(--blood-500);
+  vertical-align: -1px;
+}
+.application.calendaria > .window-header .header-control:hover { color: var(--blood-text); }
+
+/* Rodapé do painel de configurações sem links */
+.calendaria .settings-footer .footer-center .module-name { font-family: var(--font-display); font-size: 16px; letter-spacing: 0.05em; text-transform: uppercase; }
+.calendaria .settings-footer .footer-right:empty { display: none; }

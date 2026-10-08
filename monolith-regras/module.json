@@ -2,7 +2,7 @@
   "id": "monolith-regras",
   "title": "Monolith: Regras da Casa",
   "description": "Regras de Monolith para dnd5e: Exaustão de 10 níveis, Inspiração Heróica, Medidas Desesperadas, Queima de Alma, Ênfase, Sobrecarga. Os descansos ficam no Monolith: Resting Rules. Compatível com Tidy 5e Sheets.",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "authors": [
     {
       "name": "snowxd"
@@ -39,10 +39,11 @@
     "scripts/main.mjs"
   ],
   "styles": [
+    "styles/monolith-ui.css",
     "styles/monolith.css"
   ],
   "socket": true,
   "url": "https://github.com/wfmsnow123/monolithmodule",
   "manifest": "https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-regras/module.json",
-  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-regras-v0.4.0/monolith-regras.zip"
+  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-regras-v0.5.0/monolith-regras.zip"
 }

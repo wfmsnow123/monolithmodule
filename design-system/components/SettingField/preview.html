@@ -1,0 +1,18 @@
+<!-- @dsCard group="Forms" height=420 subtitle="heading · number · select · checkbox · toggle · error" -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>preview</title>
+<style>html,body{margin:0;background:var(--void-100);} .pad{padding:16px;} .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}</style>
+</head>
+<body class="mono">
+<div class="pad" style="max-width:560px">
+  <h3 class="mono-heading">Regras de Sanidade</h3>
+  <label class="mono-field"><span class="mono-field__label">Limite de Sanidade</span><input class="mono-input" type="number" value="13"><p class="mono-field__hint">Abaixo disso, o personagem rola na tabela de Loucura. <span class="mono-field__key">monolith.sanity.threshold</span></p></label>
+  <label class="mono-field"><span class="mono-field__label">Intensidade do Horror</span><select class="mono-select"><option>Opressiva</option><option>Visceral</option><option>Abissal</option></select><p class="mono-field__hint mono-field__hint--warn">Requer recarregar o mundo.</p></label>
+  <label class="mono-field"><span class="mono-field__label">Mostrar sangue nos tokens</span><input class="mono-check" type="checkbox" checked><p class="mono-field__hint">Marcas de ferimento aparecem nos tokens dos jogadores.</p></label>
+  <label class="mono-field"><span class="mono-field__label">Sussurros ambientes</span><input class="mono-toggle" type="checkbox" role="switch" checked><p class="mono-field__hint">Toca áudio aleatório quando a cena está em silêncio.</p></label>
+  <label class="mono-field"><span class="mono-field__label">Nome do Culto</span><input class="mono-input" placeholder="Ordem do Olho Fechado" aria-invalid="true"><p class="mono-field__hint" style="color:var(--blood-text)">O nome não pode ficar vazio.</p></label>
+</div>
+<script>document.querySelectorAll('[role=tab]').forEach(function(t){t.addEventListener('click',function(){t.parentNode.querySelectorAll('[role=tab]').forEach(function(x){x.setAttribute('aria-selected',x===t)})})});</script>
+</body>
+</html>

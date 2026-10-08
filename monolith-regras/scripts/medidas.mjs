@@ -94,8 +94,7 @@ async function escolherEspaco(actor) {
     if (s?.max > 0 && s.value < s.max) opts.push(`<option value="${n}">${n}º círculo (${s.value}/${s.max})</option>`);
   }
   if (!opts.length) { ui.notifications.warn("Nenhum espaço de magia de 1º a 5º círculo gasto."); return null; }
-  return foundry.applications.api.DialogV2.prompt({
-    window: { title: "Fôlego Arcano" },
+  return foundry.applications.api.DialogV2.prompt({ classes: ["mono"], window: { title: "Fôlego Arcano" },
     content: `<div class="form-group"><label>Espaço</label><select name="n">${opts.join("")}</select></div>`,
     ok: { label: "Recuperar", callback: (ev, btn) => Number(btn.form.elements.n.value) }
   }).catch(() => null);
@@ -183,8 +182,8 @@ export async function danoNaQueima(actor, falhas = 1) {
 export async function inspiracaoDoMoribundo(actor) {
   const alvo = await escolherPersonagem("Conceder Inspiração Heróica", { excluir: actor.id });
   if (!alvo) return;
-  const content = `<div class="monolith-card"><header><i class="fas fa-hand-holding-heart"></i> Morrendo, ainda</header>
-    <div class="monolith-card-body"><p><b>${esc(actor.name)}</b>, morrendo, concede uma <b>Inspiração Heróica</b> a <b>${esc(alvo.name)}</b>.</p>
+  const content = `<div class="mono-card"><header><i class="fas fa-hand-holding-heart"></i> Morrendo, ainda</header>
+    <div class="mono-card__body"><p><b>${esc(actor.name)}</b>, morrendo, concede uma <b>Inspiração Heróica</b> a <b>${esc(alvo.name)}</b>.</p>
     <p>Ela precisa ser gasta até o fim do próximo turno de ${esc(alvo.name)}, ou se perde.</p>
     <button type="button" data-monolith-acao="rolarHeroicaRecebida" data-actor="${alvo.id}"><i class="fas fa-dice-d6"></i> Gastar agora (+1d4)</button></div></div>`;
   return ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content });
@@ -194,8 +193,7 @@ export async function nomeQueFica(actor) {
   const alvo = await escolherPersonagem("O Nome que Fica: quem carrega o nome?", { excluir: actor.id });
   if (!alvo) return;
   const opts = Object.entries(LEGADOS).map(([k, v]) => `<option value="${k}">${v}</option>`).join("");
-  const legado = await foundry.applications.api.DialogV2.prompt({
-    window: { title: "O Nome que Fica" },
+  const legado = await foundry.applications.api.DialogV2.prompt({ classes: ["mono"], window: { title: "O Nome que Fica" },
     content: `<div class="form-group"><label>Legado</label><select name="l">${opts}</select></div>
               <div class="form-group"><label>Detalhe</label><input type="text" name="d" placeholder="Ex.: Força, Atletismo, a espada"></div>`,
     ok: { label: "Deixar o legado", callback: (ev, btn) => ({ l: btn.form.elements.l.value, d: btn.form.elements.d.value }) }

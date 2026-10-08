@@ -153,33 +153,24 @@ export class SettingsPanel extends HandlebarsApplicationMixin(ApplicationV2) {
 
   /** @override */
   static TAB_GROUPS = [
-    { id: 'calendar', label: 'CALENDARIA.Common.Calendar', tooltip: 'CALENDARIA.SettingsPanel.GroupTooltip.Calendar', color: '#84cc16' },
-    { id: 'technical', label: 'CALENDARIA.SettingsPanel.Group.Technical', tooltip: 'CALENDARIA.SettingsPanel.GroupTooltip.Technical', color: '#f97316' },
-    { id: 'apps', label: 'CALENDARIA.SettingsPanel.Group.Apps', tooltip: 'CALENDARIA.SettingsPanel.GroupTooltip.Apps', color: '#14b8a6' }
+    { id: 'calendar', label: 'CALENDARIA.Common.Calendar', tooltip: 'CALENDARIA.SettingsPanel.GroupTooltip.Calendar', color: '#a3121b' },
+    { id: 'apps', label: 'CALENDARIA.SettingsPanel.Group.Apps', tooltip: 'CALENDARIA.SettingsPanel.GroupTooltip.Apps', color: '#28479a' }
   ];
 
   /** @override */
   static TABS = {
     primary: {
       tabs: [
-        { id: 'home', group: 'primary', icon: 'fas fa-house', label: 'CALENDARIA.SettingsPanel.Tab.Home', color: '#ff144f' },
+        { id: 'home', group: 'primary', icon: 'fas fa-house', label: 'CALENDARIA.SettingsPanel.Tab.Home', color: '#a3121b' },
         { id: 'notes', group: 'primary', icon: 'fas fa-sticky-note', label: 'CALENDARIA.Common.Notes', tabGroup: 'calendar', gmOnly: true },
         { id: 'time', group: 'primary', icon: 'fas fa-clock', label: 'CALENDARIA.Common.Time', tabGroup: 'calendar', gmOnly: true },
         { id: 'weather', group: 'primary', icon: 'fas fa-cloud-sun', label: 'CALENDARIA.Common.Weather', tabGroup: 'calendar', gmOnly: true },
-        { id: 'fogofwar', group: 'primary', icon: 'fas fa-eye-slash', label: 'CALENDARIA.SettingsPanel.Tab.FogOfWar', tabGroup: 'calendar', gmOnly: true },
         { id: 'theme', group: 'primary', icon: 'fas fa-palette', label: 'CALENDARIA.SettingsPanel.Tab.Theme', tabGroup: 'calendar' },
-        { id: 'macros', group: 'primary', icon: 'fas fa-bolt', label: 'CALENDARIA.SettingsPanel.Tab.Macros', tabGroup: 'technical', gmOnly: true },
-        { id: 'chat', group: 'primary', icon: 'fas fa-comments', label: 'CALENDARIA.SettingsPanel.Tab.Chat', tabGroup: 'technical', gmOnly: true },
-        { id: 'permissions', group: 'primary', icon: 'fas fa-user-shield', label: 'CALENDARIA.SettingsPanel.Tab.Permissions', tabGroup: 'technical', gmOnly: true },
-        { id: 'canvas', group: 'primary', icon: 'fas fa-map', label: 'CALENDARIA.SettingsPanel.Tab.Canvas', tabGroup: 'technical', gmOnly: true },
-        { id: 'module', group: 'primary', icon: 'fas fa-tools', label: 'CALENDARIA.SettingsPanel.Tab.Module', tabGroup: 'technical' },
         { id: 'bigcal', group: 'primary', icon: 'fas fa-calendar-days', label: 'CALENDARIA.Common.BigCal', tabGroup: 'apps' },
         { id: 'miniCal', group: 'primary', icon: 'fas fa-compress', label: 'CALENDARIA.Common.MiniCal', tabGroup: 'apps' },
         { id: 'hud', group: 'primary', icon: 'fas fa-landmark-dome', label: 'CALENDARIA.SettingsPanel.Tab.HUD', tabGroup: 'apps' },
-        { id: 'cinematics', group: 'primary', icon: 'fas fa-film', label: 'CALENDARIA.SettingsPanel.Tab.Cinematics', tabGroup: 'technical', gmOnly: true },
         { id: 'chronicle', group: 'primary', icon: 'fas fa-scroll', label: 'CALENDARIA.Chronicle.Title', tabGroup: 'apps' },
         { id: 'timekeeper', group: 'primary', icon: 'fas fa-gauge', label: 'CALENDARIA.Common.TimeKeeper', tabGroup: 'apps' },
-        { id: 'stopwatch', group: 'primary', icon: 'fas fa-stopwatch', label: 'CALENDARIA.Common.StopWatch', tabGroup: 'apps' },
         { id: 'sunDial', group: 'primary', icon: 'fas fa-sun', label: 'CALENDARIA.SettingsPanel.Tab.SunDial', tabGroup: 'apps' }
       ],
       initial: 'home'

@@ -37,7 +37,7 @@ export class MedidasApp extends ApplicationV2 {
   }
 
   static DEFAULT_OPTIONS = {
-    classes: ["monolith-app", "monolith-medidas"],
+    classes: ["mono", "monolith-app", "monolith-medidas"],
     window: { title: "Medidas Desesperadas", icon: "fas fa-heart-crack", resizable: true },
     position: { width: 400, height: "auto" },
     actions: {
