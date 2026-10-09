@@ -1,21 +1,21 @@
 /* Monolith: Perdição. Usa os tokens do design system (styles/monolith-ui.css). */
 
-/* ---------- Contador na ficha Tidy Clássica ---------- */
+/* ---------- Botão na ficha Tidy Clássica, ao lado do nível (junto do das Medidas) ----------
+   Ícone e número, em azul; a cor esquenta com o nível de Perdição. */
 .monolith-tidy.mp-chip {
-  display: inline-flex; align-items: center; gap: 6px; align-self: center;
-  padding: 2px 8px; cursor: pointer; white-space: nowrap;
-  font-family: var(--font-label); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
-  background: var(--void-100); color: var(--ink-muted);
+  display: inline-flex; align-items: center; gap: 5px; align-self: center;
+  padding: 2px 8px; cursor: pointer; white-space: nowrap; line-height: 1;
+  font-family: var(--font-label); font-size: 12px; font-weight: 600;
+  background: var(--void-100); color: var(--cobalt-text);
   border: 1px solid var(--void-400); border-left: 3px solid var(--cobalt-500); border-radius: var(--radius-sm);
 }
-.monolith-tidy.mp-chip:hover { color: var(--ink); border-color: var(--ink-muted); }
+.monolith-tidy.mp-chip:hover { border-color: var(--cobalt-600); color: var(--bone); }
+/* Ícone Phosphor: só preenchimento; a Tidy pinta svg e path por conta própria, daí o !important. */
+.monolith-tidy.mp-chip svg { display: block; flex: none; width: 16px; height: 16px; overflow: visible; border: 0; background: none; }
+.monolith-tidy.mp-chip svg path { fill: currentColor !important; stroke: none !important; }
 .monolith-tidy.mp-chip b { font-family: var(--font-display); font-size: 17px; font-weight: 400; color: var(--ink); letter-spacing: 0.02em; }
-.monolith-tidy.mp-chip .barra { width: 46px; height: 4px; background: var(--void-300); overflow: hidden; }
-.monolith-tidy.mp-chip .barra span { display: block; height: 100%; background: var(--cobalt-500); }
-.monolith-tidy.mp-chip[data-nivel="1"] { border-left-color: var(--ichor); }
-.monolith-tidy.mp-chip[data-nivel="1"] .barra span { background: var(--ichor); }
-.monolith-tidy.mp-chip[data-nivel="2"], .monolith-tidy.mp-chip[data-nivel="3"] { border-left-color: var(--blood-500); }
-.monolith-tidy.mp-chip[data-nivel="2"] .barra span, .monolith-tidy.mp-chip[data-nivel="3"] .barra span { background: var(--blood-500); }
+.monolith-tidy.mp-chip[data-nivel="1"] { border-left-color: var(--ichor); color: var(--ichor); }
+.monolith-tidy.mp-chip[data-nivel="2"], .monolith-tidy.mp-chip[data-nivel="3"] { border-left-color: var(--blood-500); color: var(--blood-text); }
 .monolith-tidy.mp-chip[data-nivel="4"] { background: var(--blood-500); border-color: var(--blood-500); color: var(--bone); }
 .monolith-tidy.mp-chip[data-nivel="4"] b { color: var(--bone); }
 

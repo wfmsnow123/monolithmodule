@@ -6,7 +6,7 @@ Foundry 13, dnd5e 5.2. Feito para a ficha Tidy 5e Clássica, funciona em qualque
 
 **A trilha.** Perdição de 0 a 20 com os estados do Guia do Jogador: Firme, Abalado, Esgarçado, À Beira e Perdido.
 
-**Contador na ficha.** Na Tidy Clássica, ao lado do nível, no cabeçalho: valor, barra e a cor do estado. Clique para abrir a janela. Nas outras fichas (e na Tidy nova), o botão fica no cabeçalho.
+**Contador na ficha.** Na Tidy Clássica, ao lado do nível e junto do botão das Medidas Desesperadas: olho fechado e o valor, em azul, esquentando com o estado. Clique para abrir a janela. Nas outras fichas (e na Tidy nova), o botão fica no cabeçalho.
 
 **Limiares e Marcas.** Ao subir por 5, 10 ou 15, cria uma Marca de Loucura, ou de Danação se o personagem estiver Ligado a um corruptor, para o Mestre definir o efeito persistente e o agudo. O piso (5 x Marcas) é respeitado em toda redução, e uma Marca nova puxa a Perdição até o piso.
 

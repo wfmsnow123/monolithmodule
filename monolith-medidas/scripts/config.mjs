@@ -69,8 +69,8 @@ export function registrarConfiguracoes(EditorClass, aoMudar) {
     choices: { aviso: "Perguntar antes", bloquear: "Bloquear", livre: "Sem limite" }
   });
   game.settings.register(ID, "coracaoFicha", {
-    name: "Coração na ficha Tidy (Clássica)",
-    hint: "Botão de Medidas Desesperadas em cima do retrato, com o estado do Fio.",
+    name: "Botão na ficha Tidy (Clássica)",
+    hint: "Botão de Medidas Desesperadas ao lado do nível, junto do da Perdição, com o Fio marcado. Apagado até o personagem chegar à metade da vida.",
     scope: "client", config: true, type: Boolean, default: true, onChange: aoMudar
   });
   game.settings.register(ID, "migrado", { scope: "world", config: false, type: Boolean, default: false });

@@ -2,7 +2,7 @@
   "id": "monolith-perdicao",
   "title": "Monolith: Perdição",
   "description": "A trilha de Perdição de Monolith para dnd5e: 0 a 20, limiares e Marcas com piso, Ligação a corruptores, testes de resistência de Perdição com Ênfase a partir de Esgarçado, Firmar-se e recuperação. Contador na ficha Tidy 5e Clássica.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "authors": [
     {
       "name": "snowxd"
@@ -44,5 +44,5 @@
   ],
   "url": "https://github.com/wfmsnow123/monolithmodule",
   "manifest": "https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-perdicao/module.json",
-  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-perdicao-v0.1.0/monolith-perdicao.zip"
+  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-perdicao-v0.1.1/monolith-perdicao.zip"
 }

@@ -6,7 +6,7 @@ Foundry 13, dnd5e 5.2. Feito para a ficha Tidy 5e Clássica, funciona em qualque
 
 **O Fio.** As três caixas de falha da salvaguarda contra a morte. Falhas marcadas (✖) vêm das Medidas e só o descanso apaga: uma por Vigília, duas com sono inteiro, todas no Descanso Completo (com o **Monolith: Resting Rules**). Cair a 0 PV com falhas marcadas já começa com elas preenchidas; três marcadas é morte.
 
-**Coração na ficha.** Na Tidy Clássica, um coração em cima do retrato abre as Medidas. Ele mostra o estado: apagado até Sangrar, vermelho pulsando quando Sangrando ou Morrendo, âmbar queimando, caveira morto, e três pontos com o Fio. Nas outras fichas (e na Tidy nova), o botão fica no cabeçalho.
+**Botão na ficha.** Na Tidy Clássica, ao lado do nível e junto do botão da Perdição, um botão vermelho com o ícone e o Fio marcado (0/3 a 3/3) abre as Medidas. Fica apagado até o personagem chegar à metade da vida, e aí só o Mestre abre; vermelho quando Sangrando, pulsando Morrendo, âmbar queimando, caveira morto. Nas outras fichas (e na Tidy nova), o botão fica no cabeçalho.
 
 **Janela de Medidas.** Retrato, PV, estado, Fio, Medidas agrupadas por custo, Medidas armadas, os botões de morte e as ferramentas do Mestre. Tem tamanho fixo e rola.
 

@@ -71,10 +71,6 @@ export class MedidasApp extends ApplicationV2 {
     else if (e.queimando) tags += `<span class="tag queima">Queimando a Alma</span>`;
     else if (e.morrendo) tags += `<span class="tag forte">Morrendo</span>`;
     else if (e.sangrando) tags += `<span class="tag forte">Sangrando</span>`;
-    const perd = game.modules.get("monolith-perdicao");
-    if (perd?.active && perd.api && (gm || (a.isOwner && game.settings.get("monolith-perdicao", "jogadoresVeem")))) {
-      tags += `<a class="tag perdicao" data-action="perdicao" data-tooltip="Abrir a Perdição">Perdição ${perd.api.valor(a)}</a>`;
-    }
 
     const grupos = [1, 2, 3].map((custo) => {
       const itens = lista().filter((m) => (Number(m.custo) || 1) === custo);
