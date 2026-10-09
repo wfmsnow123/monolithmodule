@@ -12,3 +12,92 @@
   background: #a3121b; color: #f1ece2; border: 1px solid #a3121b; border-radius: 2px;
 }
 .monolith-rest-btn:hover { background: #c41d27; border-color: #c41d27; }
+
+/* ---------- Comida no pedido ---------- */
+.mr-form fieldset[hidden] { display: none; }
+.mr-qtd { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); margin: var(--space-2) 0; }
+.mr-qtd label { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2);
+  font-family: var(--font-label); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-muted); }
+.mr-qtd input { width: 56px; text-align: center; }
+
+/* ---------- Fogueira ---------- */
+.monolith-fogueira > .window-content { overflow-y: auto; max-height: calc(100vh - 120px); }
+.mf-body h2 { margin: 0; border: 0; font-size: 26px; line-height: 1.05; text-transform: uppercase; }
+.mf-body h3 {
+  display: flex; align-items: center; gap: var(--space-2); margin: var(--space-4) 0 var(--space-2);
+  font-family: var(--font-display); font-size: 18px; letter-spacing: 0.05em; color: var(--ink); border: 0;
+}
+.mf-body h3::before { content: ""; width: 4px; height: 16px; background: var(--blood-500); }
+.mf-body h3::after { content: ""; flex: 1; height: 1px; background: var(--void-300); }
+.mf-hint { font-size: 12px; line-height: 16px; color: var(--ink-muted); margin: var(--space-1) 0; }
+.mf-vazio { color: var(--ink-muted); text-align: center; padding: var(--space-6) 0; }
+
+.mf-topo { display: flex; align-items: center; gap: var(--space-3); }
+.mf-chama { font-size: 30px; color: var(--ichor); text-shadow: 0 0 14px rgba(210, 154, 58, 0.55); width: 36px; text-align: center; }
+
+.mf-metas { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--space-3); margin-top: var(--space-3); }
+.mf-metas:empty { display: none; }
+.mf-meta {
+  display: grid; grid-template-columns: 1fr auto; align-items: end; gap: var(--space-1) var(--space-2);
+  padding: var(--space-2) var(--space-3); background: var(--void-000); border: 1px solid var(--void-300); border-left: 3px solid var(--blood-500);
+}
+.mf-meta.ok { border-left-color: var(--verdigris); }
+.mf-meta__rotulo { font-family: var(--font-label); font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); }
+.mf-meta__rotulo i { color: var(--ichor); margin-right: 2px; }
+.mf-meta__num { font-family: var(--font-display); font-size: 18px; color: var(--ink-muted); letter-spacing: 0.04em; }
+.mf-meta__num b { font-weight: 400; font-size: 28px; color: var(--blood-text); }
+.mf-meta.ok .mf-meta__num b { color: var(--verdigris); }
+.mf-meta__barra { grid-column: 1 / -1; height: 4px; background: var(--void-300); }
+.mf-meta__barra span { display: block; height: 100%; background: var(--blood-500); transition: width .2s; }
+.mf-meta.ok .mf-meta__barra span { background: var(--verdigris); }
+
+.mf-comensais, .mf-contribs { list-style: none; margin: 0; padding: 0; }
+.mf-comensais { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.mf-comensal {
+  display: flex; flex-direction: column; align-items: center; gap: 2px; width: 84px; padding: var(--space-1);
+  background: var(--void-200); border: 1px solid var(--void-300); cursor: pointer;
+}
+.mf-comensal .retrato { width: 52px; aspect-ratio: 3 / 4; overflow: hidden; border: 1px solid var(--void-400); }
+.mf-comensal .nome { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; font-weight: 600; }
+.mf-chip { font-family: var(--font-label); font-size: 10px; line-height: 14px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 0 var(--space-1); }
+.mf-comensal.ok .mf-chip { color: var(--verdigris); }
+.mf-comensal.falta { border-color: var(--blood-500); }
+.mf-comensal.falta .mf-chip { background: var(--blood-wash); color: var(--blood-text); }
+.mf-body .retrato img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 15%; border: 0; display: block; }
+
+.mf-drop {
+  display: flex; align-items: center; justify-content: center; gap: var(--space-2); margin-top: var(--space-4);
+  min-height: 64px; padding: var(--space-3); border: 1px dashed var(--void-400); background: var(--void-000);
+  font-family: var(--font-label); font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted);
+}
+.mf-drop i { font-size: 20px; color: var(--ichor); }
+.mf-drop.sobre { border-color: var(--ichor); border-style: solid; color: var(--ink); background: var(--void-200); }
+.mf-drop.fechada { opacity: .5; }
+
+.mf-contribs { display: flex; flex-direction: column; gap: var(--space-1); max-height: 280px; overflow-y: auto; }
+.mf-contrib {
+  display: grid; grid-template-columns: 30px 32px 1fr auto auto; align-items: center; gap: var(--space-2);
+  padding: var(--space-1) var(--space-2); background: var(--void-200); border: 1px solid var(--void-300);
+}
+.mf-contrib .retrato { width: 30px; height: 40px; overflow: hidden; border: 1px solid var(--void-400); }
+.mf-item { width: 32px; height: 32px; border: 1px solid var(--void-400); background: var(--void-000); object-fit: cover; }
+.mf-contrib__txt { display: flex; flex-direction: column; min-width: 0; }
+.mf-contrib__item { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mf-contrib__item b { font-family: var(--font-display); font-weight: 400; font-size: 18px; color: var(--ichor); margin-right: 2px; }
+.mf-contrib__quem { font-size: 12px; line-height: 14px; color: var(--ink-muted); }
+.mf-tag { font-family: var(--font-label); font-size: 10px; line-height: 16px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 0 var(--space-1); border: 1px solid var(--void-400); color: var(--ink-muted); }
+.mf-tag.comida { border-color: var(--ichor); color: var(--ichor); }
+.mf-tag.bebida { border-color: var(--cobalt-500); color: var(--cobalt-text); }
+.application.mono .mf-retirar { width: 28px; height: 28px; min-height: 0; padding: 0; display: grid; place-content: center; }
+
+.mf-rodape { display: flex; justify-content: flex-end; gap: var(--space-2); margin-top: var(--space-4); padding-top: var(--space-3); border-top: 1px solid var(--void-300); }
+.mf-rodape button { flex: 0 0 auto; padding: var(--space-2) var(--space-4); }
+
+/* ---------- Cartão de fome ---------- */
+.mono-card .mr-fome__hint { font-size: 12px; color: var(--ink-muted); margin: 0; }
+.mono-card .mr-fome__botoes { display: flex; gap: var(--space-1); margin-top: var(--space-1); }
+.mono-card .mr-fome__botoes button { flex: 1; }
+.mono-card .hint { font-size: 12px; color: var(--ink-muted); }
+.application.mono .mf-rodape button.mono-primary { background: var(--blood-500); border-color: var(--blood-500); color: var(--bone); }
+.application.mono .mf-rodape button.mono-primary:hover { background: var(--blood-600); border-color: var(--blood-600); }

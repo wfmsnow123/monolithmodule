@@ -3,6 +3,10 @@
  * Fôlego, Vigília e Descanso Completo registrados como tipos de descanso do próprio dnd5e
  * (CONFIG.DND5E.restTypes), com os ajustes de Monolith aplicados em dnd5e.preRestCompleted.
  */
+import { PALAVRAS_COMIDA, PALAVRAS_BEBIDA } from "./logica.mjs";
+import { acenderFogueira, aoMudarPilha, aoFicarPronto, iniciarSocket, FogueiraApp, servir, pilhaAtual } from "./comida.mjs";
+import { verificarFome, iniciarRefeicoes, registrarRefeicao, comerAgora, botoesDeFome, aoUsarAtividade } from "./fome.mjs";
+
 const ID = "monolith-resting";
 const HANDLER = "monolithResting";
 const DIA = 86400;
@@ -76,8 +80,12 @@ function maiorDadoDeVida(actor) {
 
 /** Configuração do dnd5e para um personagem num descanso de Monolith. */
 function configuracao(actor, tipo, opcoes = {}) {
-  const sono = tipo === "completo" || (tipo === "vigilia" && opcoes.sono !== false && !opcoes.agitada && !armaduraPesada(actor));
-  const monolith = { tipo, sono, agitada: tipo === "vigilia" && !!opcoes.agitada, armadura: tipo === "vigilia" && armaduraPesada(actor) };
+  const semComida = tipo === "folego" ? null : opcoes.semComida ?? null;
+  const agitada = tipo === "vigilia" && (!!opcoes.agitada || semComida === "agitada");
+  const sono = tipo === "completo" || (tipo === "vigilia" && opcoes.sono !== false && !agitada && !armaduraPesada(actor));
+  const monolith = { tipo, sono, agitada, armadura: tipo === "vigilia" && armaduraPesada(actor), semComida };
+  // Descanso Completo sem comida (consequência "agitada"): não reduz Exaustão.
+  const completoSemComida = tipo === "completo" && semComida === "agitada";
   return {
     type: tipo,
     dialog: opcoes.dialog ?? true,
@@ -86,7 +94,7 @@ function configuracao(actor, tipo, opcoes = {}) {
     advanceTime: false,
     duration: TIPOS[tipo].minutos,
     fraction: tipo === "completo" ? 1 : 0.5,
-    exhaustionDelta: tipo === "completo" ? -2 : tipo === "vigilia" && sono ? -1 : 0,
+    exhaustionDelta: tipo === "completo" ? (completoSemComida ? 0 : -2) : tipo === "vigilia" && sono ? -1 : 0,
     recoverTemp: tipo === "completo",
     recoverTempMax: tipo === "completo",
     monolith
@@ -116,6 +124,9 @@ Hooks.on("dnd5e.preRestCompleted", (actor, result, config) => {
   const pacto = actor.system.spells?.pact;
 
   if (m.tipo === "folego" && pacto?.max > 0) up["system.spells.pact.value"] = Math.min(pacto.max, pacto.value + 1);
+  if (m.tipo === "completo" && m.semComida === "agitada" && "system.attributes.exhaustion" in up) {
+    up["system.attributes.exhaustion"] = actor.system.attributes.exhaustion;
+  }
 
   if (m.tipo === "vigilia" && m.agitada) {
     for (const [key, slot] of Object.entries(actor.system.spells ?? {})) {
@@ -166,7 +177,9 @@ Hooks.on("dnd5e.restCompleted", async (actor, result, config) => {
   if (m.tipo === "vigilia" && m.armadura) linhas.push("Dormiu de armadura média ou pesada: sem os benefícios de sono inteiro.");
   if (m.tipo === "vigilia" && m.agitada) linhas.push("Vigília Agitada: metade das características e espaços, nada acima do 3º círculo.");
   if (m.tipo === "vigilia" && m.sono) linhas.push("Sono inteiro: -1 de Exaustão.");
-  if (m.tipo === "completo") linhas.push("-2 de Exaustão, todos os PV e Dados de Vida.");
+  if (m.tipo === "completo") linhas.push(m.semComida === "agitada" ? "Todos os PV e Dados de Vida." : "-2 de Exaustão, todos os PV e Dados de Vida.");
+  if (m.semComida === "agitada") linhas.push(m.tipo === "completo" ? "Sem comida: o descanso não reduziu a Exaustão." : "Sem comida: a Vigília foi Agitada.");
+  if (m.semComida === "exaustao") linhas.push("Sem comida: +1 de Exaustão.");
   if (linhas.length) {
     ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor }),
@@ -198,6 +211,16 @@ export async function abrirPedido() {
       <label class="mr-check"><input type="checkbox" name="agitada"> O grupo falhou: Vigília Agitada</label>
     </fieldset>
     <fieldset><legend>Personagens</legend><div class="mr-grid">${chars.map(linhaChar).join("")}</div></fieldset>
+    <fieldset data-comida><legend>Comida</legend>
+      <label class="mr-check"><input type="checkbox" name="comida" ${game.settings.get(ID, "comidaExigida") ? "checked" : ""}> Exigir comida: abre a fogueira para o grupo juntar a refeição</label>
+      <div class="mr-qtd">
+        <label>Comida por pessoa <input type="number" name="racoes" min="0" step="1" value="${game.settings.get(ID, "racoesPorPessoa")}"></label>
+        <label>Bebida por pessoa <input type="number" name="agua" min="0" step="1" value="${game.settings.get(ID, "aguaPorPessoa")}"></label>
+      </div>
+      <p class="mr-hint">Quem come:</p>
+      <div class="mr-grid">${chars.map((a) => `<label class="mr-check"><input type="checkbox" name="c-${a.id}" checked> ${esc(a.name)}</label>`).join("")}</div>
+      <p class="mr-hint">Com comida exigida, o descanso só é pedido quando o Mestre serve a refeição na fogueira.</p>
+    </fieldset>
     <fieldset><legend>Opções</legend>
       <label class="mr-check"><input type="checkbox" name="avancar" checked> Avançar o relógio do mundo pela duração</label>
       <label class="mr-check"><input type="checkbox" name="ignorar"> Ignorar o limite por dia</label>
@@ -212,20 +235,39 @@ export async function abrirPedido() {
         el.querySelector("[data-cd]").textContent = String(10 + soma);
       };
       el.querySelectorAll('[name^="f-"]').forEach((i) => i.addEventListener("change", atualizar));
+      const comida = el.querySelector("[data-comida]");
+      const tipo = () => { comida.hidden = el.querySelector('[name="tipo"]:checked')?.value === "folego"; };
+      el.querySelectorAll('[name="tipo"]').forEach((i) => i.addEventListener("change", tipo));
+      tipo();
     },
     ok: {
       label: "Pedir descanso",
       callback: (ev, btn) => {
         const f = btn.form.elements;
-        return { tipo: f.tipo.value, sono: f.sono.checked, agitada: f.agitada.checked, avancar: f.avancar.checked, ignorarLimite: f.ignorar.checked, alvos: chars.filter((a) => f[`a-${a.id}`]?.checked) };
+        return {
+          tipo: f.tipo.value, sono: f.sono.checked, agitada: f.agitada.checked, avancar: f.avancar.checked, ignorarLimite: f.ignorar.checked,
+          alvos: chars.filter((a) => f[`a-${a.id}`]?.checked),
+          comida: {
+            exige: f.comida.checked, racoes: Math.max(0, Number(f.racoes.value) || 0), agua: Math.max(0, Number(f.agua.value) || 0),
+            comensais: chars.filter((a) => f[`c-${a.id}`]?.checked)
+          }
+        };
       }
     }
   }).catch(() => null);
   if (!dados?.alvos?.length) return;
+  const c = dados.comida;
+  if (c.exige && dados.tipo !== "folego" && c.comensais.length && (c.racoes || c.agua)) {
+    const { tipo, sono, agitada, avancar, ignorarLimite } = dados;
+    return acenderFogueira({
+      tipo, tipoNome: TIPOS[tipo].nome, racoes: c.racoes, agua: c.agua, comensais: c.comensais,
+      pedido: { tipo, sono, agitada, avancar, ignorarLimite, alvos: dados.alvos.map((a) => a.id), segundos: TIPOS[tipo].minutos * 60 }
+    });
+  }
   return pedirDescanso(dados.alvos, dados);
 }
 
-export async function pedirDescanso(actors, { tipo, sono = true, agitada = false, avancar = false, ignorarLimite = false }) {
+export async function pedirDescanso(actors, { tipo, sono = true, agitada = false, avancar = false, ignorarLimite = false, fome = {} }) {
   const t = TIPOS[tipo];
   let rotulo = t.nome;
   if (tipo === "vigilia") rotulo += agitada ? " Agitada" : sono ? ", sono inteiro" : "";
@@ -235,7 +277,7 @@ export async function pedirDescanso(actors, { tipo, sono = true, agitada = false
     type: "request",
     system: {
       button: { icon: `<i class="fas ${t.icon}"></i>`, label: `Iniciar ${t.nome}` },
-      data: { tipo, sono, agitada, ignorarLimite },
+      data: { tipo, sono, agitada, ignorarLimite, fome },
       handler: HANDLER,
       targets: actors.map((a) => ({ actor: a.uuid }))
     }
@@ -249,7 +291,7 @@ export async function pedirDescanso(actors, { tipo, sono = true, agitada = false
 }
 
 async function tratarPedido(actor, request, data) {
-  const result = await descansar(actor, data.tipo, { sono: data.sono, agitada: data.agitada, ignorarLimite: data.ignorarLimite, request });
+  const result = await descansar(actor, data.tipo, { sono: data.sono, agitada: data.agitada, ignorarLimite: data.ignorarLimite, semComida: data.fome?.[actor.id], request });
   return result?.message ?? null;
 }
 
@@ -306,6 +348,55 @@ function botoesDoChat(message, html) {
   });
 }
 
+/* ================= Comida e fome: configurações ================= */
+
+function registrarConfiguracoesDeComida() {
+  const reg = (chave, dados) => game.settings.register(ID, chave, { scope: "world", config: true, ...dados });
+  game.settings.register(ID, "pilha", { scope: "world", config: false, type: Object, default: {}, onChange: aoMudarPilha });
+  reg("comidaExigida", {
+    name: "Comida: exigir por padrão",
+    hint: "Marca \"Exigir comida\" no pedido de Vigília ou Descanso Completo, abrindo a fogueira para o grupo juntar a refeição.",
+    type: Boolean, default: true
+  });
+  reg("racoesPorPessoa", { name: "Comida: porções por pessoa", type: Number, default: 1 });
+  reg("aguaPorPessoa", { name: "Comida: bebida por pessoa", type: Number, default: 1 });
+  reg("palavrasComida", {
+    name: "Comida: palavras de comida",
+    hint: "Itens com estas palavras no nome (separadas por vírgula, sem diferenciar acento, aceitando plural) contam como comida. Consumíveis do tipo Comida do dnd5e também contam.",
+    type: String, default: PALAVRAS_COMIDA
+  });
+  reg("palavrasBebida", {
+    name: "Comida: palavras de bebida",
+    hint: "Itens com estas palavras no nome contam como bebida (bebida ganha de comida: \"Odre de vinho\" é bebida).",
+    type: String, default: PALAVRAS_BEBIDA
+  });
+  reg("sobras", {
+    name: "Comida: sobras da refeição",
+    type: String, default: "devolver",
+    choices: { devolver: "Voltam para quem trouxe", manter: "Ficam na pilha para a próxima refeição" }
+  });
+  reg("semComida", {
+    name: "Comida: descansar sem comer",
+    hint: "O que acontece com quem fica sem a comida ou a bebida exigida no descanso. Agitado: a Vigília vira Agitada e o Descanso Completo não reduz Exaustão.",
+    type: String, default: "agitada",
+    choices: { nada: "Nada", agitada: "O descanso fica Agitado", exaustao: "+1 de Exaustão" }
+  });
+  reg("fome", {
+    name: "Fome",
+    hint: "Avisa no chat quando um personagem passa muito tempo sem comer, pelo relógio do mundo. Ao ligar, todos contam como alimentados agora.",
+    type: Boolean, default: true,
+    onChange: (v) => { if (v) iniciarRefeicoes({ todos: true }); }
+  });
+  reg("fomeIntervalo", { name: "Fome: horas por nível", hint: "Começando a ficar com fome, com fome e faminto a cada tantas horas sem comer.", type: Number, default: 8 });
+  reg("fomeSussurro", { name: "Fome: só para dono e Mestre", hint: "Desligado, o aviso de fome é público.", type: Boolean, default: true });
+  reg("fomeNPCs", { name: "Fome: incluir NPCs", hint: "Também acompanha atores sem jogador com token ligado na cena ativa.", type: Boolean, default: false });
+  reg("fomeInanicao", {
+    name: "Fome: inanição",
+    hint: "Regra opcional: depois de 3 + mod. de Constituição dias sem comer (mínimo 1), cada dia dá 1 de Exaustão.",
+    type: Boolean, default: false
+  });
+}
+
 /* ================= Interface ================= */
 
 Hooks.once("init", () => {
@@ -314,6 +405,7 @@ Hooks.once("init", () => {
     hint: "A cada 24 horas sem Vigília, pede um teste de Constituição (CD 10, +5 por período seguido); falha dá 1 de Exaustão.",
     scope: "world", config: true, type: Boolean, default: true
   });
+  registrarConfiguracoesDeComida();
   game.settings.register(ID, "botaoJogadores", {
     name: "Botão de descanso na lista de jogadores",
     scope: "world", config: true, type: Boolean, default: true
@@ -329,7 +421,14 @@ Hooks.once("init", () => {
 });
 
 Hooks.once("ready", () => {
-  game.modules.get(ID).api = { abrirPedido, pedirDescanso, descansar, TIPOS };
+  game.modules.get(ID).api = {
+    abrirPedido, pedirDescanso, descansar, TIPOS,
+    acenderFogueira, abrirFogueira: () => FogueiraApp.abrir(), servir, pilha: pilhaAtual,
+    registrarRefeicao, comerAgora, verificarFome
+  };
+  iniciarSocket();
+  aoFicarPronto();
+  if (game.settings.get(ID, "fome")) iniciarRefeicoes();
   if (game.user.isGM && game.modules.get("rest-recovery")?.active) {
     ui.notifications.warn("Monolith: Resting Rules substitui o Rest Recovery. Desative o Rest Recovery para os descansos não serem configurados duas vezes.", { permanent: true });
   }
@@ -337,7 +436,9 @@ Hooks.once("ready", () => {
 
 Hooks.on("createChatMessage", autoIniciar);
 Hooks.on("renderChatMessageHTML", botoesDoChat);
-Hooks.on("updateWorldTime", () => verificarSono());
+Hooks.on("renderChatMessageHTML", (message, html) => botoesDeFome(message, html, () => FogueiraApp.abrir()));
+Hooks.on("updateWorldTime", () => { verificarSono(); verificarFome(); });
+Hooks.on("dnd5e.postUseActivity", (activity) => aoUsarAtividade(activity));
 
 Hooks.on("renderPlayers", (app, html) => {
   if (!game.user.isGM || !game.settings.get(ID, "botaoJogadores")) return;
