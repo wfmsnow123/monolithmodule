@@ -50,3 +50,23 @@
 .monolith-form fieldset { margin-bottom: var(--space-2); }
 .monolith-check { display: flex; gap: var(--space-2); align-items: center; margin: 2px 0; }
 .monolith-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px var(--space-3); }
+
+/* ---------- Janela de recursos ---------- */
+.monolith-recursos > .window-content { overflow-y: auto; }
+.mr-recursos ul { list-style: none; margin: 0; padding: 0; }
+.mr-recursos li { display: flex; gap: var(--space-3); align-items: flex-start; padding: var(--space-3); margin-bottom: var(--space-2); background: var(--void-000); border: 1px solid var(--void-300); border-left: 3px solid var(--void-400); }
+.mr-recursos li.on { border-left-color: var(--blood-500); }
+.mr-recursos .mr-texto { flex: 1; }
+.mr-recursos .mr-texto b { font-family: var(--font-display); font-weight: 400; font-size: 19px; letter-spacing: 0.05em; text-transform: uppercase; }
+.mr-recursos .mr-texto p { margin: 2px 0 0; font-size: 12.5px; line-height: 17px; color: var(--ink-muted); }
+.mr-recursos .mr-aviso { display: inline-block; margin-top: 4px; font-family: var(--font-label); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blood-text); }
+.mr-recursos li > button { flex: 0 0 auto; width: auto; white-space: nowrap; }
+.mr-recursos .mr-chave { position: relative; flex: 0 0 38px; height: 20px; margin-top: 4px; cursor: pointer; }
+.mr-recursos .mr-chave input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.mr-recursos .mr-chave span { position: absolute; inset: 0; background: var(--void-300); border: 1px solid var(--void-400); border-radius: 10px; transition: background 0.15s; }
+.mr-recursos .mr-chave span::after { content: ""; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%; background: var(--ink-muted); transition: transform 0.15s, background 0.15s; }
+.mr-recursos .mr-chave input:checked + span { background: var(--blood-500); border-color: var(--blood-500); }
+.mr-recursos .mr-chave input:checked + span::after { transform: translateX(18px); background: var(--bone); }
+.mr-recursos footer { position: sticky; bottom: 0; display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-3); background: var(--void-000); border-top: 1px solid var(--void-300); margin: var(--space-3) calc(-1 * var(--space-4)) calc(-1 * var(--space-4)); }
+.mr-recursos footer button { width: auto; }
+.mr-recursos .hint { font-size: 12px; color: var(--ink-muted); }

@@ -67,10 +67,20 @@ function rerenderFichas() {
 
 /* ---------- Ficha Tidy 5e Clássica: coração em cima do retrato ---------- */
 
+// SVG embutido: não depende da fonte de ícones nem dos estilos de botão da ficha.
+const svg = (d) => `<svg class="mm-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="${d}"/></svg>`;
+const CORACAO = "M12 21s-7.5-4.6-10-9.3C.4 8.6 2.1 4.5 6 4.1c2.3-.2 4.3 1.1 6 3.1 1.7-2 3.7-3.3 6-3.1 3.9.4 5.6 4.5 4 7.6C19.5 16.4 12 21 12 21z";
+const ICONES = {
+  inteiro: svg(CORACAO),
+  partido: svg(CORACAO),
+  queimando: svg("M12 2c1 3.5 5 5.6 5 10.2A5 5 0 0 1 7 12.5c0-2 1-3.4 2.2-4.4.1 1.6.8 2.7 1.8 3.2C10.6 7.6 11.3 4.6 12 2z"),
+  morto: svg("M12 2a8 8 0 0 0-8 8c0 2.7 1.3 4.6 3 5.8V19a1 1 0 0 0 1 1h1v-2h2v2h2v-2h2v2h1a1 1 0 0 0 1-1v-3.2c1.7-1.2 3-3.1 3-5.8a8 8 0 0 0-8-8zm-3 11a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm6 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4z")
+};
+
 function registrarTidy(api) {
   const layout = api.constants?.SHEET_LAYOUT_CLASSIC ?? "classic";
   api.registerCharacterContent(new api.models.HtmlContent({
-    html: `<button type="button" class="monolith-tidy mm-coracao" data-monolith-coracao data-tidy-render-scheme="handlebars"></button>`,
+    html: `<a class="monolith-tidy mm-coracao" role="button" tabindex="0" data-monolith-coracao data-tidy-render-scheme="handlebars"></a>`,
     injectParams: { selector: ".tidy5e-sheet-header .actor-profile-wrap .profile", position: "beforeend" },
     enabled: (ctx) => game.settings.get(ID, "coracaoFicha") && !!(ctx.actor ?? ctx.document)?.isOwner,
     onRender: ({ app, element }) => {
@@ -82,11 +92,12 @@ function registrarTidy(api) {
       el.dataset.estado = situacao;
       el.parentElement?.classList.add("mm-tem-coracao");
       const pips = [0, 1, 2].map((i) => `<span class="${i < e.marcadas ? "marcada" : i < e.falhas ? "comum" : ""}"></span>`).join("");
-      const icone = e.morto ? "fa-skull" : e.queimando ? "fa-fire" : e.sangrando || e.morrendo ? "fa-heart-crack" : "fa-heart";
-      el.innerHTML = `<i class="fas ${icone}"></i><span class="pips">${pips}</span>`;
+      el.innerHTML = `${ICONES[e.morto ? "morto" : e.queimando ? "queimando" : e.sangrando || e.morrendo ? "partido" : "inteiro"]}<span class="pips">${pips}</span>`;
       el.dataset.tooltip = `<b>Medidas Desesperadas</b><br>${{ morto: "Morto", queimando: "Queimando a Alma", morrendo: "Morrendo", sangrando: "Sangrando: Medidas abertas", inteiro: "Fechadas até Sangrar" }[situacao]}<br>O Fio: ${e.marcadas} marcada(s), ${e.livres} livre(s)`;
       el.setAttribute("aria-label", "Medidas Desesperadas");
-      el.addEventListener("click", (ev) => { ev.preventDefault(); ev.stopPropagation(); MedidasApp.abrir(actor); });
+      const abrir = (ev) => { ev.preventDefault(); ev.stopPropagation(); MedidasApp.abrir(actor); };
+      el.addEventListener("click", abrir);
+      el.addEventListener("keydown", (ev) => { if (ev.key === "Enter" || ev.key === " ") abrir(ev); });
     }
   }), { layout });
 

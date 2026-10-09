@@ -42,6 +42,11 @@
         "id": "monolith-perdicao",
         "type": "module",
         "reason": "A trilha de Perdição, Marcas e testes de Lucidez."
+      },
+      {
+        "id": "lib-wrapper",
+        "type": "module",
+        "reason": "Percepção e Montaria usam o libWrapper para conviver com outros módulos."
       }
     ]
   },
@@ -50,10 +55,100 @@
   ],
   "styles": [
     "styles/monolith-ui.css",
-    "styles/monolith.css"
+    "styles/monolith.css",
+    "recursos/lembretes/estilo.css",
+    "recursos/percepcao/estilo.css",
+    "recursos/visao/estilo.css",
+    "recursos/montaria/estilo.css",
+    "recursos/chefe/estilo.css",
+    "recursos/inventario/estilo.css",
+    "recursos/troca/estilo.css",
+    "recursos/retratos/estilo.css"
   ],
   "socket": true,
   "url": "https://github.com/wfmsnow123/monolithmodule",
   "manifest": "https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-regras/module.json",
-  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-regras-v0.6.0/monolith-regras.zip"
+  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-regras-v0.6.0/monolith-regras.zip",
+  "languages": [
+    {
+      "lang": "pt-BR",
+      "name": "Português (Brasil)",
+      "path": "recursos/lembretes/lang/pt-BR.json"
+    },
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "recursos/lembretes/lang/pt-BR.json"
+    },
+    {
+      "lang": "pt-BR",
+      "name": "Português (Brasil)",
+      "path": "recursos/percepcao/lang/pt-BR.json"
+    },
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "recursos/percepcao/lang/pt-BR.json"
+    },
+    {
+      "lang": "pt-BR",
+      "name": "Português (Brasil)",
+      "path": "recursos/visao/lang/pt-BR.json"
+    },
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "recursos/visao/lang/pt-BR.json"
+    },
+    {
+      "lang": "pt-BR",
+      "name": "Português (Brasil)",
+      "path": "recursos/montaria/lang/pt-BR.json"
+    },
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "recursos/montaria/lang/pt-BR.json"
+    },
+    {
+      "lang": "pt-BR",
+      "name": "Português (Brasil)",
+      "path": "recursos/chefe/lang/pt-BR.json"
+    },
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "recursos/chefe/lang/pt-BR.json"
+    },
+    {
+      "lang": "pt-BR",
+      "name": "Português (Brasil)",
+      "path": "recursos/inventario/lang/pt-BR.json"
+    },
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "recursos/inventario/lang/pt-BR.json"
+    },
+    {
+      "lang": "pt-BR",
+      "name": "Português (Brasil)",
+      "path": "recursos/troca/lang/pt-BR.json"
+    },
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "recursos/troca/lang/pt-BR.json"
+    },
+    {
+      "lang": "pt-BR",
+      "name": "Português (Brasil)",
+      "path": "recursos/retratos/lang/pt-BR.json"
+    },
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "recursos/retratos/lang/pt-BR.json"
+    }
+  ]
 }

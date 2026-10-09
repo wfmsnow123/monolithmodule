@@ -1,4 +1,6 @@
 import { ID } from "./util.mjs";
+import "../recursos/index.mjs";
+import { registrarRecursos, prepararRecursos } from "./recursos.mjs";
 import { configurarExaustao, registrarExaustao, configurarTidyExaustao, migrarExaustao, NIVEIS } from "./exaustao.mjs";
 import { registrarModificadorEnfase, registrarEnfaseNasRolagens, armarEnfase, rolarEnfaseSolta } from "./enfase.mjs";
 import { HUD, registrarBotoesDoChat, concederInspiracao, concederHeroica } from "./apps.mjs";
@@ -18,6 +20,7 @@ Hooks.once("init", () => {
   game.settings.register(ID, "posicaoHud", { scope: "client", config: false, type: Object, default: {} });
   game.settings.register(ID, "hudRecolhido", { scope: "client", config: false, type: Boolean, default: false });
 
+  registrarRecursos();
   registrarConfigSobrecarga();
   registrarGanchosSobrecarga();
   configurarExaustao();
@@ -44,6 +47,7 @@ Hooks.once("ready", async () => {
   game.modules.get(ID).api = { armarEnfase, rolarEnfaseSolta, concederInspiracao, concederHeroica };
   HUD.montar();
   await migrarExaustao();
+  await prepararRecursos();
   avisarConflitos();
   avisarCargaVariante();
 });

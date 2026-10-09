@@ -1,30 +1,31 @@
 /* Monolith: Medidas Desesperadas. Usa os tokens do design system (styles/monolith-ui.css). */
 
-/* ---------- Coração na ficha Tidy Clássica ---------- */
+/* ---------- Coração na ficha Tidy Clássica ----------
+   Cores fixas (não seguem o tema claro/escuro da ficha) e seletores fortes,
+   porque a Tidy estiliza botões, links e o retrato por conta própria. */
 .tidy5e-sheet .profile.mm-tem-coracao { position: relative; overflow: visible; }
-.monolith-tidy.mm-coracao {
-  position: absolute; top: -12px; left: 50%; transform: translateX(-50%); z-index: 6;
-  width: 34px; height: 34px; min-height: 0; padding: 0; margin: 0;
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
-  background: var(--void-100); color: var(--ink-muted);
-  border: 1px solid var(--void-400); border-radius: 50%; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.55);
-  cursor: pointer; line-height: 1;
+.tidy5e-sheet .profile a.monolith-tidy.mm-coracao {
+  position: absolute; top: -13px; left: 50%; transform: translateX(-50%); z-index: 6;
+  box-sizing: border-box; width: 34px; height: 34px; margin: 0; padding: 4px 0 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 2px;
+  background: #0e1016; color: #c9c3b6; border: 1px solid #636b7e; border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6); cursor: pointer; line-height: 1; text-decoration: none; text-shadow: none;
 }
-.monolith-tidy.mm-coracao:hover { color: var(--bone); border-color: var(--blood-500); }
-.monolith-tidy.mm-coracao i { font-size: 14px; margin: 0; }
-.monolith-tidy.mm-coracao .pips { display: flex; gap: 2px; }
-.monolith-tidy.mm-coracao .pips span { width: 5px; height: 5px; border: 1px solid currentColor; opacity: 0.6; }
-.monolith-tidy.mm-coracao .pips span.comum { background: currentColor; border-radius: 50%; opacity: 1; }
-.monolith-tidy.mm-coracao .pips span.marcada { background: var(--blood-text); border-color: var(--blood-text); opacity: 1; }
-.monolith-tidy.mm-coracao[data-estado="sangrando"], .monolith-tidy.mm-coracao[data-estado="morrendo"] {
-  background: var(--blood-500); border-color: var(--blood-500); color: var(--bone);
-  animation: mm-pulso 1.6s ease-in-out infinite;
+.tidy5e-sheet .profile a.monolith-tidy.mm-coracao:hover { color: #f1ece2; border-color: #c41d27; }
+.tidy5e-sheet .profile a.monolith-tidy.mm-coracao .mm-ico { display: block; width: 16px; height: 16px; flex: 0 0 16px; fill: currentColor; stroke: none; }
+.tidy5e-sheet .profile a.monolith-tidy.mm-coracao .mm-ico path + path, .tidy5e-sheet .profile a.monolith-tidy.mm-coracao .mm-ico path { stroke-linejoin: round; }
+.tidy5e-sheet .profile a.monolith-tidy.mm-coracao .pips { display: flex; gap: 2px; }
+.tidy5e-sheet .profile a.monolith-tidy.mm-coracao .pips span { display: block; width: 5px; height: 5px; box-sizing: border-box; border: 1px solid currentColor; opacity: 0.55; }
+.tidy5e-sheet .profile a.monolith-tidy.mm-coracao .pips span.comum { background: currentColor; border-radius: 50%; opacity: 1; }
+.tidy5e-sheet .profile a.monolith-tidy.mm-coracao .pips span.marcada { background: #ec5960; border-color: #ec5960; opacity: 1; }
+.tidy5e-sheet .profile a.monolith-tidy.mm-coracao:is([data-estado="sangrando"], [data-estado="morrendo"]) {
+  background: #a3121b; border-color: #c41d27; color: #f1ece2; animation: mm-pulso 1.6s ease-in-out infinite;
 }
-.monolith-tidy.mm-coracao[data-estado="sangrando"] .pips span.marcada,
-.monolith-tidy.mm-coracao[data-estado="morrendo"] .pips span.marcada { background: var(--bone); border-color: var(--bone); }
-.monolith-tidy.mm-coracao[data-estado="queimando"] { background: var(--ichor); border-color: var(--ichor); color: var(--void-000); }
-.monolith-tidy.mm-coracao[data-estado="morto"] { background: var(--void-000); border-color: var(--blood-text); color: var(--blood-text); }
+.tidy5e-sheet .profile a.monolith-tidy.mm-coracao:is([data-estado="sangrando"], [data-estado="morrendo"]) .pips span.marcada { background: #f1ece2; border-color: #f1ece2; }
+.tidy5e-sheet .profile a.monolith-tidy.mm-coracao[data-estado="queimando"] { background: #d29a3a; border-color: #d29a3a; color: #0e1016; }
+.tidy5e-sheet .profile a.monolith-tidy.mm-coracao[data-estado="morto"] { background: #07080b; border-color: #ec5960; color: #ec5960; }
 @keyframes mm-pulso { 0%, 100% { box-shadow: 0 0 0 0 rgba(196, 29, 39, 0.55); } 50% { box-shadow: 0 0 0 5px rgba(196, 29, 39, 0); } }
+@media (prefers-reduced-motion: reduce) { .tidy5e-sheet .profile a.monolith-tidy.mm-coracao { animation: none !important; } }
 
 /* ---------- Janela ---------- */
 .monolith-medidas > .window-content, .monolith-medidas-editor > .window-content { overflow-y: auto; }
