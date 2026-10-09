@@ -16,7 +16,7 @@ let C = null;
 const ordenados = new Set();        // atores (uuid) já ordenados nesta sessão
 const pendentes = new Map();        // uuid -> timeout
 
-const ehPilha = (actor) => !!(actor?.getFlag?.("item-piles", "data")?.enabled || game.itempiles?.API?.isValidItemPile?.(actor));
+const ehPilha = (actor) => !!(foundry.utils.getProperty(actor ?? {}, "flags.item-piles.data")?.enabled || game.itempiles?.API?.isValidItemPile?.(actor));
 
 /** Este ator pode (e deve) ter a ordem gravada por este usuário? */
 function gerenciavel(actor) {

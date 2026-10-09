@@ -18,7 +18,7 @@ const emCurso = new Set();
 
 /* ---------- Utilidades ---------- */
 
-export const ehPilha = (actor) => !!(actor?.getFlag?.("item-piles", "data")?.enabled || game.itempiles?.API?.isValidItemPile?.(actor));
+export const ehPilha = (actor) => !!(foundry.utils.getProperty(actor ?? {}, "flags.item-piles.data")?.enabled || game.itempiles?.API?.isValidItemPile?.(actor));
 export const ehFisico = (item) => !!item && item.system && "quantity" in item.system;
 const ator = (uuid) => (uuid ? fromUuidSync(uuid) : null);
 const OWNER = () => CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER;

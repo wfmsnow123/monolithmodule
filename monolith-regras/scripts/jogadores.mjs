@@ -92,8 +92,10 @@ function linha(actor) {
   return el;
 }
 
+/** Troca do Item Piles: o embutido no Monolith: Itemizador ou o original. */
 function trocaAtiva() {
-  if (!game.modules.get("item-piles")?.active || !game.itempiles?.API?.requestTrade) return false;
-  try { return game.settings.get("item-piles", "enableTrading") !== false; }
+  if (!game.itempiles?.API?.requestTrade) return false;
+  const id = game.modules.get("item-piles")?.active ? "item-piles" : "monolith-itemizador";
+  try { return game.settings.get(id, "enableTrading") !== false; }
   catch { return true; }
 }

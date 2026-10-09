@@ -16,7 +16,7 @@ A luz do token é a mais forte entre os itens acesos que o personagem carrega, o
 - **Mexer**: clique no ícone com o seu token a até um quadrado (borda a borda, diagonal vale). Abre uma paleta: **Acender/Apagar**, **Cobrir**, **Pegar** (volta para o inventário de quem pegou, com tudo) e **Carregar junto** (o objeto vai com o token: um ícone no canto do token e a luz andando com ele, sem atraso). Para soltar de novo, **Largar aqui** na lista do HUD. O Mestre faz tudo de qualquer lugar, com o token selecionado.
 - O que está no chão ou levado junto também queima com o tempo; uma tocha que acaba some do mapa.
 - Jogadores não criam objetos no mapa: o pedido vai para o Mestre. Sem Mestre online, nada acontece (aparece um aviso).
-- **Item Piles**: soltar em cima de outro token (uma pilha, outro personagem) segue como sempre. Segure **Shift** ao soltar para o Item Piles criar uma pilha em vez do objeto de luz. Dá para desligar o arrastar nas configurações.
+- **Item Piles** (embutido no Monolith: Itemizador, ou o original): soltar em cima de outro token (uma pilha, outro personagem) segue como sempre. Segure **Shift** ao soltar para o Item Piles criar uma pilha em vez do objeto de luz. Dá para desligar o arrastar nas configurações.
 - O Mestre ajeita o objeto na camada de Tiles (mover, girar a lanterna furta-fogo, apagar); a luz acompanha.
 
 ## Queima

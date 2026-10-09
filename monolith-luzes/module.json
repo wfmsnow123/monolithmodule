@@ -2,7 +2,7 @@
   "id": "monolith-luzes",
   "title": "Monolith: Luzes",
   "description": "Tochas, velas, lamparinas, lanternas e magias de luz (Luz, Globos de Luz, Criar Chamas): o jogador acende o que carrega e a luz vai com o token. A chama queima com o tempo do mundo e gasta tochas e óleo. Arraste uma tocha da ficha para o mapa e ela fica ali, acesa; quem estiver ao lado pega, acende ou carrega junto. Substitui o Torch e traz as configurações dele.",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "authors": [
     {
       "name": "snowxd"
@@ -31,9 +31,9 @@
     ],
     "recommends": [
       {
-        "id": "item-piles",
+        "id": "monolith-itemizador",
         "type": "module",
-        "reason": "Soltar uma tocha acesa no chão deixa a pilha iluminada."
+        "reason": "Traz o Item Piles embutido: soltar em cima de outro token entrega o item, e Shift ao soltar cria uma pilha."
       },
       {
         "id": "monolith-calendario",
@@ -52,5 +52,5 @@
   "socket": true,
   "url": "https://github.com/wfmsnow123/monolithmodule",
   "manifest": "https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-luzes/module.json",
-  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-luzes-v0.3.0/monolith-luzes.zip"
+  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-luzes-v0.3.1/monolith-luzes.zip"
 }
