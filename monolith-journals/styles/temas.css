@@ -1,0 +1,316 @@
+/* ============================================================
+   Monolith: Journals. Temas de página.
+
+   Dois jeitos de usar:
+   1. Sem mexer no HTML: no jornal, botão "Tema" no cabeçalho. O módulo
+      põe as classes sozinho na página (o jornal todo ou só uma página).
+   2. À mão, no modo </> do editor: envolva o conteúdo UMA vez:
+        <div class="mj mj-carta"> ...conteúdo natural do editor... </div>
+
+   Temas: mj-documento, mj-carta, mj-diario, mj-gazeta, mj-dossie,
+          mj-pergaminho, mj-tomo, mj-manual (+ legados mono-doc,
+          mono-npc, mono-lore, que continuam funcionando).
+   Variantes por tema estão na seção de cada um.
+   Peças avulsas (em qualquer tema): .mj-tarja, .mj-carimbo,
+   .mj-assinatura, .mj-nota, .mj-selo, .mj-capitular, .mj-centro,
+   .mj-manchete, .mj-data, .mj-foto.
+   ============================================================ */
+
+/* ---------- Base comum (sem especificidade: cada tema sobrescreve) ---------- */
+:where(.mj) {
+  --mj-max: 760px;
+  position: relative;
+  max-width: var(--mj-max);
+  margin: 0 auto;
+  padding: 44px 52px 40px;
+  box-sizing: border-box;
+  color: var(--mj-ink);
+  font-size: 17px;
+  line-height: 1.65;
+  overflow-wrap: break-word;
+}
+.mj * { box-sizing: border-box; }
+:where(.mj) p { margin: 0 0 11px; }
+:where(.mj) img { max-width: 100%; border: 0; }
+:where(.mj) :is(h1, h2, h3, h4) { border: 0; text-shadow: none; }
+:where(.mj) :is(a.content-link, a.inline-roll) { background: rgba(0, 0, 0, 0.08); border-color: currentColor; color: inherit; }
+:where(.mj) table { background: transparent; border-collapse: collapse; }
+
+/* Página de jornal com tema: o miolo ganha respiro e fundo escuro em volta do papel. */
+.journal-entry-page.mj-pagina { background: transparent; }
+.journal-entry-page.mj-pagina > .journal-page-header, .journal-entry-page.mj-sem-titulo > :is(header, .journal-page-header) { display: none; }
+.journal-entry-pages:has(.mj-pagina) { background: radial-gradient(120% 80% at 50% 0%, #1d1a17, #0c0b0a); }
+.journal-entry-page.mj-pagina .journal-page-content.mj { margin-top: 14px; margin-bottom: 18px; }
+
+/* ---------- Peças avulsas ---------- */
+.mj .mj-centro, .mj p.mj-centro { text-align: center; }
+.mj .mj-tarja, .mj-tarja {
+  background: #111; color: transparent; padding: 0 3px; border-radius: 1px;
+  box-decoration-break: clone; -webkit-box-decoration-break: clone; user-select: none;
+}
+.mj .mj-carimbo, .mj-carimbo {
+  display: inline-block; padding: 4px 14px; margin: 6px 0;
+  font-family: "Special Elite", "Courier New", monospace; font-size: 20px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: #a3121b; border: 3px double #a3121b; border-radius: 4px; transform: rotate(-6deg); opacity: 0.82;
+  mix-blend-mode: multiply;
+}
+.mj .mj-assinatura, .mj p.mj-assinatura { font-family: "Pinyon Script", cursive; font-size: 30px; line-height: 1.2; text-align: right; margin-top: 18px; }
+.mj .mj-nota { display: block; margin: 8px 0 12px auto; max-width: 62%; padding: 6px 12px; font-family: "Caveat", cursive; font-size: 20px; line-height: 1.25; color: #6a2018; transform: rotate(-1.5deg); border-left: 2px solid currentColor; }
+.mj .mj-selo { display: block; width: 66px; height: 66px; margin: 18px auto 0; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #c8333c, #7a0f16 60%, #4a070c); box-shadow: 0 3px 6px rgba(0, 0, 0, 0.45), inset 0 -3px 6px rgba(0, 0, 0, 0.35); }
+.mj .mj-capitular::first-letter, .mj p.mj-capitular::first-letter { float: left; font-size: 3.4em; line-height: 0.9; padding: 4px 8px 0 0; font-family: "UnifrakturMaguntia", "Cinzel", serif; color: var(--mj-acento, #7a2230); }
+.mj .mj-data { display: block; font-style: italic; opacity: 0.75; margin-bottom: 10px; }
+.mj .mj-foto { display: block; margin: 12px auto; padding: 8px 8px 26px; background: #f7f2e7; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4); transform: rotate(-1.5deg); max-width: 70%; }
+.mj .mj-foto img { display: block; width: 100%; }
+
+/* ============================================================
+   DOCUMENTO (mj-documento): ofícios, leis, cartilhas, proclamas.
+   O visual é o do antigo .mono-doc (styles/legado-documento.css).
+   Variantes: mj-elendor (azul cívico), mj-luto (tarja negra).
+   ============================================================ */
+.mj.mj-documento.mj-elendor { --cream: #f2f1ea; --cream2: #e3e3d8; --wine: #22408c; --wine-soft: #3c5aa8; --gold: #8a7a4a; --line: #c9c7b5; }
+.mj.mj-documento.mj-luto { --wine: #1c1c1c; --wine-soft: #444; --gold: #555; border-top: 14px solid #141414; }
+
+/* ============================================================
+   CARTA (mj-carta): correspondência à mão, papel envelhecido.
+   Variantes: mj-selada (selo de cera no fim), mj-rasgada (borda rasgada).
+   ============================================================ */
+.mj.mj-carta {
+  --mj-ink: #2a1d12; --mj-acento: #6b1f1a;
+  max-width: 680px;
+  padding: 56px 64px 52px;
+  font-family: "IM Fell English", "EB Garamond", Georgia, serif;
+  font-size: 18px; line-height: 1.75;
+  background:
+    radial-gradient(ellipse at 15% 10%, rgba(120, 80, 30, 0.16), transparent 45%),
+    radial-gradient(ellipse at 85% 95%, rgba(110, 60, 20, 0.2), transparent 50%),
+    radial-gradient(ellipse at 50% 50%, transparent 60%, rgba(90, 55, 20, 0.22) 100%),
+    linear-gradient(175deg, #efe2c4, #e4d2ac 60%, #dcc69c);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55), inset 0 0 60px rgba(90, 50, 10, 0.18);
+  transform: rotate(-0.4deg);
+}
+.mj.mj-carta p { text-indent: 1.6em; }
+.mj.mj-carta p:first-child, .mj.mj-carta p[style*="right"], .mj.mj-carta p[style*="center"] { text-indent: 0; }
+.mj.mj-carta p[style*="right"] { font-size: 1.15em; margin-top: 20px; }
+.mj.mj-carta :is(h1, h2) { font-family: "Pinyon Script", cursive; font-weight: 400; font-size: 34px; color: var(--mj-acento); margin: 0 0 14px; }
+.mj.mj-carta h3 { font-family: "IM Fell English", serif; font-style: italic; font-size: 19px; color: var(--mj-acento); margin: 14px 0 6px; }
+.mj.mj-carta strong { color: var(--mj-acento); }
+.mj.mj-carta hr { border: 0; height: 1px; margin: 18px 30%; background: rgba(60, 35, 15, 0.45); }
+.mj.mj-carta blockquote { margin: 12px 0; padding: 0 18px; border-left: 2px solid rgba(107, 31, 26, 0.5); font-style: italic; }
+.mj.mj-carta.mj-selada::after { content: ""; display: block; width: 64px; height: 64px; margin: 22px 0 -10px auto; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #c8333c, #7a0f16 60%, #4a070c); box-shadow: 0 3px 6px rgba(0, 0, 0, 0.45), inset 0 -3px 6px rgba(0, 0, 0, 0.35); }
+.mj.mj-carta.mj-rasgada { clip-path: polygon(0 1%, 6% 0, 13% 1.2%, 21% 0.2%, 30% 1%, 38% 0, 47% 1.3%, 55% 0.3%, 64% 1.1%, 72% 0, 81% 1%, 90% 0.2%, 100% 1%, 100% 99%, 93% 100%, 85% 98.8%, 76% 99.8%, 67% 98.9%, 58% 100%, 49% 98.8%, 40% 99.7%, 31% 98.9%, 22% 100%, 13% 99%, 5% 99.8%, 0 99%); }
+
+/* ============================================================
+   DIÁRIO (mj-diario): caderno pessoal, folha pautada, letra à mão.
+   Variantes: mj-manchado (manchas de sangue e água).
+   ============================================================ */
+.mj.mj-diario {
+  --mj-ink: #1f2a44; --mj-acento: #7a1d1d;
+  max-width: 700px;
+  padding: 40px 48px 40px 92px;
+  font-family: "Caveat", "Segoe Print", cursive; font-size: 23px; line-height: 32px;
+  background:
+    linear-gradient(90deg, transparent 70px, rgba(170, 40, 40, 0.45) 70px, rgba(170, 40, 40, 0.45) 72px, transparent 72px),
+    repeating-linear-gradient(180deg, transparent 0 31px, rgba(60, 90, 140, 0.22) 31px 32px),
+    linear-gradient(180deg, #f6f0de, #ece2c6);
+  background-position: 0 0, 0 8px, 0 0;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.5), inset 14px 0 18px -12px rgba(0, 0, 0, 0.35);
+  border-radius: 2px 6px 6px 2px;
+}
+.mj.mj-diario p { margin: 0 0 32px; }
+.mj.mj-diario :is(h1, h2) { font-family: "Caveat", cursive; font-weight: 700; font-size: 34px; line-height: 64px; margin: 0; color: var(--mj-acento); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 6px; }
+.mj.mj-diario h3 { font-family: "Caveat", cursive; font-size: 26px; line-height: 32px; margin: 0; color: var(--mj-acento); }
+.mj.mj-diario strong { color: var(--mj-acento); }
+.mj.mj-diario em { font-style: normal; text-decoration: underline wavy rgba(122, 29, 29, 0.6); }
+.mj.mj-diario s, .mj.mj-diario del { text-decoration-thickness: 2px; text-decoration-color: rgba(20, 20, 20, 0.75); }
+.mj.mj-diario hr { border: 0; height: 32px; margin: 0; background: none; text-align: center; }
+.mj.mj-diario hr::after { content: "~ ~ ~"; display: block; line-height: 32px; color: var(--mj-ink); opacity: 0.6; }
+.mj.mj-diario ul { margin: 0 0 32px; padding-left: 26px; }
+.mj.mj-diario li { margin: 0; }
+.mj.mj-diario.mj-manchado::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(circle at 82% 18%, rgba(110, 10, 10, 0.32) 0 22px, rgba(110, 10, 10, 0.12) 32px, transparent 46px),
+    radial-gradient(circle at 87% 24%, rgba(110, 10, 10, 0.4) 0 4px, transparent 6px),
+    radial-gradient(ellipse at 22% 78%, rgba(120, 90, 40, 0.18) 0 60px, transparent 90px);
+}
+
+/* ============================================================
+   GAZETA (mj-gazeta): jornal impresso de Artênis.
+   O primeiro h1 vira o cabeçalho do jornal; use .mj-data logo abaixo.
+   h2 viram manchetes. Variantes: mj-colunas (texto em duas colunas),
+   mj-velha (papel amarelado).
+   ============================================================ */
+.mj.mj-gazeta {
+  --mj-ink: #171513; --mj-acento: #171513;
+  max-width: 820px;
+  padding: 30px 38px 34px;
+  font-family: "Old Standard TT", "Times New Roman", serif; font-size: 16px; line-height: 1.5;
+  background: linear-gradient(180deg, #f1ede3, #e7e1d2);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.5);
+}
+.mj.mj-gazeta.mj-velha { background: linear-gradient(180deg, #e9dcbc, #dccb9f); }
+.mj.mj-gazeta h1 {
+  font-family: "UnifrakturMaguntia", "Old Standard TT", serif; font-weight: 400; font-size: 54px; line-height: 1;
+  text-align: center; margin: 0; padding: 0 0 8px; color: var(--mj-ink);
+  border-bottom: 3px double var(--mj-ink);
+}
+.mj.mj-gazeta h1 + p, .mj.mj-gazeta .mj-data {
+  display: flex; justify-content: space-between; margin: 0 0 16px; padding: 4px 0;
+  font-family: "Old Standard TT", serif; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; font-style: normal;
+  border-bottom: 1px solid var(--mj-ink); opacity: 1;
+}
+.mj.mj-gazeta h2 { font-family: "Playfair Display", "Old Standard TT", serif; font-weight: 900; font-size: 30px; line-height: 1.1; margin: 18px 0 8px; color: var(--mj-ink); column-span: all; }
+.mj.mj-gazeta h3 { font-family: "Playfair Display", serif; font-style: italic; font-weight: 400; font-size: 18px; margin: 0 0 10px; color: #3a352f; column-span: all; }
+.mj.mj-gazeta p { text-align: justify; hyphens: auto; }
+.mj.mj-gazeta h2 + p::first-letter, .mj.mj-gazeta h3 + p::first-letter { float: left; font-family: "Playfair Display", serif; font-weight: 900; font-size: 3.1em; line-height: 0.85; padding: 4px 6px 0 0; }
+.mj.mj-gazeta hr { border: 0; height: 0; border-top: 1px solid var(--mj-ink); margin: 14px 0; column-span: all; }
+.mj.mj-gazeta img { display: block; margin: 8px auto; filter: grayscale(1) contrast(1.15) sepia(0.15); }
+.mj.mj-gazeta blockquote { margin: 10px 0; padding: 6px 0; border-top: 2px solid var(--mj-ink); border-bottom: 2px solid var(--mj-ink); font-family: "Playfair Display", serif; font-style: italic; font-size: 20px; text-align: center; }
+.mj.mj-gazeta.mj-colunas { column-count: 2; column-gap: 28px; column-rule: 1px solid rgba(23, 21, 19, 0.35); }
+.mj.mj-gazeta.mj-colunas :is(h1, h1 + p, .mj-data) { column-span: all; }
+.mj.mj-gazeta.mj-colunas p { break-inside: avoid-column; }
+
+/* ============================================================
+   DOSSIÊ (mj-dossie): relatório da Vigília Eterna, ficha de inquérito.
+   Datilografado em papel de pasta. Use .mj-tarja para trechos censurados
+   e .mj-carimbo para carimbos. Variantes: mj-sigiloso (faixa vermelha).
+   ============================================================ */
+.mj.mj-dossie {
+  --mj-ink: #23201b; --mj-acento: #8e0f16;
+  max-width: 740px;
+  padding: 48px 54px 44px;
+  font-family: "Special Elite", "Courier New", monospace; font-size: 15.5px; line-height: 1.7;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 3px, rgba(0, 0, 0, 0.012) 3px 4px),
+    linear-gradient(180deg, #ece4cf, #e2d7bb);
+  border: 1px solid #b9ab88;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.5), 10px 10px 0 -2px #c9b78e, 10px 10px 0 -1px #a8956a;
+}
+.mj.mj-dossie::before { content: ""; position: absolute; top: -12px; left: 46px; width: 120px; height: 18px; background: #c9b78e; border: 1px solid #a8956a; border-bottom: 0; border-radius: 6px 6px 0 0; }
+.mj.mj-dossie :is(h1, h2) { font-family: "Special Elite", monospace; font-weight: 400; text-transform: uppercase; letter-spacing: 0.12em; color: var(--mj-ink); }
+.mj.mj-dossie h1 { font-size: 24px; margin: 0 0 4px; padding-bottom: 8px; border-bottom: 2px solid var(--mj-ink); }
+.mj.mj-dossie h2 { font-size: 17px; margin: 22px 0 8px; padding: 2px 8px; background: rgba(35, 32, 27, 0.08); border-left: 4px solid var(--mj-acento); }
+.mj.mj-dossie h3 { font-family: "Special Elite", monospace; font-size: 15px; text-decoration: underline; margin: 14px 0 6px; color: var(--mj-ink); }
+.mj.mj-dossie strong { text-transform: uppercase; letter-spacing: 0.05em; }
+.mj.mj-dossie hr { border: 0; border-top: 1px dashed rgba(35, 32, 27, 0.55); margin: 16px 0; }
+.mj.mj-dossie table { width: 100%; margin: 10px 0; font-size: 14px; }
+.mj.mj-dossie :is(td, th) { border: 1px solid rgba(35, 32, 27, 0.4); padding: 3px 8px; text-align: left; }
+.mj.mj-dossie th { background: rgba(35, 32, 27, 0.1); }
+.mj.mj-dossie blockquote { margin: 12px 0; padding: 8px 14px; border: 1px dashed rgba(35, 32, 27, 0.5); font-style: italic; }
+.mj.mj-dossie.mj-sigiloso { border-top: 26px solid #8e0f16; }
+.mj.mj-dossie.mj-sigiloso::after { content: "SIGILOSO · VIGÍLIA ETERNA"; position: absolute; top: -22px; left: 0; right: 0; text-align: center; font-family: "Special Elite", monospace; font-size: 13px; letter-spacing: 0.4em; color: #f1ece2; }
+
+/* ============================================================
+   PERGAMINHO (mj-pergaminho): édito, decreto, profecia, mapa de texto.
+   Texto centralizado entre dois rolos. Variantes: mj-real (dourado).
+   ============================================================ */
+.mj.mj-pergaminho {
+  --mj-ink: #3b2513; --mj-acento: #7a2a12; --rolo: #6b4423;
+  max-width: 640px;
+  margin: 26px auto;
+  padding: 50px 60px;
+  font-family: "Cormorant Garamond", "EB Garamond", serif; font-size: 19px; line-height: 1.6; text-align: center;
+  background:
+    radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(110, 70, 30, 0.28) 100%),
+    linear-gradient(90deg, #d9c193, #ecdcb4 18%, #f1e3bf 50%, #ecdcb4 82%, #d9c193);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+}
+.mj.mj-pergaminho::before, .mj.mj-pergaminho::after {
+  content: ""; position: absolute; left: -16px; right: -16px; height: 26px; border-radius: 13px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--rolo) 70%, #fff), var(--rolo) 45%, color-mix(in srgb, var(--rolo) 60%, #000));
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.45);
+}
+.mj.mj-pergaminho::before { top: -14px; }
+.mj.mj-pergaminho::after { bottom: -14px; }
+.mj.mj-pergaminho.mj-real { --rolo: #a07a2c; --mj-acento: #6b1220; }
+.mj.mj-pergaminho :is(h1, h2) { font-family: "Cinzel Decorative", "Cinzel", serif; font-weight: 700; color: var(--mj-acento); letter-spacing: 0.04em; }
+.mj.mj-pergaminho h1 { font-size: 32px; margin: 0 0 10px; }
+.mj.mj-pergaminho h2 { font-size: 21px; margin: 18px 0 8px; }
+.mj.mj-pergaminho h3 { font-family: "Cinzel", serif; font-size: 17px; color: var(--mj-acento); margin: 12px 0 6px; }
+.mj.mj-pergaminho p:first-of-type::first-letter { font-family: "UnifrakturMaguntia", serif; font-size: 2.6em; line-height: 0.8; color: var(--mj-acento); }
+.mj.mj-pergaminho hr { border: 0; height: 14px; margin: 14px auto; width: 60%; background: radial-gradient(circle, var(--mj-acento) 0 3px, transparent 4px) center/14px 14px no-repeat, linear-gradient(90deg, transparent, var(--mj-acento), transparent) center/100% 1px no-repeat; }
+.mj.mj-pergaminho ul { display: inline-block; text-align: left; margin: 6px 0 12px; }
+
+/* ============================================================
+   TOMO (mj-tomo): livro antigo ou proibido. Velino escuro, rubricas
+   em sangue, capitular iluminada no primeiro parágrafo.
+   Variantes: mj-proibido (o texto respira; desligado em movimento reduzido),
+   mj-codice (papel claro de códice, sem escuridão).
+   ============================================================ */
+.mj.mj-tomo {
+  --mj-ink: #e2d6bd; --mj-acento: #c0313b; --mj-ouro: #b8923c;
+  max-width: 720px;
+  padding: 58px 66px 54px;
+  font-family: "Cormorant Garamond", "EB Garamond", serif; font-size: 19px; line-height: 1.7;
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(70, 40, 20, 0.0), rgba(0, 0, 0, 0.55) 100%),
+    linear-gradient(160deg, #2a2019, #1b140f 55%, #140e0a);
+  border: 1px solid #4a3523;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7), inset 0 0 0 6px #1a120c, inset 0 0 0 7px rgba(184, 146, 60, 0.45);
+}
+.mj.mj-tomo.mj-codice {
+  --mj-ink: #2b1d10; --mj-acento: #8e1a14; --mj-ouro: #8a6a1c;
+  background: radial-gradient(ellipse at 50% 50%, transparent 60%, rgba(90, 60, 20, 0.25)), linear-gradient(170deg, #efe2c2, #e2cfa4);
+  border-color: #8a6a1c; box-shadow: 0 10px 26px rgba(0, 0, 0, 0.5), inset 0 0 0 6px #efe2c2, inset 0 0 0 7px rgba(138, 106, 28, 0.6);
+}
+.mj.mj-tomo :is(h1, h2, h3) { font-family: "Cinzel", serif; color: var(--mj-acento); letter-spacing: 0.06em; }
+.mj.mj-tomo h1 { font-size: 30px; text-align: center; margin: 0 0 6px; }
+.mj.mj-tomo h1::after { content: "❦"; display: block; font-size: 20px; color: var(--mj-ouro); margin-top: 4px; }
+.mj.mj-tomo h2 { font-size: 20px; margin: 24px 0 8px; font-variant: small-caps; }
+.mj.mj-tomo h2::before { content: "§ "; color: var(--mj-ouro); }
+.mj.mj-tomo h3 { font-size: 16px; margin: 14px 0 6px; }
+.mj.mj-tomo p { text-align: justify; }
+.mj.mj-tomo :is(h1, h2, h3) + p::first-letter, .mj.mj-tomo > p:first-child::first-letter {
+  float: left; font-family: "UnifrakturMaguntia", "Cinzel", serif; font-size: 3.6em; line-height: 0.85; padding: 6px 10px 0 0;
+  color: var(--mj-acento); text-shadow: 1px 1px 0 var(--mj-ouro);
+}
+.mj.mj-tomo strong { color: var(--mj-acento); }
+.mj.mj-tomo em { color: var(--mj-ouro); }
+.mj.mj-tomo blockquote { margin: 14px 24px; padding: 6px 16px; border-left: 2px solid var(--mj-ouro); font-style: italic; }
+.mj.mj-tomo hr { border: 0; height: 20px; margin: 16px 0; background: none; text-align: center; }
+.mj.mj-tomo hr::after { content: "✠"; color: var(--mj-ouro); font-size: 16px; line-height: 20px; }
+.mj.mj-tomo.mj-proibido p { animation: mj-respira 7s ease-in-out infinite; }
+.mj.mj-tomo.mj-proibido p:nth-child(3n) { animation-delay: -2.3s; }
+.mj.mj-tomo.mj-proibido p:nth-child(3n + 1) { animation-delay: -4.6s; }
+@keyframes mj-respira { 0%, 100% { letter-spacing: 0; text-shadow: none; } 50% { letter-spacing: 0.015em; text-shadow: 0 0 6px rgba(192, 49, 59, 0.45); } }
+@media (prefers-reduced-motion: reduce) { .mj.mj-tomo.mj-proibido p { animation: none; } }
+
+/* ============================================================
+   MANUAL (mj-manual): regras e referências, no visual do design system
+   de Monolith (pedra negra, sangue, Bebas Neue). A classe .monolith,
+   usada na página "Regras Homebrew", recebe o mesmo visual.
+   Variantes: mj-ossario (versão clara).
+   ============================================================ */
+.mj.mj-manual, .monolith {
+  --mj-ink: #e6e2d8; --mj-acento: #c41d27; --mj-fundo: #0e1016; --mj-fundo2: #161a22; --mj-borda: #2a303c; --mj-mudo: #8f95a3; --mj-cobalto: #3557b3;
+  position: relative; max-width: 780px; margin: 0 auto; padding: 40px 48px 36px; box-sizing: border-box;
+  font-family: "Barlow", "Segoe UI", system-ui, sans-serif; font-size: 15.5px; line-height: 1.65; color: var(--mj-ink);
+  background: var(--mj-fundo);
+  border: 1px solid var(--mj-borda); border-top: 4px solid var(--mj-acento);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+}
+.mj.mj-manual.mj-ossario { --mj-ink: #131419; --mj-acento: #9a1018; --mj-fundo: #f4efe4; --mj-fundo2: #e9e3d6; --mj-borda: #b9ad97; --mj-mudo: #4c505b; --mj-cobalto: #22408c; }
+:is(.mj.mj-manual, .monolith) :is(h1, h2, h3, h4) { font-family: "Bebas Neue", "Oswald", Impact, sans-serif; font-weight: 400; letter-spacing: 0.05em; color: var(--mj-ink); border: 0; text-shadow: none; }
+:is(.mj.mj-manual, .monolith) h1 { font-size: 46px; line-height: 1; margin: 0 0 18px; text-transform: uppercase; }
+:is(.mj.mj-manual, .monolith) h1::after { content: ""; display: block; width: 64px; height: 4px; margin-top: 10px; background: var(--mj-acento); }
+:is(.mj.mj-manual, .monolith) h2 { display: flex; align-items: center; gap: 10px; font-size: 27px; margin: 30px 0 10px; text-transform: uppercase; }
+:is(.mj.mj-manual, .monolith) h2::before { content: ""; flex: 0 0 5px; height: 22px; background: var(--mj-acento); }
+:is(.mj.mj-manual, .monolith) h2::after { content: ""; flex: 1; height: 1px; background: var(--mj-borda); }
+:is(.mj.mj-manual, .monolith) h3 { font-size: 20px; margin: 18px 0 6px; color: var(--mj-acento); }
+:is(.mj.mj-manual, .monolith) h4 { font-family: "Barlow Condensed", sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mj-mudo); margin: 14px 0 4px; }
+:is(.mj.mj-manual, .monolith) p { margin: 0 0 11px; }
+:is(.mj.mj-manual, .monolith) strong { color: var(--mj-ink); font-weight: 600; }
+:is(.mj.mj-manual, .monolith) em { color: var(--mj-mudo); }
+:is(.mj.mj-manual, .monolith) blockquote { margin: 0 0 14px; padding: 2px 0 2px 16px; border: 0; border-left: 2px solid var(--mj-acento); background: none; font-style: italic; color: var(--mj-mudo); }
+:is(.mj.mj-manual, .monolith) blockquote p { margin: 0; }
+:is(.mj.mj-manual, .monolith) hr { border: 0; height: 1px; margin: 22px 0; background: var(--mj-borda); }
+:is(.mj.mj-manual, .monolith) :is(ul, ol) { margin: 0 0 12px; padding-left: 22px; }
+:is(.mj.mj-manual, .monolith) li::marker { color: var(--mj-acento); }
+:is(.mj.mj-manual, .monolith) table { width: 100%; margin: 10px 0 16px; border-collapse: collapse; background: var(--mj-fundo2); border: 1px solid var(--mj-borda); font-size: 14px; }
+:is(.mj.mj-manual, .monolith) th { font-family: "Barlow Condensed", sans-serif; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; font-size: 12.5px; color: var(--mj-mudo); background: var(--mj-fundo); text-align: left; }
+:is(.mj.mj-manual, .monolith) :is(th, td) { padding: 6px 10px; border-bottom: 1px solid var(--mj-borda); }
+:is(.mj.mj-manual, .monolith) tr:nth-child(even) td { background: rgba(255, 255, 255, 0.02); }
+:is(.mj.mj-manual, .monolith) code { font-family: "JetBrains Mono", monospace; font-size: 0.9em; padding: 1px 5px; background: var(--mj-fundo2); border: 1px solid var(--mj-borda); color: var(--mj-ink); }
+:is(.mj.mj-manual, .monolith) a.content-link { color: var(--mj-ink); background: rgba(53, 87, 179, 0.25); border: 1px solid var(--mj-cobalto); }

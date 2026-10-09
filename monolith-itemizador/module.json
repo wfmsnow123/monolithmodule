@@ -1,0 +1,44 @@
+{
+  "id": "monolith-itemizador",
+  "title": "Monolith: Itemizador",
+  "description": "Transforma jornais em itens de dnd5e (tipo Documento) que o jogador carrega na ficha e lê ao usar. Arraste o jornal para a ficha, ou use o botão do jornal. O item guarda uma cópia do texto com o tema do Monolith: Journals, fica sincronizado com o jornal e pode ser mostrado a todos.",
+  "version": "0.1.0",
+  "authors": [
+    {
+      "name": "snowxd"
+    }
+  ],
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13.351"
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "dnd5e",
+        "type": "system",
+        "compatibility": {
+          "minimum": "5.0.0"
+        }
+      }
+    ],
+    "recommends": [
+      {
+        "id": "monolith-journals",
+        "type": "module",
+        "reason": "Os documentos são lidos com o tema escolhido no jornal."
+      }
+    ]
+  },
+  "esmodules": [
+    "scripts/main.mjs"
+  ],
+  "styles": [
+    "styles/monolith-ui.css",
+    "styles/itemizador.css"
+  ],
+  "socket": true,
+  "url": "https://github.com/wfmsnow123/monolithmodule",
+  "manifest": "https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-itemizador/module.json",
+  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-itemizador-v0.1.0/monolith-itemizador.zip"
+}

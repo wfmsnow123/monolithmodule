@@ -1,0 +1,39 @@
+{
+  "id": "monolith-journals",
+  "title": "Monolith: Journals",
+  "description": "Temas de jornal de Monolith: documento, carta, diário, gazeta, dossiê, pergaminho, tomo, manual, conto e card de NPC. Escolha o tema pelo botão do jornal, sem mexer no HTML, ou envolva o conteúdo na classe do tema. Inclui os temas do antigo Monolith RPG (.mono-doc, .mono-npc, .mono-lore).",
+  "version": "0.1.0",
+  "authors": [
+    {
+      "name": "snowxd"
+    }
+  ],
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13.351"
+  },
+  "relationships": {
+    "conflicts": [
+      {
+        "id": "monolith-rpg",
+        "type": "module",
+        "reason": "Os temas do Monolith RPG já estão aqui; ative só um dos dois."
+      }
+    ]
+  },
+  "esmodules": [
+    "scripts/main.mjs"
+  ],
+  "styles": [
+    "styles/fontes.css",
+    "styles/monolith-ui.css",
+    "styles/legado-documento.css",
+    "styles/legado-npc.css",
+    "styles/legado-conto.css",
+    "styles/temas.css",
+    "styles/seletor.css"
+  ],
+  "url": "https://github.com/wfmsnow123/monolithmodule",
+  "manifest": "https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-journals/module.json",
+  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-journals-v0.1.0/monolith-journals.zip"
+}

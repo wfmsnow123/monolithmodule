@@ -1,0 +1,124 @@
+/* Monolith: Journals. Tema de documento: .mono-doc ou .mj-documento (vindo do módulo MonolithRPG). As fontes estão em fontes.css. */
+/* ============================================================
+   Monolith RPG — Tema de DOCUMENTO (:is(.mono-doc, .mj-documento))
+   Estiliza o HTML natural do editor do Foundry (h1/h2/h3, p, hr,
+   strong, em, ul, blockquote). No journal, basta envolver o
+   conteudo UMA vez:  <div class="mono-doc"> ...conteudo... </div>
+   Serve para leis, gazetas, proclamas, paginas de lore, etc.
+   ============================================================ */
+
+:is(.mono-doc, .mj-documento) {
+  --cream: #faf3e7;
+  --cream2: #f1e5d0;
+  --wine: #7a2230;
+  --wine-soft: #a6444f;
+  --ink: #3a2c22;
+  --ink-soft: #6f5b48;
+  --gold: #9c7a3c;
+  --line: #d9c4a3;
+
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 40px 46px 36px;
+  color: var(--ink);
+  font-family: 'EB Garamond', 'Georgia', serif;
+  font-size: 17px;
+  line-height: 1.65;
+  background:
+    radial-gradient(130% 120% at 50% 0%, rgba(255,255,255,.35), transparent 55%),
+    linear-gradient(180deg, var(--cream), var(--cream2));
+  border: 1px solid var(--gold);
+  border-radius: 4px;
+  box-shadow: inset 0 0 70px rgba(122,34,48,.08), 0 8px 26px rgba(0,0,0,.35);
+  position: relative;
+}
+:is(.mono-doc, .mj-documento) * { box-sizing: border-box; }
+
+/* Moldura interna decorativa */
+:is(.mono-doc, .mj-documento)::before {
+  content: "";
+  position: absolute; inset: 8px;
+  border: 1px solid rgba(156,122,60,.45);
+  border-radius: 3px;
+  pointer-events: none;
+}
+
+/* Titulo principal */
+:is(.mono-doc, .mj-documento) h1 {
+  font-family: 'Cinzel', 'Georgia', serif;
+  text-align: center;
+  color: var(--wine);
+  font-size: 30px;
+  letter-spacing: 1px;
+  margin: 4px 0 6px;
+  text-shadow: 0 1px 0 rgba(255,255,255,.4);
+}
+
+/* Cabecalhos de secao */
+:is(.mono-doc, .mj-documento) h2 {
+  font-family: 'Cinzel', 'Georgia', serif;
+  color: var(--wine);
+  font-size: 20px;
+  font-variant: small-caps;
+  letter-spacing: 1px;
+  margin: 22px 0 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--line);
+}
+:is(.mono-doc, .mj-documento) h3 {
+  font-family: 'Cinzel', 'Georgia', serif;
+  color: var(--wine-soft);
+  font-size: 16px;
+  letter-spacing: .5px;
+  margin: 12px 0 4px;
+}
+
+:is(.mono-doc, .mj-documento) p { margin: 0 0 10px; }
+:is(.mono-doc, .mj-documento) strong { color: var(--wine); }
+:is(.mono-doc, .mj-documento) em { color: var(--ink-soft); }
+
+/* Paragrafo introdutorio / assinatura centralizados (ex.: "Emitida pela...") */
+:is(.mono-doc, .mj-documento) > p:first-of-type,
+:is(.mono-doc, .mj-documento) p[style*="center"] {
+  color: var(--ink-soft);
+  font-style: italic;
+}
+:is(.mono-doc, .mj-documento) p[style*="center"] em {
+  font-size: 1.15em;
+  color: var(--wine);
+  font-style: italic;
+}
+
+/* Listas reais */
+:is(.mono-doc, .mj-documento) ul { margin: 4px 0 12px; padding-left: 22px; }
+:is(.mono-doc, .mj-documento) li { margin: 3px 0; }
+
+/* Citacoes */
+:is(.mono-doc, .mj-documento) blockquote {
+  margin: 12px 0;
+  padding: 8px 16px;
+  border-left: 4px solid var(--wine-soft);
+  background: rgba(156,122,60,.12);
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+/* Divisor ornamental (todo <hr> vira um separador com losango) */
+:is(.mono-doc, .mj-documento) hr {
+  border: none;
+  height: 18px;
+  margin: 16px auto;
+  background:
+    linear-gradient(90deg, transparent, var(--gold), transparent) center/100% 1px no-repeat;
+  position: relative;
+}
+:is(.mono-doc, .mj-documento) hr::after {
+  content: "\2666";                 /* losango */
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--gold);
+  background: var(--cream);
+  padding: 0 10px;
+  font-size: 13px;
+}

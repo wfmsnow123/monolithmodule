@@ -1,0 +1,47 @@
+/* Monolith: Itemizador. Tokens do design system em monolith-ui.css; os temas de página vêm do Monolith: Journals. */
+
+/* ---------- Leitor ---------- */
+.monolith-leitor > .window-content { padding: 0; overflow: hidden; background: radial-gradient(120% 80% at 50% 0%, #1d1a17, #0c0b0a); }
+.mi-leitor { display: flex; flex-direction: column; height: 100%; }
+.mi-barra { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); padding: var(--space-2) var(--space-4); background: var(--void-000); border-bottom: 1px solid var(--void-300); }
+.mi-indice { display: flex; flex-wrap: wrap; gap: var(--space-1); }
+.mi-indice a { padding: 1px var(--space-2); font-family: var(--font-label); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-muted); border: 1px solid var(--void-400); border-radius: var(--radius-sm); cursor: pointer; }
+.mi-indice a:hover { color: var(--ink); border-color: var(--blood-500); }
+.mi-acoes { margin-left: auto; display: flex; gap: var(--space-2); }
+.mi-acoes button { width: auto; flex: 0 0 auto; white-space: nowrap; }
+.mi-aviso { font-family: var(--font-label); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blood-text); }
+.mi-paginas { flex: 1; overflow-y: auto; padding: var(--space-6) var(--space-4); }
+.mi-pagina + .mi-pagina { margin-top: var(--space-8); }
+.mi-titulo { max-width: 760px; margin: 0 auto var(--space-3); font-family: var(--font-display); font-weight: 400; font-size: 24px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink); border: 0; }
+.mi-vazio { text-align: center; color: var(--ink-muted); font-style: italic; }
+.mi-figura { margin: 0 auto; max-width: 760px; text-align: center; }
+.mi-figura img { max-width: 100%; border: 0; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6); }
+.mi-figura figcaption { margin-top: var(--space-2); font-style: italic; color: var(--ink-muted); }
+.mi-paginas video { display: block; max-width: 100%; margin: 0 auto; }
+
+/* Sem tema: papel simples, legível. */
+.mi-simples {
+  max-width: 760px; margin: 0 auto; padding: 36px 44px;
+  font-family: "EB Garamond", Georgia, serif; font-size: 17px; line-height: 1.65; color: #2b2118;
+  background: linear-gradient(180deg, #f4ecda, #e9dcc0); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+}
+.mi-simples :is(h1, h2, h3) { font-family: "Cinzel", Georgia, serif; color: #6b1f1a; border: 0; }
+.mi-simples p { margin: 0 0 10px; }
+
+/* ---------- Janela de criação ---------- */
+.mi-form { display: flex; flex-direction: column; gap: var(--space-2); }
+.mi-form label { display: flex; flex-direction: column; gap: 2px; font-weight: 600; }
+.mi-form .mi-linha { display: flex; gap: var(--space-3); align-items: center; }
+.mi-form .mi-col { flex: 1; display: flex; flex-direction: column; gap: var(--space-2); }
+.mi-form .mi-img { width: 72px; height: 72px; object-fit: cover; border: 1px solid var(--void-400); background: var(--void-000); }
+.mi-form .mi-inline { display: flex; gap: var(--space-1); }
+.mi-form .mi-inline input { flex: 1; }
+.mi-form .mi-inline button { flex: 0 0 32px; }
+.mi-form .mi-linha2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
+.mi-form fieldset { max-height: 180px; overflow-y: auto; padding: var(--space-2) var(--space-3); }
+.mi-form .mi-pag { flex-direction: row; align-items: center; gap: var(--space-2); font-weight: 400; }
+.mi-form .mi-pag small { color: var(--ink-muted); }
+.mi-form .mi-check { flex-direction: row; align-items: center; gap: var(--space-2); font-weight: 400; }
+
+/* Dica na descrição do item */
+.mi-dica { font-size: 12px; opacity: 0.75; }

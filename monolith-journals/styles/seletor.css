@@ -1,0 +1,24 @@
+/* Monolith: Journals. Janela de escolha de tema (tokens do design system em monolith-ui.css). */
+.monolith-journals-seletor > .window-content { padding: 0; overflow: hidden; }
+.mjs-corpo { display: flex; flex-direction: column; height: 100%; }
+.mjs-grade { flex: 1; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--space-3); padding: var(--space-4); }
+.application.mono .mjs-card.mjs-card {
+  font-family: var(--font-sans); font-size: 13px; font-weight: 400; letter-spacing: normal; text-transform: none;
+  display: flex; flex-direction: column; align-items: stretch; gap: 4px; height: auto; margin: 0; padding: var(--space-2);
+  text-align: left; white-space: normal; line-height: 1.3;
+  background: var(--void-000); border: 1px solid var(--void-300); border-radius: var(--radius-none); color: var(--ink);
+}
+.application.mono .mjs-card.mjs-card:hover { border-color: var(--ink-muted); }
+.application.mono .mjs-card.mjs-card.ativo { border-color: var(--blood-500); box-shadow: inset 0 3px 0 var(--blood-500); }
+.mjs-palco { text-transform: none; letter-spacing: normal; font-weight: 400; display: block; height: 150px; overflow: hidden; padding: 10px 6px; background: #0c0b0a; pointer-events: none; }
+.mjs-palco .mj-amostra { display: block; zoom: 0.4; margin: 14px auto; }
+.mjs-nome { font-family: var(--font-display); font-size: 19px; letter-spacing: 0.05em; text-transform: uppercase; }
+.application.mono .mjs-card .mjs-desc { font-family: var(--font-sans); font-size: 12px; letter-spacing: normal; text-transform: none; color: var(--ink-muted); }
+.mjs-rodape { display: grid; grid-template-columns: 1fr auto; gap: var(--space-2) var(--space-4); padding: var(--space-3) var(--space-4); background: var(--void-000); border-top: 1px solid var(--void-300); }
+.mjs-opcoes { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); align-items: center; }
+.mjs-opcoes label { display: flex; gap: var(--space-2); align-items: center; font-weight: 600; }
+.mjs-opcoes .mjs-check { font-weight: 400; }
+.mjs-escopo { display: flex; flex-direction: column; gap: 2px; grid-column: 1; }
+.mjs-escopo label { display: flex; gap: var(--space-2); align-items: center; }
+.mjs-botoes { grid-column: 2; grid-row: 1 / span 2; display: flex; flex-direction: column; gap: var(--space-2); justify-content: flex-end; }
+.mjs-botoes button { white-space: nowrap; }

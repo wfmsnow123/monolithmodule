@@ -1,0 +1,152 @@
+/* Monolith: Journals. Card de NPC: .mono-npc ou .mj-npc (vindo do módulo MonolithRPG). As fontes estão em fontes.css. */
+/* ============================================================
+   Monolith RPG — Template de card de NPC / estabelecimento
+   Classe raiz: :is(.mono-npc, .mj-npc)  (paleta creme/vinho, ficha lateral)
+   Este arquivo é carregado pelo módulo (module.json > styles).
+   Basta colar o HTML do card (pasta journals/) numa página de
+   Journal que o estilo se aplica automaticamente.
+   ============================================================ */
+
+:is(.mono-npc, .mj-npc) {
+  --cream: #faf3e7;
+  --cream2: #f1e5d0;
+  --wine: #7a2230;
+  --wine-soft: #a6444f;
+  --ink: #3a2c22;
+  --ink-soft: #6f5b48;
+  --line: #d9c4a3;
+
+  max-width: 740px;
+  margin: 0 auto;
+  display: flex;
+  align-items: stretch;
+  color: var(--ink);
+  font-family: 'EB Garamond', 'Georgia', 'Book Antiqua', serif;
+  font-size: 16px;
+  line-height: 1.6;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 8px 26px rgba(58, 44, 34, .28);
+}
+
+:is(.mono-npc, .mj-npc) * { box-sizing: border-box; }
+
+/* ---- Coluna principal ---- */
+:is(.mono-npc, .mj-npc) .mn-main { flex: 1 1 auto; padding: 26px 28px 24px; min-width: 0; }
+
+:is(.mono-npc, .mj-npc) .mn-title {
+  text-align: center;
+  color: var(--wine);
+  font-family: 'Cinzel', 'Georgia', serif;
+  font-size: 27px;
+  font-weight: 700;
+  margin: 0 0 12px;
+  letter-spacing: .5px;
+}
+
+:is(.mono-npc, .mj-npc) .mn-quote {
+  margin: 0 0 18px;
+  text-align: center;
+  font-style: italic;
+  color: var(--ink-soft);
+  border: none;
+}
+:is(.mono-npc, .mj-npc) .mn-quote cite {
+  display: block;
+  margin-top: 6px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--wine);
+}
+
+:is(.mono-npc, .mj-npc) .mn-lead { margin: 0 0 16px; text-align: justify; }
+:is(.mono-npc, .mj-npc) .mn-lead b { color: var(--wine); }
+
+:is(.mono-npc, .mj-npc) .mn-h {
+  font-family: 'Cinzel', 'Georgia', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 18px 0 6px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid var(--line);
+}
+
+:is(.mono-npc, .mj-npc) .mn-main p { margin: 0 0 11px; text-align: justify; }
+:is(.mono-npc, .mj-npc) .mn-main .mn-body { padding-left: 14px; }
+
+/* ---- Barra lateral ---- */
+:is(.mono-npc, .mj-npc) .mn-side {
+  flex: 0 0 230px;
+  background: var(--cream2);
+  border-left: 1px solid var(--line);
+  padding: 22px 18px 20px;
+}
+
+:is(.mono-npc, .mj-npc) .mn-frame {
+  border: 3px solid var(--wine-soft);
+  border-radius: 95px 95px 10px 10px;
+  padding: 5px;
+  background: var(--cream);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .28);
+}
+:is(.mono-npc, .mj-npc) .mn-frame + .mn-frame { margin-top: 12px; }
+:is(.mono-npc, .mj-npc) .mn-frame img {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  border-radius: 90px 90px 6px 6px;
+}
+:is(.mono-npc, .mj-npc) .mn-frame.mn-sm img { height: 135px; }
+:is(.mono-npc, .mj-npc) .mn-frame.mn-noimg {
+  height: 175px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 12px;
+  color: var(--ink-soft);
+  font-style: italic;
+  font-size: 13px;
+  background:
+    repeating-linear-gradient(45deg, rgba(166,68,79,.05) 0 10px, transparent 10px 20px),
+    var(--cream2);
+  border-radius: 90px 90px 6px 6px;
+}
+
+:is(.mono-npc, .mj-npc) .mn-portname {
+  text-align: center;
+  font-weight: 600;
+  color: var(--wine);
+  font-size: 16px;
+  margin: 10px 0 14px;
+}
+
+:is(.mono-npc, .mj-npc) .mn-group {
+  font-family: 'Cinzel', 'Georgia', serif;
+  font-weight: 700;
+  color: var(--wine);
+  font-size: 14px;
+  margin: 14px 0 4px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+
+:is(.mono-npc, .mj-npc) .mn-field { margin: 6px 0; font-size: 14.5px; }
+:is(.mono-npc, .mj-npc) .mn-field .k { font-weight: 600; color: var(--wine); }
+
+:is(.mono-npc, .mj-npc) .mn-side ul { margin: 3px 0 0; padding-left: 18px; font-size: 14.5px; }
+:is(.mono-npc, .mj-npc) .mn-side li { margin: 2px 0; }
+
+/* ---- Responsivo ---- */
+@media (max-width: 560px) {
+  :is(.mono-npc, .mj-npc) { flex-direction: column; }
+  :is(.mono-npc, .mj-npc) .mn-side { flex-basis: auto; border-left: none; border-top: 1px solid var(--line); }
+  :is(.mono-npc, .mj-npc) .mn-frame img { height: 240px; }
+  :is(.mono-npc, .mj-npc) .mn-frame.mn-sm img { height: 160px; }
+}
