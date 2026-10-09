@@ -5,6 +5,7 @@ import { configurarExaustao, registrarExaustao, configurarTidyExaustao, migrarEx
 import { registrarModificadorEnfase, registrarEnfaseNasRolagens, armarEnfase, rolarEnfaseSolta } from "./enfase.mjs";
 import { HUD, registrarBotoesDoChat, concederInspiracao, concederHeroica } from "./apps.mjs";
 import { registrarListaDeJogadores, atualizarLista } from "./jogadores.mjs";
+import { registrarLucidez } from "./lucidez.mjs";
 import { registrarConfigSobrecarga, registrarGanchosSobrecarga, aplicarLimitesSobrecarga, avisarCargaVariante } from "./sobrecarga.mjs";
 
 Hooks.once("init", () => {
@@ -35,6 +36,7 @@ Hooks.once("init", () => {
   registrarEnfaseNasRolagens();
   registrarBotoesDoChat();
   registrarListaDeJogadores();
+  registrarLucidez();
 
   // O custom-dnd5e pode reconstruir as condições no "ready"; garante os 10 níveis.
   Hooks.on("customDnd5e.setConditionTypesConfig", (cfg) => {

@@ -2,11 +2,13 @@ import { ID, F, registrarConfiguracoes, lista } from "./config.mjs";
 import { estado, usarMedida, aoDescansar, registrarStatusQueima, registrarGanchos, queimarAlma, encerrarQueima, confirmar } from "./fio.mjs";
 import { MedidasApp } from "./app.mjs";
 import { EditorMedidas } from "./editor.mjs";
+import { registrarAnel } from "./anel.mjs";
 
 Hooks.once("init", () => {
   registrarConfiguracoes(EditorMedidas, () => { MedidasApp.atualizarTodos(); rerenderFichas(); });
   registrarStatusQueima();
   registrarGanchos();
+  registrarAnel();
 
   // Fichas que não são Tidy: botão no cabeçalho.
   Hooks.on("getHeaderControlsActorSheetV2", (app, controls) => {

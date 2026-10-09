@@ -163,8 +163,9 @@ export async function verificarMorte(actor) {
   if (e.morto || e.hp > 0) return;
   if (e.falhas < 3 && e.marcadas < 3) return;
   await actor.update({ [`flags.${ID}.${F.queimando}`]: false });
-  await actor.toggleStatusEffect(STATUS_QUEIMA, { active: false });
-  await actor.toggleStatusEffect("dead", { active: true, overlay: true });
+  await statusQueima(actor, false);
+  try { await actor.toggleStatusEffect("dead", { active: true, overlay: true }); }
+  catch (err) { console.warn(`${ID} | status de morto`, err); }
   await chat(actor, "O Fio se rompeu",
     `<p><b>${esc(actor.name)}</b> morreu.</p>${e.recusou ? "" : "<p>Ainda resta <b>Recusar a Morte</b>, uma única vez.</p>"}
      <p>Se a morte for de vez, abra as Medidas Desesperadas para escolher <b>O Nome que Fica</b>.</p>`, { icon: "fa-skull" });
@@ -180,6 +181,7 @@ async function ganharPerdicao(actor, formula, motivo) {
 export async function queimarAlma(actor, { recusa = false } = {}) {
   const e = estado(actor);
   if (!recusa && !e.morrendo) return ui.notifications.warn("A Queima de Alma começa quando você cai a 0 PV.");
+  if (recusa && e.recusou) return ui.notifications.warn(`${actor.name} já recusou a morte uma vez.`);
   const updates = { [`flags.${ID}.${F.queimando}`]: true };
   if (recusa) {
     updates[`flags.${ID}.${F.recusou}`] = true;
@@ -188,19 +190,21 @@ export async function queimarAlma(actor, { recusa = false } = {}) {
     updates["system.attributes.death.success"] = 0;
   }
   await actor.update(updates);
-  if (recusa) await actor.toggleStatusEffect("dead", { active: false });
-  await actor.toggleStatusEffect("unconscious", { active: false });
-  await actor.toggleStatusEffect(STATUS_QUEIMA, { active: true });
   const ganho = await ganharPerdicao(actor, recusa ? "1d8" : "1d4", recusa ? "Recusar a Morte" : "Queimar a Alma");
   await chat(actor, recusa ? "Recusar a Morte" : "Queimar a Alma",
     `<p><b>${esc(actor.name)}</b> ${recusa ? "recusa a morte e " : ""}queima a alma: levanta com 0 PV e age normalmente.</p>
      <p>Perdição +${ganho}. Cada dano sofrido enche o Fio; no início de cada turno, +1 de Perdição e +1 por falha marcada.</p>`,
     { icon: "fa-fire" });
+  try {
+    if (recusa) await actor.toggleStatusEffect("dead", { active: false });
+    await actor.toggleStatusEffect("unconscious", { active: false });
+  } catch (err) { console.warn(`${ID} | status ao queimar`, err); }
+  await statusQueima(actor, true);
 }
 
 export async function encerrarQueima(actor, { porCura = false } = {}) {
   await actor.update({ [`flags.${ID}.${F.queimando}`]: false });
-  await actor.toggleStatusEffect(STATUS_QUEIMA, { active: false });
+  await statusQueima(actor, false);
   if (!porCura && hp(actor).value <= 0) await actor.toggleStatusEffect("unconscious", { active: true });
   await chat(actor, "Fim da Queima", porCura
     ? `<b>${esc(actor.name)}</b> recuperou PV. A Queima termina, mas as falhas marcadas continuam no Fio.`
@@ -243,12 +247,66 @@ export async function nomeQueFica(actor) {
 /* ---------- Status e ganchos ---------- */
 
 export function registrarStatusQueima() {
-  if (CONFIG.statusEffects.some((s) => s.id === STATUS_QUEIMA)) return;
-  CONFIG.statusEffects.push({ id: STATUS_QUEIMA, _id: "monolithqueimand", name: "Queimando a Alma", img: `modules/${ID}/icons/queima.svg` });
+  // O dnd5e reconstrói CONFIG.statusEffects no i18nInit a partir de CONFIG.DND5E.statusEffects;
+  // o que for empurrado direto no init some. Por isso o status entra pela lista do sistema.
+  const dados = { name: "Queimando a Alma", img: `modules/${ID}/icons/queima.svg` };
+  if (CONFIG.DND5E?.statusEffects) CONFIG.DND5E.statusEffects[STATUS_QUEIMA] ??= dados;
+  Hooks.once("setup", () => {
+    if (!CONFIG.statusEffects.some((s) => s.id === STATUS_QUEIMA)) CONFIG.statusEffects.push({ id: STATUS_QUEIMA, _id: "monolithqueimand", ...dados });
+  });
+}
+
+/** Liga ou desliga o status da Queima sem deixar um erro de status interromper o resto. */
+async function statusQueima(actor, ativo) {
+  try { await actor.toggleStatusEffect(STATUS_QUEIMA, { active: ativo }); }
+  catch (err) { console.warn(`${ID} | status da Queima`, err); }
+}
+
+/** Quem deve ver a pergunta: um jogador dono conectado; se não houver, o Mestre ativo. */
+function souResponsavel(actor) {
+  const jogador = game.users.find((u) => u.active && !u.isGM && actor.testUserPermission(u, "OWNER"));
+  return (jogador ?? game.users.activeGM)?.isSelf ?? false;
+}
+
+const perguntando = new Set();
+/** Oferece Queimar a Alma (morrendo) ou Recusar a Morte (morto, uma vez) ao jogador responsável. */
+export async function oferecer(actor, tipo) {
+  if (!game.settings.get(ID, "oferecerQueima") || !souResponsavel(actor)) return;
+  const chave = `${actor.id}.${tipo}`;
+  if (perguntando.has(chave)) return;
+  perguntando.add(chave);
+  try {
+    const e = estado(actor);
+    if (tipo === "queimar") {
+      if (!e.morrendo || e.queimando) return;
+      if (await confirmar("Queimar a Alma", `<b>${esc(actor.name)}</b> caiu a 0 PV. Queimar a Alma? Ganha 1d4 de Perdição e segue de pé, com 0 PV.`)) {
+        if (estado(actor).morrendo && !estado(actor).queimando) await queimarAlma(actor);
+      }
+    } else if (tipo === "recusar") {
+      if (!e.morto || e.recusou) return;
+      if (await confirmar("Recusar a Morte", `<b>${esc(actor.name)}</b> morreu. Recusar a Morte, uma única vez? Volta queimando com 2 falhas no Fio e 1d8 de Perdição.`)) {
+        if (estado(actor).morto && !estado(actor).recusou) await queimarAlma(actor, { recusa: true });
+      }
+    }
+  } finally { perguntando.delete(chave); }
 }
 
 export function registrarGanchos() {
   // Ao cair a 0 PV, o Fio já começa com as falhas marcadas; ao se curar, a Queima termina.
+  // A pergunta vai para o jogador dono (ou o Mestre), não para quem aplicou o dano.
+  // Só na queda (o dnd5e manda o PV anterior em options.dnd5e.hp), não a cada dano já a 0 PV.
+  Hooks.on("updateActor", (actor, changes, options) => {
+    if (actor.type !== "character") return;
+    const novoHp = foundry.utils.getProperty(changes, "system.attributes.hp.value");
+    const antes = options?.dnd5e?.hp?.value;
+    if (novoHp !== undefined && novoHp <= 0 && (antes === undefined || antes > 0)) setTimeout(() => oferecer(actor, "queimar"), 300);
+  });
+  Hooks.on("createActiveEffect", (eff) => {
+    const actor = eff.parent;
+    if (!(actor instanceof Actor) || actor.type !== "character" || !eff.statuses?.has("dead")) return;
+    setTimeout(() => oferecer(actor, "recusar"), 300);
+  });
+
   Hooks.on("updateActor", async (actor, changes, options, userId) => {
     if (userId !== game.user.id || actor.type !== "character") return;
     const novoHp = foundry.utils.getProperty(changes, "system.attributes.hp.value");
@@ -287,8 +345,10 @@ export function registrarGanchos() {
 
   // Início do turno de quem queima: +1 de Perdição, +1 por falha marcada.
   Hooks.on("combatTurnChange", (combat) => {
-    if (!souGMAtivo()) return;
     const actor = combat.combatant?.actor;
+    // Morrendo sem queimar: a regra deixa queimar no início de qualquer turno.
+    if (actor?.type === "character" && estado(actor).morrendo && !getF(actor, F.queimando, false)) oferecer(actor, "queimar");
+    if (!souGMAtivo()) return;
     if (!actor || !getF(actor, F.queimando, false)) return;
     const ganho = 1 + getF(actor, F.marcadas);
     const api = perdicao();

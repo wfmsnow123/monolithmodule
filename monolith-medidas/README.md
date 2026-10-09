@@ -18,7 +18,7 @@ Foundry 13, dnd5e 5.2. Feito para a ficha Tidy 5e Clássica, funciona em qualque
 - Executar macro (UUID ou nome; a macro recebe `actor`, `token` e `medida`).
 O botão **Restaurar as do livro** volta às dez Medidas do Guia do Jogador.
 
-**Morte.** Queimar a Alma, Recusar a Morte, Morrendo, ainda (Inspiração Heróica para um aliado) e O Nome que Fica. Queimando: não rola salvaguardas, dano soma uma falha, e o início de cada turno soma Perdição (com o **Monolith: Perdição**).
+**Morte.** Queimar a Alma, Recusar a Morte, Morrendo, ainda (Inspiração Heróica para um aliado) e O Nome que Fica. Queimando: não rola salvaguardas, dano soma uma falha, e o início de cada turno soma Perdição (com o **Monolith: Perdição**). Ao cair a 0 PV (e no início de cada turno Morrendo), o jogador dono é perguntado se quer Queimar a Alma; ao morrer, se quer Recusar a Morte (configuração "Oferecer Queimar a Alma e Recusar a Morte"). Enquanto queima, um **anel de brasa** gira em volta do token (configuração de cada usuário).
 
 ## Configurações
 - Só enquanto Sangrando (padrão: ligado).

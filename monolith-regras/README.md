@@ -4,6 +4,8 @@ Foundry 13, dnd5e 5.2 (regras legadas 2014). Compatível com Tidy 5e Sheets (Cl�
 
 ## O que faz
 
+**Lucidez.** O sétimo atributo (Sanidade do dnd5e) aparece como **Lucidez**, sigla **Luc**, também quando o custom-dnd5e reconstrói os atributos.
+
 **Painel de Inspiração.** Painel flutuante fora da ficha, arrastável e recolhível. Fica ancorado pela borda de baixo: a lista cresce para cima e não sai da tela. Os retratos são 3x4; imagens de outra proporção ganham um leve zoom para preencher.
 - Jogadores veem só os próprios personagens (dono ou personagem atribuído), ou todos, conforme a configuração **Personagens no painel dos jogadores**. O Mestre vê todos.
 - Estrela: Inspiração. Clique para gastar. Mestre: botão direito concede. Se o personagem já tinha Inspiração, ganha uma Inspiração Heróica no lugar.

@@ -73,6 +73,11 @@ export function registrarConfiguracoes(EditorClass, aoMudar) {
     hint: "Botão de Medidas Desesperadas ao lado do nível, junto do da Perdição, com o Fio marcado. Apagado até o personagem chegar à metade da vida.",
     scope: "client", config: true, type: Boolean, default: true, onChange: aoMudar
   });
+  game.settings.register(ID, "oferecerQueima", {
+    name: "Oferecer Queimar a Alma e Recusar a Morte",
+    hint: "Ao cair a 0 PV (e no início de cada turno morrendo), o jogador dono é perguntado se quer Queimar a Alma; ao morrer, se quer Recusar a Morte.",
+    scope: "world", config: true, type: Boolean, default: true
+  });
   game.settings.register(ID, "migrado", { scope: "world", config: false, type: Boolean, default: false });
 }
 
