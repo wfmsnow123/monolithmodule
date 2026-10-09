@@ -1,140 +1,12 @@
-import { ID, F, getF, esc, personagens, chat, rolar, escolherPersonagem, confirmar } from "./util.mjs";
-import {
-  MEDIDAS, estado, usarMedida, consumirArmada, ajustarMarcadas, ajustarPerdicao,
-  queimarAlma, encerrarQueima, danoNaQueima, inspiracaoDoMoribundo, nomeQueFica
-} from "./medidas.mjs";
-import { armarEnfase, rolarEnfaseSolta } from "./enfase.mjs";
+import { ID, F, getF, esc, personagens, chat, rolar, escolherPersonagem, confirmar, ajustarRetratos } from "./util.mjs";
+import { rolarEnfaseSolta } from "./enfase.mjs";
 import { DESCRICOES } from "./exaustao.mjs";
 
-const { ApplicationV2 } = foundry.applications.api;
-
-export function perdicaoVisivel(actor) {
-  return game.user.isGM || (actor.isOwner && game.settings.get(ID, "perdicaoVisivel"));
-}
-
-/* =========================================================
- *  Painel de Medidas Desesperadas (um por personagem)
- * ========================================================= */
-
-export class MedidasApp extends ApplicationV2 {
-  static instancias = new Map();
-
-  static abrir(actor) {
-    let app = this.instancias.get(actor.id);
-    if (!app) { app = new this(actor); this.instancias.set(actor.id, app); }
-    app.render({ force: true });
-    return app;
-  }
-
-  static atualizar(actor) {
-    const app = this.instancias.get(actor.id);
-    if (app?.rendered) app.render();
-  }
-
-  constructor(actor, options = {}) {
-    super({ ...options, id: `monolith-medidas-${actor.id}` });
-    this.actor = actor;
-  }
-
-  static DEFAULT_OPTIONS = {
-    classes: ["mono", "monolith-app", "monolith-medidas"],
-    window: { title: "Medidas Desesperadas", icon: "fas fa-heart-crack", resizable: true },
-    position: { width: 400, height: "auto" },
-    actions: {
-      medida: MedidasApp.#medida,
-      consumir: MedidasApp.#consumir,
-      marcadas: MedidasApp.#marcadas,
-      perdicao: MedidasApp.#perdicao,
-      queimar: MedidasApp.#queimar,
-      encerrar: MedidasApp.#encerrar,
-      danoQueima: MedidasApp.#danoQueima,
-      recusar: MedidasApp.#recusar,
-      moribundo: MedidasApp.#moribundo,
-      nome: MedidasApp.#nome,
-      enfase: MedidasApp.#enfase
-    }
-  };
-
-  get title() { return `Medidas Desesperadas: ${this.actor.name}`; }
-
-  async _renderHTML() {
-    const a = this.actor;
-    const e = estado(a);
-    const gm = game.user.isGM;
-    const caixas = [0, 1, 2].map(i => {
-      if (i < e.marcadas) return `<span class="fio marcada" data-tooltip="Falha marcada (só o descanso apaga)">✖</span>`;
-      if (i < e.falhas) return `<span class="fio comum" data-tooltip="Falha comum">●</span>`;
-      return `<span class="fio vazia" data-tooltip="Vazia"></span>`;
-    }).join("");
-
-    let situacao = `<span class="tag">PV ${e.hp}/${e.max}</span>`;
-    if (e.morto) situacao += `<span class="tag morto">Morto</span>`;
-    else if (e.queimando) situacao += `<span class="tag queima">Queimando a Alma</span>`;
-    else if (e.morrendo) situacao += `<span class="tag morrendo">Morrendo</span>`;
-    else if (e.sangrando) situacao += `<span class="tag sangrando">Sangrando</span>`;
-    if (perdicaoVisivel(a)) situacao += `<span class="tag perdicao" data-tooltip="Perdição">Perdição ${e.perdicao}</span>`;
-
-    const abertas = (e.sangrando || e.queimando) && !e.morto;
-    const linhas = MEDIDAS.map(m => {
-      const pode = abertas && m.custo <= e.livres;
-      return `<li class="${pode ? "" : "off"}">
-        <button type="button" data-action="medida" data-id="${m.id}" ${pode ? "" : "disabled"}>
-          <span class="custo">${"✖".repeat(m.custo)}</span><span class="nome">${m.nome}</span></button>
-        <p>${m.texto}</p></li>`;
-    }).join("");
-
-    const armadas = e.armadas.length ? `<section><h3>Armadas</h3><ul class="armadas">${e.armadas.map((m, i) =>
-      `<li><span>${esc(m.nome)}</span><button type="button" data-action="consumir" data-index="${i}">Usada</button></li>`).join("")}</ul>
-      <p class="hint">Expiram ao fim de uma Vigília ou de um Descanso Completo.</p></section>` : "";
-
-    let morte = "";
-    if (e.morrendo && !e.queimando) morte += `<button type="button" data-action="queimar"><i class="fas fa-fire"></i> Queimar a Alma</button>
-      <button type="button" data-action="moribundo"><i class="fas fa-hand-holding-heart"></i> Conceder Inspiração Heróica</button>`;
-    if (e.queimando) morte += `<button type="button" data-action="danoQueima" data-n="1"><i class="fas fa-burst"></i> Dano (+1 falha)</button>
-      <button type="button" data-action="danoQueima" data-n="2"><i class="fas fa-explosion"></i> Crítico (+2)</button>
-      <button type="button" data-action="encerrar"><i class="fas fa-fire-flame-simple"></i> Encerrar a Queima</button>`;
-    if (e.morto && !e.recusou) morte += `<button type="button" data-action="recusar"><i class="fas fa-hand-fist"></i> Recusar a Morte</button>`;
-    if (e.morto) morte += `<button type="button" data-action="nome"><i class="fas fa-feather"></i> O Nome que Fica</button>`;
-    morte = morte ? `<section class="morte"><h3>Morte</h3><div class="botoes">${morte}</div></section>` : "";
-
-    const mestre = gm ? `<section class="mestre"><h3>Mestre</h3><div class="botoes">
-      <button type="button" data-action="marcadas" data-d="-1">Marcadas −</button>
-      <button type="button" data-action="marcadas" data-d="1">Marcadas +</button>
-      <button type="button" data-action="perdicao" data-d="-1">Perdição −</button>
-      <button type="button" data-action="perdicao" data-d="1">Perdição +</button>
-      <button type="button" data-action="enfase">${getF(a, F.enfase, false) ? "Desarmar" : "Armar"} Ênfase</button>
-    </div></section>` : "";
-
-    return `<div class="monolith-medidas-body">
-      <header class="topo"><img src="${a.img}" alt=""><div><h2>${esc(a.name)}</h2><div class="tags">${situacao}</div></div></header>
-      <section class="fio-sec"><h3>O Fio</h3><div class="fio-caixas">${caixas}</div>
-        <p class="hint">✖ marcada · ● comum · ${e.livres} vazia(s)</p></section>
-      ${morte}
-      ${armadas}
-      <section><h3>Medidas</h3>${abertas ? "" : `<p class="hint">Abrem quando o personagem está Sangrando (metade dos PV ou menos).</p>`}
-        <ul class="lista-medidas">${linhas}</ul></section>
-      ${mestre}
-    </div>`;
-  }
-
-  _replaceHTML(result, content) { content.innerHTML = result; }
-
-  _onClose(options) {
-    super._onClose(options);
-    MedidasApp.instancias.delete(this.actor.id);
-  }
-
-  static async #medida(ev, el) { await usarMedida(this.actor, el.dataset.id); }
-  static async #consumir(ev, el) { await consumirArmada(this.actor, Number(el.dataset.index)); }
-  static async #marcadas(ev, el) { await ajustarMarcadas(this.actor, Number(el.dataset.d)); }
-  static async #perdicao(ev, el) { await ajustarPerdicao(this.actor, Number(el.dataset.d), "ajuste do Mestre"); }
-  static async #queimar() { if (await confirmar("Queimar a Alma", "Ganhar 1d4 de Perdição e se levantar com 0 PV?")) await queimarAlma(this.actor); }
-  static async #encerrar() { await encerrarQueima(this.actor); }
-  static async #danoQueima(ev, el) { await danoNaQueima(this.actor, Number(el.dataset.n)); }
-  static async #recusar() { if (await confirmar("Recusar a Morte", "Uma única vez: voltar queimando com 2 falhas no Fio e 1d8 de Perdição?")) await queimarAlma(this.actor, { recusa: true }); }
-  static async #moribundo() { await inspiracaoDoMoribundo(this.actor); }
-  static async #nome() { await nomeQueFica(this.actor); }
-  static async #enfase() { await armarEnfase(this.actor, !getF(this.actor, F.enfase, false)); }
+/** Abre as Medidas Desesperadas (módulo próprio) ou, sem ele, a ficha. */
+function abrirMedidas(actor) {
+  const m = game.modules.get("monolith-medidas");
+  if (m?.active && m.api) return m.api.abrir(actor);
+  return actor?.sheet.render(true);
 }
 
 /* =========================================================
@@ -153,13 +25,23 @@ export const HUD = {
       this.el.addEventListener("click", ev => this.clique(ev));
       this.el.addEventListener("contextmenu", ev => this.clique(ev, true));
       this.arrastavel();
+      window.addEventListener("resize", foundry.utils.debounce(() => this.el && this.posicionar(), 200));
     }
-    const pos = game.settings.get(ID, "posicaoHud");
-    if (pos?.left !== undefined) Object.assign(this.el.style, { left: `${pos.left}px`, top: `${pos.top}px`, bottom: "auto" });
+    this.posicionar();
     this.render();
   },
 
   desmontar() { this.el?.remove(); this.el = null; },
+
+  /** O painel fica ancorado pela borda de baixo: cresce para cima e nunca sai da tela. */
+  posicionar() {
+    const pos = game.settings.get(ID, "posicaoHud") ?? {};
+    if (pos.left === undefined) return;
+    let bottom = pos.bottom;
+    if (bottom === undefined && pos.top !== undefined) bottom = Math.max(0, window.innerHeight - pos.top - 200);
+    const left = Math.clamp(pos.left, 0, Math.max(0, window.innerWidth - 120));
+    Object.assign(this.el.style, { left: `${left}px`, bottom: `${Math.clamp(bottom ?? 120, 0, Math.max(0, window.innerHeight - 60))}px`, top: "auto" });
+  },
 
   render() {
     if (!this.el) return;
@@ -170,7 +52,7 @@ export const HUD = {
       const her = getF(a, F.heroica);
       const ex = a.system.attributes.exhaustion ?? 0;
       return `<li data-actor="${a.id}">
-        <img src="${a.img}" alt="" data-acao="medidas" data-tooltip="Medidas Desesperadas">
+        <span class="retrato" data-acao="medidas" data-tooltip="${game.modules.get("monolith-medidas")?.active ? "Medidas Desesperadas" : "Abrir a ficha"}"><img src="${a.img}" alt=""></span>
         <span class="nome" data-acao="ficha">${esc(a.name)}</span>
         <button class="insp ${insp ? "on" : ""}" data-acao="inspiracao" data-tooltip="Inspiração ${insp ? "(clique para gastar)" : ""}${gm ? "<br>Mestre: botão direito concede" : ""}"><i class="fa${insp ? "s" : "r"} fa-star"></i></button>
         <span class="her" data-tooltip="Inspiração Heróica: clique para gastar (+1d4)${gm ? "<br>botão direito: +1" : ""}" data-acao="heroica"><i class="fas fa-dice-d6"></i> ${her}</span>
@@ -189,6 +71,7 @@ export const HUD = {
         </span>
       </header>
       <ul>${linhas || `<li class="vazio">Nenhum personagem.</li>`}</ul>`;
+    ajustarRetratos(this.el);
   },
 
   async clique(ev, direito = false) {
@@ -202,7 +85,7 @@ export const HUD = {
       case "descanso": return abrirPedidoDeDescanso();
       case "enfase": return rolarEnfaseSolta(game.user.character ?? personagens()[0] ?? null);
       case "ficha": return actor?.sheet.render(true);
-      case "medidas": return actor && MedidasApp.abrir(actor);
+      case "medidas": return actor && abrirMedidas(actor);
       case "inspiracao": return direito ? concederInspiracao(actor) : gastarInspiracao(actor);
       case "heroica": return direito ? concederHeroica(actor) : gastarHeroica(actor);
       case "dar": return darHeroica(actor);
@@ -211,21 +94,24 @@ export const HUD = {
 
   arrastavel() {
     let ini = null;
+    // Arrasta pelo cabeçalho; guarda a distância até a borda de baixo, para a lista crescer para cima.
     this.el.addEventListener("pointerdown", ev => {
       if (!ev.target.closest("[data-arrastar]") || ev.target.closest("[data-acao]")) return;
       const r = this.el.getBoundingClientRect();
-      ini = { x: ev.clientX - r.left, y: ev.clientY - r.top };
+      ini = { x: ev.clientX - r.left, y: r.bottom - ev.clientY };
       this.el.setPointerCapture(ev.pointerId);
     });
     this.el.addEventListener("pointermove", ev => {
       if (!ini) return;
-      Object.assign(this.el.style, { left: `${ev.clientX - ini.x}px`, top: `${ev.clientY - ini.y}px`, bottom: "auto" });
+      const left = Math.clamp(ev.clientX - ini.x, 0, window.innerWidth - this.el.offsetWidth);
+      const bottom = Math.clamp(window.innerHeight - (ev.clientY + ini.y), 0, window.innerHeight - 40);
+      Object.assign(this.el.style, { left: `${left}px`, bottom: `${bottom}px`, top: "auto" });
     });
     this.el.addEventListener("pointerup", ev => {
       if (!ini) return;
       ini = null;
       const r = this.el.getBoundingClientRect();
-      game.settings.set(ID, "posicaoHud", { left: Math.round(r.left), top: Math.round(r.top) });
+      game.settings.set(ID, "posicaoHud", { left: Math.round(r.left), bottom: Math.round(window.innerHeight - r.bottom) });
     });
   }
 };
@@ -284,6 +170,7 @@ async function darHeroica(actor) {
   return rolar("1d4", alvo, `Inspiração Heróica dada por ${actor.name}: ${alvo.name} soma ao resultado agora`);
 }
 
+/** Botão de cartões antigos ("Morrendo, ainda" das versões até a 0.5). */
 export function registrarBotoesDoChat() {
   Hooks.on("renderChatMessageHTML", (message, html) => {
     html.querySelectorAll("[data-monolith-acao='rolarHeroicaRecebida']").forEach(btn => {

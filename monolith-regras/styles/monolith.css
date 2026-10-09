@@ -17,12 +17,16 @@
 #monolith-hud header a { cursor: pointer; color: var(--ink-muted); }
 #monolith-hud header a:hover { color: var(--blood-text); }
 #monolith-hud.recolhido ul { display: none; }
-#monolith-hud ul { list-style: none; margin: 0; padding: var(--space-1); max-height: 50vh; overflow-y: auto; }
+#monolith-hud ul { list-style: none; margin: 0; padding: var(--space-1); max-height: min(60vh, calc(100vh - 160px)); overflow-y: auto; }
 #monolith-hud li { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-1); border-bottom: 1px solid var(--void-300); }
 #monolith-hud li:last-child { border-bottom: 0; }
 #monolith-hud li:hover { background: var(--void-200); }
 #monolith-hud li.vazio { color: var(--ink-muted); font-style: italic; }
-#monolith-hud img { width: 26px; height: 26px; border: 1px solid var(--void-400); border-radius: var(--radius-none); cursor: pointer; object-fit: cover; }
+/* Retrato 3x4: imagens 3x4 entram inteiras; quadradas (ou de outra proporção) ganham um leve zoom e preenchem, ancoradas no rosto. */
+#monolith-hud .retrato { flex: 0 0 auto; width: 33px; aspect-ratio: 3 / 4; overflow: hidden; cursor: pointer; border: 1px solid var(--void-400); background: var(--void-000); }
+#monolith-hud .retrato img { display: block; width: 100%; height: 100%; border: 0; border-radius: 0; object-fit: cover; object-position: 50% 15%; transition: transform 0.15s; }
+#monolith-hud .retrato img.zoom { transform: scale(1.08); }
+#monolith-hud .retrato:hover { border-color: var(--blood-500); }
 #monolith-hud .nome { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; font-weight: 600; }
 #monolith-hud button {
   width: 26px; height: 24px; line-height: 22px; padding: 0; margin: 0;
@@ -41,44 +45,6 @@
   font-family: var(--font-label); font-weight: 600; font-size: 11px;
   border: 1px solid var(--ichor); color: var(--ichor); border-radius: var(--radius-sm);
 }
-
-/* ---------- Medidas Desesperadas ---------- */
-.monolith-medidas-body h2 { margin: 0; border: none; font-size: 26px; }
-.monolith-medidas-body h3 {
-  display: flex; align-items: center; gap: var(--space-2); margin: var(--space-4) 0 var(--space-2);
-  font-family: var(--font-display); font-size: 18px; letter-spacing: 0.05em; color: var(--ink); border: 0;
-}
-.monolith-medidas-body h3::before { content: ""; width: 4px; height: 16px; background: var(--blood-500); }
-.monolith-medidas-body h3::after { content: ""; flex: 1; height: 1px; background: var(--void-300); }
-.monolith-medidas-body .topo { display: flex; gap: var(--space-3); align-items: center; }
-.monolith-medidas-body .topo img { width: 52px; height: 52px; border: 1px solid var(--void-400); border-radius: var(--radius-none); object-fit: cover; }
-.monolith-medidas-body .tags { display: flex; flex-wrap: wrap; gap: var(--space-1); margin-top: var(--space-1); }
-.monolith-medidas-body .tag {
-  display: inline-block; padding: 0 var(--space-2); font-family: var(--font-label); font-size: 11px; line-height: 18px;
-  font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
-  border: 1px solid var(--void-400); border-radius: var(--radius-sm); color: var(--ink-muted);
-}
-.monolith-medidas-body .tag.sangrando, .monolith-medidas-body .tag.morrendo, .monolith-medidas-body .tag.queima { background: var(--blood-500); border-color: var(--blood-500); color: var(--bone); }
-.monolith-medidas-body .tag.morto { background: var(--void-000); border-color: var(--blood-text); color: var(--blood-text); }
-.monolith-medidas-body .tag.perdicao { background: var(--cobalt-500); border-color: var(--cobalt-500); color: var(--bone); }
-.monolith-medidas-body .fio-caixas { display: flex; gap: var(--space-2); }
-.monolith-medidas-body .fio {
-  width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 600;
-  border: 1px solid var(--void-400); border-radius: var(--radius-sm); background: var(--void-200); box-shadow: var(--shadow-pit);
-}
-.monolith-medidas-body .fio.marcada { background: var(--blood-500); border-color: var(--blood-500); color: var(--bone); box-shadow: none; }
-.monolith-medidas-body .fio.comum { color: var(--blood-text); border-color: var(--blood-text); }
-.monolith-medidas-body .hint { font-size: 12px; line-height: 16px; color: var(--ink-muted); margin: var(--space-1) 0; }
-.monolith-medidas-body ul { list-style: none; margin: 0; padding: 0; }
-.monolith-medidas-body .lista-medidas li { padding: var(--space-1) 0; border-bottom: 1px solid var(--void-300); }
-.monolith-medidas-body .lista-medidas li.off { opacity: 0.5; }
-.monolith-medidas-body .lista-medidas button { display: flex; gap: var(--space-2); width: 100%; text-align: left; align-items: center; justify-content: flex-start; }
-.monolith-medidas-body .lista-medidas .custo { color: var(--blood-text); min-width: 34px; }
-.monolith-medidas-body .lista-medidas p { margin: var(--space-1) 0 0 42px; font-size: 12px; line-height: 16px; color: var(--ink-muted); }
-.monolith-medidas-body .armadas li { display: flex; justify-content: space-between; align-items: center; gap: var(--space-2); padding: var(--space-1) 0; }
-.monolith-medidas-body .botoes { display: flex; flex-wrap: wrap; gap: var(--space-2); }
-.monolith-medidas-body .botoes button { flex: 1 1 45%; }
-.monolith-medidas-body .morte button { background: var(--blood-500); border-color: var(--blood-500); color: var(--bone); }
 
 /* ---------- Formulários dos diálogos ---------- */
 .monolith-form fieldset { margin-bottom: var(--space-2); }

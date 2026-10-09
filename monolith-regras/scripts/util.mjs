@@ -1,14 +1,9 @@
 export const ID = "monolith-regras";
 
+// O Fio, as Medidas e a Queima ficam no monolith-medidas; a Perdição no monolith-perdicao.
 export const F = {
-  heroica: "heroica",          // número de Inspirações Heróicas
-  marcadas: "marcadas",        // falhas marcadas por Medidas Desesperadas (0-3)
-  armadas: "armadas",          // Medidas armadas esperando gatilho [{id, nome}]
-  enfase: "enfase",            // próxima rolagem de d20 com Ênfase
-  queimando: "queimando",      // Queima de Alma ativa
-  recusou: "recusouMorte",     // já usou Recusar a Morte
-  perdicao: "perdicao",        // trilha de Perdição (0-20)
-  ultimaMedida: "ultimaMedida" // "round.turn" da última Medida usada em combate
+  heroica: "heroica", // número de Inspirações Heróicas
+  enfase: "enfase"    // próxima rolagem de d20 com Ênfase
 };
 
 export const getF = (actor, key, fallback = 0) => actor?.getFlag(ID, key) ?? fallback;
@@ -17,36 +12,22 @@ export function esc(s) {
   return foundry.utils.escapeHTML(String(s ?? ""));
 }
 
-/** Personagens de jogador relevantes para este usuário. */
+/**
+ * Personagens de jogador que aparecem no painel deste usuário. O Mestre vê todos.
+ * Jogadores veem os próprios (dono explícito ou personagem atribuído), ou todos, conforme a configuração.
+ */
 export function personagens() {
   const list = game.actors.filter(a => a.type === "character" && a.hasPlayerOwner);
   if (game.user.isGM) return list;
-  return list.filter(a => a.isOwner);
+  if (game.settings.get(ID, "hudJogadores") === "todos") return list;
+  const OWNER = CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER;
+  return list.filter(a => a.id === game.user.character?.id || (a.ownership?.[game.user.id] ?? 0) >= OWNER);
 }
 
 export function hp(actor) {
   const h = actor.system.attributes.hp;
   const max = h.effectiveMax ?? h.max ?? 0;
   return { value: h.value ?? 0, max };
-}
-
-export function estaSangrando(actor) {
-  const { value, max } = hp(actor);
-  return value <= Math.floor(max / 2);
-}
-
-export function estaMorto(actor) {
-  return actor.statuses?.has("dead");
-}
-
-export function falhasMorte(actor) {
-  return actor.system.attributes.death?.failure ?? 0;
-}
-
-/** Caixas do Fio ainda vazias. */
-export function caixasLivres(actor) {
-  const marcadas = getF(actor, F.marcadas);
-  return Math.max(0, 3 - Math.max(marcadas, falhasMorte(actor)));
 }
 
 export async function chat(actor, titulo, corpo, { whisperGM = false, icon = "fa-skull" } = {}) {
@@ -85,4 +66,12 @@ export async function escolherPersonagem(titulo, { excluir = null } = {}) {
 export async function confirmar(titulo, texto) {
   return foundry.applications.api.DialogV2.confirm({ classes: ["mono"], window: { title: titulo }, content: `<p>${texto}</p>`
   }).catch(() => false);
+}
+
+/** Retrato 3x4: só ganha zoom (classe "zoom") quando a imagem não é 3x4, para preencher sem cortar as que já são. */
+export function ajustarRetratos(raiz) {
+  for (const img of raiz.querySelectorAll(".retrato img")) {
+    const f = () => { if (img.naturalWidth) img.classList.toggle("zoom", Math.abs(img.naturalWidth / img.naturalHeight - 0.75) > 0.03); };
+    if (img.complete) f(); else img.addEventListener("load", f, { once: true });
+  }
 }

@@ -1,0 +1,100 @@
+/* Monolith: Medidas Desesperadas. Usa os tokens do design system (styles/monolith-ui.css). */
+
+/* ---------- Coração na ficha Tidy Clássica ---------- */
+.tidy5e-sheet .profile.mm-tem-coracao { position: relative; overflow: visible; }
+.monolith-tidy.mm-coracao {
+  position: absolute; top: -12px; left: 50%; transform: translateX(-50%); z-index: 6;
+  width: 34px; height: 34px; min-height: 0; padding: 0; margin: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
+  background: var(--void-100); color: var(--ink-muted);
+  border: 1px solid var(--void-400); border-radius: 50%; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.55);
+  cursor: pointer; line-height: 1;
+}
+.monolith-tidy.mm-coracao:hover { color: var(--bone); border-color: var(--blood-500); }
+.monolith-tidy.mm-coracao i { font-size: 14px; margin: 0; }
+.monolith-tidy.mm-coracao .pips { display: flex; gap: 2px; }
+.monolith-tidy.mm-coracao .pips span { width: 5px; height: 5px; border: 1px solid currentColor; opacity: 0.6; }
+.monolith-tidy.mm-coracao .pips span.comum { background: currentColor; border-radius: 50%; opacity: 1; }
+.monolith-tidy.mm-coracao .pips span.marcada { background: var(--blood-text); border-color: var(--blood-text); opacity: 1; }
+.monolith-tidy.mm-coracao[data-estado="sangrando"], .monolith-tidy.mm-coracao[data-estado="morrendo"] {
+  background: var(--blood-500); border-color: var(--blood-500); color: var(--bone);
+  animation: mm-pulso 1.6s ease-in-out infinite;
+}
+.monolith-tidy.mm-coracao[data-estado="sangrando"] .pips span.marcada,
+.monolith-tidy.mm-coracao[data-estado="morrendo"] .pips span.marcada { background: var(--bone); border-color: var(--bone); }
+.monolith-tidy.mm-coracao[data-estado="queimando"] { background: var(--ichor); border-color: var(--ichor); color: var(--void-000); }
+.monolith-tidy.mm-coracao[data-estado="morto"] { background: var(--void-000); border-color: var(--blood-text); color: var(--blood-text); }
+@keyframes mm-pulso { 0%, 100% { box-shadow: 0 0 0 0 rgba(196, 29, 39, 0.55); } 50% { box-shadow: 0 0 0 5px rgba(196, 29, 39, 0); } }
+
+/* ---------- Janela ---------- */
+.monolith-medidas > .window-content, .monolith-medidas-editor > .window-content { overflow-y: auto; }
+.mm-body h2 { margin: 0; border: none; font-size: 26px; line-height: 1.1; }
+.mm-body h3, .mm-editor h3 {
+  display: flex; align-items: center; gap: var(--space-2); margin: var(--space-4) 0 var(--space-2);
+  font-family: var(--font-display); font-size: 18px; letter-spacing: 0.05em; color: var(--ink); border: 0;
+}
+.mm-body h3::before { content: ""; width: 4px; height: 16px; background: var(--blood-500); }
+.mm-body h3::after { content: ""; flex: 1; height: 1px; background: var(--void-300); }
+.mm-body .hint, .mm-editor .hint { font-size: 12px; line-height: 16px; color: var(--ink-muted); margin: var(--space-1) 0; }
+.mm-body .aviso { display: flex; gap: var(--space-2); align-items: center; padding: var(--space-2); margin: 0 0 var(--space-2); background: var(--void-000); border: 1px dashed var(--void-400); color: var(--ink-muted); font-size: 12px; }
+
+.mm-topo { display: flex; gap: var(--space-3); align-items: center; }
+.mm-topo .retrato { width: 64px; aspect-ratio: 3 / 4; flex: 0 0 auto; overflow: hidden; border: 1px solid var(--void-400); }
+.mm-topo .retrato img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 15%; border: 0; }
+.mm-topo .retrato img.zoom { transform: scale(1.08); }
+.mm-topo .id { flex: 1; min-width: 0; }
+.mm-topo .tags { display: flex; flex-wrap: wrap; gap: var(--space-1); margin-top: var(--space-1); }
+.mm-body .tag {
+  display: inline-block; padding: 0 var(--space-2); font-family: var(--font-label); font-size: 11px; line-height: 18px;
+  font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+  border: 1px solid var(--void-400); border-radius: var(--radius-sm); color: var(--ink-muted);
+}
+.mm-body .tag.forte, .mm-body .tag.queima { background: var(--blood-500); border-color: var(--blood-500); color: var(--bone); }
+.mm-body .tag.queima { background: var(--ichor); border-color: var(--ichor); color: var(--void-000); }
+.mm-body .tag.morto { background: var(--void-000); border-color: var(--blood-text); color: var(--blood-text); }
+.mm-body a.tag.perdicao { background: var(--cobalt-500); border-color: var(--cobalt-500); color: var(--bone); cursor: pointer; }
+.mm-topo .fio-bloco { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.mm-body .fio-caixas { display: flex; gap: var(--space-2); }
+.mm-body .fio {
+  width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 600;
+  border: 1px solid var(--void-400); border-radius: var(--radius-sm); background: var(--void-200); box-shadow: var(--shadow-pit);
+}
+.mm-body .fio.marcada { background: var(--blood-500); border-color: var(--blood-500); color: var(--bone); box-shadow: none; }
+.mm-body .fio.comum { color: var(--blood-text); border-color: var(--blood-text); }
+
+.mm-body .grupo { margin-bottom: var(--space-3); }
+.mm-body .grupo .custo { font-family: var(--font-label); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: var(--space-1); }
+.mm-body .grupo .custo span { color: var(--blood-text); letter-spacing: 0.2em; margin-right: 4px; }
+.mm-body .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: var(--space-2); }
+.mm-body button.medida {
+  display: flex; flex-direction: column; align-items: stretch; gap: 4px; height: auto; min-height: 0; margin: 0;
+  padding: var(--space-2) var(--space-3); text-align: left; white-space: normal; line-height: 1.3;
+  background: var(--void-000); border: 1px solid var(--void-300); border-left: 3px solid var(--blood-500); border-radius: var(--radius-none);
+  color: var(--ink); font-family: var(--font-sans);
+}
+.mm-body button.medida:hover:not(:disabled) { background: var(--void-200); border-color: var(--blood-500); }
+.mm-body button.medida.off { opacity: 0.45; border-left-color: var(--void-400); cursor: not-allowed; }
+.mm-body button.medida .linha { display: flex; align-items: center; gap: var(--space-1); flex-wrap: wrap; }
+.mm-body button.medida .nome { font-family: var(--font-display); font-size: 17px; letter-spacing: 0.04em; margin-right: auto; }
+.mm-body button.medida .selo { font-family: var(--font-label); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 0 5px; border: 1px solid var(--void-400); color: var(--ink-muted); border-radius: var(--radius-sm); }
+.mm-body button.medida .texto { font-size: 12px; color: var(--ink-muted); }
+
+.mm-body ul { list-style: none; margin: 0; padding: 0; }
+.mm-body .armadas li { display: flex; justify-content: space-between; align-items: center; gap: var(--space-2); padding: var(--space-1) 0; border-bottom: 1px solid var(--void-300); }
+.mm-body .armadas button { flex: 0 0 auto; width: auto; }
+.mm-body .botoes { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.mm-body .botoes button { flex: 1 1 30%; }
+.mm-body .morte button { background: var(--blood-500); border-color: var(--blood-500); color: var(--bone); }
+
+/* ---------- Editor ---------- */
+.mm-editor fieldset.medida-ed { margin-bottom: var(--space-3); padding: var(--space-3); border: 1px solid var(--void-300); border-left: 3px solid var(--blood-500); background: var(--void-000); }
+.mm-editor fieldset.medida-ed.inativa { opacity: 0.55; border-left-color: var(--void-400); }
+.mm-editor .linha { display: flex; gap: var(--space-3); align-items: center; margin-bottom: var(--space-2); }
+.mm-editor .linha > label { display: flex; gap: var(--space-2); align-items: center; font-weight: 600; white-space: nowrap; }
+.mm-editor .linha > label.largo { flex: 1; }
+.mm-editor .linha > label.largo input { flex: 1; }
+.mm-editor .linha > label.check { font-weight: 400; }
+.mm-editor label.bloco { display: flex; flex-direction: column; gap: 2px; font-weight: 600; margin-bottom: var(--space-2); }
+.mm-editor .acoes, .mm-editor .rodape { display: flex; gap: var(--space-2); justify-content: flex-end; }
+.mm-editor .acoes button { flex: 0 0 auto; width: auto; }
+.mm-editor .rodape { position: sticky; bottom: 0; background: var(--void-000); padding: var(--space-3); border-top: 1px solid var(--void-300); margin: 0 calc(-1 * var(--space-4)) calc(-1 * var(--space-4)); }

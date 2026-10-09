@@ -1,10 +1,12 @@
 # Módulos de Monolith para Foundry VTT
 
-Dois módulos para a mesa de Monolith (Foundry 13, dnd5e 5.2).
+Módulos para a mesa de Monolith (Foundry 13, dnd5e 5.2).
 
 | Módulo | O que faz | Manifest (cole em Instalar Módulo) |
 | :--- | :--- | :--- |
-| **Monolith: Regras da Casa** (`monolith-regras`) | Exaustão de 10 níveis, Inspiração Heróica, Medidas Desesperadas, Queima de Alma, Ênfase. Compatível com Tidy 5e. | `https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-regras/module.json` |
+| **Monolith: Regras da Casa** (`monolith-regras`) | Exaustão de 10 níveis, Inspiração e Inspiração Heróica no painel flutuante, Ênfase. Compatível com Tidy 5e. | `https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-regras/module.json` |
+| **Monolith: Medidas Desesperadas** (`monolith-medidas`) | O Fio, Medidas configuráveis (custo, texto, efeito), Queimar a Alma, Recusar a Morte, O Nome que Fica. Coração no retrato da ficha Tidy Clássica. | `https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-medidas/module.json` |
+| **Monolith: Perdição** (`monolith-perdicao`) | Trilha de 0 a 20, Marcas e piso, Ligação a corruptores, testes de Perdição com Ênfase, Firmar-se. Contador no cabeçalho da ficha Tidy Clássica. | `https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-perdicao/module.json` |
 | **Monolith: Calendário** (`monolith-calendario`) | Fork do [Calendaria](https://github.com/Sayshal/Calendaria) (Tyler/Sayshal, MIT) com luas e estações fiéis ao Fantasy-Calendar.com e sincronização com o site. | `https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-calendario/module.json` |
 | **Monolith: Encumbrance** (`monolith-encumbrance`) | Carga configurável: faixas por Força, deslocamento, desvantagens por habilidade e efeitos livres. Substitui o Variant Encumbrance. | `https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-encumbrance/module.json` |
 | **Monolith: Reach** (`monolith-reach`) | Portas, tiles do Monk's Active Tiles e interruptores do Light Switch só ao alcance do token (5 pés). | `https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-reach/module.json` |

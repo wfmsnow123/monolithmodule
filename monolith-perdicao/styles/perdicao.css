@@ -1,0 +1,75 @@
+/* Monolith: Perdição. Usa os tokens do design system (styles/monolith-ui.css). */
+
+/* ---------- Contador na ficha Tidy Clássica ---------- */
+.monolith-tidy.mp-chip {
+  display: inline-flex; align-items: center; gap: 6px; align-self: center;
+  padding: 2px 8px; cursor: pointer; white-space: nowrap;
+  font-family: var(--font-label); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  background: var(--void-100); color: var(--ink-muted);
+  border: 1px solid var(--void-400); border-left: 3px solid var(--cobalt-500); border-radius: var(--radius-sm);
+}
+.monolith-tidy.mp-chip:hover { color: var(--ink); border-color: var(--ink-muted); }
+.monolith-tidy.mp-chip b { font-family: var(--font-display); font-size: 17px; font-weight: 400; color: var(--ink); letter-spacing: 0.02em; }
+.monolith-tidy.mp-chip .barra { width: 46px; height: 4px; background: var(--void-300); overflow: hidden; }
+.monolith-tidy.mp-chip .barra span { display: block; height: 100%; background: var(--cobalt-500); }
+.monolith-tidy.mp-chip[data-nivel="1"] { border-left-color: var(--ichor); }
+.monolith-tidy.mp-chip[data-nivel="1"] .barra span { background: var(--ichor); }
+.monolith-tidy.mp-chip[data-nivel="2"], .monolith-tidy.mp-chip[data-nivel="3"] { border-left-color: var(--blood-500); }
+.monolith-tidy.mp-chip[data-nivel="2"] .barra span, .monolith-tidy.mp-chip[data-nivel="3"] .barra span { background: var(--blood-500); }
+.monolith-tidy.mp-chip[data-nivel="4"] { background: var(--blood-500); border-color: var(--blood-500); color: var(--bone); }
+.monolith-tidy.mp-chip[data-nivel="4"] b { color: var(--bone); }
+
+/* ---------- Janela ---------- */
+.monolith-perdicao > .window-content { overflow-y: auto; }
+.mp-body h2 { margin: 0; border: none; font-size: 26px; }
+.mp-body h3 {
+  display: flex; align-items: center; gap: var(--space-2); margin: var(--space-4) 0 var(--space-2);
+  font-family: var(--font-display); font-size: 18px; letter-spacing: 0.05em; color: var(--ink); border: 0;
+}
+.mp-body h3::before { content: ""; width: 4px; height: 16px; background: var(--cobalt-500); }
+.mp-body h3::after { content: ""; flex: 1; height: 1px; background: var(--void-300); }
+.mp-body .hint { font-size: 12px; line-height: 16px; color: var(--ink-muted); margin: var(--space-1) 0; }
+
+.mp-topo { display: flex; gap: var(--space-3); align-items: center; }
+.mp-topo .retrato { width: 60px; aspect-ratio: 3 / 4; flex: 0 0 auto; overflow: hidden; border: 1px solid var(--void-400); }
+.mp-topo .retrato img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 15%; border: 0; }
+.mp-topo .retrato img.zoom { transform: scale(1.08); }
+.mp-topo .numero { display: flex; align-items: baseline; gap: var(--space-2); }
+.mp-topo .numero b { font-family: var(--font-display); font-size: 40px; line-height: 1; font-weight: 400; }
+.mp-topo .numero span { color: var(--ink-muted); }
+.mp-topo .numero .estado {
+  margin-left: var(--space-2); padding: 0 var(--space-2); font-family: var(--font-label); font-size: 12px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase; background: var(--cobalt-500); color: var(--bone); border-radius: var(--radius-sm);
+}
+
+.mp-body .trilha { display: grid; grid-template-columns: repeat(20, 1fr); gap: 2px; margin-top: var(--space-3); }
+.mp-body .trilha .cel { height: 18px; background: var(--void-200); border: 1px solid var(--void-400); box-shadow: var(--shadow-pit); }
+.mp-body .trilha .cel.limiar { border-right: 2px solid var(--ink-muted); }
+.mp-body .trilha .cel.cheia { background: var(--cobalt-500); border-color: var(--cobalt-500); box-shadow: none; }
+.mp-body .trilha .cel.cheia.piso { background: var(--blood-500); border-color: var(--blood-500); }
+.mp-body .trilha .cel.piso:not(.cheia) { background: repeating-linear-gradient(45deg, var(--void-200) 0 3px, var(--void-300) 3px 6px); }
+.mp-body .regua { display: grid; grid-template-columns: repeat(4, 1fr) auto; font-family: var(--font-mono); font-size: 10px; color: var(--ink-muted); }
+
+.mp-body .botoes { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-2); }
+.mp-body .botoes button { flex: 1 1 40%; }
+.mp-body .botoes.passo button { flex: 1 1 20%; }
+.mp-body .botoes small { opacity: 0.7; margin-left: 4px; }
+
+.mp-body ul { list-style: none; margin: 0; padding: 0; }
+.mp-body .marcas li { padding: var(--space-2); margin-bottom: var(--space-2); background: var(--void-000); border: 1px solid var(--void-300); border-left: 3px solid var(--ichor); }
+.mp-body .marcas li.danacao { border-left-color: var(--blood-500); }
+.mp-body .marcas li.cicatriz { border-left-color: var(--ink); }
+.mp-body .marcas .cab { display: flex; align-items: baseline; gap: var(--space-2); }
+.mp-body .marcas .tipo { font-family: var(--font-label); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); }
+.mp-body .marcas .ctl { margin-left: auto; display: flex; gap: var(--space-2); }
+.mp-body .marcas .ctl a { color: var(--ink-muted); cursor: pointer; }
+.mp-body .marcas .ctl a:hover { color: var(--blood-text); }
+.mp-body .marcas p { margin: var(--space-1) 0 0; font-size: 13px; }
+.mp-body .marcas .rot { font-family: var(--font-label); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); margin-right: 4px; }
+
+.mp-body .estados li { display: grid; grid-template-columns: 48px 92px 1fr; gap: var(--space-2); padding: 3px 0; border-bottom: 1px solid var(--void-300); font-size: 12px; color: var(--ink-muted); }
+.mp-body .estados li b { font-family: var(--font-mono); font-weight: 400; }
+.mp-body .estados li span { font-weight: 600; }
+.mp-body .estados li em { font-style: normal; }
+.mp-body .estados li.atual { color: var(--ink); }
+.mp-body .estados li.atual span { color: var(--cobalt-text, var(--ink)); }

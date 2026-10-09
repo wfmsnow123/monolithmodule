@@ -1,0 +1,58 @@
+{
+  "id": "monolith-medidas",
+  "title": "Monolith: Medidas Desesperadas",
+  "description": "O Fio, as Medidas Desesperadas (configuráveis: custo, texto e o que cada uma faz), Queimar a Alma, Recusar a Morte, Morrendo, ainda e O Nome que Fica. Coração em cima do retrato da ficha Tidy 5e Clássica.",
+  "version": "0.1.0",
+  "authors": [
+    {
+      "name": "snowxd"
+    }
+  ],
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13.351"
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "dnd5e",
+        "type": "system",
+        "compatibility": {
+          "minimum": "5.2.0"
+        }
+      }
+    ],
+    "recommends": [
+      {
+        "id": "tidy5e-sheet",
+        "type": "module",
+        "reason": "Coração de Medidas em cima do retrato da ficha Clássica."
+      },
+      {
+        "id": "monolith-perdicao",
+        "type": "module",
+        "reason": "A Queima de Alma e Recusar a Morte somam Perdição."
+      },
+      {
+        "id": "monolith-regras",
+        "type": "module",
+        "reason": "Apostar arma a Ênfase da próxima rolagem."
+      },
+      {
+        "id": "monolith-resting",
+        "type": "module",
+        "reason": "O descanso apaga falhas marcadas e expira as Medidas armadas."
+      }
+    ]
+  },
+  "esmodules": [
+    "scripts/main.mjs"
+  ],
+  "styles": [
+    "styles/monolith-ui.css",
+    "styles/medidas.css"
+  ],
+  "url": "https://github.com/wfmsnow123/monolithmodule",
+  "manifest": "https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-medidas/module.json",
+  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-medidas-v0.1.0/monolith-medidas.zip"
+}
