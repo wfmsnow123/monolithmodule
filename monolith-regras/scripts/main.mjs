@@ -44,7 +44,8 @@ Hooks.once("setup", () => {
 });
 
 Hooks.once("ready", async () => {
-  game.modules.get(ID).api = { armarEnfase, rolarEnfaseSolta, concederInspiracao, concederHeroica };
+  const mod = game.modules.get(ID);
+  mod.api = Object.assign(mod.api ?? {}, { armarEnfase, rolarEnfaseSolta, concederInspiracao, concederHeroica });
   HUD.montar();
   await migrarExaustao();
   await prepararRecursos();

@@ -1,1 +1,53 @@
-{}
+{
+  "MONOLITH": {
+    "inventario": {
+      "tituloConfig": "Ordenar inventário",
+      "explicacao": "Dentro de cada tipo, os itens ficam na ordem escolhida aqui, para todos. A ordem é gravada nos itens, então aparece igual na Tidy e na ficha do dnd5e (no modo de ordenação manual) e dentro de recipientes. \"Manual\" desliga a ordenação daquele tipo. \"Padrão\" segue a linha de cima do grupo.",
+      "primaria": "Primeiro por",
+      "secundaria": "Depois por",
+      "reordenarTodos": "Reordenar agora todos os personagens dos jogadores",
+      "salvar": "Salvar",
+      "salvo": "Ordem do inventário salva.",
+      "grupo": {
+        "inventario": "Inventário",
+        "caracteristicas": "Características",
+        "magias": "Magias"
+      },
+      "categoria": {
+        "inventario": "Todo o inventário",
+        "armas": "Armas",
+        "equipamento": "Equipamento",
+        "consumiveis": "Consumíveis",
+        "ferramentas": "Ferramentas",
+        "recipientes": "Recipientes",
+        "tesouro": "Tesouro e outros",
+        "caracteristicas": "Todas as características",
+        "raca": "Raça",
+        "antecedente": "Antecedente",
+        "classe": "Classe e subclasse",
+        "habilidades": "Habilidades (ativas e passivas)",
+        "magias": "Grimório"
+      },
+      "escolha": {
+        "default": "Padrão do grupo",
+        "none": "Manual (sem ordenar)",
+        "name_asc": "Nome (A-Z)",
+        "name_desc": "Nome (Z-A)",
+        "quantity_asc": "Quantidade (menor primeiro)",
+        "quantity_desc": "Quantidade (maior primeiro)",
+        "weight_asc": "Peso (menor primeiro)",
+        "weight_desc": "Peso (maior primeiro)",
+        "totalWeight_asc": "Peso total (menor primeiro)",
+        "totalWeight_desc": "Peso total (maior primeiro)",
+        "usage_asc": "Uso (ação, bônus, reação...)",
+        "usage_desc": "Uso (ordem inversa)",
+        "requirements_asc": "Requisito (A-Z)",
+        "requirements_desc": "Requisito (Z-A)",
+        "school_asc": "Escola (A-Z)",
+        "school_desc": "Escola (Z-A)",
+        "target_asc": "Alvo (A-Z)",
+        "target_desc": "Alvo (Z-A)"
+      }
+    }
+  }
+}

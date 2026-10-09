@@ -1,8 +1,8 @@
 {
   "id": "monolith-regras",
   "title": "Monolith: Regras da Casa",
-  "description": "Regras de Monolith para dnd5e: Exaustão de 10 níveis, Inspiração e Inspiração Heróica (painel flutuante), Ênfase. As Medidas Desesperadas e a Perdição ficam em módulos próprios; os descansos no Monolith: Resting Rules. Compatível com Tidy 5e Sheets.",
-  "version": "0.6.0",
+  "description": "Regras de Monolith para dnd5e: Exaustão de 10 níveis, Inspiração e Inspiração Heróica, Ênfase. Recursos incorporados e adaptados (cada um liga e desliga): Lembretes de vantagem, Percepção, Visão, Montaria, Barra de Chefe, Ordenar inventário, Troca e Retratos. Substitui Advantage Reminder, Perceptive, Vision 5e, Rideable, Bossbar, Illandril's Inventory Sorter, Let's Trade 5e e Tokenizer.",
+  "version": "0.7.0",
   "authors": [
     {
       "name": "snowxd"
@@ -46,7 +46,12 @@
       {
         "id": "lib-wrapper",
         "type": "module",
-        "reason": "Percepção e Montaria usam o libWrapper para conviver com outros módulos."
+        "reason": "A Percepção usa o libWrapper para conviver com outros módulos (funciona sem ele)."
+      },
+      {
+        "id": "routinglib",
+        "type": "module",
+        "reason": "A Montaria usa o routinglib para o seguir com desvio de obstáculos."
       }
     ]
   },
@@ -68,7 +73,7 @@
   "socket": true,
   "url": "https://github.com/wfmsnow123/monolithmodule",
   "manifest": "https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-regras/module.json",
-  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-regras-v0.6.0/monolith-regras.zip",
+  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-regras-v0.7.0/monolith-regras.zip",
   "languages": [
     {
       "lang": "pt-BR",

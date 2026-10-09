@@ -1,1 +1,104 @@
-/* Recurso Retratos. */
+/* Recurso Retratos: editor de token. Tokens do design system (styles/monolith-ui.css). */
+
+.application.mono.monolith-retratos > .window-content { padding: 0; overflow: hidden; }
+.monolith-retratos .mr-editor { display: grid; grid-template-columns: 400px 1fr; gap: var(--space-4); padding: var(--space-4); }
+
+/* ---------- Palco ---------- */
+.monolith-retratos .mr-palco { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
+.monolith-retratos .mr-quadro {
+  position: relative; width: 400px; height: 400px; overflow: hidden;
+  border: 1px solid var(--void-300); box-shadow: var(--shadow-pit);
+  background-color: var(--void-000);
+  background-image:
+    linear-gradient(45deg, var(--void-200) 25%, transparent 25%, transparent 75%, var(--void-200) 75%),
+    linear-gradient(45deg, var(--void-200) 25%, transparent 25%, transparent 75%, var(--void-200) 75%);
+  background-size: 20px 20px; background-position: 0 0, 10px 10px;
+}
+.monolith-retratos .mr-quadro::after {
+  /* guia do recorte: some quando há imagem */
+  content: ""; position: absolute; inset: 8%; border: 1px dashed var(--void-400); border-radius: 50%; pointer-events: none; opacity: 0;
+}
+.monolith-retratos .mr-quadro[data-mascara="quadrado"]::after { border-radius: 0; }
+.monolith-retratos .mr-quadro.vazio::after { opacity: 1; }
+.monolith-retratos .mr-quadro.soltando { outline: 2px dashed var(--cobalt-text); outline-offset: -6px; }
+.monolith-retratos .mr-quadro canvas { display: block; width: 100%; height: 100%; cursor: grab; touch-action: none; }
+.monolith-retratos .mr-quadro canvas.arrastando { cursor: grabbing; }
+.monolith-retratos .mr-quadro canvas:focus-visible { outline: 2px solid var(--ward); outline-offset: -2px; }
+.monolith-retratos .mr-vazio {
+  position: absolute; inset: 0; display: none; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-2);
+  padding: var(--space-8); text-align: center; color: var(--ink-muted); font-size: 13px; pointer-events: none;
+}
+.monolith-retratos .mr-vazio i { font-size: 32px; color: var(--void-400); }
+.monolith-retratos .mr-quadro.vazio .mr-vazio { display: flex; }
+.monolith-retratos .mr-dica { margin: 0; }
+
+.monolith-retratos .mr-fontes { display: flex; flex-wrap: wrap; gap: var(--space-1); }
+.monolith-retratos .mr-fontes button { flex: 1 1 0; min-width: 0; white-space: nowrap; }
+.monolith-retratos .mr-url { display: flex; gap: var(--space-1); }
+.monolith-retratos .mr-url input { flex: 1; min-width: 0; height: 32px; }
+.monolith-retratos .mr-url button { flex: 0 0 36px; }
+
+/* ---------- Controles ---------- */
+.monolith-retratos .mr-controles { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; max-height: 560px; overflow-y: auto; padding-right: var(--space-1); }
+.monolith-retratos .mr-controles h3 {
+  display: flex; align-items: center; gap: var(--space-2); margin: var(--space-2) 0 0; padding: 0; border: 0;
+  font-family: var(--font-display); font-size: 17px; line-height: 20px; letter-spacing: 0.06em; color: var(--ink);
+}
+.monolith-retratos .mr-controles h3:first-child { margin-top: 0; }
+.monolith-retratos .mr-controles h3::before { content: ""; width: 4px; height: 14px; background: var(--blood-500); }
+.monolith-retratos .mr-controles h3::after { content: ""; flex: 1; height: 1px; background: var(--void-300); }
+
+.monolith-retratos .mr-linha { display: flex; align-items: center; gap: var(--space-2); margin: 0; }
+.monolith-retratos .mr-linha > span {
+  flex: 0 0 72px; font-family: var(--font-label); font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted);
+}
+.monolith-retratos .mr-linha input[type="range"] { flex: 1; min-width: 0; accent-color: var(--blood-500); }
+.monolith-retratos .mr-linha output { flex: 0 0 44px; text-align: right; font-family: var(--font-mono); font-size: 12px; color: var(--ink); }
+.monolith-retratos .mr-linha select { flex: 1; min-width: 0; }
+.monolith-retratos .mr-linha input[type="number"] { flex: 0 0 80px; }
+.monolith-retratos .mr-linha em { font-style: normal; font-family: var(--font-mono); font-size: 12px; color: var(--ink-muted); }
+.monolith-retratos .mr-cor { justify-content: space-between; }
+.monolith-retratos .mr-cor label, .monolith-retratos .mr-check { display: flex; align-items: center; gap: var(--space-2); margin: 0; }
+.monolith-retratos input[type="color"] {
+  flex: 0 0 44px; width: 44px; height: 26px; padding: 2px; border: 1px solid var(--void-400); border-radius: var(--radius-sm); background: var(--void-200); cursor: pointer;
+}
+
+.monolith-retratos .mr-botoes { display: flex; gap: var(--space-1); }
+.monolith-retratos .mr-botoes button { flex: 1; min-height: 30px; }
+.monolith-retratos .mr-segmento { display: flex; }
+.monolith-retratos .mr-segmento button { flex: 1; min-height: 30px; }
+.monolith-retratos .mr-segmento button + button { margin-left: -1px; }
+.monolith-retratos.application button[aria-pressed="true"]:not(.mr-moldura) {
+  background: var(--cobalt-500); border-color: var(--cobalt-500); color: var(--bone);
+}
+
+.monolith-retratos .mr-molduras { display: grid; grid-template-columns: repeat(7, 1fr); gap: var(--space-1); }
+.monolith-retratos.application button.mr-moldura {
+  aspect-ratio: 1; height: auto; min-height: 0; padding: 3px; margin: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--void-000); color: var(--ink-muted); font-size: 16px; border: 1px solid var(--void-300);
+}
+.monolith-retratos .mr-moldura img { width: 100%; height: 100%; object-fit: contain; border: 0; }
+.monolith-retratos.application button.mr-moldura[aria-pressed="true"] { border-color: var(--blood-text); box-shadow: 0 0 0 1px var(--blood-text); color: var(--ink); }
+
+/* ---------- Rodapé ---------- */
+.monolith-retratos .mr-rodape, .monolith-retratos-config .mr-rodape {
+  display: flex; align-items: center; justify-content: flex-end; gap: var(--space-2);
+  padding: var(--space-3) var(--space-4); background: var(--void-000); border-top: 1px solid var(--void-300);
+}
+.monolith-retratos .mr-rodape button { flex: 0 0 auto; min-width: 120px; min-height: 32px; }
+.monolith-retratos .mr-estado { margin: 0 auto 0 0; }
+
+/* ---------- Configuração ---------- */
+.application.mono.monolith-retratos-config > .window-content { padding: var(--space-2) var(--space-4) 0; }
+.monolith-retratos-config .mono-field { padding: var(--space-2) 0; }
+.monolith-retratos-config .mono-field__label { font-family: var(--font-sans); font-size: 14px; color: var(--ink); }
+.monolith-retratos-config .mono-toggle { justify-self: end; }
+.monolith-retratos-config .mr-pasta { display: flex; gap: var(--space-1); }
+.monolith-retratos-config .mr-pasta input { flex: 1; min-width: 0; }
+.monolith-retratos-config .mr-pasta button { flex: 0 0 34px; }
+.monolith-retratos-config .mr-rodape { margin: var(--space-2) calc(-1 * var(--space-4)) 0; }
+
+/* Botão principal (o seletor genérico de botão do kit é mais forte que .mono-primary). */
+.application.mono.monolith-retratos .mr-rodape button.mono-primary { background: var(--blood-500); border-color: var(--blood-500); color: var(--bone); }
+.application.mono.monolith-retratos .mr-rodape button.mono-primary:hover { background: var(--blood-600); border-color: var(--blood-600); }

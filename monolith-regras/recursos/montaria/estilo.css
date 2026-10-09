@@ -1,1 +1,45 @@
 /* Recurso Montaria. */
+
+/* ---------- Janela de configuração (.mono) ---------- */
+.monolith-montaria > .window-content { overflow-y: auto; }
+.mt-corpo .mt-intro { margin: 0 0 var(--space-2); font-size: 13px; line-height: 18px; color: var(--ink-muted); }
+.mt-corpo h3 {
+  display: flex; align-items: center; gap: var(--space-2); margin: var(--space-4) 0 var(--space-1);
+  font-family: var(--font-display); font-weight: 400; font-size: 18px; letter-spacing: 0.05em; color: var(--ink); border: 0;
+}
+.mt-corpo h3::before { content: ""; width: 4px; height: 16px; background: var(--blood-500); }
+.mt-corpo h3::after { content: ""; flex: 1; height: 1px; background: var(--void-300); }
+.mt-corpo .hint { display: block; font-size: 12px; line-height: 16px; color: var(--ink-muted); margin: 2px 0 0; font-weight: 400; }
+.mt-corpo .mt-teclas { padding: var(--space-2); background: var(--void-000); border: 1px dashed var(--void-400); }
+.mt-corpo .mt-teclas b { color: var(--ink); }
+.mt-corpo .mt-grade { display: grid; gap: var(--space-2); margin-top: var(--space-2); }
+.mt-corpo .mt-linha { display: flex; gap: var(--space-2); align-items: flex-start; cursor: pointer; }
+.mt-corpo .mt-linha input { flex: 0 0 auto; margin-top: 2px; }
+.mt-corpo .mt-linha > span { display: flex; flex-direction: column; }
+.mt-corpo .mt-linha b, .mt-corpo .mt-campo b { font-family: var(--font-label); font-weight: 600; font-size: 13px; letter-spacing: 0.04em; color: var(--ink); }
+.mt-corpo .mt-campo { display: grid; grid-template-columns: 1fr minmax(180px, 220px); gap: var(--space-2); align-items: center; }
+.mt-corpo .mt-campo > label { display: flex; flex-direction: column; }
+.mt-corpo .mt-campo select, .mt-corpo .mt-campo input, .mt-corpo .mt-campo range-picker { width: 100%; }
+.mt-corpo .fa-rotate { font-size: 10px; color: var(--ichor); margin-left: 4px; }
+.mt-corpo details.mt-mais { margin-top: var(--space-2); border-left: 2px solid var(--void-300); padding-left: var(--space-2); }
+.mt-corpo details.mt-mais > summary {
+  cursor: pointer; font-family: var(--font-label); font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--ink-muted);
+}
+.mt-corpo details.mt-mais[open] > summary { color: var(--ink); }
+.mt-corpo footer {
+  position: sticky; bottom: 0; display: flex; justify-content: flex-end; gap: var(--space-2); padding: var(--space-3);
+  margin: var(--space-3) calc(-1 * var(--space-4)) calc(-1 * var(--space-4));
+  background: var(--void-000); border-top: 1px solid var(--void-300);
+}
+.mt-corpo footer button { width: auto; }
+@media (max-width: 560px) { .mt-corpo .mt-campo { grid-template-columns: 1fr; } }
+
+/* ---------- Aba Montaria na configuração do token (fora do .mono: usa o tema do Foundry) ---------- */
+.montaria-aba details.montaria-mais { margin-top: 8px; padding: 4px 8px; border: 1px solid var(--color-border, #555); border-radius: 4px; }
+.montaria-aba details.montaria-mais > summary { cursor: pointer; font-weight: 600; padding: 2px 0; }
+.montaria-aba details.montaria-mais[open] > summary { margin-bottom: 6px; }
+.montaria-aba .form-fields label { flex: 0 0 auto; }
+
+/* ---------- Botão do HUD ---------- */
+#token-hud .control-icon.montaria-hud.active { border-color: #c41d27; color: #f1ece2; }

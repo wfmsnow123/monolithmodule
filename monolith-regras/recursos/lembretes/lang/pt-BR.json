@@ -1,1 +1,54 @@
-{}
+{
+  "MONOLITH": {
+    "lembretes": {
+      "Titulo": "Lembretes",
+      "SomarAoBonus": "Somar ao bônus situacional",
+      "FalhaAutomatica": "Falha automática",
+      "FalhaTexto": "{nome} falha automaticamente no teste de resistência de {habilidade}.",
+      "FalhaPorEfeito": "Por um efeito ativo.",
+      "Fonte": {
+        "vantagem": "Vantagem",
+        "desvantagem": "Desvantagem",
+        "vantagemImposta": "Vantagem imposta",
+        "desvantagemImposta": "Desvantagem imposta",
+        "normalImposta": "Rolagem normal imposta",
+        "vantagemAnulada": "Vantagem anulada",
+        "desvantagemAnulada": "Desvantagem anulada",
+        "critico": "Crítico",
+        "criticoAnulado": "Crítico anulado",
+        "natural": "{value} natural"
+      },
+      "Amostra": {
+        "mensagem": "Bônus de situação: [[/r +2]]",
+        "vantagem": "Efeito de exemplo",
+        "desvantagem": "Envenenado"
+      },
+      "Config": {
+        "mostrarFontes": {
+          "nome": "Lembretes: mostrar a origem",
+          "dica": "Quando um efeito ou condição dá vantagem, desvantagem ou crítico, mostra o nome dele na caixinha do diálogo de rolagem."
+        },
+        "monolith": {
+          "nome": "Lembretes: avisos de Monolith",
+          "dica": "Mostra na caixinha a Ênfase armada, a Exaustão, a faixa de carga, a Perdição esgarçada e as Medidas armadas. Só avisa, não muda a rolagem."
+        },
+        "atualizarCondicoes": {
+          "nome": "Lembretes: condições dão vantagem e desvantagem",
+          "dica": "Liga as condições do sistema às vantagens e desvantagens (ex.: desvantagem no ataque quando Envenenado, falha automática em resistências de Força e Destreza quando Paralisado). A Exaustão segue a regra de Monolith. Desligue se outro módulo já faz isso."
+        },
+        "botaoLargo": {
+          "nome": "Lembretes: botão padrão mais largo",
+          "dica": "Alarga o botão sugerido (Vantagem, Normal, Desvantagem ou Crítico) nos diálogos de rolagem."
+        },
+        "corBotao": {
+          "nome": "Lembretes: cor do botão padrão",
+          "dica": "Pinta o botão sugerido nos diálogos de rolagem."
+        },
+        "corPersonalizada": {
+          "nome": "Lembretes: cor personalizada",
+          "dica": "Cor usada quando a cor do botão padrão é Personalizada. O texto fica claro ou escuro sozinho."
+        }
+      }
+    }
+  }
+}

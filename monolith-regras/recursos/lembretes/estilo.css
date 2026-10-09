@@ -1,1 +1,59 @@
-/* Recurso Lembretes de vantagem. */
+/* Recurso Lembretes de vantagem: caixinha nos diálogos de rolagem do dnd5e.
+   Os diálogos não são .mono, então as cores são fixas (valores dos tokens do design system). */
+
+.roll-configuration fieldset.mlem-caixa {
+  margin: 6px 0; padding: 6px 8px 8px; border: 1px solid #2a303c; border-radius: 2px;
+  background: #0e1016; color: #e6e2d8; font-family: "Barlow", "Segoe UI", system-ui, sans-serif;
+}
+.roll-configuration fieldset.mlem-caixa > legend {
+  padding: 0 4px; font-family: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif; font-size: 11px;
+  font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #8f95a3;
+  background: #0e1016; border: 0;
+}
+.mlem-caixa .mlem-lista { display: flex; flex-direction: column; gap: 3px; margin: 0; padding: 0; list-style: none; }
+.mlem-caixa .mlem-item {
+  display: flex; align-items: baseline; gap: 6px; margin: 0; padding: 3px 6px 3px 7px;
+  background: #161a22; border-left: 3px solid #636b7e; font-size: 12px; line-height: 16px; color: #e6e2d8;
+}
+.mlem-caixa .mlem-item > i { flex: 0 0 12px; width: 12px; text-align: center; font-size: 11px; color: #8f95a3; }
+.mlem-caixa .mlem-rotulo {
+  flex: 0 0 auto; font-family: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif; font-size: 11px;
+  font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #f1ece2;
+}
+.mlem-caixa .mlem-texto { flex: 1; min-width: 0; color: #c9c3b6; overflow-wrap: anywhere; }
+
+/* Desvantagem e penalidades: sangue. Vantagem: cobalto. Crítico e Ênfase: icor. */
+.mlem-caixa .mlem-item:is([data-tipo="desv"], [data-tipo="penalidade"]) { border-left-color: #a3121b; background: #1a0d10; }
+.mlem-caixa .mlem-item:is([data-tipo="desv"], [data-tipo="penalidade"]) > i,
+.mlem-caixa .mlem-item:is([data-tipo="desv"], [data-tipo="penalidade"]) .mlem-rotulo { color: #ec5960; }
+.mlem-caixa .mlem-item[data-tipo="vant"] { border-left-color: #28479a; background: #0d1630; }
+.mlem-caixa .mlem-item[data-tipo="vant"] > i, .mlem-caixa .mlem-item[data-tipo="vant"] .mlem-rotulo { color: #86a3e6; }
+.mlem-caixa .mlem-item:is([data-tipo="crit"], [data-tipo="enfase"], [data-tipo="medida"]) { border-left-color: #d29a3a; }
+.mlem-caixa .mlem-item:is([data-tipo="crit"], [data-tipo="enfase"], [data-tipo="medida"]) > i,
+.mlem-caixa .mlem-item:is([data-tipo="crit"], [data-tipo="enfase"], [data-tipo="medida"]) .mlem-rotulo { color: #d29a3a; }
+.mlem-caixa .mlem-item[data-tipo="anulada"] .mlem-texto { text-decoration: line-through; text-decoration-color: #636b7e; }
+.mlem-caixa .mlem-item.mlem-mensagem { border-left-color: #2a303c; }
+.mlem-caixa .mlem-item.mlem-mensagem .mlem-texto { color: #e6e2d8; }
+
+/* Links de documentos e rolagens embutidas dentro da caixinha. */
+.mlem-caixa a.content-link, .mlem-caixa a.mlem-rolagem {
+  padding: 0 3px; background: #07080b; border: 1px solid #2a303c; border-radius: 2px; color: #f1ece2;
+  text-decoration: none; white-space: nowrap;
+}
+.mlem-caixa a.content-link > i, .mlem-caixa a.mlem-rolagem > i { color: #8f95a3; margin-right: 2px; }
+.mlem-caixa a.mlem-rolagem { cursor: pointer; border-color: #d29a3a; }
+.mlem-caixa a.mlem-rolagem:hover { background: #d29a3a; color: #07080b; }
+.mlem-caixa a.mlem-rolagem:hover > i { color: #07080b; }
+
+/* Botão padrão: mais largo e/ou colorido (configurações de cliente). */
+.roll-configuration.mlem-largo .dialog-buttons button { flex: 2; }
+.roll-configuration.mlem-largo .dialog-buttons button[autofocus] { flex: 3; }
+.roll-configuration.mlem-cor .dialog-buttons button[autofocus] {
+  background: var(--mlem-botao-fundo, inherit); border-color: var(--mlem-botao-fundo, inherit); color: var(--mlem-botao-texto, inherit);
+}
+.roll-configuration.mlem-cor .dialog-buttons button:is(:hover, :focus-visible):not(:disabled) {
+  box-shadow: 0 0 5px var(--mlem-botao-fundo, transparent);
+}
+
+/* Cartão de falha automática no chat. */
+.mono-card.mlem-falha .mlem-falha-causa { margin: 4px 0 0; font-size: 12px; opacity: 0.8; }

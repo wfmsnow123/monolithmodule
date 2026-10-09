@@ -1,1 +1,75 @@
 /* Recurso Percepção. */
+
+/* ---------- Janela de configuração ---------- */
+.monolith-percepcao > .window-content { padding: 0; overflow: hidden; }
+.pc-corpo { display: flex; flex-direction: column; height: 100%; }
+.pc-abas {
+  display: flex; flex-wrap: wrap; flex: 0 0 auto; border-bottom: 1px solid var(--void-300); background: var(--void-000);
+}
+.pc-aba {
+  display: flex; align-items: center; gap: var(--space-1); padding: var(--space-2) var(--space-3); cursor: pointer;
+  font-family: var(--font-label); font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ink-muted); border-bottom: 2px solid transparent;
+}
+.pc-aba:hover { color: var(--ink); }
+.pc-aba.active { color: var(--ink); border-bottom-color: var(--blood-500); background: var(--void-200); }
+.pc-paineis { flex: 1 1 auto; overflow-y: auto; padding: var(--space-3) var(--space-4); }
+.pc-painel { display: none; }
+.pc-painel.active { display: block; }
+.pc-intro { margin: 0 0 var(--space-3); font-size: 13px; line-height: 18px; color: var(--ink-muted); }
+.pc-aviso {
+  margin: 0 0 var(--space-3); padding: var(--space-2) var(--space-3); font-size: 12px; line-height: 16px; color: var(--ink);
+  background: var(--void-000); border: 1px solid var(--void-300); border-left: 3px solid var(--ichor);
+}
+.pc-painel h3 {
+  display: flex; align-items: center; gap: var(--space-2); margin: var(--space-4) 0 var(--space-2);
+  font-family: var(--font-display); font-weight: 400; font-size: 18px; letter-spacing: 0.05em; color: var(--ink); border: 0;
+}
+.pc-painel h3::before { content: ""; width: 4px; height: 16px; background: var(--blood-500); }
+.pc-painel h3::after { content: ""; flex: 1; height: 1px; background: var(--void-300); }
+.pc-painel .hint { font-size: 12px; line-height: 16px; color: var(--ink-muted); margin: 2px 0 0; }
+.pc-linha, .pc-campo { display: flex; gap: var(--space-2); padding: var(--space-2) 0; border-bottom: 1px solid var(--void-200); }
+.pc-linha { align-items: flex-start; cursor: pointer; }
+.pc-linha input[type="checkbox"] { flex: 0 0 auto; margin-top: 2px; }
+.pc-linha .pc-texto { display: flex; flex-direction: column; }
+.pc-linha b, .pc-rotulo { font-family: var(--font-label); font-weight: 600; font-size: 13px; letter-spacing: 0.04em; color: var(--ink); }
+.pc-campo { flex-direction: column; gap: var(--space-1); }
+.pc-entrada { display: flex; gap: var(--space-2); align-items: center; }
+.pc-entrada > input, .pc-entrada > select, .pc-entrada > range-picker, .pc-entrada > file-picker { flex: 1 1 auto; }
+.pc-entrada input[type="text"] { font-family: var(--font-mono); }
+.pc-selo {
+  display: inline-flex; align-items: center; gap: 4px; margin-left: var(--space-2); padding: 0 6px;
+  font-family: var(--font-label); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--blood-text); border: 1px solid var(--blood-text); border-radius: var(--radius-sm); vertical-align: middle;
+}
+.pc-linha .pc-selo { align-self: flex-start; margin: 2px 0; }
+.monolith-percepcao button.pc-mini { flex: 0 0 auto; width: auto; }
+.monolith-percepcao button.pc-acao { width: auto; margin: var(--space-2) 0; }
+.pc-corpo footer {
+  display: flex; align-items: center; gap: var(--space-2); flex: 0 0 auto; padding: var(--space-3) var(--space-4);
+  background: var(--void-000); border-top: 1px solid var(--void-300);
+}
+.pc-corpo footer .pc-espaco { flex: 1; }
+.pc-corpo footer button { width: auto; }
+
+/* ---------- Canais de visão ---------- */
+.percepcao-canais > .window-content { overflow: auto; }
+.percepcao-canais table { width: 100%; border-collapse: collapse; margin: 0; }
+.percepcao-canais th {
+  padding: var(--space-1) var(--space-2); text-align: center; white-space: nowrap;
+  font-family: var(--font-label); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-muted); background: var(--void-000); border: 1px solid var(--void-300);
+}
+.percepcao-canais td { padding: 2px var(--space-1); border: 1px solid var(--void-200); color: var(--ink); }
+.percepcao-canais td input[type="number"] { min-width: 56px; }
+.percepcao-canais i[name="delete"] { cursor: pointer; color: var(--ink-muted); }
+.percepcao-canais i[name="delete"]:hover { color: var(--blood-text); }
+.percepcao-canais .form-group button { width: auto; min-width: 220px; }
+
+/* ---------- Diálogos ---------- */
+.percepcao-confirmar .form-group, .percepcao-pericias .form-group { gap: var(--space-2); }
+.percepcao-confirmar img { border: 0; }
+
+/* ---------- HUD do token (fora do .mono: cores próprias do HUD) ---------- */
+#token-hud .col [data-action="monolith-percepcao-LingeringAP"] input,
+#token-hud .col > input[type="number"] { width: 48px; background: rgba(0, 0, 0, 0.6); text-align: center; }

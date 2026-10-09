@@ -4,7 +4,7 @@ Módulos para a mesa de Monolith (Foundry 13, dnd5e 5.2).
 
 | Módulo | O que faz | Manifest (cole em Instalar Módulo) |
 | :--- | :--- | :--- |
-| **Monolith: Regras da Casa** (`monolith-regras`) | Exaustão de 10 níveis, Inspiração e Inspiração Heróica no painel flutuante, Ênfase. Compatível com Tidy 5e. | `https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-regras/module.json` |
+| **Monolith: Regras da Casa** (`monolith-regras`) | Exaustão de 10 níveis, Inspiração e Inspiração Heróica, Ênfase, e os recursos incorporados: Lembretes, Percepção, Visão, Montaria, Barra de Chefe, Inventário, Troca e Retratos. | `https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-regras/module.json` |
 | **Monolith: Medidas Desesperadas** (`monolith-medidas`) | O Fio, Medidas configuráveis (custo, texto, efeito), Queimar a Alma, Recusar a Morte, O Nome que Fica. Coração no retrato da ficha Tidy Clássica. | `https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-medidas/module.json` |
 | **Monolith: Perdição** (`monolith-perdicao`) | Trilha de 0 a 20, Marcas e piso, Ligação a corruptores, testes de Perdição com Ênfase, Firmar-se. Contador no cabeçalho da ficha Tidy Clássica. | `https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-perdicao/module.json` |
 | **Monolith: Journals** (`monolith-journals`) | Temas de jornal (documento, carta, diário, gazeta, dossiê, pergaminho, tomo, manual, conto, card de NPC), escolhidos por botão sem mexer no HTML. Substitui o Monolith RPG. | `https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-journals/module.json` |

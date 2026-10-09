@@ -1,1 +1,92 @@
-/* Recurso Troca. */
+/* Recurso Troca: janela de dar, pedido recebido e cartões de chat. */
+
+/* ---------- Janelas (.mono) ---------- */
+.monolith-troca .mt-form { display: flex; flex-direction: column; gap: var(--space-3); }
+.monolith-troca h3 {
+  display: flex; align-items: center; gap: var(--space-2); margin: 0 0 var(--space-2); border: 0;
+  font-family: var(--font-display); font-size: 17px; letter-spacing: 0.05em; color: var(--ink);
+}
+.monolith-troca h3::before { content: ""; width: 4px; height: 14px; background: var(--blood-500); }
+.monolith-troca h3::after { content: ""; flex: 1; height: 1px; background: var(--void-300); }
+.monolith-troca .hint { font-size: 12px; color: var(--ink-muted); margin: 0; }
+.monolith-troca img { border: 0; }
+
+.monolith-troca .mt-de { display: flex; align-items: center; gap: var(--space-2); color: var(--ink-muted); font-size: 12px; }
+.monolith-troca .mt-de img { width: 22px; height: 22px; object-fit: cover; object-position: 50% 15%; border: 1px solid var(--void-400); }
+.monolith-troca .mt-de b { color: var(--ink); }
+
+.monolith-troca .mt-oque {
+  display: flex; align-items: center; gap: var(--space-3); padding: var(--space-2);
+  background: var(--void-000); border: 1px solid var(--void-300); border-left: 3px solid var(--blood-500);
+}
+.monolith-troca .mt-oque > img { width: 40px; height: 40px; flex: 0 0 40px; object-fit: cover; }
+.monolith-troca .mt-oque-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.monolith-troca .mt-oque-txt b { font-family: var(--font-display); font-size: 18px; letter-spacing: 0.04em; font-weight: 400; line-height: 1.1; }
+.monolith-troca .mt-oque-txt small { color: var(--ink-muted); font-size: 12px; }
+
+.monolith-troca .mt-passo { display: flex; align-items: center; gap: 2px; }
+.monolith-troca .mt-passo button { width: 26px; height: 26px; min-height: 0; padding: 0; margin: 0; flex: 0 0 26px; line-height: 1; }
+.monolith-troca .mt-passo .mt-tudo { width: auto; flex: 0 0 auto; padding: 0 var(--space-2); font-family: var(--font-label); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+.monolith-troca .mt-passo input { width: 48px; height: 26px; text-align: center; font-family: var(--font-mono); }
+
+.monolith-troca .mt-moedas { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: var(--space-2); }
+.monolith-troca .mt-moeda {
+  display: grid; grid-template-columns: 20px 1fr auto; grid-template-rows: auto auto; align-items: center; column-gap: var(--space-1);
+  padding: var(--space-1) var(--space-2); background: var(--void-000); border: 1px solid var(--void-300);
+}
+.monolith-troca .mt-moeda img, .monolith-troca .mt-moeda > i { width: 18px; height: 18px; object-fit: contain; color: var(--ichor); }
+.monolith-troca .mt-moeda-nome { font-family: var(--font-label); font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); }
+.monolith-troca .mt-moeda input { grid-column: 1 / 3; width: 100%; height: 24px; font-family: var(--font-mono); }
+.monolith-troca .mt-moeda small { font-family: var(--font-mono); font-size: 11px; color: var(--ink-muted); }
+.monolith-troca .mt-junto summary { cursor: pointer; font-family: var(--font-label); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: var(--space-2); }
+
+.monolith-troca .mt-lista { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; max-height: 260px; overflow-y: auto; }
+.monolith-troca .mt-cand {
+  display: flex; align-items: center; gap: var(--space-2); padding: var(--space-1) var(--space-2); cursor: pointer;
+  background: var(--void-000); border: 1px solid var(--void-300); border-left: 3px solid transparent;
+}
+.monolith-troca .mt-cand:hover { background: var(--void-200); }
+.monolith-troca .mt-cand.on { border-color: var(--blood-500); border-left-color: var(--blood-500); background: var(--blood-wash); }
+.monolith-troca .mt-cand input { position: absolute; opacity: 0; pointer-events: none; }
+.monolith-troca .mt-cand img { width: 36px; height: 36px; flex: 0 0 36px; object-fit: cover; object-position: 50% 15%; border: 1px solid var(--void-400); }
+.monolith-troca .mt-cand-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.monolith-troca .mt-cand-txt b { font-weight: 600; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.monolith-troca .mt-cand-txt small { font-size: 11px; color: var(--ink-muted); }
+.monolith-troca .mt-dist { font-family: var(--font-mono); font-size: 11px; color: var(--ink-muted); }
+.monolith-troca .mt-online { width: 8px; height: 8px; flex: 0 0 8px; border-radius: 50%; background: var(--void-400); }
+.monolith-troca .mt-online.on { background: var(--verdigris); }
+
+.monolith-troca .mt-recado { display: flex; flex-direction: column; gap: var(--space-1); font-family: var(--font-label); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); }
+.monolith-troca .mt-recado input { text-transform: none; letter-spacing: normal; font-family: var(--font-sans); }
+.monolith-troca .mt-check { display: flex; align-items: flex-start; gap: var(--space-2); font-size: 13px; color: var(--ink); }
+.monolith-troca .mt-check small { display: block; font-size: 11px; color: var(--ink-muted); }
+
+.monolith-troca .mt-frase { margin: 0; color: var(--ink-muted); }
+.monolith-troca .mt-presente span { font-family: var(--font-display); font-size: 20px; letter-spacing: 0.04em; color: var(--ink); }
+.monolith-troca .mt-nota, .mono-card.mt-card .mt-nota {
+  margin: 0; padding: var(--space-1) var(--space-2); border-left: 2px solid var(--void-400); font-style: italic; color: var(--ink-muted);
+}
+
+/* ---------- Cartões de chat ---------- */
+.mono-card.mt-card .mt-fluxo { display: flex; align-items: center; gap: var(--space-2); }
+.mono-card.mt-card .mt-fluxo > i { color: var(--blood-text); }
+.mono-card.mt-card .mt-quem { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-1); }
+.mono-card.mt-card .mt-quem:last-child { justify-content: flex-end; text-align: right; }
+.mono-card.mt-card .mt-quem img { width: 28px; height: 28px; flex: 0 0 28px; object-fit: cover; object-position: 50% 15%; border: 1px solid var(--void-400); }
+.mono-card.mt-card .mt-quem b { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mono-card.mt-card .mt-itens { list-style: none; margin: var(--space-2) 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.mono-card.mt-card .mt-itens li { display: flex; align-items: center; gap: var(--space-2); padding: 2px var(--space-1); background: var(--void-000); }
+.mono-card.mt-card .mt-itens img { width: 22px; height: 22px; object-fit: contain; border: 0; }
+.mono-card.mt-card .mt-itens i { width: 22px; text-align: center; color: var(--ichor); }
+.mono-card.mt-card .mt-itens small { color: var(--ink-muted); margin-left: 4px; }
+.mono-card.mt-card .mt-acoes { display: flex; gap: var(--space-1); margin-top: var(--space-2); }
+.mono-card.mt-card .mt-acoes button { flex: 1; font-size: 12px; line-height: 24px; padding: 0 var(--space-1); }
+.mono-card.mt-card .mt-acoes button.mt-sec { flex: 0 0 auto; background: transparent; color: var(--ink-muted); border-color: var(--void-400); }
+.mono-card.mt-card .mt-espera { margin: var(--space-2) 0 0; font-size: 12px; color: var(--ink-muted); }
+.mono-card.mt-card .mt-estado {
+  margin: var(--space-2) 0 0; font-family: var(--font-label); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted);
+}
+.mono-card.mt-card .mt-estado.mt-aceita { color: var(--verdigris); }
+.mono-card.mt-card .mt-estado.mt-recusada, .mono-card.mt-card .mt-estado.mt-invalida { color: var(--blood-text); }
+.mono-card.mt-card[data-estado="aceita"] { border-top-color: var(--verdigris); }
+.mono-card.mt-card[data-estado="recusada"], .mono-card.mt-card[data-estado="cancelada"], .mono-card.mt-card[data-estado="invalida"] { border-top-color: var(--void-400); }

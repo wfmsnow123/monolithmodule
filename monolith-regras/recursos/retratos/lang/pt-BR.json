@@ -1,1 +1,105 @@
-{}
+{
+  "MONOLITH": {
+    "retratos": {
+      "abrir": "Retrato do token",
+      "titulo": "Retrato do token",
+      "previa": "Prévia do token. Arraste para mover, use a roda para aproximar.",
+      "semImagem": "Sem imagem. Escolha uma origem, cole (Ctrl+V) ou solte um arquivo aqui.",
+      "dicaPalco": "Arraste para mover · roda para zoom (Shift: fino) · duplo clique centraliza · setas ajustam.",
+      "origem": {
+        "retrato": "Retrato",
+        "token": "Token atual",
+        "arquivo": "Arquivo",
+        "colar": "Colar",
+        "url": "Usar este endereço",
+        "urlDica": "Endereço de uma imagem (https://...)"
+      },
+      "secao": {
+        "enquadramento": "Enquadramento",
+        "recorte": "Recorte",
+        "moldura": "Moldura",
+        "saida": "Saída"
+      },
+      "zoom": "Zoom",
+      "rotacao": "Giro",
+      "girarEsq": "Girar 90° à esquerda",
+      "girarDir": "Girar 90° à direita",
+      "espelharH": "Espelhar na horizontal",
+      "espelharV": "Espelhar na vertical",
+      "centralizar": "Recentralizar e desfazer zoom e giro",
+      "mascara": {
+        "circulo": "Círculo",
+        "quadrado": "Quadrado"
+      },
+      "margem": "Tamanho",
+      "moldura": {
+        "nenhuma": "Sem moldura",
+        "ferro": "Ferro",
+        "sangue": "Sangue",
+        "osso": "Osso",
+        "cobalto": "Cobalto",
+        "ouro": "Ouro",
+        "personalizada": "Moldura própria (arquivo)"
+      },
+      "tinta": "Tingir moldura",
+      "fundo": "Fundo sólido",
+      "tamanho": "Tamanho",
+      "retrato": "Retrato do ator",
+      "retratoModo": {
+        "manter": "Manter como está",
+        "origem": "Trocar pela imagem de origem",
+        "token": "Trocar pelo token pronto"
+      },
+      "todasCenas": "Atualizar tokens em todas as cenas (não só na atual)",
+      "tokenSintetico": "Este é um token não vinculado: só ele recebe a imagem nova.",
+      "cancelar": "Cancelar",
+      "salvar": "Salvar token",
+      "salvando": "Gravando…",
+      "carregando": "Carregando imagem…",
+      "salvo": "Token de {nome} atualizado ({n} na cena).",
+      "salvoPor": "Token de {nome} gravado a pedido de {user}.",
+      "enviadoMestre": "Imagem enviada ao Mestre para gravar.",
+      "semRetrato": "Este ator não tem retrato.",
+      "urlVazia": "Cole o endereço de uma imagem.",
+      "dicaColar": "Copie uma imagem e aperte Ctrl+V com esta janela em foco.",
+      "colarVazio": "Não há imagem na área de transferência.",
+      "avisoCors": "Esta imagem vem de um site que não permite exportar. Ela aparece na prévia, mas para salvar baixe o arquivo e escolha-o em Arquivo ou cole-o.",
+      "erroCors": "Não dá para salvar: a imagem vem de um site que bloqueia exportação. Baixe o arquivo e use Arquivo ou Ctrl+V.",
+      "erroCarregar": "Não foi possível carregar a imagem.",
+      "erroMoldura": "Não foi possível carregar a moldura.",
+      "erroSalvar": "Falha ao salvar o token.",
+      "erroEnvio": "O servidor recusou o arquivo.",
+      "erroPastaRaiz": "Defina uma pasta de destino nas configurações do Retratos.",
+      "semPermissao": "Você não tem permissão para trocar o token deste ator.",
+      "semMestre": "Nenhum Mestre conectado para gravar a imagem.",
+      "origemGrande": "A imagem de origem é grande demais para enviar ao Mestre (máx. 6 MB).",
+      "salvarConfig": "Salvar",
+      "config": {
+        "titulo": "Retratos: configuração",
+        "botao": "Configurar Retratos",
+        "dica": "Pasta de destino, molduras padrão e quem pode usar o editor de tokens.",
+        "escolherPasta": "Escolher pasta",
+        "pasta": "Pasta de destino",
+        "pastaDica": "Onde os tokens são gravados, dentro dos dados do usuário. Ex.: tokens. Para S3 use [s3:balde] caminho.",
+        "subpastas": "Subpasta por tipo",
+        "subpastasDica": "Separa em personagens/, npcs/, veiculos/ e grupos/ dentro da pasta.",
+        "tamanho": "Tamanho do token (px)",
+        "tamanhoDica": "Lado da imagem gravada. 400 é o padrão; cada ator pode mudar no editor.",
+        "mascara": "Recorte padrão",
+        "mascaraDica": "Forma usada ao abrir o editor.",
+        "molduraPersonagem": "Moldura dos personagens",
+        "molduraPersonagemDica": "Moldura que já vem escolhida para personagens de jogador.",
+        "molduraNpc": "Moldura dos demais atores",
+        "molduraNpcDica": "NPCs, veículos e grupos.",
+        "todasCenas": "Todas as cenas por padrão",
+        "todasCenasDica": "Deixa marcada a opção de atualizar tokens vinculados em todas as cenas, não só na atual.",
+        "apenasMestre": "Só o Mestre",
+        "apenasMestreDica": "Esconde o editor dos jogadores. Desligado, o dono do ator pode usar; se ele não puder enviar arquivos, o Mestre conectado grava por ele.",
+        "autoCriar": "Criar token ao criar ator",
+        "autoCriarDica": "Quando um ator novo tem retrato mas não tem imagem própria de token, gera o token com a moldura padrão.",
+        "menuDiretorio": "Entrada no diretório de atores",
+        "menuDiretorioDica": "Mostra Retrato do token no clique direito da lista de atores."
+      }
+    }
+  }
+}

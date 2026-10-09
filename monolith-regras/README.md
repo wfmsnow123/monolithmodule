@@ -34,3 +34,20 @@ Funciona no HUD do token, na ficha do dnd5e e nas duas fichas Tidy.
 
 ## Limites conhecidos
 - A Sobrecarga daqui é a antiga; prefira o **Monolith: Encumbrance**.
+
+## Recursos incorporados
+
+Módulos de licença MIT trazidos para dentro do Regras da Casa, traduzidos, no visual de Monolith e com as configurações da mesa. Cada um liga e desliga em **Configurações > Regras da Casa > Ligar e configurar recursos**, que também tem o botão **Configurar** de cada um. Enquanto o módulo original estiver ativo, o recurso fica desligado; ao abrir o mundo, o Mestre é convidado a desativar os originais. As configurações e as flags dos originais são copiadas uma vez (as antigas ficam, para dar para voltar).
+
+| Recurso | Substitui | O que muda |
+| :--- | :--- | :--- |
+| Lembretes de vantagem | Advantage Reminder | Em português, caixas no visual de Monolith, lembretes de Ênfase, Exaustão, carga, Esgarçado e Medidas armadas |
+| Percepção | Perceptive | Uma janela com abas no lugar da lista longa; correções para o v13 (visão ao espiar, vários tokens, atalho de porta) |
+| Visão | Vision 5e | Janela de configuração explicada, com prévia do alcance de audição |
+| Montaria | Rideable | Janela simples, cavaleiros seguem o caminho da montaria no v13, ordem e elevação corretas, várias correções |
+| Barra de Chefe | Bossbar | Visual grimdark estilo Elden Ring: rastro de dano, número de dano, fases, "INIMIGO ABATIDO", temas e efeitos |
+| Ordenar inventário | Illandril's Inventory Sorter | Funciona na Tidy e no v13; ordem vale para a mesa toda |
+| Troca | Let's Trade 5e | "Dar a…", "Dar moedas…" e arrastar para o token; pedido espera o jogador offline |
+| Retratos | Tokenizer | Editor leve de token: moldura, máscara, recorte, salva em webp |
+
+Os avisos de licença dos originais estão em `recursos/<recurso>/LICENSE-ORIGINAL.txt`.

@@ -1,1 +1,55 @@
 /* Recurso Visão. */
+
+/* Paleta de modos de visão no HUD do token (fora do .mono: usa as variáveis do próprio HUD). */
+#token-hud .palette[data-palette="monolith-regras.visao.modosDeVisao"] {
+  display: flex; flex-direction: column; width: auto; min-width: 140px; padding: 3px; gap: 3px;
+  text-align: left; font-size: var(--font-size-13); color: var(--control-icon-color);
+}
+#token-hud .palette[data-palette="monolith-regras.visao.modosDeVisao"] > a {
+  flex: 1; border: 1px solid transparent; border-radius: 3px; padding: 3px; white-space: nowrap;
+}
+#token-hud .palette[data-palette="monolith-regras.visao.modosDeVisao"] > a:hover {
+  color: var(--control-hover-icon-color); border-color: var(--control-hover-border-color);
+}
+#token-hud .palette[data-palette="monolith-regras.visao.modosDeVisao"] > a.active {
+  color: var(--control-active-icon-color); border-color: var(--control-active-border-color);
+}
+
+/* Janela de configuração */
+.monolith-visao > .window-content { overflow-y: auto; }
+.vz-corpo .vz-intro { margin: 0 0 var(--space-2); font-size: 13px; line-height: 18px; color: var(--ink-muted); }
+.vz-corpo h3 {
+  display: flex; align-items: center; gap: var(--space-2); margin: var(--space-4) 0 var(--space-2);
+  font-family: var(--font-display); font-weight: 400; font-size: 18px; letter-spacing: 0.05em; color: var(--ink); border: 0;
+}
+.vz-corpo h3::before { content: ""; width: 4px; height: 16px; background: var(--blood-500); }
+.vz-corpo h3::after { content: ""; flex: 1; height: 1px; background: var(--void-300); }
+.vz-corpo .hint { font-size: 12px; line-height: 16px; color: var(--ink-muted); margin: var(--space-1) 0; }
+.vz-corpo code { font-family: var(--font-mono); font-size: 11.5px; color: var(--bone); background: var(--void-000); padding: 0 4px; }
+.vz-corpo .vz-campo { display: flex; flex-direction: column; gap: var(--space-1); }
+.vz-corpo .vz-rotulo { font-family: var(--font-label); font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); }
+.vz-corpo .vz-campo input { width: 100%; font-family: var(--font-mono); }
+.vz-corpo .vz-exemplos { display: flex; flex-wrap: wrap; gap: var(--space-1); margin: var(--space-1) 0 var(--space-2); }
+.vz-corpo .vz-ex, .vz-corpo .vz-erro {
+  font-family: var(--font-label); font-size: 11px; letter-spacing: 0.08em; line-height: 18px; padding: 0 var(--space-2);
+  border: 1px solid var(--void-400); border-radius: var(--radius-sm); color: var(--ink-muted);
+}
+.vz-corpo .vz-ex b { color: var(--ink); }
+.vz-corpo .vz-erro { color: var(--blood-text); border-color: var(--blood-text); }
+.vz-corpo button.vz-mini { width: auto; font-size: 12px; }
+.vz-corpo .vz-linha { display: flex; gap: var(--space-2); align-items: flex-start; cursor: pointer; }
+.vz-corpo .vz-linha input { flex: 0 0 auto; margin-top: 2px; }
+.vz-corpo .vz-linha > span { display: flex; flex-direction: column; }
+.vz-corpo .vz-sentidos { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-1); }
+.vz-corpo .vz-sentidos li {
+  display: flex; flex-direction: column; padding: var(--space-2) var(--space-3);
+  background: var(--void-000); border: 1px solid var(--void-300); border-left: 3px solid var(--cobalt-500);
+}
+.vz-corpo .vz-sentidos b { font-family: var(--font-label); font-weight: 600; font-size: 13px; letter-spacing: 0.04em; color: var(--ink); }
+.vz-corpo .vz-sentidos span { font-size: 12px; line-height: 16px; color: var(--ink-muted); }
+.vz-corpo footer {
+  position: sticky; bottom: 0; display: flex; justify-content: flex-end; padding: var(--space-3);
+  margin: var(--space-3) calc(-1 * var(--space-4)) calc(-1 * var(--space-4));
+  background: var(--void-000); border-top: 1px solid var(--void-300);
+}
+.vz-corpo footer button { width: auto; }

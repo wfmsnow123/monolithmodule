@@ -1,1 +1,39 @@
-{}
+{
+  "MONOLITH": {
+    "visao": {
+      "Blindsense": "Sentido Cego",
+      "BloodSense": "Percepção do Sangue",
+      "DetectEvilAndGood": "Detectar o Bem e o Mal",
+      "DetectMagic": "Detectar Magia",
+      "DetectPoisonAndDisease": "Detectar Veneno e Doença",
+      "DetectThoughts": "Detectar Pensamentos",
+      "DevilsSight": "Visão Diabólica",
+      "DivineSense": "Sentido Divino",
+      "EtherealSight": "Visão Etérea",
+      "EyesOfTheGrave": "Olhos da Sepultura",
+      "Hearing": "Audição",
+      "Inaudible": "Inaudível",
+      "LifeSense": "Percepção da Vida",
+      "SeeInvisibility": "Ver o Invisível",
+      "ThermalVision": "Visão Térmica",
+      "WitchSight": "Visão de Bruxa",
+      "HINTS": {
+        "DarknessSource": "Visão no Escuro e Visão Térmica são sempre bloqueadas por fontes de escuridão. Visão Diabólica e Visão Verdadeira só são bloqueadas se a prioridade for de pelo menos 100. Os demais modos de detecção nunca são bloqueados."
+      },
+      "SETTINGS": {
+        "defaultHearingRange": {
+          "label": "Alcance de audição padrão",
+          "hint": "Até onde os tokens ouvem por padrão, em pés. Aceita fórmula com dados do ator (ex.: @skills.prc.passive). Mudar recarrega o mundo."
+        },
+        "spectatorMode": {
+          "label": "Modo espectador",
+          "hint": "Quando todos os tokens do jogador estiverem derrotados, petrificados ou inconscientes, os tokens de atores em que ele tem permissão Limitada passam a lhe dar visão."
+        }
+      },
+      "TOOLTIPS": {
+        "AutomaticallyManaged": "Gerenciado automaticamente pelo recurso Visão",
+        "SelectVisionMode": "Selecionar modo de visão"
+      }
+    }
+  }
+}

@@ -1,0 +1,97 @@
+export default (TokenHUD) => class extends TokenHUD {
+    /** @override */
+    static DEFAULT_OPTIONS = foundry.utils.mergeObject(super.DEFAULT_OPTIONS, {
+        actions: {
+            "monolith-regras.visao.modoDeVisao": this.#onSelectVisionMode,
+        },
+    }, { inplace: false });
+
+    /** @override */
+    async _renderHTML(context, options) {
+        const result = await super._renderHTML(context, options);
+
+        const visionModes = this.#getSelectableVisionModes();
+
+        if (visionModes.length > 1) {
+            const button = document.createElement("button");
+
+            button.classList.add("control-icon");
+            button.dataset.action = "togglePalette";
+            button.dataset.palette = "monolith-regras.visao.modosDeVisao";
+            button.dataset.tooltip = "MONOLITH.visao.TOOLTIPS.SelectVisionMode";
+            button.ariaLabel = game.i18n.localize("MONOLITH.visao.TOOLTIPS.SelectVisionMode");
+
+            const i = document.createElement("i");
+
+            i.classList.add("fa-solid", game.release.generation >= 14 ? "fa-glasses" : "fa-eye");
+            i.inert = true;
+
+            button.append(i);
+
+            result.hud.querySelector(`.control-icon[data-action="target"]`).insertAdjacentElement("beforebegin", button);
+
+            const div = document.createElement("div");
+
+            div.classList.add("palette");
+            div.dataset.palette = "monolith-regras.visao.modosDeVisao";
+
+            for (const mode of visionModes) {
+                const a = document.createElement("a");
+
+                a.classList.add("flexrow");
+                a.classList.toggle("active", mode.id === this.document.sight.visionMode);
+                a.dataset.action = "monolith-regras.visao.modoDeVisao";
+                a.dataset.visionModeId = mode.id;
+
+                const span = document.createElement("span");
+
+                span.classList.add("ellipsis");
+                span.textContent = game.i18n.localize(mode.label);
+
+                a.append(span);
+                div.append(a);
+            }
+
+            button.insertAdjacentElement("afterend", div);
+        }
+
+        return result;
+    }
+
+    /**
+     * @returns {foundry.canvas.perception.VisionMode[]}
+     */
+    #getSelectableVisionModes() {
+        const visionModes = [];
+
+        if (!this.document || !this.document.sight.enabled || !this.document.isOwner) {
+            return visionModes;
+        }
+
+        for (const [visionModeId, detectionModeId] of [
+            ["blindsight", "blindsight"],
+            ["darkvision", "basicSight"],
+            ["devilsSight", "devilsSight"],
+            ["truesight", "seeAll"],
+        ]) {
+            const mode = this.document._getDetectionMode(detectionModeId);
+
+            if (mode && mode.enabled && mode.range > 0) {
+                visionModes.push(CONFIG.Canvas.visionModes[visionModeId]);
+            }
+        }
+
+        visionModes.sort((a, b) => game.i18n.localize(a.label).localeCompare(game.i18n.localize(b.label), game.i18n.lang));
+
+        return visionModes;
+    }
+
+    /**
+     * @this
+     * @param {PointerEvent} event
+     * @param {HTMLButtonElement} target
+     */
+    static async #onSelectVisionMode(event, target) {
+        await this.document.updateVisionMode(target.dataset.visionModeId);
+    }
+};

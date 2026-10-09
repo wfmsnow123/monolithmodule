@@ -1,0 +1,64 @@
+import { RideableFlags } from "./RideableFlags.mjs";
+import { GeometricUtils, cGradtoRad } from "./GeometricUtils.mjs";
+import { RideableCompUtils, cTokenAttacher, cTokenFormAttachedTiles } from "./RideableCompUtils.mjs";
+
+class TileUtils {
+  static hoveredRideableTile() {
+    let vvalidTiles = canvas.tiles.placeables.map(vTile => vTile.document).filter(vTile => !vTile.hidden && RideableFlags.TokenissetRideable(vTile));
+    if (canvas.level) vvalidTiles = vvalidTiles.filter(vTile => vTile.levels.has(canvas.level.id));
+    let vMousePosition = canvas.mousePosition;
+    let vhoveredTile;
+
+    vMousePosition = [vMousePosition.x, vMousePosition.y];
+
+    if (vvalidTiles.length) {
+      vvalidTiles = vvalidTiles.filter(vTile => GeometricUtils.withinBoundaries(vTile, RideableFlags.TokenForm(vTile), vMousePosition));
+      vhoveredTile = vvalidTiles[0];
+
+      if (vvalidTiles.length > 1) {
+        for (let i = 1; i < vvalidTiles.length; i++) {
+          if (vvalidTiles[i].z > vhoveredTile.z) {
+            vhoveredTile = vvalidTiles[i];
+          }
+        }
+      }
+
+      return vhoveredTile;
+    }
+
+    return;
+  }
+
+  static hoveredProxyToken() {
+    if (RideableCompUtils.isactiveModule(cTokenAttacher)) {
+      let vvalidTiles = canvas.tiles.placeables.map(vTile => vTile.document).filter(vTile => !vTile.hidden && RideableCompUtils.isTAAttached(vTile) &&  RideableCompUtils.TAparentToken(vTile));
+      let vMousePosition = canvas.mousePosition;
+      let vhoveredTile;
+
+      vMousePosition = [vMousePosition.x, vMousePosition.y];
+
+      if (vvalidTiles.length) {
+        vvalidTiles = vvalidTiles.filter(vTile => (RideableFlags.TokenForm(RideableCompUtils.TAparentToken(vTile)) == cTokenFormAttachedTiles) && GeometricUtils.withinBoundaries(vTile, RideableFlags.TokenForm(vTile), vMousePosition));
+        vhoveredTile = vvalidTiles[0];
+
+        if (vvalidTiles.length > 1) {
+          for (let i = 1; i < vvalidTiles.length; i++) {
+            if (vvalidTiles[i].z > vhoveredTile.z) {
+              vhoveredTile = vvalidTiles[i];
+            }
+          }
+        }
+
+        return RideableCompUtils.TAparentToken(vhoveredTile);
+      }
+    }
+
+    return;
+  }
+
+  static centerPosition(pTile) {
+    return [pTile.x + pTile.width/2, pTile.y + pTile.height/2]
+  }
+}
+
+export { TileUtils }

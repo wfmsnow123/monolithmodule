@@ -1,1 +1,480 @@
-/* Recurso Barra de Chefe. */
+/* Recurso Barra de Chefe (port + redesenho do Bossbar, MIT). */
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Cormorant+Garamond:wght@500;600;700&display=swap");
+
+/* ---------- Palco: fica embaixo, no centro, acima do canvas e abaixo das janelas ---------- */
+.mcb-palco {
+  --mcb-largura: 56vw;
+  --mcb-altura: 10px;
+  --mcb-base: 96px;
+  position: fixed;
+  left: 50%;
+  bottom: var(--mcb-base);
+  transform: translateX(-50%);
+  width: var(--mcb-largura);
+  max-width: 1180px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 60;
+  pointer-events: none;
+  user-select: none;
+}
+.mcb-palco:empty { display: none; }
+
+.mcb-chefe {
+  --mcb-vida: 100%;
+  --mcb-rastro: 100%;
+  --mcb-temp: 0%;
+  --mcb-flash-de: 0%;
+  --mcb-flash-ate: 0%;
+  --t-claro: #e2453c; --t-medio: #a8121c; --t-base: #7a0a12; --t-escuro: #3a0306; --t-borda: #ff7a5c;
+  position: relative;
+  max-height: 120px;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.mcb-chefe.tema-gelo  { --t-claro: #9cc0ff; --t-medio: #3d63c4; --t-base: #23408a; --t-escuro: #0c1838; --t-borda: #cfe0ff; }
+.mcb-chefe.tema-peste { --t-claro: #b9cf62; --t-medio: #6d8a24; --t-base: #4a6214; --t-escuro: #1c2806; --t-borda: #e4f59a; }
+.mcb-chefe.tema-icor  { --t-claro: #ffd98a; --t-medio: #d29a3a; --t-base: #9a6618; --t-escuro: #3d2606; --t-borda: #fff0c4; }
+.mcb-chefe.tema-cinza { --t-claro: #cfc8ba; --t-medio: #8a847a; --t-base: #5e594f; --t-escuro: #24221f; --t-borda: #f1ece2; }
+.mcb-chefe.tema-vazio { --t-claro: #b07ae0; --t-medio: #6a2fa8; --t-base: #45197a; --t-escuro: #1a0830; --t-borda: #e0c2ff; }
+
+/* ---------- Cabeça: nome, epíteto, fase, números ---------- */
+.mcb-cabeca {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 22px;
+  margin: 0 12px 5px;
+}
+.mcb-nome {
+  font-family: "Cormorant Garamond", "Cinzel", Georgia, serif;
+  font-weight: 600;
+  font-size: 23px;
+  line-height: 1.05;
+  letter-spacing: 0.04em;
+  color: #ece6d8;
+  text-shadow: 0 1px 0 #000, 0 0 10px rgba(0, 0, 0, 0.95), 0 0 22px rgba(0, 0, 0, 0.7);
+  white-space: nowrap;
+}
+.mcb-epiteto {
+  margin-top: 2px;
+  font-family: "Cinzel", "Cormorant Garamond", Georgia, serif;
+  font-weight: 500;
+  font-size: 10.5px;
+  line-height: 1.2;
+  letter-spacing: 0.26em;
+  color: #b49a6a;
+  text-shadow: 0 1px 2px #000, 0 0 8px rgba(0, 0, 0, 0.9);
+}
+.mcb-sem-epiteto .mcb-epiteto { display: none; }
+.mcb-sem-nome .mcb-ident { visibility: hidden; }
+.mcb-numeros {
+  font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
+  font-weight: 600;
+  font-size: 12.5px;
+  letter-spacing: 0.1em;
+  color: #9b958a;
+  text-shadow: 0 1px 2px #000;
+  white-space: nowrap;
+}
+.mcb-zero .mcb-nome { color: #8d8578; }
+
+/* Anúncio de fase: centralizado acima da barra. */
+.mcb-fase {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  opacity: 0;
+  white-space: nowrap;
+}
+.mcb-fase::before, .mcb-fase::after {
+  content: "";
+  width: 90px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #d29a3a);
+}
+.mcb-fase::after { background: linear-gradient(90deg, #d29a3a, transparent); }
+.mcb-fase span {
+  font-family: "Cinzel", Georgia, serif;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: #e9c06e;
+  text-shadow: 0 0 10px rgba(210, 154, 58, 0.65), 0 1px 2px #000;
+}
+.mcb-nova-fase .mcb-fase { animation: mcb-fase 3s ease-out both; }
+.mcb-nova-fase .mcb-barra { animation: mcb-pulso-fase 1.3s ease-out; }
+
+/* ---------- Linha: pontas, barra, dano ---------- */
+.mcb-linha {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0 11px;
+}
+.mcb-ponta {
+  position: absolute;
+  z-index: 4;
+  top: 50%;
+  width: 11px;
+  height: 11px;
+  margin-top: -5.5px;
+  transform: rotate(45deg);
+  background: linear-gradient(135deg, #5d564d, #24201d 55%, #0b0a09);
+  border: 1px solid #000;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.9);
+}
+.mcb-ponta::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  background: var(--t-base);
+  box-shadow: 0 0 4px var(--t-medio);
+}
+.mcb-ponta-e { left: -11px; }
+.mcb-ponta-d { right: -11px; }
+
+.mcb-barra {
+  position: relative;
+  flex: 1 1 auto;
+  height: var(--mcb-altura);
+  margin: 4px 0;
+  background:
+    url("textura.svg") 0 0 / 240px 100% repeat-x,
+    linear-gradient(180deg, #030304, #0c0b0d 55%, #040405);
+  background-blend-mode: soft-light, normal;
+  box-shadow:
+    0 0 0 4px rgba(0, 0, 0, 0.55),
+    0 3px 12px rgba(0, 0, 0, 0.95),
+    0 0 26px rgba(110, 0, 10, 0.28),
+    inset 0 2px 3px rgba(0, 0, 0, 0.95);
+}
+.mcb-rastro, .mcb-vida, .mcb-flash, .mcb-temp {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+}
+.mcb-rastro {
+  width: var(--mcb-rastro);
+  background: linear-gradient(180deg, #f6eed4 0%, #ddcd9e 45%, #a8946a 100%);
+  box-shadow: 0 0 8px rgba(240, 220, 160, 0.35);
+  transition: width 0.55s cubic-bezier(0.45, 0, 0.6, 1);
+}
+.mcb-sem-rastro .mcb-rastro { display: none; }
+.mcb-vida {
+  width: var(--mcb-vida);
+  background:
+    url("textura.svg") 0 0 / 240px 100% repeat-x,
+    linear-gradient(180deg, var(--t-claro) 0%, var(--t-medio) 20%, var(--t-base) 58%, var(--t-escuro) 100%);
+  background-blend-mode: overlay, normal;
+  transition: width 0.18s ease-out;
+}
+.mcb-vida::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 1px;
+  background: rgba(255, 220, 200, 0.22);
+}
+.mcb-vida::after {
+  content: "";
+  position: absolute;
+  right: -1px; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--t-borda);
+  box-shadow: 0 0 6px var(--t-borda), 0 0 12px var(--t-medio);
+  opacity: 0.85;
+}
+.mcb-zero .mcb-vida::after { display: none; }
+.mcb-curando .mcb-vida { transition: width 0.65s ease-out; }
+
+.mcb-flash {
+  left: var(--mcb-flash-de);
+  width: calc(var(--mcb-flash-ate) - var(--mcb-flash-de));
+  opacity: 0;
+  background: linear-gradient(180deg, #fffaf0, #f2dfb0);
+  box-shadow: 0 0 14px rgba(255, 240, 200, 0.9);
+}
+.mcb-curando .mcb-flash { animation: mcb-flash 0.9s ease-out; }
+
+/* PV temporário: faixa fina de cinza sobre o topo. */
+.mcb-temp {
+  bottom: auto;
+  height: 34%;
+  min-height: 2px;
+  width: var(--mcb-temp);
+  background: repeating-linear-gradient(-45deg, rgba(232, 228, 218, 0.95) 0 3px, rgba(150, 144, 132, 0.95) 3px 6px);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.75);
+  transition: width 0.4s ease-out;
+}
+
+/* Marcas de fase. */
+.mcb-marcas { position: absolute; inset: 0; }
+.mcb-marcas i {
+  position: absolute;
+  top: -5px;
+  bottom: -5px;
+  width: 2px;
+  margin-left: -1px;
+  background: linear-gradient(180deg, #f0cf86, #b07a22 50%, #f0cf86);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.9), 0 0 6px rgba(210, 154, 58, 0.5);
+  z-index: 3;
+}
+.mcb-marcas i.passou {
+  background: #4a3c26;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.9);
+}
+
+/* Moldura de ferro com ferrugem e rachaduras (só a borda: o centro é mascarado). */
+.mcb-moldura {
+  position: absolute;
+  inset: -4px;
+  padding: 3px;
+  border: 1px solid #000;
+  z-index: 2;
+  background:
+    url("rachaduras.svg") 0 0 / 260px 100% repeat-x,
+    radial-gradient(ellipse 9% 160% at 14% 50%, rgba(140, 58, 22, 0.75), transparent 70%),
+    radial-gradient(ellipse 6% 160% at 47% 30%, rgba(120, 46, 18, 0.65), transparent 70%),
+    radial-gradient(ellipse 8% 160% at 79% 70%, rgba(130, 50, 20, 0.7), transparent 70%),
+    linear-gradient(180deg, #4f4840 0%, #2b2723 32%, #141210 64%, #26221e 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+
+/* Número de dano acumulado. */
+.mcb-dano {
+  position: absolute;
+  left: calc(100% + 14px);
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 1;
+  color: #efe7d2;
+  text-shadow: 0 0 2px #000, 0 2px 6px #000, 0 0 14px rgba(0, 0, 0, 0.9);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+.mcb-dano.vivo { opacity: 1; transition: opacity 0.08s; animation: mcb-pop 0.28s ease-out; }
+
+/* ---------- Estados ---------- */
+.mcb-instante, .mcb-instante * { transition: none !important; }
+.mcb-enchendo .mcb-vida, .mcb-enchendo .mcb-rastro, .mcb-enchendo .mcb-temp {
+  transition: width 1.5s cubic-bezier(0.22, 0.8, 0.3, 1);
+}
+.mcb-entrada .mcb-nome { animation: mcb-nome-entra 1.9s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.mcb-entrada .mcb-epiteto { animation: mcb-surge 1.2s 0.6s ease-out both; }
+.mcb-entrada .mcb-linha { animation: mcb-surge 0.8s ease-out both; }
+.mcb-tremor .mcb-linha { animation: mcb-tremor 0.42s linear; }
+.mcb-tremor .mcb-barra { animation: mcb-golpe 0.42s ease-out; }
+.mcb-saindo { opacity: 0; transform: translateY(8px); }
+.mcb-abatido { animation: mcb-some 1.6s ease forwards; }
+.mcb-apagado { opacity: 0.5; }
+.mcb-apagado .mcb-ident::after {
+  content: "oculto aos jogadores";
+  display: block;
+  margin-top: 2px;
+  font: 600 10px/1 "Barlow Condensed", sans-serif;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8f95a3;
+}
+
+/* ---------- Vinheta de sangue ---------- */
+.mcb-sangue {
+  position: fixed;
+  inset: 0;
+  z-index: 59;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+  background: radial-gradient(ellipse at center, transparent 52%, rgba(90, 0, 6, 0.32) 76%, rgba(55, 0, 4, 0.78) 100%);
+  box-shadow: inset 0 0 140px rgba(130, 0, 12, 0.55);
+}
+.mcb-sangue.ativa { opacity: 1; animation: mcb-pulsa 1.9s ease-in-out infinite; }
+
+/* ---------- Faixa de abate ---------- */
+.mcb-abate {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 45%;
+  height: 156px;
+  margin-top: -78px;
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.8) 70%, transparent 100%);
+}
+.mcb-abate.vivo { visibility: visible; animation: mcb-faixa 6s ease forwards; }
+.mcb-abate-texto {
+  position: relative;
+  font-family: "Cormorant Garamond", "Cinzel", Georgia, serif;
+  font-weight: 600;
+  font-size: clamp(40px, 5vw, 76px);
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.mcb-abate-texto span:first-child {
+  display: block;
+  background: linear-gradient(180deg, #fbe8ae 0%, #e6b85c 46%, #a97421 72%, #f0d48c 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 14px rgba(210, 154, 58, 0.45)) drop-shadow(0 2px 2px #000);
+}
+.mcb-abate.vivo .mcb-abate-texto span:first-child { animation: mcb-abate-entra 1.4s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.mcb-eco {
+  position: absolute;
+  inset: 0;
+  color: #e8c477;
+  opacity: 0;
+  pointer-events: none;
+}
+.mcb-abate.vivo .mcb-eco { animation: mcb-eco 2.4s 0.4s ease-out both; }
+
+/* ---------- Animações ---------- */
+@keyframes mcb-nome-entra {
+  from { opacity: 0; letter-spacing: 0.55em; filter: blur(3px); }
+  to   { opacity: 1; letter-spacing: 0.04em; filter: none; }
+}
+@keyframes mcb-surge { from { opacity: 0; } to { opacity: 1; } }
+@keyframes mcb-tremor {
+  0%, 100% { transform: translate(0, 0); }
+  12% { transform: translate(-5px, 1px); }
+  25% { transform: translate(4px, -1px); }
+  38% { transform: translate(-3px, 1px); }
+  52% { transform: translate(3px, 0); }
+  68% { transform: translate(-2px, 0); }
+  84% { transform: translate(1px, 0); }
+}
+@keyframes mcb-golpe { 0% { filter: brightness(1.9) saturate(1.3); } 100% { filter: none; } }
+@keyframes mcb-flash { 0% { opacity: 0; } 14% { opacity: 0.9; } 100% { opacity: 0; } }
+@keyframes mcb-pop { 0% { transform: translateY(-50%) scale(1.25); } 100% { transform: translateY(-50%) scale(1); } }
+@keyframes mcb-fase {
+  0%   { opacity: 0; letter-spacing: 0.9em; filter: blur(4px); }
+  14%  { opacity: 1; filter: none; }
+  75%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes mcb-pulso-fase {
+  0%   { box-shadow: 0 0 0 4px rgba(0,0,0,0.55), 0 0 30px rgba(233, 192, 110, 0.75); }
+  100% { box-shadow: 0 0 0 4px rgba(0,0,0,0.55), 0 3px 12px rgba(0,0,0,0.95), 0 0 26px rgba(110, 0, 10, 0.28); }
+}
+@keyframes mcb-some {
+  0%   { opacity: 1; max-height: 120px; }
+  60%  { opacity: 0; max-height: 120px; }
+  100% { opacity: 0; max-height: 0; margin-top: -14px; overflow: hidden; }
+}
+@keyframes mcb-pulsa {
+  0%   { opacity: 0.55; }
+  12%  { opacity: 1; }
+  24%  { opacity: 0.7; }
+  34%  { opacity: 0.95; }
+  100% { opacity: 0.55; }
+}
+@keyframes mcb-faixa {
+  0%   { opacity: 0; }
+  14%  { opacity: 1; }
+  72%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes mcb-abate-entra {
+  from { opacity: 0; transform: scale(1.07); filter: blur(6px); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes mcb-eco {
+  0%   { opacity: 0.3; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.12); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mcb-sangue.ativa { animation: none; opacity: 0.6; }
+  .mcb-tremor .mcb-linha, .mcb-tremor .mcb-barra { animation: none; }
+  .mcb-entrada .mcb-nome, .mcb-entrada .mcb-epiteto, .mcb-entrada .mcb-linha { animation: mcb-surge 0.3s both; }
+  .mcb-enchendo .mcb-vida, .mcb-enchendo .mcb-rastro, .mcb-enchendo .mcb-temp { transition: none; }
+  .mcb-nova-fase .mcb-fase { animation: mcb-surge-some 3s both; }
+  .mcb-abate.vivo .mcb-abate-texto span:first-child { animation: none; }
+  .mcb-abate.vivo .mcb-eco { animation: none; }
+  .mcb-dano.vivo { animation: none; }
+}
+@keyframes mcb-surge-some { 0% { opacity: 0; } 10%, 80% { opacity: 1; } 100% { opacity: 0; } }
+
+/* ---------- HUD do token ---------- */
+#token-hud .control-icon.monolith-chefe-hud.active { color: #ec5960; border-color: #a3121b; box-shadow: 0 0 8px rgba(196, 29, 39, 0.7); }
+
+/* ---------- Janelas (sob .mono) ---------- */
+.monolith-chefe-janela .window-content { overflow-y: auto; padding: var(--space-4); }
+.monolith-chefe-janela fieldset {
+  margin: 0 0 var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid var(--void-300);
+  border-left: 3px solid var(--blood-500);
+  background: var(--void-000);
+}
+.monolith-chefe-janela legend {
+  padding: 0 var(--space-2);
+  font-family: var(--font-display);
+  font-size: 18px;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+}
+.monolith-chefe-janela .mcb-campo {
+  display: grid;
+  grid-template-columns: 1fr 190px;
+  align-items: center;
+  gap: var(--space-1) var(--space-3);
+  padding: 5px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--void-300) 55%, transparent);
+}
+.monolith-chefe-janela .mcb-campo:last-child { border-bottom: 0; }
+.monolith-chefe-janela .mcb-campo > label { font-family: var(--font-label); font-weight: 600; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); }
+.monolith-chefe-janela .mcb-campo .hint { grid-column: 1 / -1; margin: 0; font-size: 12px; line-height: 16px; color: var(--ink-muted); }
+.monolith-chefe-janela .mcb-campo input[type="checkbox"] { justify-self: end; }
+.monolith-chefe-janela .mcb-arquivo { display: flex; gap: var(--space-1); }
+.monolith-chefe-janela .mcb-arquivo input { flex: 1; min-width: 0; }
+.monolith-chefe-janela .mcb-arquivo button { flex: 0 0 30px; width: 30px; padding: 0; }
+.monolith-chefe-janela footer.mcb-rodape {
+  position: sticky; bottom: calc(-1 * var(--space-4));
+  display: flex; gap: var(--space-2); justify-content: flex-end; flex-wrap: wrap;
+  margin: var(--space-3) calc(-1 * var(--space-4)) calc(-1 * var(--space-4));
+  padding: var(--space-3) var(--space-4);
+  background: var(--void-000);
+  border-top: 1px solid var(--void-300);
+}
+.monolith-chefe-janela footer.mcb-rodape button { width: auto; flex: 0 0 auto; }
+
+/* Lista de chefes da cena. */
+.monolith-chefe-janela .mcb-lista { list-style: none; margin: 0; padding: 0; }
+.monolith-chefe-janela .mcb-lista li {
+  display: flex; align-items: center; gap: var(--space-3);
+  padding: var(--space-2) var(--space-3); margin-bottom: var(--space-2);
+  background: var(--void-000); border: 1px solid var(--void-300); border-left: 3px solid var(--blood-500);
+}
+.monolith-chefe-janela .mcb-lista li.oculto { border-left-color: var(--void-400); opacity: 0.75; }
+.monolith-chefe-janela .mcb-lista img { width: 40px; height: 40px; object-fit: cover; border: 1px solid var(--void-300); }
+.monolith-chefe-janela .mcb-lista .mcb-txt { flex: 1; min-width: 0; }
+.monolith-chefe-janela .mcb-lista b { display: block; font-family: "Cormorant Garamond", Georgia, serif; font-size: 18px; font-weight: 700; }
+.monolith-chefe-janela .mcb-lista small { font-family: "Cinzel", serif; font-size: 10px; letter-spacing: 0.2em; color: var(--ichor); }
+.monolith-chefe-janela .mcb-lista button { width: 30px; height: 30px; flex: 0 0 30px; padding: 0; }
+.monolith-chefe-janela .mcb-vazio { color: var(--ink-muted); font-style: italic; text-align: center; padding: var(--space-4); }
+.monolith-chefe-dialogo .mcb-campo { grid-template-columns: 1fr 220px; }
+.monolith-chefe-dialogo .mcb-campo .hint { grid-column: 1 / -1; margin: 0; font-size: 12px; color: var(--ink-muted); }
