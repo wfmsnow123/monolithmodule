@@ -4,7 +4,8 @@
 
 .mono,
 .mono-card,
-#monolith-hud {
+#monolith-hud,
+#players.monolith-jogadores {
   --void-000: #07080b;
   --void-100: #0e1016;
   --void-200: #161a22;
@@ -44,11 +45,13 @@
 body.theme-light .mono,
 body.theme-light .mono-card,
 body.theme-light #monolith-hud,
+body.theme-light #players.monolith-jogadores,
 .theme-light.mono,
 .theme-light.mono-card,
 .mono[data-theme="ossuary"],
 .mono-card[data-theme="ossuary"],
-#monolith-hud[data-theme="ossuary"] {
+#monolith-hud[data-theme="ossuary"],
+#players.monolith-jogadores[data-theme="ossuary"] {
   --void-000: #e9e3d6;
   --void-100: #f4efe4;
   --void-200: #ddd5c4;

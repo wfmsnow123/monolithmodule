@@ -17,7 +17,8 @@ export const HUD = {
   el: null,
 
   montar() {
-    if (!game.settings.get(ID, "mostrarHud")) return this.desmontar();
+    // Com o painel embutido na lista de jogadores, o flutuante sai de cena.
+    if (!game.settings.get(ID, "mostrarHud") || game.settings.get(ID, "painelNaLista")) return this.desmontar();
     if (!this.el) {
       this.el = document.createElement("div");
       this.el.id = "monolith-hud";
@@ -47,19 +48,11 @@ export const HUD = {
     if (!this.el) return;
     const gm = game.user.isGM;
     const recolhido = game.settings.get(ID, "hudRecolhido");
-    const linhas = personagens().map(a => {
-      const insp = !!a.system.attributes.inspiration;
-      const her = getF(a, F.heroica);
-      const ex = a.system.attributes.exhaustion ?? 0;
-      return `<li data-actor="${a.id}">
-        <span class="retrato" data-acao="medidas" data-tooltip="${game.modules.get("monolith-medidas")?.active ? "Medidas Desesperadas" : "Abrir a ficha"}"><img src="${a.img}" alt=""></span>
+    const linhas = personagens().map(a => `<li data-actor="${a.id}">
+        ${retratoDoPersonagem(a)}
         <span class="nome" data-acao="ficha">${esc(a.name)}</span>
-        <button class="insp ${insp ? "on" : ""}" data-acao="inspiracao" data-tooltip="Inspiração ${insp ? "(clique para gastar)" : ""}${gm ? "<br>Mestre: botão direito concede" : ""}"><i class="fa${insp ? "s" : "r"} fa-star"></i></button>
-        <span class="her" data-tooltip="Inspiração Heróica: clique para gastar (+1d4)${gm ? "<br>botão direito: +1" : ""}" data-acao="heroica"><i class="fas fa-dice-d6"></i> ${her}</span>
-        <button data-acao="dar" data-tooltip="Dar uma Inspiração Heróica a outro personagem" ${her ? "" : "disabled"}><i class="fas fa-hand-holding-heart"></i></button>
-        ${ex ? `<span class="ex" data-tooltip="Exaustão ${ex}: ${DESCRICOES[ex] ?? ""}">${ex}</span>` : ""}
-      </li>`;
-    }).join("");
+        ${controlesDoPersonagem(a)}
+      </li>`).join("");
     this.el.classList.toggle("recolhido", !!recolhido);
     this.el.innerHTML = `
       <header data-arrastar>
@@ -78,18 +71,8 @@ export const HUD = {
     const alvo = ev.target.closest("[data-acao]");
     if (!alvo) return;
     if (direito) ev.preventDefault();
-    const acao = alvo.dataset.acao;
-    const actor = game.actors.get(alvo.closest("[data-actor]")?.dataset.actor);
-    switch (acao) {
-      case "recolher": return game.settings.set(ID, "hudRecolhido", !game.settings.get(ID, "hudRecolhido")).then(() => this.render());
-      case "descanso": return abrirPedidoDeDescanso();
-      case "enfase": return rolarEnfaseSolta(game.user.character ?? personagens()[0] ?? null);
-      case "ficha": return actor?.sheet.render(true);
-      case "medidas": return actor && abrirMedidas(actor);
-      case "inspiracao": return direito ? concederInspiracao(actor) : gastarInspiracao(actor);
-      case "heroica": return direito ? concederHeroica(actor) : gastarHeroica(actor);
-      case "dar": return darHeroica(actor);
-    }
+    if (alvo.dataset.acao === "recolher") return game.settings.set(ID, "hudRecolhido", !game.settings.get(ID, "hudRecolhido")).then(() => this.render());
+    return acaoDoPainel(alvo.dataset.acao, game.actors.get(alvo.closest("[data-actor]")?.dataset.actor), direito);
   },
 
   arrastavel() {
@@ -115,6 +98,36 @@ export const HUD = {
     });
   }
 };
+
+/** Ações compartilhadas pelo painel flutuante e pela lista de jogadores. */
+export function acaoDoPainel(acao, actor, direito = false) {
+  switch (acao) {
+    case "descanso": return abrirPedidoDeDescanso();
+    case "enfase": return rolarEnfaseSolta(game.user.character ?? personagens()[0] ?? null);
+    case "troca": return game.itempiles?.API?.requestTrade();
+    case "ficha": return actor?.sheet.render(true);
+    case "medidas": return actor && abrirMedidas(actor);
+    case "inspiracao": return direito ? concederInspiracao(actor) : gastarInspiracao(actor);
+    case "heroica": return direito ? concederHeroica(actor) : gastarHeroica(actor);
+    case "dar": return darHeroica(actor);
+  }
+}
+
+/** Botões de um personagem (Inspiração, Heróica, dar, Exaustão), iguais no painel e na lista. */
+export function controlesDoPersonagem(a) {
+  const gm = game.user.isGM;
+  const insp = !!a.system.attributes.inspiration;
+  const her = getF(a, F.heroica);
+  const ex = a.system.attributes.exhaustion ?? 0;
+  return `<button class="insp ${insp ? "on" : ""}" data-acao="inspiracao" data-tooltip="Inspiração ${insp ? "(clique para gastar)" : ""}${gm ? "<br>Mestre: botão direito concede" : ""}"><i class="fa${insp ? "s" : "r"} fa-star"></i></button>
+        <span class="her" data-tooltip="Inspiração Heróica: clique para gastar (+1d4)${gm ? "<br>botão direito: +1" : ""}" data-acao="heroica"><i class="fas fa-dice-d6"></i> ${her}</span>
+        <button data-acao="dar" data-tooltip="Dar uma Inspiração Heróica a outro personagem" ${her ? "" : "disabled"}><i class="fas fa-hand-holding-heart"></i></button>
+        ${ex ? `<span class="ex" data-tooltip="Exaustão ${ex}: ${DESCRICOES[ex] ?? ""}">${ex}</span>` : ""}`;
+}
+
+export function retratoDoPersonagem(a) {
+  return `<span class="retrato" data-acao="medidas" data-tooltip="${game.modules.get("monolith-medidas")?.active ? "Medidas Desesperadas" : "Abrir a ficha"}"><img src="${a.img}" alt=""></span>`;
+}
 
 function abrirPedidoDeDescanso() {
   const api = game.modules.get("monolith-resting");

@@ -4,6 +4,7 @@ import { registrarRecursos, prepararRecursos } from "./recursos.mjs";
 import { configurarExaustao, registrarExaustao, configurarTidyExaustao, migrarExaustao, NIVEIS } from "./exaustao.mjs";
 import { registrarModificadorEnfase, registrarEnfaseNasRolagens, armarEnfase, rolarEnfaseSolta } from "./enfase.mjs";
 import { HUD, registrarBotoesDoChat, concederInspiracao, concederHeroica } from "./apps.mjs";
+import { registrarListaDeJogadores, atualizarLista } from "./jogadores.mjs";
 import { registrarConfigSobrecarga, registrarGanchosSobrecarga, aplicarLimitesSobrecarga, avisarCargaVariante } from "./sobrecarga.mjs";
 
 Hooks.once("init", () => {
@@ -15,7 +16,12 @@ Hooks.once("init", () => {
     name: "Personagens no painel dos jogadores", hint: "O Mestre sempre vê todos. 'Só os próprios' mostra ao jogador apenas os personagens dos quais ele é dono ou que estão atribuídos a ele.",
     scope: "world", config: true, type: String, default: "proprios",
     choices: { proprios: "Só os próprios", todos: "Todos os personagens de jogadores" },
-    onChange: () => HUD.render()
+    onChange: () => { HUD.render(); atualizarLista(); }
+  });
+  game.settings.register(ID, "painelNaLista", {
+    name: "Painel na lista de jogadores", hint: "Mostra a Inspiração, a Inspiração Heróica e a Exaustão de cada personagem embaixo do seu jogador, com Ênfase, Troca e Descanso no topo da lista. Desligado, volta o painel flutuante.",
+    scope: "client", config: true, type: Boolean, default: true,
+    onChange: () => { HUD.montar(); ui.players?.render(); }
   });
   game.settings.register(ID, "posicaoHud", { scope: "client", config: false, type: Object, default: {} });
   game.settings.register(ID, "hudRecolhido", { scope: "client", config: false, type: Boolean, default: false });
@@ -28,6 +34,7 @@ Hooks.once("init", () => {
   registrarModificadorEnfase();
   registrarEnfaseNasRolagens();
   registrarBotoesDoChat();
+  registrarListaDeJogadores();
 
   // O custom-dnd5e pode reconstruir as condições no "ready"; garante os 10 níveis.
   Hooks.on("customDnd5e.setConditionTypesConfig", (cfg) => {
@@ -53,7 +60,7 @@ Hooks.once("ready", async () => {
   avisarCargaVariante();
 });
 
-Hooks.on("updateActor", (actor) => { if (actor.type === "character") HUD.render(); });
+Hooks.on("updateActor", (actor) => { if (actor.type === "character") { HUD.render(); atualizarLista(); } });
 Hooks.on("updateUser", () => HUD.render());
 
 async function avisarConflitos() {

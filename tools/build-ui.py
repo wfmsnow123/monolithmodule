@@ -19,7 +19,7 @@ DS = os.path.join(RAIZ, "design-system")
 
 # Seletores que recebem os tokens em cada módulo (o calendário também veste as janelas herdadas).
 ESCOPOS = {
-    "monolith-regras": [".mono", ".mono-card", "#monolith-hud"],
+    "monolith-regras": [".mono", ".mono-card", "#monolith-hud", "#players.monolith-jogadores"],
     "monolith-encumbrance": [".mono", ".mono-card"],
     "monolith-resting": [".mono", ".mono-card"],
     "monolith-medidas": [".mono", ".mono-card", ".monolith-tidy"],
