@@ -1,0 +1,12 @@
+Partes deste módulo (a lista de fontes de luz do dnd5e, inclusive as magias Light,
+Dancing Lights e Produce Flame, os nomes das configurações e o formato do JSON de
+fontes extras "gameLightSources", que o módulo sabe importar) vêm do módulo Torch
+(League of Foundry Developers, https://github.com/League-of-Foundry-Developers/torch, versão 3.2.0).
+A licença do Torch:
+
+ * ----------------------------------------------------------------------------
+ * "THE BEER-WARE LICENSE" (Revision 42):
+ * <shurd@FreeBSD.ORG> wrote this file.  As long as you retain this notice you
+ * can do whatever you want with this stuff. If we meet some day, and you think
+ * this stuff is worth it, you can buy me a beer in return.        Stephen Hurd
+ * ----------------------------------------------------------------------------

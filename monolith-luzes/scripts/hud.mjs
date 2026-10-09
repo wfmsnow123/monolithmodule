@@ -1,61 +1,117 @@
-import { ID, esc, fonteDe } from "./config.mjs";
-import { itensDeLuz, aceso, coberta, restante, tempoTexto, alternar, alternarCobertura } from "./luz.mjs";
+import { ID, esc, fonteDe, podeAcender, podeAvulsa, cfg } from "./config.mjs";
+import { itensDeLuz, aceso, coberta, restante, tempoTexto, alternar, alternarCobertura, carregadas, temCobertura } from "./luz.mjs";
+import { estado, colocadasPerto, pedir, alternarCarregada, cobrirCarregada, guardarCarregada, largarCarregada } from "./chao.mjs";
 
-/** Botão de chama no HUD do token: uma fonte, alterna direto; várias, abre a lista. */
+/**
+ * Botão de chama no HUD do token. Lista o que o personagem carrega, o que o token leva junto
+ * e os objetos de luz no chão a um quadrado. Uma só coisa para acender: alterna direto.
+ */
 export function registrarHud() {
   Hooks.on("renderTokenHUD", (hud, html) => {
-    if (!game.settings.get(ID, "botaoHud")) return;
+    if (!cfg("botaoHud")) return;
     const root = html instanceof HTMLElement ? html : html[0];
-    const actor = hud.object?.actor ?? hud.document?.actor;
-    if (!actor?.isOwner) return;
-    const itens = itensDeLuz(actor);
-    if (!itens.length) return;
-    const algumAceso = itens.some(aceso);
+    const token = hud.document ?? hud.object?.document;
+    const actor = token?.actor;
+    if (!token?.isOwner) return;
+    const acende = podeAcender();
+    const linhas = [];
+    if (acende) for (const i of itensDeLuz(actor)) linhas.push(linhaItem(i));
+    for (const e of carregadas(token)) linhas.push(linhaJunto(token, e, acende));
+    for (const t of colocadasPerto(token)) linhas.push(linhaChao(token, t, acende));
+    const avulsa = !!token.getFlag(ID, "avulsa");
+    if (acende && (avulsa || (!linhas.length && podeAvulsa()))) linhas.push(linhaAvulsa(token, avulsa));
+    if (!linhas.length) return;
     const col = root.querySelector(".col.left") ?? root.querySelector(".left");
     if (!col) return;
 
+    const algumAceso = linhas.some((l) => l.aceso);
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = `control-icon monolith-luz-btn ${algumAceso ? "active" : ""}`;
-    btn.dataset.tooltip = itens.length === 1 ? `${aceso(itens[0]) ? "Apagar" : "Acender"} ${itens[0].name}` : "Luzes";
+    const direto = linhas.length === 1 && linhas[0].direto;
+    btn.dataset.tooltip = direto ? `${linhas[0].aceso ? "Apagar" : "Acender"} ${linhas[0].nome}` : "Luzes";
     btn.innerHTML = `<i class="fas fa-fire${algumAceso ? "" : "-flame-simple"}"></i>`;
     col.append(btn);
 
-    btn.addEventListener("click", async (ev) => {
+    btn.addEventListener("click", (ev) => {
       ev.preventDefault(); ev.stopPropagation();
-      if (itens.length === 1) return alternar(itens[0]);
+      if (direto) return linhas[0].clique();
       const aberta = root.querySelector(".monolith-luz-paleta");
       if (aberta) return aberta.remove();
-      btn.after(paleta(itens));
+      btn.after(paleta(linhas));
     });
     btn.addEventListener("contextmenu", async (ev) => {
       ev.preventDefault(); ev.stopPropagation();
-      const acesa = itens.find(aceso);
-      if (acesa) await alternarCobertura(acesa);
+      const acesa = itensDeLuz(actor).find(aceso);
+      if (acesa && acende) await alternarCobertura(acesa);
     });
   });
 }
 
-function paleta(itens) {
+/**
+ * Uma linha da lista.
+ * @typedef {{nome:string, img:string, aceso:boolean, tempo:string, onde?:string, direto?:boolean, clique:Function, extras:Array<[string,string,Function]>}} Linha
+ */
+
+function linhaItem(i) {
+  const f = fonteDe(i);
+  const extras = [];
+  if (temCobertura(f) && aceso(i)) extras.push([coberta(i) ? "Descobrir" : "Cobrir", coberta(i) ? "fa-eye" : "fa-eye-slash", () => alternarCobertura(i)]);
+  return {
+    nome: i.name, img: i.img, aceso: aceso(i), tempo: aceso(i) ? tempoTexto(restante(i)) : "",
+    qtd: i.type === "spell" ? 0 : i.system.quantity, direto: true, clique: () => alternar(i), extras
+  };
+}
+
+function linhaJunto(token, e, acende) {
+  const f = fonteDe(e.item);
+  const extras = [];
+  if (acende && e.aceso && temCobertura(f)) extras.push([e.coberta ? "Descobrir" : "Cobrir", e.coberta ? "fa-eye" : "fa-eye-slash", () => cobrirCarregada(token, e.chave)]);
+  if (token.actor) extras.push(["Guardar no inventário", "fa-hand", () => guardarCarregada(token, e.chave)]);
+  extras.push(["Largar aqui", "fa-arrow-down", () => largarCarregada(token, e.chave)]);
+  return {
+    nome: e.item?.name, img: e.item?.img, aceso: !!e.aceso, tempo: e.aceso ? tempoTexto(e.restante) : "", onde: "junto",
+    clique: () => (acende ? alternarCarregada(token, e.chave) : null), extras
+  };
+}
+
+function linhaChao(token, tile, acende) {
+  const e = estado(tile);
+  const f = fonteDe(e.item);
+  const dados = { sceneId: token.parent.id, tileId: tile.id, tokenId: token.id };
+  const extras = [];
+  if (acende && e.aceso && temCobertura(f)) extras.push([e.coberta ? "Descobrir" : "Cobrir", e.coberta ? "fa-eye" : "fa-eye-slash", () => pedir("cobrir", dados)]);
+  extras.push(["Pegar", "fa-hand", () => pedir("pegar", dados)]);
+  extras.push(["Carregar junto", "fa-link", () => pedir("carregar", dados)]);
+  return {
+    nome: e.item?.name, img: e.item?.img, aceso: !!e.aceso, tempo: e.aceso ? tempoTexto(e.restante) : "", onde: "no chão",
+    clique: () => (acende ? pedir("alternar", dados) : null), extras
+  };
+}
+
+function linhaAvulsa(token, ligada) {
+  return {
+    nome: cfg("avulsaNome") || "Tocha", img: "icons/sundries/lights/torch-brown.webp", aceso: ligada, tempo: "", onde: "sem item", direto: true,
+    clique: () => token.update({ [`flags.${ID}.avulsa`]: !ligada }), extras: []
+  };
+}
+
+function paleta(linhas) {
   const el = document.createElement("div");
   el.className = "monolith-luz-paleta";
-  el.innerHTML = itens.map((i) => {
-    const f = fonteDe(i);
-    const t = aceso(i) ? tempoTexto(restante(i)) : "";
-    const podeCobrir = f.cobertaBrilho || f.cobertaPenumbra;
-    return `<div class="linha ${aceso(i) ? "acesa" : ""}" data-id="${i.id}">
-      <img src="${i.img}" alt=""><span class="nome">${esc(i.name)}${i.system.quantity > 1 ? ` <small>×${i.system.quantity}</small>` : ""}</span>
-      ${t ? `<span class="tempo">${t}</span>` : ""}
-      ${podeCobrir && aceso(i) ? `<a class="cobrir" data-tooltip="${coberta(i) ? "Descobrir" : "Cobrir"}"><i class="fas fa-${coberta(i) ? "eye" : "eye-slash"}"></i></a>` : ""}
-    </div>`;
-  }).join("");
+  el.innerHTML = linhas.map((l, n) => `<div class="linha ${l.aceso ? "acesa" : ""}" data-n="${n}">
+      <img src="${esc(l.img)}" alt=""><span class="nome">${esc(l.nome)}${l.qtd > 1 ? ` <small>×${l.qtd}</small>` : ""}${l.onde ? ` <small class="onde">${l.onde}</small>` : ""}</span>
+      ${l.tempo ? `<span class="tempo">${l.tempo}</span>` : ""}
+      ${l.extras.map(([rot, ic], k) => `<a class="extra" data-k="${k}" data-tooltip="${esc(rot)}"><i class="fas ${ic}"></i></a>`).join("")}
+    </div>`).join("");
   el.addEventListener("click", async (ev) => {
     ev.preventDefault(); ev.stopPropagation();
-    const linha = ev.target.closest(".linha");
-    const item = itens.find((i) => i.id === linha?.dataset.id);
-    if (!item) return;
-    if (ev.target.closest(".cobrir")) await alternarCobertura(item);
-    else await alternar(item);
+    const l = linhas[Number(ev.target.closest(".linha")?.dataset.n)];
+    if (!l) return;
+    const extra = ev.target.closest(".extra");
+    if (extra) await l.extras[Number(extra.dataset.k)]?.[2]();
+    else await l.clique();
+    el.remove();
   });
   return el;
 }
