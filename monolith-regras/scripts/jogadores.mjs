@@ -76,7 +76,9 @@ function linha(actor) {
   const el = document.createElement("div");
   el.className = "mono-jog";
   el.dataset.actor = actor.id;
-  el.innerHTML = `${retratoDoPersonagem(actor)}<span class="nome" data-acao="ficha">${esc(actor.name)}</span>${controlesDoPersonagem(actor)}`;
+  // Só o primeiro nome cabe ao lado dos botões; o completo fica no tooltip.
+  const primeiro = actor.name.trim().split(/[\s,]+/)[0];
+  el.innerHTML = `${retratoDoPersonagem(actor)}<span class="nome" data-acao="ficha" data-tooltip="${esc(actor.name)}">${esc(primeiro)}</span>${controlesDoPersonagem(actor)}`;
   // Os cliques nos botões não chegam à linha do jogador (menu de usuário do Foundry, Monk's Active Tiles).
   const clique = (ev, direito) => {
     const alvo = ev.target.closest("[data-acao]");

@@ -84,7 +84,8 @@ Hooks.once("ready", function() {
 	}, "MIXED");
 	
 	envolver("foundry.canvas.geometry.ClockwiseSweepPolygon.prototype._testEdgeInclusion", function(pWrapped, pEdge, pEdgeType, pBounds) {
-		if (pEdge.object) {
+		//only wall edges: lights, regions and other edge sources have no wall document
+		if (pEdge.object?.document?.documentName === "Wall") {
 			let vBuffer = PatchSupport.WallInclusion(pEdge.object, pBounds, this);
 			if (vBuffer != undefined) {
 				return vBuffer;
