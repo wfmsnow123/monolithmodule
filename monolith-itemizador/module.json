@@ -1,11 +1,15 @@
 {
   "id": "monolith-itemizador",
   "title": "Monolith: Itemizador",
-  "description": "Transforma jornais em itens de dnd5e (tipo Documento) que o jogador carrega na ficha e lê ao usar. Arraste o jornal para a ficha, ou use o botão do jornal. O item guarda uma cópia do texto com o tema do Monolith: Journals, fica sincronizado com o jornal e pode ser mostrado a todos.",
-  "version": "0.1.0",
+  "description": "Transforma jornais em itens de dnd5e (tipo Documento) que o jogador carrega na ficha e lê ao usar. Traz também o Item Piles embutido, em português e já configurado para o D&D 5e: itens soltos no mapa viram pilhas, baús, contêineres, mercadores e trocas. Itens marcados como Item de Luz não viram pilha no chão; o Monolith: Luzes cuida deles.",
+  "version": "0.2.0",
   "authors": [
     {
       "name": "snowxd"
+    },
+    {
+      "name": "Wasp (Item Piles, Fantasy Computerworks)",
+      "url": "https://github.com/Haxxer"
     }
   ],
   "compatibility": {
@@ -27,18 +31,61 @@
         "id": "monolith-journals",
         "type": "module",
         "reason": "Os documentos são lidos com o tema escolhido no jornal."
+      },
+      {
+        "id": "monolith-luzes",
+        "type": "module",
+        "reason": "Itens de Luz soltos no chão viram objetos acesos no mapa em vez de pilhas."
+      }
+    ],
+    "requires": [
+      {
+        "id": "lib-wrapper",
+        "type": "module",
+        "reason": "O Item Piles embutido modifica o Foundry pelo libWrapper."
+      },
+      {
+        "id": "socketlib",
+        "type": "module",
+        "reason": "O Item Piles embutido usa o socketlib para os jogadores pegarem e trocarem itens."
+      }
+    ],
+    "conflicts": [
+      {
+        "id": "item-piles",
+        "type": "module",
+        "reason": "O Item Piles já vem embutido no Itemizador; desative o original. As pilhas, baús e mercadores dos mapas continuam funcionando."
+      },
+      {
+        "id": "itempilesdnd5e",
+        "type": "module",
+        "reason": "A configuração do D&D 5e para o Item Piles já vem embutida no Itemizador."
       }
     ]
   },
   "esmodules": [
-    "scripts/main.mjs"
+    "scripts/main.mjs",
+    "pilhas/dist/pilhas.js"
   ],
   "styles": [
     "styles/monolith-ui.css",
-    "styles/itemizador.css"
+    "styles/itemizador.css",
+    "pilhas/dist/pilhas.css"
+  ],
+  "languages": [
+    {
+      "lang": "pt-BR",
+      "name": "Português (Brasil)",
+      "path": "pilhas/languages/pt-BR.json"
+    },
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "pilhas/languages/en.json"
+    }
   ],
   "socket": true,
   "url": "https://github.com/wfmsnow123/monolithmodule",
   "manifest": "https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-itemizador/module.json",
-  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-itemizador-v0.1.0/monolith-itemizador.zip"
+  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-itemizador-v0.2.0/monolith-itemizador.zip"
 }

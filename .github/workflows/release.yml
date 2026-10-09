@@ -2,7 +2,8 @@ name: Release
 
 # Publica um módulo quando uma tag de versão é enviada:
 #   <pasta-do-módulo>-v<versão>, ex.: monolith-regras-v0.3.0, monolith-reach-v0.1.0
-#   monolith-calendario é compilado e testado antes; os outros são empacotados como estão.
+#   monolith-calendario é compilado e testado antes; o Item Piles embutido no monolith-itemizador
+#   (pasta pilhas/) é compilado e vai sem o código-fonte; os outros são empacotados como estão.
 # A versão da tag precisa ser igual à "version" do module.json do módulo.
 
 on:
@@ -51,8 +52,28 @@ jobs:
           mkdir -p ../build
           mv dist ../build/monolith-calendario
 
+      - name: Node (pilhas do Itemizador)
+        if: steps.mod.outputs.mod == 'monolith-itemizador'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: monolith-itemizador/pilhas/package-lock.json
+
+      - name: Compilar as pilhas do Itemizador
+        if: steps.mod.outputs.mod == 'monolith-itemizador'
+        working-directory: monolith-itemizador/pilhas
+        run: |
+          npm ci --ignore-scripts
+          npm run build
+          test -s dist/pilhas.js && test -s dist/pilhas.css
+          mkdir -p ../../build
+          cp -r .. ../../build/monolith-itemizador
+          cd ../../build/monolith-itemizador/pilhas
+          rm -rf src node_modules .vite-cache package.json package-lock.json vite.config.mjs .gitignore dist/*.map
+
       - name: Empacotar módulo sem compilação
-        if: steps.mod.outputs.mod != 'monolith-calendario'
+        if: steps.mod.outputs.mod != 'monolith-calendario' && steps.mod.outputs.mod != 'monolith-itemizador'
         env:
           MOD: ${{ steps.mod.outputs.mod }}
         run: |

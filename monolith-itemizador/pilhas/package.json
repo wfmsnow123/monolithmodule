@@ -1,0 +1,36 @@
+{
+  "name": "monolith-itemizador-pilhas",
+  "version": "1.0.0",
+  "description": "Item Piles 3.3.4 (MIT, Fantasy Computerworks) embutido no Monolith: Itemizador.",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "author": "Fantasy Computerworks (https://github.com/fantasycalendar)",
+  "contributors": [
+    "Wasp <adam@fantasy-calendar.com> (https://github.com/haxxer)"
+  ],
+  "imports": {
+    "#runtime/*": "@typhonjs-fvtt/runtime/*",
+    "#standard/*": "@typhonjs-fvtt/standard/*"
+  },
+  "dependencies": {
+    "@typhonjs-fvtt/runtime": "^0.2.0",
+    "@typhonjs-fvtt/standard": "^0.2.0",
+    "svelte": "^4.0.0",
+    "svelte-select": "^5.7.0"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^3.1.2",
+    "svelte-dnd-action": "^0.9.18",
+    "svelte-preprocess": "^6.0.0",
+    "vite": "^5.0.0"
+  },
+  "browserslist": [
+    ">5%",
+    "not IE 11"
+  ],
+  "scripts": {
+    "build": "vite build && esbuild dist/pilhas.js --minify --keep-names --format=esm --target=es2022 --allow-overwrite --outfile=dist/pilhas.js --log-level=warning",
+    "dev": "vite"
+  }
+}
