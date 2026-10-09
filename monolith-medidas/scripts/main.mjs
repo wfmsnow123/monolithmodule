@@ -1,5 +1,5 @@
 import { ID, F, registrarConfiguracoes, lista } from "./config.mjs";
-import { estado, usarMedida, aoDescansar, registrarStatusQueima, registrarGanchos, queimarAlma, encerrarQueima } from "./fio.mjs";
+import { estado, usarMedida, aoDescansar, registrarStatusQueima, registrarGanchos, queimarAlma, encerrarQueima, confirmar } from "./fio.mjs";
 import { MedidasApp } from "./app.mjs";
 import { EditorMedidas } from "./editor.mjs";
 
@@ -104,6 +104,40 @@ function registrarTidy(api) {
       };
       el.addEventListener("click", abrir);
       el.addEventListener("keydown", (ev) => { if (ev.key === "Enter" || ev.key === " ") abrir(ev); });
+    }
+  }), { layout });
+
+  // Queimar a Alma: chama ao lado das Medidas. Morrendo, queima; morto sem ter recusado, Recusar a Morte;
+  // queimando, abre as Medidas (dano, crítico, encerrar). Fora disso, apagado.
+  api.registerCharacterContent(new api.models.HtmlContent({
+    html: `<a class="monolith-tidy mm-chip mm-queima" role="button" tabindex="0" data-monolith-queima data-tidy-render-scheme="handlebars"></a>`,
+    injectParams: { selector: ".tidy5e-sheet-header h2.level", position: "beforebegin" },
+    enabled: (ctx) => game.settings.get(ID, "coracaoFicha") && !!(ctx.actor ?? ctx.document)?.isOwner,
+    onRender: ({ app, element }) => {
+      const actor = app.document ?? app.actor;
+      const el = element.querySelector("[data-monolith-queima]");
+      if (!el || !actor) return;
+      const e = estado(actor);
+      const modo = e.queimando ? "queimando" : e.morrendo ? "queimar" : e.morto && !e.recusou ? "recusar" : "indisponivel";
+      el.dataset.estado = modo;
+      el.innerHTML = ICONES.queimando;
+      el.dataset.tooltip = {
+        queimar: "<b>Queimar a Alma</b><br>Ganhar 1d4 de Perdição e levantar com 0 PV.",
+        recusar: "<b>Recusar a Morte</b> (uma única vez)<br>Voltar queimando com 2 falhas no Fio e 1d8 de Perdição.",
+        queimando: "<b>Queimando a Alma</b><br>Clique para registrar dano ou encerrar a Queima.",
+        indisponivel: "<b>Queimar a Alma</b><br>Só a 0 PV (Morrendo)."
+      }[modo];
+      el.setAttribute("aria-label", modo === "recusar" ? "Recusar a Morte" : "Queimar a Alma");
+      el.setAttribute("aria-disabled", String(modo === "indisponivel"));
+      const agir = async (ev) => {
+        ev.preventDefault(); ev.stopPropagation();
+        if (modo === "indisponivel") return ui.notifications.info("A Queima de Alma começa quando o personagem cai a 0 PV.");
+        if (modo === "queimando") return MedidasApp.abrir(actor);
+        if (modo === "queimar" && await confirmar("Queimar a Alma", "Ganhar 1d4 de Perdição e se levantar com 0 PV?")) return queimarAlma(actor);
+        if (modo === "recusar" && await confirmar("Recusar a Morte", "Uma única vez: voltar queimando com 2 falhas no Fio e 1d8 de Perdição?")) return queimarAlma(actor, { recusa: true });
+      };
+      el.addEventListener("click", agir);
+      el.addEventListener("keydown", (ev) => { if (ev.key === "Enter" || ev.key === " ") agir(ev); });
     }
   }), { layout });
 

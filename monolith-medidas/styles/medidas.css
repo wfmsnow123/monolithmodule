@@ -98,3 +98,14 @@
 .mm-editor .acoes, .mm-editor .rodape { display: flex; gap: var(--space-2); justify-content: flex-end; }
 .mm-editor .acoes button { flex: 0 0 auto; width: auto; }
 .mm-editor .rodape { position: sticky; bottom: 0; background: var(--void-000); padding: var(--space-3); border-top: 1px solid var(--void-300); margin: 0 calc(-1 * var(--space-4)) calc(-1 * var(--space-4)); }
+
+/* ---------- Botão de Queimar a Alma (chama, âmbar) ---------- */
+.monolith-tidy.mm-chip.mm-queima { padding: 2px 6px; color: var(--ichor); border-left-color: var(--ichor); }
+.monolith-tidy.mm-chip.mm-queima:hover { border-color: var(--ichor); color: var(--bone); }
+.monolith-tidy.mm-chip.mm-queima[data-estado="indisponivel"] { opacity: 0.45; color: var(--ink-muted); border-left-color: var(--void-400); cursor: not-allowed; }
+.monolith-tidy.mm-chip.mm-queima[data-estado="indisponivel"]:hover { opacity: 0.7; }
+.monolith-tidy.mm-chip.mm-queima:is([data-estado="queimar"], [data-estado="recusar"]) { animation: mm-brasa 1.6s ease-in-out infinite; }
+.monolith-tidy.mm-chip.mm-queima[data-estado="recusar"] { color: var(--blood-text); border-left-color: var(--blood-500); }
+.monolith-tidy.mm-chip.mm-queima[data-estado="queimando"] { background: var(--ichor); border-color: var(--ichor); color: var(--void-100); }
+@keyframes mm-brasa { 0%, 100% { box-shadow: 0 0 0 0 rgba(210, 154, 58, 0.6); } 50% { box-shadow: 0 0 0 5px rgba(210, 154, 58, 0); } }
+@media (prefers-reduced-motion: reduce) { .monolith-tidy.mm-chip.mm-queima { animation: none !important; } }
