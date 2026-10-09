@@ -693,8 +693,27 @@ export function emitirSocket(pMessage) {
 	vContexto?.socket.emitir(pMessage);
 }
 
+//wrappers já registrados por alvo; o libWrapper aceita só um por módulo, então os seguintes entram na mesma cadeia
+const vEnvolvidos = new Map();
+
 //libWrapper quando ativo; senão, envolve o método ou getter na mão
 export function envolver(pTarget, pFunction, pType = "MIXED") {
+	let vCadeia = vEnvolvidos.get(pTarget);
+	if (vCadeia) {
+		vCadeia.push(pFunction);
+		return;
+	}
+	vCadeia = [pFunction];
+	vEnvolvidos.set(pTarget, vCadeia);
+	//o último registrado roda primeiro, como no libWrapper
+	const vFunction = function(pWrapped, ...args) {
+		const vChamar = (pIndice, ...pArgs) => pIndice < 0 ? pWrapped(...pArgs) : vCadeia[pIndice].call(this, (...wargs) => vChamar(pIndice - 1, ...wargs), ...pArgs);
+		return vChamar(vCadeia.length - 1, ...args);
+	};
+	return envolverUnico(pTarget, vFunction, pType);
+}
+
+function envolverUnico(pTarget, pFunction, pType) {
 	if (globalThis.libWrapper && game.modules.get("lib-wrapper")?.active) {
 		return libWrapper.register(cModuleName, pTarget, pFunction, pType);
 	}
