@@ -14,6 +14,7 @@ Módulos para a mesa de Monolith (Foundry 13, dnd5e 5.2).
 | **Monolith: Encumbrance** (`monolith-encumbrance`) | Carga configurável: faixas por Força, deslocamento, desvantagens por habilidade e efeitos livres. Substitui o Variant Encumbrance. | `https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-encumbrance/module.json` |
 | **Monolith: Reach** (`monolith-reach`) | Portas, tiles do Monk's Active Tiles e interruptores do Light Switch só ao alcance do token (5 pés). | `https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-reach/module.json` |
 | **Monolith: Resting Rules** (`monolith-resting`) | Fôlego, Vigília e Descanso Completo prontos no dnd5e, com limites por dia, acampamento Exposto e Dormir é para os Fracos. Substitui o Rest Recovery. | `https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-resting/module.json` |
+| **Monolith: QoL Mods** (`monolith-qol`) | Autocompletar propriedades, Escopo das configurações, Visão do Mestre e Rolagens do Mestre, cada um com liga/desliga e janela de opções. Substitui Autocomplete Inline Properties, DF Settings Clarity, GM Vision e Hide GM Rolls. | `https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-qol/module.json` |
 
 O Monolith: Calendário substitui o Calendaria; não ative os dois juntos. Créditos e notas para os autores originais em [monolith-calendario/README-MONOLITH.md](monolith-calendario/README-MONOLITH.md).
 

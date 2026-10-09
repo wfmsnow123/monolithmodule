@@ -1,0 +1,28 @@
+{
+  "id": "monolith-qol",
+  "title": "Monolith: QoL Mods",
+  "description": "Pequenas melhorias de uso incorporadas e adaptadas à V13 (cada uma liga, desliga e tem sua janela de opções): Autocompletar propriedades, Escopo das configurações, Visão do Mestre e Rolagens do Mestre. Substitui Autocomplete Inline Properties, DF Settings Clarity, GM Vision e Hide GM Rolls.",
+  "version": "0.1.0",
+  "authors": [{ "name": "snowxd" }],
+  "compatibility": { "minimum": "13", "verified": "13.351" },
+  "relationships": {
+    "recommends": [
+      { "id": "dice-so-nice", "type": "module", "reason": "Rolagens do Mestre também esconde os dados 3D das rolagens públicas do Mestre." }
+    ],
+    "conflicts": [
+      { "id": "autocomplete-inline-properties", "type": "module", "reason": "Incorporado como o recurso Autocompletar propriedades; use só um." },
+      { "id": "df-settings-clarity", "type": "module", "reason": "Incorporado como o recurso Escopo das configurações; use só um." },
+      { "id": "gm-vision", "type": "module", "reason": "Incorporado como o recurso Visão do Mestre; use só um." },
+      { "id": "hide-gm-rolls", "type": "module", "reason": "Incorporado como o recurso Rolagens do Mestre; use só um." }
+    ]
+  },
+  "esmodules": ["scripts/main.mjs"],
+  "styles": ["styles/monolith-ui.css", "styles/qol.css"],
+  "languages": [
+    { "lang": "pt-BR", "name": "Português (Brasil)", "path": "lang/pt-BR.json" },
+    { "lang": "en", "name": "English", "path": "lang/pt-BR.json" }
+  ],
+  "url": "https://github.com/wfmsnow123/monolithmodule",
+  "manifest": "https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-qol/module.json",
+  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-qol-v0.1.0/monolith-qol.zip"
+}

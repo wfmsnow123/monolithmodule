@@ -1,0 +1,99 @@
+{
+  "MONOLITH_QOL": {
+    "titulo": "Monolith: QoL Mods",
+    "janela": {
+      "abrir": "Configurar",
+      "recurso": "Recurso",
+      "ligado": "Ligado",
+      "ligadoDica": "Desligado, o recurso para na hora, sem recarregar.",
+      "ligadoRecarrega": "Ligar ou desligar pede para recarregar o mundo.",
+      "opcoes": "Opções",
+      "padroes": "Restaurar padrões",
+      "salvar": "Salvar",
+      "originalTitulo": "Módulo original ativo",
+      "originalTexto": "O {original} está ativo. Enquanto ele estiver ligado, este recurso fica desligado para não fazer tudo em dobro.",
+      "desativarOriginal": "Desativar o {original}",
+      "desativarConfirma": "Desativar o {original}? As configurações dele são trazidas para cá e o mundo recarrega.",
+      "recarregarTitulo": "Falta recarregar",
+      "recarregarTexto": "O recurso foi ligado, mas só começa a funcionar depois de recarregar o mundo.",
+      "notaTitulo": "O que o Foundry e o dnd5e já fazem",
+      "origem": "Baseado em {original}."
+    },
+    "conflito": {
+      "texto": "Estes módulos foram incorporados ao Monolith: QoL Mods e estão ativos ao mesmo tempo. Enquanto o original estiver ligado, o recurso equivalente fica desligado.",
+      "item": "<b>{original}</b>: agora é o recurso <b>{recurso}</b>",
+      "pergunta": "Desativar os originais agora? As configurações deles vêm junto. O mundo recarrega.",
+      "sim": "Desativar e recarregar",
+      "nao": "Agora não"
+    },
+    "migracao": {
+      "feita": "Monolith: QoL Mods trouxe as configurações de: {lista}."
+    },
+    "autocompletar": {
+      "nome": "Autocompletar propriedades",
+      "descricao": "Lista navegável de propriedades nos campos de chave e de fórmula: chaves de Efeitos Ativos, bônus, fórmulas e usos do dnd5e. Abre com o botão @ do campo ou com a tecla @.",
+      "origem": "Autocomplete Inline Properties (Cole Schultz, Johannes Loher e Farling, MIT)",
+      "nota": "O dnd5e mostra uma dica com o link do guia de Efeitos Ativos ao lado da chave, mas não lista as propriedades. A lista daqui navega pelos dados reais do ator (ou de todos os tipos de ator, quando o efeito ou o item não tem dono).",
+      "botao": "Autocompletar propriedade",
+      "vazio": "Nada neste caminho.",
+      "voltar": "Subir um nível",
+      "inserir": "Inserir no campo",
+      "semChave": "A chave \"{chave}\" não existe neste ator.",
+      "opcoes": {
+        "botao": { "nome": "Botão @ nos campos", "dica": "Um botão @ aparece no canto do campo ao passar o mouse." },
+        "tecla": { "nome": "Abrir com a tecla @", "dica": "Com o campo em foco, digitar @ abre a lista em vez de escrever o caractere. Na lista: setas escolhem, Tab completa, Enter insere, Esc fecha." },
+        "efeitos": { "nome": "Efeitos Ativos", "dica": "Chave (caminho do ator) e valor (@fórmulas com a roll data do ator) nas mudanças de Efeitos Ativos." },
+        "dnd5e": { "nome": "Fichas do dnd5e", "dica": "Bônus, fórmulas, usos máximos e consumo nas atividades, nos itens e nas janelas de configuração do ator (habilidades, perícias, CA, PV, iniciativa)." }
+      }
+    },
+    "escopo": {
+      "nome": "Escopo das configurações",
+      "descricao": "Marca cada configuração da janela Configurar Definições com quem ela afeta: o mundo inteiro, só este navegador ou só o seu usuário.",
+      "origem": "DF Settings Clarity (flamewave000, BSD-3-Clause)",
+      "nota": "A V13 não mostra o escopo das configurações. Aqui os nomes não são alterados (o original prefixava cada nome com um emoji) e a dica é a do próprio Foundry. A V13 também tem o escopo \"usuário\", que o original tratava como cliente.",
+      "dicas": {
+        "world": "Mundo: vale para todos e só o Mestre altera.",
+        "client": "Cliente: vale só neste navegador; cada pessoa escolhe a sua.",
+        "user": "Usuário: fica salva no mundo para cada usuário e o acompanha em qualquer navegador.",
+        "menuMestre": "Menu do Mestre: só quem pode alterar configurações abre.",
+        "menuAberto": "Menu aberto: jogadores também abrem.",
+        "recarregar": "Só vale depois de recarregar."
+      },
+      "opcoes": {
+        "menus": { "nome": "Marcar os menus", "dica": "Os botões de menu (como este) também ganham a marca." },
+        "recarregar": { "nome": "Marcar o que pede recarregar", "dica": "Um ícone a mais nas configurações que só valem depois de recarregar." },
+        "jogadores": { "nome": "Mostrar aos jogadores", "dica": "Desligado, só quem pode alterar configurações vê as marcas." }
+      }
+    },
+    "visaoMestre": {
+      "nome": "Visão do Mestre",
+      "descricao": "Um modo só do Mestre que clareia o mapa, revela a névoa e mostra os tokens fora da visão dos tokens controlados, com listras. Alterne com Ctrl+G ou com o botão direito no controle de Iluminação.",
+      "origem": "GM Vision (dev7355608, MIT)",
+      "nota": "O core já mostra tudo ao Mestre quando nenhum token está controlado. A Visão do Mestre serve para quando você controla um token e quer ver a cena como Mestre sem soltá-lo.",
+      "tecla": "Alternar Visão do Mestre",
+      "teclaDica": "Liga e desliga a Visão do Mestre (só o Mestre).",
+      "dicaBotao": "botão direito: Visão do Mestre",
+      "opcoes": {
+        "ativa": { "nome": "Visão do Mestre ligada", "dica": "" },
+        "botaoDireito": { "nome": "Botão direito na Iluminação", "dica": "Clicar com o botão direito no controle de Iluminação alterna a Visão. O ícone fica cheio com ela ligada." },
+        "listras": { "nome": "Listras nos tokens escondidos", "dica": "Tokens ocultos e tokens fora da visão dos jogadores ganham listras diagonais, para lembrar que só o Mestre os vê." },
+        "escuridao": { "nome": "Opacidade da escuridão", "dica": "Com a Visão ligada, áreas de escuridão ficam com esta opacidade (0 some, 1 normal). Padrão 0,5." }
+      }
+    },
+    "rolagens": {
+      "nome": "Rolagens do Mestre",
+      "descricao": "Esconde dos jogadores a fórmula e os dados das rolagens públicas do Mestre, deixando só o total, some com rolagens privadas de quem não as recebeu e rola em privado por tokens ocultos.",
+      "origem": "Hide GM Rolls (sPOiDar, MIT)",
+      "nota": "O dnd5e já tem, em Configurações do sistema > Visibilidade, se os jogadores veem a CD e o acerto ou erro dos ataques e testes, e \"Ocultar descrições de PdM\" para itens sem descrição de chat. Este recurso complementa: esconde a fórmula, os dados e o crítico, e a opção de descrição vale para todo cartão do Mestre.",
+      "opcoes": {
+        "limpar": { "nome": "Esconder fórmula e dados", "dica": "Nas rolagens públicas do Mestre, os jogadores veem só o total, sem a fórmula e sem os dados de cada rolagem." },
+        "criticos": { "nome": "Esconder crítico e falha crítica", "dica": "Tira as cores e os ícones de crítico e de falha crítica das rolagens do Mestre. Acerto e erro seguem a Visibilidade do dnd5e." },
+        "dsn": { "nome": "Dice So Nice!: sem dados 3D", "dica": "Os jogadores não veem os dados 3D das rolagens públicas do Mestre. Só tem efeito com o Dice So Nice! ativo." },
+        "ocultarPrivadas": { "nome": "Sumir com rolagens privadas do Mestre", "dica": "Rolagens privadas e às cegas do Mestre nem aparecem no chat dos jogadores (normalmente aparece \"rolou em privado\")." },
+        "ocultarJogadores": { "nome": "Sumir com rolagens privadas dos jogadores", "dica": "Rolagens privadas, às cegas e só para si de um jogador somem do chat dos outros jogadores. O Mestre continua vendo as que recebeu." },
+        "descricao": { "nome": "Esconder descrição dos cartões do Mestre", "dica": "Cartões de item e de atividade postados pelo Mestre chegam aos jogadores sem a descrição." },
+        "privadaOculto": { "nome": "Rolar em privado por tokens ocultos", "dica": "Quando o Mestre rola ou usa um item por um token oculto, a mensagem vira privada automaticamente." }
+      }
+    }
+  }
+}

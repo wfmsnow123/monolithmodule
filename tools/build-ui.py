@@ -27,6 +27,7 @@ ESCOPOS = {
     "monolith-journals": [".mono", ".mono-card"],
     "monolith-itemizador": [".mono", ".mono-card"],
     "monolith-luzes": [".mono", ".mono-card"],
+    "monolith-qol": [".mono", ".mono-card"],
     "monolith-calendario": [".mono", ".mono-card", ".calendaria", ".calendaria-hud", ".calendar-note-sheet", ".calendaria-cinematic"],
 }
 DESTINO = {
