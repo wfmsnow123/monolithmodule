@@ -1,10 +1,11 @@
-import { ID, esc, fonteDe, podeAcender, podeAvulsa, cfg } from "./config.mjs";
+import { ID, esc, fonteDe, ehObjeto, podeAcender, podeAvulsa, cfg } from "./config.mjs";
 import { itensDeLuz, aceso, coberta, restante, tempoTexto, alternar, alternarCobertura, carregadas, temCobertura } from "./luz.mjs";
-import { estado, colocadasPerto, pedir, alternarCarregada, cobrirCarregada, guardarCarregada, largarCarregada } from "./chao.mjs";
+import { estado, colocadasPerto, pedir, alternarCarregada, cobrirCarregada, guardarCarregada, largarCarregada, largarDoInventario } from "./chao.mjs";
 
 /**
  * Botão de chama no HUD do token. Lista o que o personagem carrega, o que o token leva junto
- * e os objetos de luz no chão a um quadrado. Uma só coisa para acender: alterna direto.
+ * e os objetos de luz no chão a um quadrado. Uma só coisa para acender, sem mais opções: alterna direto.
+ * Tochas e lanternas do inventário podem ser largadas no chão, ao lado do token, mesmo por quem não acende.
  */
 export function registrarHud() {
   Hooks.on("renderTokenHUD", (hud, html) => {
@@ -15,7 +16,7 @@ export function registrarHud() {
     if (!token?.isOwner) return;
     const acende = podeAcender();
     const linhas = [];
-    if (acende) for (const i of itensDeLuz(actor)) linhas.push(linhaItem(i));
+    for (const i of itensDeLuz(actor)) if (acende || ehObjeto(i)) linhas.push(linhaItem(token, i, acende));
     for (const e of carregadas(token)) linhas.push(linhaJunto(token, e, acende));
     for (const t of colocadasPerto(token)) linhas.push(linhaChao(token, t, acende));
     const avulsa = !!token.getFlag(ID, "avulsa");
@@ -28,7 +29,7 @@ export function registrarHud() {
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = `control-icon monolith-luz-btn ${algumAceso ? "active" : ""}`;
-    const direto = linhas.length === 1 && linhas[0].direto;
+    const direto = linhas.length === 1 && linhas[0].direto && !linhas[0].extras.length;
     btn.dataset.tooltip = direto ? `${linhas[0].aceso ? "Apagar" : "Acender"} ${linhas[0].nome}` : "Luzes";
     btn.innerHTML = `<i class="fas fa-fire${algumAceso ? "" : "-flame-simple"}"></i>`;
     col.append(btn);
@@ -53,13 +54,14 @@ export function registrarHud() {
  * @typedef {{nome:string, img:string, aceso:boolean, tempo:string, onde?:string, direto?:boolean, clique:Function, extras:Array<[string,string,Function]>}} Linha
  */
 
-function linhaItem(i) {
+function linhaItem(token, i, acende) {
   const f = fonteDe(i);
   const extras = [];
-  if (temCobertura(f) && aceso(i)) extras.push([coberta(i) ? "Descobrir" : "Cobrir", coberta(i) ? "fa-eye" : "fa-eye-slash", () => alternarCobertura(i)]);
+  if (acende && temCobertura(f) && aceso(i)) extras.push([coberta(i) ? "Descobrir" : "Cobrir", coberta(i) ? "fa-eye" : "fa-eye-slash", () => alternarCobertura(i)]);
+  if (ehObjeto(i) && cfg("colocarNoMapa")) extras.push(["Largar no chão", "fa-arrow-down", () => largarDoInventario(token, i)]);
   return {
     nome: i.name, img: i.img, aceso: aceso(i), tempo: aceso(i) ? tempoTexto(restante(i)) : "",
-    qtd: i.type === "spell" ? 0 : i.system.quantity, direto: true, clique: () => alternar(i), extras
+    qtd: i.type === "spell" ? 0 : i.system.quantity, direto: acende, clique: () => (acende ? alternar(i) : null), extras
   };
 }
 

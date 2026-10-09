@@ -50,6 +50,8 @@ const origemDe = (e) => { try { return e?.origem ? fromUuidSync(e.origem) : null
 const retTile = (t) => ({ x: t.x, y: t.y, w: t.width, h: t.height });
 const retToken = (t) => { const s = t.parent.grid.size; return { x: t.x, y: t.y, w: t.width * s, h: t.height * s }; };
 export const alcanca = (token, tile) => aoAlcance(retToken(token), retTile(tile), token.parent.grid.size, 1);
+/** O ponto está a até um quadrado (5 ft) da borda do token? */
+const pertoDoPonto = (token, p) => aoAlcance(retToken(token), { x: p.x, y: p.y, w: 0, h: 0 }, token.parent.grid.size, 1);
 
 /** Objetos no chão a um quadrado do token. */
 export function colocadasPerto(token) {
@@ -116,11 +118,16 @@ const cantoDo = (token) => { const r = retToken(token); return { x: r.x + r.w, y
 
 const OPS = {
   /** Item da ficha solto no mapa. */
-  async colocar({ itemUuid, sceneId, x, y }, user) {
+  async colocar({ itemUuid, sceneId, tokenId, x, y }, user) {
     const item = await fromUuid(itemUuid);
     const scene = game.scenes.get(sceneId);
     if (!item?.actor || !scene || !ehObjeto(item) || !fonteDe(item)) return;
     if (!item.testUserPermission(user, "OWNER")) return "Esse item não é seu.";
+    if (!user.isGM) {
+      const token = tokenId ? scene.tokens.get(tokenId) : null;
+      if (!token || token.actor?.id !== item.actor.id) return "Largue a luz perto do token do personagem.";
+      if (!pertoDoPonto(token, { x, y })) return "Longe demais: solte a até um quadrado (5 ft) do seu token.";
+    }
     if (!((item.system.quantity ?? 0) > 0)) return `${item.name}: não sobrou nenhum.`;
     await criarTile(scene, estadoDoItem(item), x, y);
     const q = item.system.quantity - 1;
@@ -296,11 +303,11 @@ export async function queimarNoChao(delta) {
 
 /* ---------- Arrastar da ficha para o mapa ---------- */
 
-function tokenNoPonto(p) {
-  return canvas.tokens?.placeables.some((t) => t.visible && t.bounds?.contains(p.x, p.y));
-}
-
-/** dropCanvasData: só cuida de itens de luz soltos em chão livre; em cima de token (pilha do Item Piles, troca) segue o fluxo normal. */
+/**
+ * dropCanvasData: item de luz solto no mapa vira objeto no chão.
+ * Em cima de outro token (pilha do Item Piles, entregar a alguém) segue o fluxo normal; em cima do próprio
+ * token, o objeto vai para o lado dele. Jogador solta a até um quadrado (5 ft) do seu token; o Mestre, onde quiser.
+ */
 function aoSoltar(cv, data, event) {
   if (data?.type !== "Item" || !data.uuid || !cfg("colocarNoMapa") || event?.shiftKey) return;
   let item;
@@ -309,9 +316,23 @@ function aoSoltar(cv, data, event) {
   if (!((item.system.quantity ?? 0) > 0)) return;
   let p = { x: data.x, y: data.y };
   if (!Number.isFinite(p.x) || !Number.isFinite(p.y)) p = canvas.canvasCoordinatesFromClient({ x: event.clientX, y: event.clientY });
-  if (tokenNoPonto(p)) return;
-  pedir("colocar", { itemUuid: item.uuid, sceneId: canvas.scene.id, x: Math.round(p.x), y: Math.round(p.y) });
+  const meus = item.actor.getActiveTokens();
+  const embaixo = canvas.tokens.placeables.filter((t) => t.visible && t.bounds?.contains(p.x, p.y));
+  if (embaixo.some((t) => !meus.includes(t))) return;
+  const dono = embaixo[0] ?? canvas.tokens.controlled.find((t) => meus.includes(t)) ?? meus[0];
+  if (embaixo.length) p = cantoDo(dono.document);
+  if (!game.user.isGM) {
+    if (!dono) { ui.notifications.warn("Ponha o token do personagem na cena para largar a luz no chão."); return false; }
+    if (!pertoDoPonto(dono.document, p)) { ui.notifications.warn("Longe demais: solte a até um quadrado (5 ft) do seu token. Com Shift, o Item Piles cuida do item."); return false; }
+  }
+  pedir("colocar", { itemUuid: item.uuid, sceneId: canvas.scene.id, tokenId: dono?.id, x: Math.round(p.x), y: Math.round(p.y) });
   return false;
+}
+
+/** Do inventário para o chão, ao lado do token (botão no HUD). */
+export function largarDoInventario(token, item) {
+  const p = cantoDo(token);
+  return pedir("colocar", { itemUuid: item.uuid, sceneId: token.parent.id, tokenId: token.id, x: Math.round(p.x), y: Math.round(p.y) });
 }
 
 /** Põe o nosso dropCanvasData antes dos outros (Item Piles cria pilha e devolve false). */
