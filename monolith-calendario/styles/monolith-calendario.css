@@ -12,10 +12,13 @@
   letter-spacing: 0.05em;
 }
 .calendaria .weekday, .calendaria .weekday-header, .calendaria nav.tabs a, .calendaria .tab-label,
-.calendaria button, .calendaria .settings-footer {
+.calendaria button:not(.header-control):not(.icon), .calendaria .settings-footer {
   font-family: var(--font-label);
   letter-spacing: 0.06em;
 }
+/* Os botões do cabeçalho são o próprio ícone (fa-solid no <button>): a fonte de ícones não pode ser trocada. */
+.application:is(.calendaria, .calendar-note-sheet) > .window-header .header-control.icon,
+.calendaria button.icon[class*="fa-"] { font-family: var(--font-awesome, "Font Awesome 6 Pro"); font-weight: 900; letter-spacing: 0; }
 .calendaria code, .calendaria .mono { font-family: var(--font-mono); }
 
 /* Moldura das janelas: pedra negra, borda superior de sangue, cantos retos */
