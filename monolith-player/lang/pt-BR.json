@@ -1,0 +1,47 @@
+{
+  "MONOLITH_PLAYER": {
+    "titulo": "Monolith · Player",
+    "player": {
+      "tocar": "Tocar",
+      "pausar": "Pausar",
+      "parar": "Parar",
+      "anterior": "Faixa anterior",
+      "proxima": "Próxima faixa",
+      "playlists": "Playlists",
+      "tocando": "Tocando",
+      "pausado": "Pausado",
+      "silencio": "Silêncio",
+      "parado": "Nada tocando",
+      "carregando": "Carregando…",
+      "faixa": "faixa {n} de {total}"
+    },
+    "playlists": {
+      "titulo": "Monolith · Playlists",
+      "salvas": "Playlists salvas",
+      "adicionar": "Adicionar playlist",
+      "link": "Link do YouTube",
+      "nome": "Nome",
+      "nomeAuto": "Vazio: usa o nome do YouTube",
+      "nomeSemChave": "Ex.: Taverna, Combate, Masmorra",
+      "semNome": "Playlist {n}",
+      "salvar": "Salvar",
+      "cancelar": "Cancelar",
+      "tocar": "Tocar para a mesa",
+      "apagar": "Apagar playlist",
+      "apagarConfirma": "Apagar <b>{nome}</b> das playlists salvas?",
+      "tipoLista": "Playlist",
+      "tipoVideo": "Vídeo em loop",
+      "vazio": "Nenhuma playlist salva. Clique em + e cole o link de uma playlist do YouTube."
+    },
+    "aviso": {
+      "link": "Link não reconhecido. Cole o link de uma playlist (com list=) ou de um vídeo do YouTube.",
+      "chave": "A chave da API do YouTube foi recusada. Confira a chave nas configurações do Monolith: Player."
+    },
+    "config": {
+      "apiKey": {
+        "nome": "Chave da API do YouTube",
+        "dica": "Opcional. Com ela, ao salvar uma playlist sem nome, o nome vem do YouTube. Tocar não precisa de chave. Crie grátis em console.cloud.google.com: ative a YouTube Data API v3 e gere uma Chave de API em Credenciais."
+      }
+    }
+  }
+}
