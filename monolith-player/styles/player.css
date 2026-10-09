@@ -13,210 +13,119 @@
   pointer-events: none !important;
 }
 
-/* ---------- Janela do player ---------- */
-.monolith-player > .window-content {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
+/* ---------- Barra fixa na lista de jogadores (lateral esquerda) ---------- */
+#players #monolith-player-widget {
+  display: flex; flex-direction: column; gap: var(--space-1);
+  margin: 0 0 var(--space-1); padding: 0 0 var(--space-1);
+  background: transparent; border-bottom: 1px solid var(--void-300);
+  font-family: var(--font-sans); font-size: 12px; color: var(--ink);
+}
+#players #monolith-player-widget .mpw-topo { display: flex; align-items: center; gap: var(--space-1); min-width: 0; }
+#players #monolith-player-widget .mpw-icone { color: var(--ink-muted); font-size: 12px; }
+#players #monolith-player-widget.tocando .mpw-icone { color: var(--blood-text); }
+#players #monolith-player-widget .mpw-titulo {
+  flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-family: var(--font-display); font-size: 16px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink);
+}
+#players #monolith-player-widget .mpw-acoes { display: flex; gap: 2px; flex: none; }
+#players #monolith-player-widget button {
+  width: 24px; height: 22px; min-height: 0; padding: 0; margin: 0; flex: none;
+  display: grid; place-items: center; font-size: 10px; line-height: 1;
+  background: var(--void-200); border: 1px solid var(--void-400); border-radius: var(--radius-sm); color: var(--ink-muted);
+}
+#players #monolith-player-widget button:hover { border-color: var(--ink-muted); color: var(--ink); }
+#players #monolith-player-widget button i { margin: 0; }
+#players #monolith-player-widget.tocando [data-acao="tocar"] { background: var(--blood-500); border-color: var(--blood-500); color: var(--bone); }
+#players #monolith-player-widget .mpw-vol { display: flex; align-items: center; gap: var(--space-2); }
+#players #monolith-player-widget .mpw-vol[hidden] { display: none; }
+#players #monolith-player-widget .mpw-vol input { flex: 1; min-width: 0; accent-color: var(--blood-500); }
+#players #monolith-player-widget .mpw-vol b { width: 26px; text-align: right; font-family: var(--font-label); color: var(--ink-muted); }
+#players #monolith-player-widget .mpw-linha { display: flex; gap: var(--space-1); }
+#players #monolith-player-widget .mpw-linha input {
+  flex: 1; min-width: 0; height: 24px; padding: 0 var(--space-2); font-size: 12px;
+  background: var(--void-000); border: 1px solid var(--void-400); border-radius: var(--radius-sm); color: var(--ink);
+}
+#players #monolith-player-widget .mpw-linha input:focus { border-color: var(--blood-500); outline: none; }
+#players #monolith-player-widget button.mpw-playlists {
+  width: auto; height: 24px; padding: 0 var(--space-2); gap: 4px; display: inline-flex; align-items: center;
+  font-family: var(--font-label); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink);
 }
 
-.monolith-player .mp-agora {
-  padding: var(--space-3);
-  background: var(--void-200);
-  border: 1px solid var(--void-300);
-  border-left: 4px solid var(--void-400);
+/* ---------- Gerenciador: controle completo ---------- */
+.monolith-player-playlists > .window-content { display: flex; flex-direction: column; gap: var(--space-3); }
+
+.monolith-player-playlists .mp-agora {
+  display: flex; flex-direction: column; gap: var(--space-2);
+  padding: var(--space-3); min-width: 0;
+  background: var(--void-200); border: 1px solid var(--void-300); border-left: 4px solid var(--void-400);
   box-shadow: var(--shadow-pit);
-  min-width: 0;
 }
-.monolith-player .mp-agora.is-tocando { border-left-color: var(--blood-500); }
+.monolith-player-playlists .mp-agora.is-tocando { border-left-color: var(--blood-500); }
+.monolith-player-playlists .mp-rotulo {
+  font-family: var(--font-label); font-size: 11px; line-height: 16px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted);
+}
+.monolith-player-playlists .is-tocando .mp-rotulo { color: var(--blood-text); }
+.monolith-player-playlists .mp-titulo {
+  font-family: var(--font-display); font-size: 22px; line-height: 26px; letter-spacing: 0.04em; color: var(--ink);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: -6px;
+}
+.monolith-player-playlists .is-parado .mp-titulo { color: var(--ink-muted); }
+.monolith-player-playlists .mp-sub { min-height: 16px; font-size: 12px; line-height: 16px; color: var(--ink-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: -6px; }
 
-.monolith-player .mp-rotulo {
-  font-family: var(--font-label);
-  font-size: 11px;
-  line-height: 16px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--ink-muted);
-}
-.monolith-player .is-tocando .mp-rotulo { color: var(--blood-text); }
+.monolith-player-playlists .mp-progresso { display: flex; align-items: center; gap: var(--space-2); cursor: pointer; }
+.monolith-player-playlists .mp-progresso.is-off { cursor: default; opacity: 0.4; }
+.monolith-player-playlists .mp-progresso__barra { flex: 1; height: 6px; background: var(--void-300); overflow: hidden; }
+.monolith-player-playlists .mp-progresso__barra > span { display: block; height: 100%; background: var(--blood-500); transition: width 0.9s linear; }
+.monolith-player-playlists .mp-progresso:hover .mp-progresso__barra { outline: 1px solid var(--ink-muted); }
+.monolith-player-playlists .mp-progresso__tempo { min-width: 76px; text-align: right; font-family: var(--font-mono); font-size: 11px; color: var(--ink-muted); }
 
-.monolith-player .mp-titulo {
-  font-family: var(--font-display);
-  font-size: 22px;
-  line-height: 26px;
-  letter-spacing: 0.04em;
-  color: var(--ink);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.monolith-player-playlists .mp-controles { display: flex; justify-content: center; gap: var(--space-2); }
+.application.mono.monolith-player-playlists button.mp-btn {
+  width: 44px; height: 38px; min-height: 0; padding: 0; display: grid; place-items: center; font-size: 15px;
 }
-.monolith-player .is-parado .mp-titulo { color: var(--ink-muted); }
+.application.mono.monolith-player-playlists button.mp-btn i { margin: 0; }
+.application.mono.monolith-player-playlists button.mp-btn.is-off { opacity: 0.35; pointer-events: none; }
+.application.mono.monolith-player-playlists button.mp-btn--tocar { width: 56px; background: var(--blood-500); border-color: var(--blood-500); color: var(--bone); }
+.application.mono.monolith-player-playlists button.mp-btn--tocar:hover { background: var(--blood-600); border-color: var(--blood-600); }
 
-.monolith-player .mp-sub {
-  min-height: 16px;
-  font-size: 12px;
-  line-height: 16px;
-  color: var(--ink-muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+.monolith-player-playlists .mp-volume { display: flex; align-items: center; gap: var(--space-2); color: var(--ink-muted); }
+.monolith-player-playlists .mp-volume input { flex: 1; accent-color: var(--blood-500); }
+.monolith-player-playlists .mp-volume b { width: 28px; text-align: right; font-family: var(--font-label); }
 
-.monolith-player .mp-controles {
-  display: flex;
-  justify-content: center;
-  gap: var(--space-2);
-}
-
-.application.mono.monolith-player button.mp-btn {
-  width: 44px;
-  height: 40px;
-  min-height: 0;
-  padding: 0;
-  display: grid;
-  place-items: center;
-  font-size: 15px;
-}
-.application.mono.monolith-player button.mp-btn i { margin: 0; }
-.application.mono.monolith-player button.mp-btn--tocar {
-  width: 56px;
-  background: var(--blood-500);
-  border-color: var(--blood-500);
-  color: var(--bone);
-}
-.application.mono.monolith-player button.mp-btn--tocar:hover { background: var(--blood-600); border-color: var(--blood-600); }
-
-.application.mono.monolith-player button.mp-abrir {
-  width: 100%;
-  min-height: 32px;
-  background: var(--cobalt-500);
-  border-color: var(--cobalt-500);
-  color: var(--bone);
-}
-.application.mono.monolith-player button.mp-abrir:hover { background: var(--cobalt-600); border-color: var(--cobalt-600); }
-
-/* ---------- Janela de playlists ---------- */
-.monolith-player-playlists > .window-content {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-
-.monolith-player-playlists .mp-topo {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-}
-.monolith-player-playlists .mp-topo .mono-heading {
-  flex: 1;
-  margin: 0;
-  border: none;
-}
+/* ---------- Gerenciador: playlists salvas ---------- */
+.monolith-player-playlists .mp-topo { display: flex; align-items: center; gap: var(--space-3); }
+.monolith-player-playlists .mp-topo .mono-heading { flex: 1; margin: 0; border: none; }
 
 .application.mono.monolith-player-playlists button.mp-novo {
-  width: 32px;
-  height: 32px;
-  min-height: 0;
-  padding: 0;
-  display: grid;
-  place-items: center;
-  font-size: 14px;
-  background: var(--cobalt-500);
-  border-color: var(--cobalt-500);
-  color: var(--bone);
+  width: 32px; height: 32px; min-height: 0; padding: 0; display: grid; place-items: center; font-size: 14px;
+  background: var(--cobalt-500); border-color: var(--cobalt-500); color: var(--bone);
 }
 .application.mono.monolith-player-playlists button.mp-novo:hover { background: var(--cobalt-600); border-color: var(--cobalt-600); }
 .monolith-player-playlists button i { margin: 0; }
 
 .monolith-player-playlists .mp-form {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  padding: var(--space-3);
-  background: var(--void-000);
-  border: 1px solid var(--void-300);
-  border-top: 2px solid var(--cobalt-500);
+  display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-3);
+  background: var(--void-000); border: 1px solid var(--void-300); border-top: 2px solid var(--cobalt-500);
 }
-.monolith-player-playlists .mp-campo {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-}
+.monolith-player-playlists .mp-campo { display: flex; flex-direction: column; gap: var(--space-1); }
 .monolith-player-playlists .mp-campo span {
-  font-family: var(--font-label);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--ink-muted);
+  font-family: var(--font-label); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted);
 }
 .monolith-player-playlists .mp-campo input { width: 100%; min-height: 32px; }
 .monolith-player-playlists .mp-campo input[aria-invalid="true"] { border-color: var(--blood-text); }
-.monolith-player-playlists .mp-form__acoes {
-  display: flex;
-  justify-content: flex-end;
-  gap: var(--space-2);
-}
+.monolith-player-playlists .mp-form__acoes { display: flex; justify-content: flex-end; gap: var(--space-2); }
 
-.monolith-player-playlists .mp-lista {
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  border-top: 1px solid var(--void-300);
-}
-
-.monolith-player-playlists .mp-item {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-2) var(--space-1);
-  border-bottom: 1px solid var(--void-300);
-}
+.monolith-player-playlists .mp-lista { flex: 1; min-height: 0; overflow-y: auto; list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--void-300); }
+.monolith-player-playlists .mp-item { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-2) var(--space-1); border-bottom: 1px solid var(--void-300); }
 .monolith-player-playlists .mp-item:hover { background: var(--void-200); }
 .monolith-player-playlists .mp-item.is-ativa { background: var(--cobalt-wash); box-shadow: inset 3px 0 0 var(--cobalt-500); }
-
-.application.mono.monolith-player-playlists .mp-item button {
-  width: 32px;
-  height: 32px;
-  min-height: 0;
-  padding: 0;
-  display: grid;
-  place-items: center;
-  flex: none;
-}
+.application.mono.monolith-player-playlists .mp-item button { width: 32px; height: 32px; min-height: 0; padding: 0; display: grid; place-items: center; flex: none; }
 .application.mono.monolith-player-playlists .mp-item .mp-item__tocar:hover { background: var(--blood-500); border-color: var(--blood-500); color: var(--bone); }
 .application.mono.monolith-player-playlists .mp-item.is-ativa .mp-item__tocar { color: var(--cobalt-text); }
-.application.mono.monolith-player-playlists .mp-item .mp-item__apagar {
-  background: transparent;
-  border-color: transparent;
-  color: var(--ink-muted);
-}
+.application.mono.monolith-player-playlists .mp-item .mp-item__apagar { background: transparent; border-color: transparent; color: var(--ink-muted); }
 .application.mono.monolith-player-playlists .mp-item .mp-item__apagar:hover { color: var(--blood-text); border-color: var(--void-300); }
-
-.monolith-player-playlists .mp-item__texto {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-}
-.monolith-player-playlists .mp-item__nome {
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.monolith-player-playlists .mp-item__tipo {
-  font-size: 12px;
-  line-height: 16px;
-  color: var(--ink-muted);
-}
-
-.monolith-player-playlists .mp-vazio {
-  padding: var(--space-6) var(--space-3);
-  text-align: center;
-  color: var(--ink-muted);
-}
+.monolith-player-playlists .mp-item__texto { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.monolith-player-playlists .mp-item__nome { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.monolith-player-playlists .mp-item__tipo { font-size: 12px; line-height: 16px; color: var(--ink-muted); }
+.monolith-player-playlists .mp-vazio { padding: var(--space-6) var(--space-3); text-align: center; color: var(--ink-muted); }

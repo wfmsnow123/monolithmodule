@@ -141,8 +141,8 @@ export class Tocador {
 
   volume() {
     if (!this.player?.setVolume) return;
-    const v = foundry.audio.AudioHelper.volumeToInput(game.settings.get("core", "globalPlaylistVolume"));
-    this.player.setVolume(Math.round(v * 100));
+    // Volume do próprio Player (0 a 100, por pessoa): mais fino que o controle de Música do Foundry.
+    this.player.setVolume(Math.round(Number(game.settings.get(ID, "volume")) || 0));
   }
 
   /** O que está tocando, para a janela do Mestre. */
@@ -153,7 +153,9 @@ export class Tocador {
       titulo: p.getVideoData()?.title || "",
       faixa: (p.getPlaylistIndex?.() ?? -1) + 1,
       total: p.getPlaylist?.()?.length ?? 0,
-      tocando: p.getPlayerState() === YT.PlayerState.PLAYING
+      tocando: p.getPlayerState() === YT.PlayerState.PLAYING,
+      tempo: p.getCurrentTime?.() ?? 0,
+      duracao: p.getDuration?.() ?? 0
     };
   }
 

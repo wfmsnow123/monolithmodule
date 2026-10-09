@@ -41,7 +41,28 @@
       "apiKey": {
         "nome": "Chave da API do YouTube",
         "dica": "Opcional. Com ela, ao salvar uma playlist sem nome, o nome vem do YouTube. Tocar não precisa de chave. Crie grátis em console.cloud.google.com: ative a YouTube Data API v3 e gere uma Chave de API em Credenciais."
+      },
+      "widget": {
+        "nome": "Mostrar a barra do Player",
+        "dica": "Barra fixa na lateral esquerda, na caixa da lista de jogadores, logo abaixo da linha Monolith. O Mestre controla a música, toca links diretos e abre as playlists; os jogadores veem só o volume. O botão da nota musical nas ferramentas de Token mostra e esconde."
+      },
+      "volume": {
+        "nome": "Volume do Player",
+        "dica": "De 0 a 100, só para você. Fica fora do controle de Música do Foundry, para dar para deixar bem baixo."
       }
+    },
+    "widget": {
+      "volume": "Volume: {v}",
+      "volumeRotulo": "Volume do Player",
+      "linkDireto": "Link do YouTube (Enter)",
+      "nome": "Monolith · Player"
+    },
+    "gerenciador": {
+      "titulo": "Monolith · Player",
+      "agora": "Tocando agora",
+      "volume": "Volume",
+      "linkDireto": "Link direto",
+      "buscar": "Clique para ir a esse ponto da faixa"
     }
   }
 }

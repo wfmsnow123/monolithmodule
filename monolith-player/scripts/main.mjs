@@ -1,6 +1,7 @@
 import { ID } from "./util.mjs";
 import { Tocador } from "./tocador.mjs";
-import { JanelaPlayer, Playlists, tocar, pausar, parar, pular, tocarPlaylist } from "./janelas.mjs";
+import { Playlists, tocar, pausar, parar, pular, tocarPlaylist } from "./janelas.mjs";
+import { Widget } from "./widget.mjs";
 
 const tocador = new Tocador();
 
@@ -14,8 +15,18 @@ Hooks.once("init", () => {
     scope: "world", config: false, type: Array, default: [],
     onChange: () => {
       Playlists.atualizar();
-      JanelaPlayer.atualizar();
     }
+  });
+  game.settings.register(ID, "widget", {
+    name: "MONOLITH_PLAYER.config.widget.nome",
+    hint: "MONOLITH_PLAYER.config.widget.dica",
+    scope: "client", config: true, type: Boolean, default: true, onChange: () => Widget.montar()
+  });
+  game.settings.register(ID, "volume", {
+    name: "MONOLITH_PLAYER.config.volume.nome",
+    hint: "MONOLITH_PLAYER.config.volume.dica",
+    scope: "client", config: true, type: Number, default: 25, range: { min: 0, max: 100, step: 1 },
+    onChange: () => tocador.volume()
   });
   game.settings.register(ID, "estado", {
     scope: "world", config: false, type: Object, default: {},
@@ -25,7 +36,8 @@ Hooks.once("init", () => {
   const mod = game.modules.get(ID);
   mod.tocador = tocador;
   mod.api = {
-    abrir: () => JanelaPlayer.abrir(),
+    abrir: () => Playlists.abrir(),
+    tocarLink: (link) => Widget.tocarLink(link),
     playlists: () => Playlists.abrir(),
     tocar, pausar, parar, tocarPlaylist,
     proxima: () => pular(1),
@@ -33,18 +45,18 @@ Hooks.once("init", () => {
   };
 });
 
-Hooks.once("ready", () => tocador.iniciar());
+Hooks.once("ready", () => {
+  tocador.iniciar();
+  Widget.montar();
+});
+
+// A barra mora na caixa da lista de jogadores, abaixo da linha "Monolith".
+Hooks.on("renderPlayers", (app, html) => Widget.anexar(html));
 
 Hooks.on(`${ID}.atualizar`, () => {
-  JanelaPlayer.atualizar();
   Playlists.atualizar();
+  Widget.render();
 });
-
-// Volume: segue o controle de Música do Foundry (aba Playlists), de cada jogador.
-Hooks.on("clientSettingChanged", (chave) => {
-  if (chave === "core.globalPlaylistVolume") tocador.volume();
-});
-Hooks.on("globalPlaylistVolumeChanged", () => tocador.volume());
 
 Hooks.on("getSceneControlButtons", (controles) => {
   const tokens = controles.tokens ?? controles.token;
@@ -52,6 +64,6 @@ Hooks.on("getSceneControlButtons", (controles) => {
   tokens.tools.monolithPlayer = {
     name: "monolithPlayer", title: "MONOLITH_PLAYER.titulo", icon: "fa-solid fa-music",
     order: Object.keys(tokens.tools).length, button: true, visible: game.user.isGM,
-    onChange: () => JanelaPlayer.abrir()
+    onChange: () => game.settings.set(ID, "widget", !game.settings.get(ID, "widget"))
   };
 });
