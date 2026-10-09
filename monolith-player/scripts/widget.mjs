@@ -1,4 +1,4 @@
-import { ID, t, esc, cfg, lerLink } from "./util.mjs";
+import { ID, t, esc, cfg, lerLink, lerSpotify, buscarNoYoutube } from "./util.mjs";
 import { publicar } from "./tocador.mjs";
 import { tocar, pausar, parar, alternarLoop, Playlists } from "./janelas.mjs";
 
@@ -68,6 +68,18 @@ export const Widget = {
 
   /** Toca um link colado no campo, sem salvar como playlist. */
   async tocarLink(texto) {
+    const spotify = lerSpotify(texto);
+    if (spotify) {
+      try {
+        const r = await buscarNoYoutube(spotify);
+        ui.notifications.info(t("aviso.spotifyAchou", { nome: r.nome, titulo: r.titulo }));
+        const campo = this.el?.querySelector('[name="link"]');
+        if (campo) campo.value = "";
+        return publicar({ playlistId: null, lista: r.lista ?? undefined, video: r.lista ? undefined : r.video, indice: 0, tempo: 0, tocando: true, parado: false });
+      } catch (err) {
+        return ui.notifications.warn(err.message);
+      }
+    }
     const link = lerLink(texto);
     if (!link) return ui.notifications.warn(t("aviso.link"));
     const campo = this.el?.querySelector('[name="link"]');

@@ -1,4 +1,4 @@
-import { ID, t, esc, cfg, lerLink, nomeDoLink } from "./util.mjs";
+import { ID, t, esc, cfg, lerLink, nomeDoLink, lerSpotify, buscarNoYoutube } from "./util.mjs";
 import { publicar } from "./tocador.mjs";
 
 const { ApplicationV2, DialogV2 } = foundry.applications.api;
@@ -234,13 +234,26 @@ export class Playlists extends ApplicationV2 {
   static async #salvar() {
     const form = this.element.querySelector(".mp-form");
     if (!form) return;
+    const lista = [...cfg("playlists")];
+    let nome = form.elements.nome.value.trim();
+    // Link do Spotify: salva o que o YouTube tem com esse nome.
+    const spotify = lerSpotify(form.elements.link.value);
+    if (spotify) {
+      try {
+        const r = await buscarNoYoutube(spotify);
+        ui.notifications.info(t("aviso.spotifyAchou", { nome: r.nome, titulo: r.titulo }));
+        lista.push({ id: foundry.utils.randomID(), nome: nome || r.nome, lista: r.lista, video: r.lista ? null : r.video });
+        this.#adicionando = false;
+        return game.settings.set(ID, "playlists", lista);
+      } catch (err) {
+        return ui.notifications.warn(err.message);
+      }
+    }
     const link = lerLink(form.elements.link.value);
     if (!link) {
       form.elements.link.setAttribute("aria-invalid", "true");
       return ui.notifications.warn(t("aviso.link"));
     }
-    const lista = [...cfg("playlists")];
-    let nome = form.elements.nome.value.trim();
     nome ||= (await nomeDoLink(link)) || t("playlists.semNome", { n: lista.length + 1 });
     lista.push({ id: foundry.utils.randomID(), nome, lista: link.lista, video: link.lista ? null : link.video });
     this.#adicionando = false;

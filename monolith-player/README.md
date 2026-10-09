@@ -10,6 +10,7 @@ A barra **Monolith · Player** fica fixa na lateral esquerda, dentro da caixa da
 - **▶ ⏸ ■**: tocar, pausar e parar para a mesa inteira.
 - **🔁 Loop** (desligado por padrão): ligado, o vídeo recomeça sozinho e a playlist volta ao início; desligado, a música toca até o fim e para.
 - **Campo de link**: cole o link de um vídeo ou de uma playlist do YouTube e aperte Enter (ou ▶) para tocar na hora, sem salvar.
+- **Links do Spotify**: o Spotify não toca para a mesa (sem login, só 30 segundos e sem volume), então o Player pega o nome e procura no YouTube. Música vira o vídeo de música mais próximo; playlist, álbum ou artista viram uma playlist do YouTube com esse nome. Um aviso mostra o que foi encontrado. Precisa da chave da API do YouTube (abaixo); a cota grátis dá umas 100 buscas por dia.
 - **Playlists**: abre o gerenciador, com o controle completo (o que está tocando, faixa x de y, barra de progresso em que se clica para pular, faixa anterior e próxima, volume) e as playlists salvas. Clique em **+**, cole o link, dê um nome e **Salvar**; o **▶** ao lado de cada uma toca para a mesa.
 - O botão da **nota musical** nas ferramentas de Token mostra e esconde a barra.
 

@@ -44,3 +44,30 @@ export async function nomeDoLink({ lista, video }) {
   }
   return null;
 }
+
+/** Link do Spotify (música, playlist, álbum ou artista), ou null. */
+export function lerSpotify(texto) {
+  const m = String(texto ?? "").match(/open\.spotify\.com\/(?:intl-[a-z-]+\/)?(track|playlist|album|artist)\/([A-Za-z0-9]+)/);
+  return m ? { tipo: m[1], id: m[2], url: `https://open.spotify.com/${m[1]}/${m[2]}` } : null;
+}
+
+/**
+ * O Spotify não toca para a mesa (prévia de 30s sem login, sem volume): pega o nome pelo oEmbed dele
+ * e procura no YouTube. Música vira o vídeo de música mais próximo; playlist, álbum ou artista viram
+ * uma playlist do YouTube com esse nome. A busca precisa da chave da API do YouTube.
+ * @returns {Promise<{nome: string, titulo: string, lista: string|null, video: string|null}>}
+ */
+export async function buscarNoYoutube(spotify) {
+  const chave = cfg("apiKey");
+  if (!chave) throw new Error(t("aviso.spotifySemChave"));
+  const o = await (await fetch(`https://open.spotify.com/oembed?url=${encodeURIComponent(spotify.url)}`)).json().catch(() => null);
+  const nome = o?.title;
+  if (!nome) throw new Error(t("aviso.spotifyNome"));
+  const musica = spotify.tipo === "track";
+  const filtros = musica ? "&type=video&videoCategoryId=10&videoEmbeddable=true" : "&type=playlist";
+  const r = await (await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1${filtros}&q=${encodeURIComponent(nome)}&key=${chave}`)).json();
+  if (r.error) throw new Error(t("aviso.chave"));
+  const item = r.items?.[0];
+  if (!item) throw new Error(t("aviso.spotifyNada", { nome }));
+  return { nome, titulo: item.snippet?.title ?? nome, lista: item.id?.playlistId ?? null, video: item.id?.videoId ?? null };
+}

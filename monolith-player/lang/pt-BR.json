@@ -36,8 +36,12 @@
       "vazio": "Nenhuma playlist salva. Clique em + e cole o link de uma playlist do YouTube."
     },
     "aviso": {
-      "link": "Link não reconhecido. Cole o link de uma playlist (com list=) ou de um vídeo do YouTube.",
-      "chave": "A chave da API do YouTube foi recusada. Confira a chave nas configurações do Monolith: Player."
+      "link": "Link não reconhecido. Cole o link de uma playlist (com list=) ou de um vídeo do YouTube, ou um link do Spotify.",
+      "chave": "A chave da API do YouTube foi recusada. Confira a chave nas configurações do Monolith: Player.",
+      "spotifySemChave": "Para usar links do Spotify, o Player procura a música no YouTube, e isso precisa da chave da API do YouTube (grátis) em Configurar Definições > Monolith: Player.",
+      "spotifyNome": "Não consegui ler o nome desse link do Spotify.",
+      "spotifyNada": "Nada encontrado no YouTube para \"{nome}\".",
+      "spotifyAchou": "Spotify: \"{nome}\" → tocando \"{titulo}\" do YouTube."
     },
     "config": {
       "apiKey": {
@@ -56,7 +60,7 @@
     "widget": {
       "volume": "Volume: {v}",
       "volumeRotulo": "Volume do Player",
-      "linkDireto": "Link do YouTube (Enter)",
+      "linkDireto": "Link do YouTube ou Spotify (Enter)",
       "nome": "Music Player"
     },
     "gerenciador": {
