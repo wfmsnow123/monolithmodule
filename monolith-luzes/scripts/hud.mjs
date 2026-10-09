@@ -19,8 +19,11 @@ export function registrarHud() {
     for (const i of itensDeLuz(actor)) if (acende || ehObjeto(i)) linhas.push(linhaItem(token, i, acende));
     for (const e of carregadas(token)) linhas.push(linhaJunto(token, e, acende));
     for (const t of colocadasPerto(token)) linhas.push(linhaChao(token, t, acende));
+    // Luz sem item: para quem não tem tocha nem lanterna (no inventário ou na mão). Magias de luz não a escondem:
+    // com mais de uma opção, a lista pergunta o que acender.
     const avulsa = !!token.getFlag(ID, "avulsa");
-    if (acende && (avulsa || (!linhas.length && podeAvulsa()))) linhas.push(linhaAvulsa(token, avulsa));
+    const temObjeto = itensDeLuz(actor).some(ehObjeto) || carregadas(token).length > 0;
+    if (acende && (avulsa || (podeAvulsa() && !temObjeto))) linhas.push(linhaAvulsa(token, avulsa));
     if (!linhas.length) return;
     const col = root.querySelector(".col.left") ?? root.querySelector(".left");
     if (!col) return;
@@ -30,7 +33,7 @@ export function registrarHud() {
     btn.type = "button";
     btn.className = `control-icon monolith-luz-btn ${algumAceso ? "active" : ""}`;
     const direto = linhas.length === 1 && linhas[0].direto && !linhas[0].extras.length;
-    btn.dataset.tooltip = direto ? `${linhas[0].aceso ? "Apagar" : "Acender"} ${linhas[0].nome}` : "Luzes";
+    btn.dataset.tooltip = direto ? `${linhas[0].aceso ? "Apagar" : "Acender"} ${linhas[0].nome}` : "Luzes: escolha o que acender";
     btn.innerHTML = `<i class="fas fa-fire${algumAceso ? "" : "-flame-simple"}"></i>`;
     col.append(btn);
 

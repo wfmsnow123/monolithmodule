@@ -167,6 +167,8 @@ const OPS = {
     const erro = conferir(token, tile, user);
     if (erro) return erro;
     if (!token.actor) return "Esse token não tem ficha.";
+    // Aceso não vai para o inventário: fica na mão (carregado junto).
+    if (e.aceso) return OPS.carregar(dados, user);
     await guardarNoInventario(token.actor, e);
     await tile.delete();
   },
@@ -226,8 +228,30 @@ export function cobrirCarregada(token, chave) {
 export async function guardarCarregada(token, chave) {
   const e = carregadas(token).find((x) => x.chave === chave);
   if (!e || !token.actor) return;
-  await guardarNoInventario(token.actor, e);
+  // Nada fica aceso no inventário: guardar apaga a chama (o tempo que sobrou fica).
+  await guardarNoInventario(token.actor, { ...e, aceso: false });
   await token.update({ [`flags.${ID}.carregadas`]: carregadas(token).filter((x) => x.chave !== chave) });
+}
+
+/** Token do ator na cena atual: o selecionado, ou o primeiro. */
+export function tokenDaMao(actor) {
+  if (!actor || !canvas?.scene) return null;
+  return canvas.tokens.controlled.find((t) => t.actor === actor)?.document ?? actor.getActiveTokens(false, true)[0] ?? null;
+}
+
+/** Acender um objeto do inventário: uma unidade vai acesa para a mão do token (nada fica aceso no inventário). */
+export async function acenderNaMao(token, item, user = game.user) {
+  const f = fonteDe(item);
+  if (!f) return;
+  const e = estadoDoItem(item);
+  const r = await abastecer(f, Number(e.restante) || 0, item.actor, user, item.name);
+  if (r.erro) return ui.notifications.warn(r.erro);
+  e.aceso = true;
+  e.restante = r.restante;
+  await token.update({ [`flags.${ID}.carregadas`]: [...carregadas(token), e] });
+  const q = (item.system.quantity ?? 1) - 1;
+  if (q <= 0) await item.delete();
+  else await item.update({ "system.quantity": q, [`flags.${ID}.aceso`]: false, [`flags.${ID}.restante`]: 0, [`flags.${ID}.coberta`]: false });
 }
 
 export const largarCarregada = (token, chave) => pedir("largar", { sceneId: token.parent.id, tokenId: token.id, chave });
@@ -381,6 +405,8 @@ function abrirPaleta(tile, cx, cy) {
   if (!longe && podeAcender() && f) botoes.push(e.aceso ? bt("alternar", "Apagar", "fa-fire-flame-simple") : bt("alternar", "Acender", "fa-fire"));
   if (!longe && podeAcender() && e.aceso && temCobertura(f)) botoes.push(bt("cobrir", e.coberta ? "Descobrir" : "Cobrir", e.coberta ? "fa-eye" : "fa-eye-slash"));
   if (token) botoes.push(bt("pegar", "Pegar", "fa-hand"), bt("carregar", "Carregar junto", "fa-link"));
+  // Mestre: mover pela camada de Tiles (arrastar, girar, Delete) ou apagar direto.
+  if (game.user.isGM) botoes.push(bt("mover", "Mover", "fa-up-down-left-right"), bt("remover", "Apagar", "fa-trash"));
   const tempo = e.aceso ? tempoTexto(e.restante) : "";
   let nota = "";
   if (longe) nota = "Longe demais: chegue a um quadrado do objeto.";
@@ -400,8 +426,10 @@ function abrirPaleta(tile, cx, cy) {
     const b = ev.target.closest("button[data-acao]");
     if (!b) return;
     ev.preventDefault();
-    pedir(b.dataset.acao, { sceneId: tile.parent.id, tileId: tile.id, tokenId: token?.id ?? null });
     fecharPaleta();
+    if (b.dataset.acao === "mover") { canvas.tiles.activate(); return tile.object?.control({ releaseOthers: true }); }
+    if (b.dataset.acao === "remover") return tile.delete();
+    pedir(b.dataset.acao, { sceneId: tile.parent.id, tileId: tile.id, tokenId: token?.id ?? null });
   });
   paleta = el;
 }

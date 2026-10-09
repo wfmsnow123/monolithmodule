@@ -3,10 +3,11 @@
 Foundry 13, dnd5e 5. Tochas, velas, lamparinas, lanternas e magias de luz são coisas de verdade: o jogador acende o que carrega, e a luz vai junto com o token. Uma tocha pode ser largada no mapa e continua acesa. Substitui o **Torch** (os dois brigam pela luz do token; o módulo traz as configurações do Torch e oferece desligá-lo ao abrir o mundo).
 
 ## Acender
-- **HUD do token**: botão de chama na coluna da esquerda. Com uma fonte, alterna direto; com várias, abre a lista com o tempo que resta de cada uma (o que está no inventário, o que o token leva junto e o que está no chão a um quadrado). Botão direito cobre ou descobre a lanterna acesa.
-- **Ficha**: usar a tocha ou a lanterna acende e apaga (ataques com a tocha continuam sendo ataques). Também no botão direito do item (ficha do dnd5e e Tidy) e no cabeçalho da ficha do item.
+- **HUD do token**: botão de chama na coluna da esquerda. Com uma só coisa para acender, alterna direto; com mais de uma (uma magia de luz e a luz sem item, várias tochas...), abre a lista para escolher, com o tempo que resta de cada uma (o que está no inventário, o que o token leva na mão e o que está no chão a um quadrado). Tochas e lanternas do inventário também têm **Largar no chão**. Botão direito cobre ou descobre a lanterna acesa.
+- **Ficha**: usar a tocha ou a lanterna acende (ataques com a tocha continuam sendo ataques). Também no botão direito do item (ficha do dnd5e e Tidy) e no cabeçalho da ficha do item.
+- **Aceso vai na mão**: objeto aceso não fica no inventário. Acender tira uma unidade e ela vai acesa com o token (carregada junto, com o ícone no canto do token); o token precisa estar na cena. Guardar no inventário apaga a chama (o tempo que sobrou fica), e pegar do chão algo aceso leva na mão.
 - **Magias**: Luz, Globos de Luz, Criar Chamas e Luz do Dia. Lançar a magia acende; apagar pelo HUD ou pela ficha. Não gastam nada e acabam com a duração da magia.
-- **Sem item**: o Mestre (ou todos, conforme a configuração) acende um token que não tem nenhuma fonte com a luz avulsa (padrão: Tocha, 20/40 pés).
+- **Sem item**: o Mestre (ou todos, conforme a configuração) acende com a luz avulsa (padrão: Tocha, 20/40 pés) um token que não tem tocha nem lanterna. Ter uma magia de luz não tira essa opção: a lista pergunta qual acender.
 
 ## Luz no token
 A luz do token é a mais forte entre os itens acesos que o personagem carrega, os objetos que ele leva junto e a luz avulsa. Apagou tudo, o token volta à luz que tinha antes. O item saiu do inventário (soltou, trocou, vendeu), a luz sai junto. Lanterna furta-fogo é um cone na direção do token. Cenas em metros convertem os alcances sozinhas.
@@ -17,7 +18,7 @@ A luz do token é a mais forte entre os itens acesos que o personagem carrega, o
 - O que está no chão ou levado junto também queima com o tempo; uma tocha que acaba some do mapa.
 - Jogadores não criam objetos no mapa: o pedido vai para o Mestre. Sem Mestre online, nada acontece (aparece um aviso).
 - **Item Piles** (embutido no Monolith: Itemizador, ou o original): soltar em cima de outro token (uma pilha, outro personagem) segue como sempre. Segure **Shift** ao soltar para o Item Piles criar uma pilha em vez do objeto de luz. Dá para desligar o arrastar nas configurações.
-- O Mestre ajeita o objeto na camada de Tiles (mover, girar a lanterna furta-fogo, apagar); a luz acompanha.
+- O Mestre clica no objeto (na camada de tokens) e tem **Mover**, que abre a camada de Tiles com ele selecionado para arrastar, girar a lanterna furta-fogo ou apagar com Delete, e **Apagar**. A luz acompanha.
 
 ## Queima
 Com o tempo do mundo (calendário, descansos, avanço de horas), a chama queima:

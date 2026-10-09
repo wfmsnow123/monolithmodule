@@ -1,5 +1,6 @@
 import { ID, esc, fonteDe, combustivelDe, disponivel, fonteAvulsa, gastaAoAcender, ehMagia } from "./config.mjs";
 import { tempoTexto, passarTempo } from "./calculo.mjs";
+import { tokenDaMao, acenderNaMao } from "./chao.mjs";
 
 export { tempoTexto };
 
@@ -51,13 +52,22 @@ export async function abastecer(f, rest, actor, user, nome) {
   return { restante: f.duracao * 60 };
 }
 
-/** Acende o item. Tochas e velas começam uma unidade nova se a atual acabou; lanternas gastam combustível. */
+/**
+ * Acende o item. Magias acendem na ficha. Objetos (tocha, vela, lanterna) não ficam acesos no inventário:
+ * uma unidade vai acesa para a mão do token na cena (carregada junto). Tochas e velas começam uma unidade
+ * nova se a atual acabou; lanternas gastam combustível.
+ */
 export async function acender(item, user = game.user) {
   const f = fonteDe(item);
   const actor = item?.actor;
   if (!f || !actor) return;
   if (!ehMagia(item) && (item.system.quantity ?? 0) < 1) return ui.notifications.warn(`${item.name}: não sobrou nenhum.`);
   if (!disponivel(item)) return ui.notifications.warn(`${item.name}: equipe antes de acender.`);
+  if (!ehMagia(item)) {
+    const token = tokenDaMao(actor);
+    if (!token) return ui.notifications.warn(`${item.name}: ponha o token de ${actor.name} na cena para acender.`);
+    return acenderNaMao(token, item, user);
+  }
   const r = await abastecer(f, restante(item), actor, user, item.name);
   if (r.erro) return ui.notifications.warn(r.erro);
   await item.update({ [`flags.${ID}.aceso`]: true, [`flags.${ID}.restante`]: r.restante });
