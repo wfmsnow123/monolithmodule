@@ -50,7 +50,7 @@ export const Widget = {
     this.el.classList.toggle("tocando", tocando);
     this.el.innerHTML = `
       <div class="mpw-topo" data-tooltip="${esc(titulo)}">
-        <i class="fa-solid fa-compact-disc mpw-icone"></i><span class="mpw-titulo">${t("widget.nome")}</span>
+        <i class="fa-solid fa-music mpw-icone"></i><span class="mpw-titulo">${t("widget.nome")}</span><i class="fa-solid fa-compact-disc mpw-disco"></i>
         <span class="mpw-acoes">
           ${gm ? botao("tocar", "fa-play", t("player.tocar")) + botao("pausar", "fa-pause", t("player.pausar")) + botao("parar", "fa-stop", t("player.parar")) : ""}
           ${botao("volume", vol ? "fa-volume-low" : "fa-volume-xmark", t("widget.volume", { v: vol }))}

@@ -21,13 +21,15 @@
   font-family: var(--font-sans); font-size: 12px; color: var(--ink);
 }
 #players #monolith-player-widget .mpw-topo { display: flex; align-items: center; gap: var(--space-1); min-width: 0; }
-#players #monolith-player-widget .mpw-icone { color: var(--ink-muted); font-size: 13px; }
-/* Disco girando enquanto toca; parado quando pausa ou para. */
-#players #monolith-player-widget.tocando .mpw-icone { color: var(--blood-text); animation: mpw-disco 2.4s linear infinite; }
+#players #monolith-player-widget .mpw-icone { color: var(--ink-muted); font-size: 12px; }
+#players #monolith-player-widget.tocando .mpw-icone { color: var(--blood-text); }
+/* Disco logo depois do título: gira enquanto toca; parado e apagado quando pausa ou para. */
+#players #monolith-player-widget .mpw-disco { flex: none; margin-right: auto; font-size: 13px; color: var(--void-400); }
+#players #monolith-player-widget.tocando .mpw-disco { color: var(--blood-text); animation: mpw-disco 2.4s linear infinite; }
 @keyframes mpw-disco { to { transform: rotate(360deg); } }
-@media (prefers-reduced-motion: reduce) { #players #monolith-player-widget .mpw-icone { animation: none !important; } }
+@media (prefers-reduced-motion: reduce) { #players #monolith-player-widget .mpw-disco { animation: none !important; } }
 #players #monolith-player-widget .mpw-titulo {
-  flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   font-family: var(--font-display); font-size: 16px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink);
 }
 #players #monolith-player-widget .mpw-acoes { display: flex; gap: 2px; flex: none; }
