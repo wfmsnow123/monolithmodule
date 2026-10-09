@@ -30,7 +30,26 @@ Hooks.once("init", () => {
   registrarDesvantagemDeAtaque();
 });
 
+/**
+ * Configurações duplicadas: dois documentos do mesmo setting no mundo fazem a escolha "voltar"
+ * para o valor antigo depois de recarregar. Mantém o mais recente e apaga os outros.
+ */
+async function limparDuplicadas() {
+  const docs = game.settings.storage.get("world").filter((s) => s.key.startsWith(`${ID}.`));
+  const porChave = Map.groupBy ? Map.groupBy(docs, (d) => d.key) : docs.reduce((m, d) => m.set(d.key, [...(m.get(d.key) ?? []), d]), new Map());
+  const apagar = [];
+  for (const lista of porChave.values()) {
+    if (lista.length < 2) continue;
+    lista.sort((a, b) => (b._stats?.modifiedTime ?? 0) - (a._stats?.modifiedTime ?? 0));
+    apagar.push(...lista.slice(1).map((d) => d.id));
+  }
+  if (!apagar.length) return;
+  await foundry.documents.Setting.deleteDocuments(apagar);
+  console.warn(`${ID} | ${apagar.length} configuração(ões) duplicada(s) removida(s); mantido o valor mais recente.`);
+}
+
 Hooks.once("ready", async () => {
+  if (game.users.activeGM?.isSelf) await limparDuplicadas().catch((err) => console.error(`${ID} |`, err));
   game.modules.get(ID).api = { faixaAtual, pesoCarregado, limite, atualizarAtor, recalcularTodos, abrirEditor: () => new EditorFaixas().render(true) };
   if (game.user.isGM && game.settings.get("dnd5e", "encumbrance") !== "none") {
     const ok = await foundry.applications.api.DialogV2.confirm({ classes: ["mono"], window: { title: "Monolith: Encumbrance" },

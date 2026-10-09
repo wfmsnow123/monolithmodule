@@ -103,11 +103,14 @@ export async function atualizarAtor(actor) {
     img: faixa.img || "icons/svg/anchor.svg",
     description: faixa.descricao || "",
     changes: mudancas(faixa),
+    // Um status próprio torna o efeito "temporário": o ícone aparece no token e na ficha.
+    // Não usa "encumbered", que faria o dnd5e aplicar a redução dele por cima.
+    statuses: ["monolithCarga"],
     disabled: false,
     flags: { [ID]: { [EFFECT_FLAG]: faixa.id, assinatura: JSON.stringify(faixa) } }
   };
   if (atual) {
-    if (atual.getFlag(ID, "assinatura") === dados.flags[ID].assinatura) return;
+    if (atual.getFlag(ID, "assinatura") === dados.flags[ID].assinatura && atual.statuses.has("monolithCarga")) return;
     await atual.update(dados);
   } else {
     await actor.createEmbeddedDocuments("ActiveEffect", [dados]);

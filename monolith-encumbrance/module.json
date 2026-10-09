@@ -2,7 +2,7 @@
   "id": "monolith-encumbrance",
   "title": "Monolith: Encumbrance",
   "description": "Carga configurável para dnd5e: faixas de peso por Força, redução de deslocamento, desvantagens por habilidade e tipo de rolagem, efeitos livres e multiplicadores de peso. Substitui o Variant Encumbrance + Midi.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "authors": [
     {
       "name": "snowxd"
@@ -39,5 +39,5 @@
   ],
   "url": "https://github.com/wfmsnow123/monolithmodule",
   "manifest": "https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-encumbrance/module.json",
-  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-encumbrance-v0.2.0/monolith-encumbrance.zip"
+  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-encumbrance-v0.2.1/monolith-encumbrance.zip"
 }
