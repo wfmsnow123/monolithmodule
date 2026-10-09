@@ -239,6 +239,8 @@ body.theme-light #players.monolith-jogadores,
 }
 .application.mono > .window-header .header-control { color: var(--ink-muted); }
 .application.mono > .window-header .header-control:hover { color: var(--blood-text); }
+/* Os botões do cabeçalho são o próprio ícone (fa-solid no <button>): a fonte de ícones vence qualquer fonte herdada. */
+.application.mono > .window-header .header-control.icon { font-family: var(--font-awesome, "Font Awesome 6 Pro"); font-weight: 900; }
 .application.mono > .window-content { background: var(--void-100); color: var(--ink); padding: var(--space-4); }
 .application.mono h1, .application.mono h2, .application.mono h3, .application.mono legend {
   font-family: var(--font-display); font-weight: 400; letter-spacing: 0.05em; color: var(--ink);

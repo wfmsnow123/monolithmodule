@@ -38,6 +38,21 @@ const get = (k) => game.settings.get(MODULE.ID, k);
 const set = (k, v) => game.settings.set(MODULE.ID, k, v);
 const isLeader = () => game.users.activeGM?.isSelf ?? false;
 
+/** Hash salvo, aceitando também o link inteiro do calendário colado no campo. */
+export function normalizeHash(value) {
+  const text = String(value ?? '').trim();
+  if (!text) return '';
+  return text.match(/[0-9a-f]{32}/i)?.[0].toLowerCase() ?? text;
+}
+const getHash = () => normalizeHash(get(S.HASH));
+
+/** dynamic_data de uma resposta do site; erro claro quando ela não traz a data. */
+function readDynamicData(res) {
+  const dd = res?.dynamic_data;
+  if (!dd || dd.year === undefined || dd.day === undefined) throw new Error(res?.message ? `o site respondeu "${res.message}"` : 'a resposta do site não trouxe a data');
+  return dd;
+}
+
 /** Register settings (call during init). */
 export function registerFantasyCalendarSettings() {
   game.settings.register(MODULE.ID, S.HASH, {
@@ -87,7 +102,7 @@ export function initializeFantasyCalendarSync() {
 function restart() {
   if (pollTimer) clearInterval(pollTimer);
   pollTimer = null;
-  if (!game.ready || !isLeader() || !get(S.HASH)) return;
+  if (!game.ready || !isLeader() || !getHash()) return;
   if (get(S.PULL)) {
     pull(true);
     pollTimer = setInterval(() => poll(), Math.max(15, get(S.POLL)) * 1000);
@@ -104,7 +119,12 @@ async function request(path, { method = 'GET', body = null, auth = false } = {})
   }
   const res = await fetch(`${API}${path}`, { method, headers, body: body ? JSON.stringify(body) : null });
   if (!res.ok) throw new Error(`Fantasy-Calendar respondeu ${res.status} em ${path}`);
-  return res.json();
+  const data = await res.json();
+  // Hash inexistente ou rota errada voltam com HTTP 200 e só uma mensagem.
+  if (data && typeof data.message === 'string' && Object.keys(data).length === 1) {
+    throw new Error(/No query results/.test(data.message) ? `calendário "${path.split('/')[2]}" não encontrado no site` : data.message);
+  }
+  return data;
 }
 
 /** Absolute day number on the Fantasy-Calendar side (equals internal day count when year zero exists). */
@@ -121,7 +141,7 @@ function dayNumber(calendar, worldTime) {
 
 async function poll() {
   try {
-    const hash = get(S.HASH);
+    const hash = getHash();
     const lc = await request(`/calendar/${hash}/last_changed`);
     const stamp = lc?.last_dynamic_change ?? null;
     if (stamp && stamp !== lastChange) await pull(false, stamp);
@@ -135,10 +155,9 @@ async function pull(force = false, stamp = null) {
   const calendar = CalendarManager.getActiveCalendar();
   if (!calendar) return;
   try {
-    const hash = get(S.HASH);
+    const hash = getHash();
     const res = await request(`/calendar/${hash}/dynamic_data`);
-    const dd = res?.dynamic_data ?? res;
-    if (!dd || dd.year === undefined) return;
+    const dd = readDynamicData(res);
     if (stamp) lastChange = stamp;
     else {
       const lc = await request(`/calendar/${hash}/last_changed`).catch(() => null);
@@ -171,7 +190,7 @@ async function pull(force = false, stamp = null) {
 }
 
 function onWorldTimeChanged() {
-  if (applyingRemote || !isLeader() || !get(S.PUSH) || !get(S.HASH) || !get(S.TOKEN)) return;
+  if (applyingRemote || !isLeader() || !get(S.PUSH) || !getHash() || !get(S.TOKEN)) return;
   clearTimeout(pushTimer);
   pushTimer = setTimeout(() => pushNow(), 2000);
 }
@@ -183,7 +202,7 @@ async function pushNow() {
   const now = game.time.worldTime;
   const last = get(S.LAST) ?? {};
   if (!Number.isFinite(last.day)) return pull(true);
-  const hash = get(S.HASH);
+  const hash = getHash();
   try {
     const deltaDays = dayNumber(calendar, now) - last.day;
     if (deltaDays) await request(`/calendar/${hash}/changeDate`, { method: 'POST', auth: true, body: { unit: 'days', count: deltaDays } });
@@ -204,7 +223,7 @@ async function pushNow() {
 }
 
 function status() {
-  return { hash: get(S.HASH), pull: get(S.PULL), push: get(S.PUSH), clock: get(S.CLOCK), hasToken: !!get(S.TOKEN), lastKnown: get(S.LAST), lastChange, polling: !!pollTimer };
+  return { hash: getHash(), pull: get(S.PULL), push: get(S.PUSH), clock: get(S.CLOCK), hasToken: !!get(S.TOKEN), lastKnown: get(S.LAST), lastChange, polling: !!pollTimer };
 }
 
 /**
@@ -228,12 +247,12 @@ export class FantasyCalendarApp extends foundry.applications.api.ApplicationV2 {
   #siteDate = null;
 
   async _prepareContext() {
-    const hash = get(S.HASH);
+    const hash = getHash();
     if (hash && this.#siteDate === null) {
       try {
         const res = await request(`/calendar/${hash}/dynamic_data`);
-        const dd = res?.dynamic_data ?? res;
-        this.#siteDate = dd ? `${dd.day}/${(dd.timespan ?? 0) + 1}/${dd.year}` : '?';
+        const dd = readDynamicData(res);
+        this.#siteDate = `${dd.day}/${(dd.timespan ?? 0) + 1}/${dd.year}`;
       } catch (err) {
         this.#siteDate = `erro: ${err.message}`;
       }
@@ -250,11 +269,12 @@ export class FantasyCalendarApp extends foundry.applications.api.ApplicationV2 {
         <p class="mono-notice__body">Data no site agora: <b>${esc(ctx.siteDate ?? '...')}</b>. O Foundry acompanha o site${ctx.hasToken ? ' e envia os avanços de tempo de volta' : '; para enviar os avanços de volta, cole o token abaixo'}.</p>
       </div>
       <h3 class="mono-heading">Sincronização</h3>
+      <label class="mono-field"><span class="mono-field__label">Calendário no site</span><input class="mono-input" type="text" name="hash" autocomplete="off" value="${esc(ctx.hash)}" placeholder="${MONOLITH_HASH}"><p class="mono-field__hint">Hash ou link do calendário (app.fantasy-calendar.com/calendars/...). Vazio desliga a sincronização.</p></label>
       <label class="mono-field"><span class="mono-field__label">Puxar a data do site</span><input class="mono-toggle" type="checkbox" role="switch" name="pull" ${chk(ctx.pull)}><p class="mono-field__hint">Verifica o site a cada ${esc(ctx.poll)} segundos.</p></label>
       <label class="mono-field"><span class="mono-field__label">Enviar avanços para o site</span><input class="mono-toggle" type="checkbox" role="switch" name="push" ${chk(ctx.push)}><p class="mono-field__hint">Só funciona com o token salvo neste navegador.</p></label>
       <label class="mono-field"><span class="mono-field__label">Sincronizar também a hora</span><input class="mono-check" type="checkbox" name="clock" ${chk(ctx.clock)}><p class="mono-field__hint">Desligado: só o dia muda, a hora do Foundry fica.</p></label>
       <label class="mono-field"><span class="mono-field__label">Token de acesso pessoal</span><input class="mono-input" type="password" name="token" autocomplete="off" placeholder="${ctx.hasToken ? 'salvo neste navegador' : 'cole o token aqui'}"><p class="mono-field__hint">Fica só neste navegador. Vazio mantém o atual.</p></label>
-      <input type="hidden" name="hash" value="${esc(ctx.hash)}"><input type="hidden" name="poll" value="${esc(ctx.poll)}">
+      <input type="hidden" name="poll" value="${esc(ctx.poll)}">
       <footer class="mono-window__footer" style="margin:var(--space-4) calc(-1 * var(--space-4)) calc(-1 * var(--space-4))">
         ${ctx.hasToken ? '<button type="button" class="mono-btn mono-btn--ghost" data-action="clearToken">Apagar token</button>' : ''}
         <button type="button" class="mono-btn" data-action="pullNow">Puxar agora</button>
@@ -271,7 +291,7 @@ export class FantasyCalendarApp extends foundry.applications.api.ApplicationV2 {
   static async #onSubmit(event, form, formData) {
     const d = formData.object;
     if (!game.user.isGM) return ui.notifications.warn('Só o Mestre configura a conexão.');
-    await set(S.HASH, String(d.hash ?? '').trim());
+    await set(S.HASH, normalizeHash(d.hash));
     await set(S.PULL, !!d.pull);
     await set(S.CLOCK, !!d.clock);
     await set(S.PUSH, !!d.push);
@@ -284,11 +304,11 @@ export class FantasyCalendarApp extends foundry.applications.api.ApplicationV2 {
   }
 
   static async #onTest() {
-    const hash = get(S.HASH);
+    const hash = getHash();
     if (!hash) return ui.notifications.warn('Preencha e salve o hash do calendário primeiro.');
     try {
       const res = await request(`/calendar/${hash}/dynamic_data`);
-      const dd = res?.dynamic_data ?? res;
+      const dd = readDynamicData(res);
       ui.notifications.info(`Fantasy-Calendar: leitura ok (${dd.day}/${(dd.timespan ?? 0) + 1}/${dd.year}).`);
     } catch (err) {
       return ui.notifications.error(`Fantasy-Calendar: não consegui ler o calendário (${err.message}).`);
