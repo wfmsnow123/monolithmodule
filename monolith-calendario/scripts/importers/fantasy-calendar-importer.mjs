@@ -343,9 +343,10 @@ export default class FantasyCalendarImporter extends BaseImporter {
    * Import FC event categories as Calendaria note presets.
    */
   async #importNoteCategories() {
-    const existing = getAllPresets().map((c) => c.name.toLowerCase());
+    // Monolith: predefinições sem nome (ou categorias sem nome no site) não podem derrubar a sincronização.
+    const existing = getAllPresets().map((c) => String(c?.name ?? c?.label ?? '').toLowerCase());
     for (const cat of this.#fcCategories) {
-      if (existing.includes(cat.name.toLowerCase())) continue;
+      if (!cat?.name || existing.includes(String(cat.name).toLowerCase())) continue;
       try {
         await addCustomPreset(cat.name, cat.color, 'fa-tag');
         log(3, `Imported FC category: ${cat.name}`);
