@@ -443,11 +443,13 @@ Hooks.on("dnd5e.postUseActivity", (activity) => aoUsarAtividade(activity));
 Hooks.on("renderPlayers", (app, html) => {
   if (!game.user.isGM || !game.settings.get(ID, "botaoJogadores")) return;
   const root = html instanceof HTMLElement ? html : html?.[0];
-  if (!root || root.querySelector(".monolith-rest-btn")) return;
+  // Dentro da caixa dos jogadores ativos: fora dela a interface do Foundry não recebe cliques.
+  const ativos = root?.querySelector("#players-active");
+  if (!ativos || ativos.querySelector(".monolith-rest-btn")) return;
   const btn = document.createElement("button");
   btn.type = "button";
   btn.className = "monolith-rest-btn";
   btn.innerHTML = '<i class="fas fa-bed"></i> Descanso';
   btn.addEventListener("click", () => abrirPedido());
-  root.append(btn);
+  ativos.insertBefore(btn, ativos.querySelector("#performance-stats"));
 });
