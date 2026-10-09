@@ -295,6 +295,7 @@ export async function pedirDescanso(actors, { tipo, sono = true, agitada = false
   if (tipo !== "folego") {
     // A Vigília conta desde o pedido, para o aviso de 24 horas não disparar no meio do descanso.
     for (const a of actors) await a.update({ [`flags.${ID}.ultimaVigilia`]: game.time.worldTime, [`flags.${ID}.periodosSemSono`]: 0 });
+    await despausarRelogio();
   }
   if (avancar) await game.time.advance(t.minutos * 60);
   return msg;
@@ -318,8 +319,23 @@ function autoIniciar(message) {
 
 /* ================= Dormir é para os Fracos ================= */
 
+/** Primeiro Vigília ou Descanso Completo depois da pausa: todos começam do zero e o relógio volta a contar. */
+async function despausarRelogio() {
+  if (!game.user.isGM || !game.settings.get(ID, "relogioPausado")) return;
+  const agora = game.time.worldTime;
+  for (const a of game.actors.filter((x) => x.type === "character" && x.hasPlayerOwner)) {
+    await a.update({ [`flags.${ID}.ultimaVigilia`]: agora, [`flags.${ID}.periodosSemSono`]: 0 });
+  }
+  await iniciarRefeicoes({ todos: true });
+  await game.settings.set(ID, "relogioPausado", false);
+  await ChatMessage.create({
+    whisper: game.users.filter((u) => u.isGM).map((u) => u.id),
+    content: `<div class="mono-card"><header><i class="fas fa-hourglass-start"></i> Sono e fome</header><p>O relógio de sono e fome começou a contar agora, para todos os personagens.</p></div>`
+  });
+}
+
 async function verificarSono() {
-  if (!game.users.activeGM?.isSelf || !game.settings.get(ID, "dormirFracos")) return;
+  if (!game.users.activeGM?.isSelf || !game.settings.get(ID, "dormirFracos") || game.settings.get(ID, "relogioPausado")) return;
   const agora = game.time.worldTime;
   for (const actor of game.actors.filter((a) => a.type === "character" && a.hasPlayerOwner)) {
     let ultima = actor.getFlag(ID, "ultimaVigilia");
@@ -410,6 +426,11 @@ function registrarConfiguracoesDeComida() {
 /* ================= Interface ================= */
 
 Hooks.once("init", () => {
+  game.settings.register(ID, "relogioPausado", {
+    name: "Sono e fome pausados até o próximo descanso",
+    hint: "Enquanto marcado, o relógio não cobra sono nem fome (nem quando a data do calendário salta). O próximo Vigília ou Descanso Completo pedido pelo Mestre zera os registros de todos, começa a contar dali e desmarca sozinho. Marque de novo antes de mexer na data.",
+    scope: "world", config: true, type: Boolean, default: true
+  });
   game.settings.register(ID, "dormirFracos", {
     name: "Dormir é para os Fracos",
     hint: "A cada 24 horas sem Vigília, pede um teste de Constituição (CD 10, +5 por período seguido); falha dá 1 de Exaustão.",

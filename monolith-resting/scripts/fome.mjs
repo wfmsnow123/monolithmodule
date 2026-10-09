@@ -55,7 +55,7 @@ export function verificarFome() {
 }
 
 async function conferir() {
-  if (!game.users.activeGM?.isSelf || !game.settings.get(ID, "fome")) return;
+  if (!game.users.activeGM?.isSelf || !game.settings.get(ID, "fome") || game.settings.get(ID, "relogioPausado")) return;
   const agora = game.time.worldTime;
   const intervalo = game.settings.get(ID, "fomeIntervalo");
   const punir = game.settings.get(ID, "fomeInanicao");

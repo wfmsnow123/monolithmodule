@@ -2,7 +2,7 @@
   "id": "monolith-resting",
   "title": "Monolith: Resting Rules",
   "description": "Os três descansos de Monolith prontos no dnd5e: Fôlego, Vigília (sono inteiro, Agitada, armadura) e Descanso Completo, com limites por dia, acampamento Exposto e Dormir é para os Fracos. Substitui o Rest Recovery for 5E. Fogueira com pilha de comida compartilhada no descanso e fome pelo relógio do mundo.",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "authors": [
     {
       "name": "snowxd"
@@ -39,6 +39,6 @@
   ],
   "url": "https://github.com/wfmsnow123/monolithmodule",
   "manifest": "https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-resting/module.json",
-  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-resting-v0.3.3/monolith-resting.zip",
+  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-resting-v0.3.4/monolith-resting.zip",
   "socket": true
 }
