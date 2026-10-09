@@ -41,6 +41,7 @@
 #players #monolith-player-widget button:hover { border-color: var(--ink-muted); color: var(--ink); }
 #players #monolith-player-widget button i { margin: 0; }
 #players #monolith-player-widget.tocando [data-acao="tocar"] { background: var(--blood-500); border-color: var(--blood-500); color: var(--bone); }
+#players #monolith-player-widget button.is-on { background: var(--cobalt-500); border-color: var(--cobalt-500); color: var(--bone); }
 #players #monolith-player-widget .mpw-vol { display: flex; align-items: center; gap: var(--space-2); }
 #players #monolith-player-widget .mpw-vol[hidden] { display: none; }
 #players #monolith-player-widget .mpw-vol input { flex: 1; min-width: 0; accent-color: var(--blood-500); }
@@ -91,6 +92,7 @@
 }
 .application.mono.monolith-player-playlists button.mp-btn i { margin: 0; }
 .application.mono.monolith-player-playlists button.mp-btn.is-off { opacity: 0.35; pointer-events: none; }
+.application.mono.monolith-player-playlists button.mp-btn.is-on { background: var(--cobalt-500); border-color: var(--cobalt-500); color: var(--bone); }
 .application.mono.monolith-player-playlists button.mp-btn--tocar { width: 56px; background: var(--blood-500); border-color: var(--blood-500); color: var(--bone); }
 .application.mono.monolith-player-playlists button.mp-btn--tocar:hover { background: var(--blood-600); border-color: var(--blood-600); }
 

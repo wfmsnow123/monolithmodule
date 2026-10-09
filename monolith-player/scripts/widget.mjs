@@ -1,6 +1,6 @@
 import { ID, t, esc, cfg, lerLink } from "./util.mjs";
 import { publicar } from "./tocador.mjs";
-import { tocar, pausar, parar, Playlists } from "./janelas.mjs";
+import { tocar, pausar, parar, alternarLoop, Playlists } from "./janelas.mjs";
 
 /*
  * Barra do Player, fixa na lateral esquerda: dentro da caixa da lista de jogadores, logo abaixo da linha
@@ -47,13 +47,13 @@ export const Widget = {
     // O nome da faixa só aparece para o Mestre (para os jogadores pode ser spoiler).
     const titulo = info && !estado.parado ? info.titulo || t("player.carregando") : t("player.parado");
     const digitado = this.el.querySelector('[name="link"]')?.value ?? "";
-    const botao = (acao, icone, rotulo) => `<button type="button" data-acao="${acao}" data-tooltip="${esc(rotulo)}" aria-label="${esc(rotulo)}"><i class="fa-solid ${icone}"></i></button>`;
+    const botao = (acao, icone, rotulo, extra = "") => `<button type="button" class="${extra}" data-acao="${acao}" data-tooltip="${esc(rotulo)}" aria-label="${esc(rotulo)}"><i class="fa-solid ${icone}"></i></button>`;
     this.el.classList.toggle("tocando", tocando);
     this.el.innerHTML = `
       <div class="mpw-topo" ${gm ? `data-tooltip="${esc(titulo)}"` : ""}>
         <i class="fa-solid fa-music mpw-icone"></i><span class="mpw-titulo">${t("widget.nome")}</span><i class="fa-solid fa-compact-disc mpw-disco"></i>
         <span class="mpw-acoes">
-          ${gm ? botao("tocar", "fa-play", t("player.tocar")) + botao("pausar", "fa-pause", t("player.pausar")) + botao("parar", "fa-stop", t("player.parar")) : ""}
+          ${gm ? botao("tocar", "fa-play", t("player.tocar")) + botao("pausar", "fa-pause", t("player.pausar")) + botao("parar", "fa-stop", t("player.parar")) + botao("loop", "fa-repeat", t(estado.loop ? "player.loopLigado" : "player.loopDesligado"), estado.loop ? "is-on" : "") : ""}
           ${botao("volume", vol ? "fa-volume-low" : "fa-volume-xmark", t("widget.volume", { v: vol }))}
         </span>
       </div>
@@ -87,6 +87,7 @@ export const Widget = {
       }
       case "pausar": return pausar();
       case "parar": return parar();
+      case "loop": return alternarLoop();
       case "playlists": return Playlists.abrir();
       case "volume":
         this.volumeAberto = !this.volumeAberto;

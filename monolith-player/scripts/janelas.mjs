@@ -31,6 +31,12 @@ export function pular(passo) {
   return publicar({ indice: ((estado.indice ?? 0) + passo + total) % total, tempo: 0, tocando: true, parado: false });
 }
 
+/** Liga ou desliga o loop (playlist dá a volta, vídeo avulso recomeça). */
+export function alternarLoop() {
+  const estado = cfg("estado") ?? {};
+  return publicar({ loop: !estado.loop });
+}
+
 /** Vai para um ponto da faixa (fração de 0 a 1). */
 export function buscar(fracao) {
   const estado = cfg("estado") ?? {};
@@ -66,6 +72,7 @@ export class Playlists extends ApplicationV2 {
       parar: () => parar(),
       anterior: () => pular(-1),
       proxima: () => pular(1),
+      loop: () => alternarLoop(),
       novo: Playlists.#novo,
       cancelar: Playlists.#cancelar,
       salvar: Playlists.#salvar,
@@ -117,6 +124,7 @@ export class Playlists extends ApplicationV2 {
           ${botao("pausar", "fa-pause", t("player.pausar"))}
           ${botao("parar", "fa-stop", t("player.parar"))}
           ${botao("proxima", "fa-forward-step", t("player.proxima"), temLista ? "" : "is-off")}
+          ${botao("loop", "fa-repeat", t(estado.loop ? "player.loopLigado" : "player.loopDesligado"), estado.loop ? "is-on" : "")}
         </div>
         <label class="mp-volume"><i class="fa-solid ${vol ? "fa-volume-low" : "fa-volume-xmark"}"></i>
           <input type="range" name="volume" min="0" max="100" step="1" value="${vol}" aria-label="${esc(t("gerenciador.volume"))}"><b data-vol>${vol}</b></label>

@@ -96,6 +96,7 @@ export class Tocador {
       if (!estado.tocando) p.pauseVideo();
       return this.#avisar();
     }
+    if (estado.lista) p.setLoop?.(!!estado.loop);
     if (Math.abs((p.getCurrentTime?.() ?? 0) - alvo) > TOLERANCIA) p.seekTo(alvo, true);
     if (estado.tocando) p.playVideo();
     else p.pauseVideo();
@@ -111,11 +112,18 @@ export class Tocador {
   #mudouEstado(codigo) {
     const p = this.player;
     const estado = cfg("estado") ?? {};
-    if (codigo === YT.PlayerState.PLAYING && estado.lista) p.setLoop(true);
-    // Vídeo avulso: cada cliente recomeça sozinho, como ambientação em loop.
+    // Loop: com o botão ligado, a playlist dá a volta e o vídeo avulso recomeça; desligado, a música
+    // toca até o fim e para, e o Mestre ativo registra a parada para todo mundo.
+    if (codigo === YT.PlayerState.PLAYING && estado.lista) p.setLoop(!!estado.loop);
     if (codigo === YT.PlayerState.ENDED && estado.video && !estado.lista) {
-      p.seekTo(0, true);
-      p.playVideo();
+      if (estado.loop) {
+        p.seekTo(0, true);
+        p.playVideo();
+      } else if (mestreAtivo()) publicar({ tocando: false, parado: true, tempo: 0 });
+    }
+    if (codigo === YT.PlayerState.ENDED && estado.lista && !estado.loop && mestreAtivo()) {
+      const total = p.getPlaylist?.()?.length ?? 0;
+      if (total && p.getPlaylistIndex() >= total - 1) publicar({ tocando: false, parado: true, tempo: 0 });
     }
     // A playlist passou de faixa sozinha: o Mestre ativo registra para todo mundo.
     if (codigo === YT.PlayerState.PLAYING && estado.lista && mestreAtivo() && p.getPlaylistIndex() !== estado.indice) {

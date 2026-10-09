@@ -8,11 +8,12 @@ Substitui o YouTube Player (`fvtt-youtube-player`). Não ative os dois juntos.
 
 A barra **Monolith · Player** fica fixa na lateral esquerda, dentro da caixa da lista de jogadores, logo abaixo da linha Monolith.
 - **▶ ⏸ ■**: tocar, pausar e parar para a mesa inteira.
+- **🔁 Loop** (desligado por padrão): ligado, o vídeo recomeça sozinho e a playlist volta ao início; desligado, a música toca até o fim e para.
 - **Campo de link**: cole o link de um vídeo ou de uma playlist do YouTube e aperte Enter (ou ▶) para tocar na hora, sem salvar.
 - **Playlists**: abre o gerenciador, com o controle completo (o que está tocando, faixa x de y, barra de progresso em que se clica para pular, faixa anterior e próxima, volume) e as playlists salvas. Clique em **+**, cole o link, dê um nome e **Salvar**; o **▶** ao lado de cada uma toca para a mesa.
 - O botão da **nota musical** nas ferramentas de Token mostra e esconde a barra.
 
-A playlist dá a volta ao chegar ao fim. Vídeos privados, removidos ou que não podem ser incorporados são pulados.
+Vídeos privados, removidos ou que não podem ser incorporados são pulados.
 
 ## Jogadores
 
