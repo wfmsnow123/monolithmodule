@@ -46,6 +46,21 @@ export function normalizeHash(value) {
 }
 const getHash = () => normalizeHash(get(S.HASH));
 
+/** Token de acesso pessoal do site (Sanctum: "115|abc..."), nunca um hash de calendário. */
+export const looksLikeToken = (value) => /^\d+\|\S+$/.test(String(value ?? '').trim());
+
+/**
+ * O token já foi parar no campo do calendário (configuração de mundo, que todos os jogadores leem).
+ * O Mestre move o valor para o token deste navegador e devolve o calendário de Monolith.
+ */
+async function repairTokenInHash() {
+  const saved = get(S.HASH);
+  if (!game.user.isGM || !looksLikeToken(saved)) return;
+  if (!get(S.TOKEN)) await set(S.TOKEN, String(saved).trim());
+  await set(S.HASH, MONOLITH_HASH);
+  ui.notifications.warn('Fantasy-Calendar: o token estava salvo no lugar do calendário, visível para os jogadores. Corrigido; gere um token novo no site e apague o antigo.', { permanent: true });
+}
+
 /** dynamic_data de uma resposta do site; erro claro quando ela não traz a data. */
 function readDynamicData(res) {
   const dd = res?.dynamic_data;
@@ -92,8 +107,9 @@ export function registerFantasyCalendarSettings() {
 }
 
 /** Start polling and hooks (call during ready). */
-export function initializeFantasyCalendarSync() {
+export async function initializeFantasyCalendarSync() {
   Hooks.on('updateWorldTime', onWorldTimeChanged);
+  await repairTokenInHash();
   restart();
   globalThis.CALENDARIA ??= {};
   globalThis.CALENDARIA.fantasyCalendar = { pull: () => pull(true), push: () => pushNow(), status, open: () => new FantasyCalendarApp().render(true) };
@@ -269,11 +285,11 @@ export class FantasyCalendarApp extends foundry.applications.api.ApplicationV2 {
         <p class="mono-notice__body">Data no site agora: <b>${esc(ctx.siteDate ?? '...')}</b>. O Foundry acompanha o site${ctx.hasToken ? ' e envia os avanços de tempo de volta' : '; para enviar os avanços de volta, cole o token abaixo'}.</p>
       </div>
       <h3 class="mono-heading">Sincronização</h3>
-      <label class="mono-field"><span class="mono-field__label">Calendário no site</span><input class="mono-input" type="text" name="hash" autocomplete="off" value="${esc(ctx.hash)}" placeholder="${MONOLITH_HASH}"><p class="mono-field__hint">Hash ou link do calendário (app.fantasy-calendar.com/calendars/...). Vazio desliga a sincronização.</p></label>
+      <label class="mono-field"><span class="mono-field__label">Calendário no site</span><input class="mono-input" type="text" name="hash" autocomplete="off" spellcheck="false" data-1p-ignore data-lpignore="true" value="${esc(ctx.hash)}" placeholder="${MONOLITH_HASH}"><p class="mono-field__hint">Hash ou link do calendário (app.fantasy-calendar.com/calendars/...). Vazio desliga a sincronização.</p></label>
       <label class="mono-field"><span class="mono-field__label">Puxar a data do site</span><input class="mono-toggle" type="checkbox" role="switch" name="pull" ${chk(ctx.pull)}><p class="mono-field__hint">Verifica o site a cada ${esc(ctx.poll)} segundos.</p></label>
       <label class="mono-field"><span class="mono-field__label">Enviar avanços para o site</span><input class="mono-toggle" type="checkbox" role="switch" name="push" ${chk(ctx.push)}><p class="mono-field__hint">Só funciona com o token salvo neste navegador.</p></label>
       <label class="mono-field"><span class="mono-field__label">Sincronizar também a hora</span><input class="mono-check" type="checkbox" name="clock" ${chk(ctx.clock)}><p class="mono-field__hint">Desligado: só o dia muda, a hora do Foundry fica.</p></label>
-      <label class="mono-field"><span class="mono-field__label">Token de acesso pessoal</span><input class="mono-input" type="password" name="token" autocomplete="off" placeholder="${ctx.hasToken ? 'salvo neste navegador' : 'cole o token aqui'}"><p class="mono-field__hint">Fica só neste navegador. Vazio mantém o atual.</p></label>
+      <label class="mono-field"><span class="mono-field__label">Token de acesso pessoal</span><input class="mono-input" type="text" name="token" autocomplete="off" spellcheck="false" data-1p-ignore data-lpignore="true" style="-webkit-text-security:disc" placeholder="${ctx.hasToken ? 'salvo neste navegador' : 'cole o token aqui'}"><p class="mono-field__hint">Fica só neste navegador. Vazio mantém o atual.</p></label>
       <input type="hidden" name="poll" value="${esc(ctx.poll)}">
       <footer class="mono-window__footer" style="margin:var(--space-4) calc(-1 * var(--space-4)) calc(-1 * var(--space-4))">
         ${ctx.hasToken ? '<button type="button" class="mono-btn mono-btn--ghost" data-action="clearToken">Apagar token</button>' : ''}
@@ -291,6 +307,12 @@ export class FantasyCalendarApp extends foundry.applications.api.ApplicationV2 {
   static async #onSubmit(event, form, formData) {
     const d = formData.object;
     if (!game.user.isGM) return ui.notifications.warn('Só o Mestre configura a conexão.');
+    if (looksLikeToken(d.hash)) {
+      // Token colado (ou preenchido pelo navegador) no campo do calendário: vira o token.
+      d.token ||= d.hash;
+      d.hash = MONOLITH_HASH;
+      ui.notifications.warn('Fantasy-Calendar: aquilo era o token, não o calendário. Salvei como token e voltei ao calendário de Monolith.');
+    }
     await set(S.HASH, normalizeHash(d.hash));
     await set(S.PULL, !!d.pull);
     await set(S.CLOCK, !!d.clock);
