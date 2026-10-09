@@ -1,5 +1,5 @@
 import { CalendarManager } from '../calendar/_module.mjs';
-import { ASSETS, MOON_PHASE_LABELS } from '../constants.mjs';
+import { ASSETS, MODULE, MOON_PHASE_LABELS } from '../constants.mjs';
 import { NoteManager, addCustomPreset, getAllPresets } from '../notes/_module.mjs';
 import { localize, log } from '../utils/_module.mjs';
 import BaseImporter from './base-importer.mjs';
@@ -460,7 +460,10 @@ export default class FantasyCalendarImporter extends BaseImporter {
     const date = this.#extractDate(event.data, conditions, data);
     const isOneTimeEvent = Array.isArray(event.data?.date) && event.data.date.length >= 3;
     const isRandomEvent = eventType.repeat === 'random';
-    const suggestedType = isOneTimeEvent || isRandomEvent ? 'note' : 'festival';
+    // Monolith fork: every FC event stays a note. As festival, the importer dialog kept only month and day,
+    // dropping the description and the recurrence conditions (events landed on the wrong days, empty).
+    void isOneTimeEvent; void isRandomEvent;
+    const suggestedType = 'note';
     // A Month condition with no Day means the event spans that whole month in FC.
     const conditionTypes = new Set(
       this.#flattenConditions(conditions)
@@ -1092,25 +1095,7 @@ export default class FantasyCalendarImporter extends BaseImporter {
     const pagesWithEventConditions = [];
     for (const note of notes) {
       try {
-        const startDate = { ...note.startDate };
-        let endDate = null;
-        if (note.duration > 1) endDate = this.#addDaysToDate(startDate, note.duration - 1, calendar);
-        const noteData = {
-          startDate,
-          endDate,
-          allDay: true,
-          repeat: note.repeat,
-          repeatInterval: note.interval,
-          moonConditions: note.moonConditions || [],
-          randomConfig: note.randomConfig || null,
-          maxOccurrences: note.maxOccurrences || 0,
-          weekday: note.weekday ?? null,
-          weekNumber: note.weekNumber ?? null,
-          seasonalConfig: note.seasonalConfig || null,
-          conditions: note.conditionTree ? [] : note.conditions || [],
-          ...(note.conditionTree ? { conditionTree: note.conditionTree } : {}),
-          visibility: note.visibility || 'visible'
-        };
+        const noteData = this.#noteDataFor(note, calendar);
         const page = await NoteManager.createNote({ name: note.name, content: note.content || '', noteData, calendarId, openSheet: false });
         if (page) {
           count++;
@@ -1125,6 +1110,117 @@ export default class FantasyCalendarImporter extends BaseImporter {
     if (this._undatedEvents.length > 0) await this.migrateUndatedEvents(options.calendarName || 'Fantasy-Calendar Import');
     log(3, `Note import complete: ${count}/${notes.length}, ${errors.length} errors`);
     return { success: errors.length === 0, count, errors };
+  }
+
+  /**
+   * Monolith fork: Calendaria note data for one extracted FC note (shared by import and sync).
+   * @param {object} note - Extracted note
+   * @param {object} calendar - Target calendar
+   * @returns {object} Note data
+   */
+  #noteDataFor(note, calendar) {
+    const startDate = { ...note.startDate };
+    let endDate = null;
+    if (note.duration > 1) endDate = this.#addDaysToDate(startDate, note.duration - 1, calendar);
+    const noteData = {
+      startDate,
+      endDate,
+      allDay: true,
+      repeat: note.repeat,
+      repeatInterval: note.interval,
+      moonConditions: note.moonConditions || [],
+      randomConfig: note.randomConfig || null,
+      maxOccurrences: note.maxOccurrences || 0,
+      weekday: note.weekday ?? null,
+      weekNumber: note.weekNumber ?? null,
+      seasonalConfig: note.seasonalConfig || null,
+      conditions: note.conditionTree ? [] : note.conditions || [],
+      ...(note.conditionTree ? { conditionTree: note.conditionTree } : {}),
+      visibility: note.visibility || 'visible'
+    };
+    return noteData;
+  }
+
+  /**
+   * Monolith fork: bring the notes of a calendar in line with the FC events (live sync).
+   * Matches by the FC event id saved on the page (flag fcEventId) or, for notes imported before the flag,
+   * by name. Updates text and dates, creates what is missing, removes notes whose FC event was deleted,
+   * and replaces festival placeholders left by the old importer dialog.
+   * @param {object[]} notes - Extracted notes
+   * @param {object} options - { calendarId }
+   * @returns {Promise<{created: number, updated: number, removed: number, errors: string[]}>} Result
+   */
+  async syncNotes(notes, { calendarId } = {}) {
+    const errors = [];
+    let created = 0, updated = 0, removed = 0;
+    if (this.#fcCategories.length) await this.#importNoteCategories();
+    const calendar = CalendarManager.getCalendar(calendarId);
+    if (!calendar) throw new Error(`calendário ${calendarId} não encontrado`);
+    const pages = NoteManager.getAllNotes().filter((n) => n.calendarId === calendarId).map((n) => NoteManager.getFullNote(n.id)).filter(Boolean);
+    const byFcId = new Map();
+    const byName = new Map();
+    for (const page of pages) {
+      const fcId = page.getFlag(MODULE.ID, 'fcEventId');
+      if (fcId) byFcId.set(String(fcId), page);
+      else if (!byName.has(page.name)) byName.set(page.name, page);
+    }
+    const apagar = async (page) => {
+      NoteManager.enableBypassDeleteProtection();
+      try { await NoteManager.deleteNote(page.id); } finally { NoteManager.disableBypassDeleteProtection(); }
+    };
+    const seen = new Set();
+    const perId = new Map();
+    const fcIdToPage = new Map();
+    const pagesWithEventConditions = [];
+    for (const note of notes) {
+      const base = String(note.originalId ?? note.name);
+      const n = perId.get(base) ?? 0;
+      perId.set(base, n + 1);
+      const key = n ? `${base}#${n}` : base;
+      seen.add(key);
+      try {
+        const noteData = this.#noteDataFor(note, calendar);
+        let page = byFcId.get(key) ?? (n ? null : byName.get(note.name)) ?? null;
+        if (page?.system?.linkedFestival) { await apagar(page); page = null; }
+        if (page) {
+          byName.delete(page.name);
+          await NoteManager.updateNote(page.id, { name: note.name, content: note.content || '', noteData });
+          if (page.getFlag(MODULE.ID, 'fcEventId') !== key) await page.setFlag(MODULE.ID, 'fcEventId', key);
+          updated++;
+        } else {
+          page = await NoteManager.createNote({ name: note.name, content: note.content || '', noteData, calendarId, openSheet: false });
+          if (!page) { errors.push(`Failed to create note: ${note.name}`); continue; }
+          await page.setFlag(MODULE.ID, 'fcEventId', key);
+          created++;
+        }
+        if (note.originalId) fcIdToPage.set(String(note.originalId), page.id);
+        if (noteData.conditions.some((c) => c.field === 'event' && c.value2?.fcEventId)) pagesWithEventConditions.push({ pageId: page.id, conditions: noteData.conditions });
+      } catch (error) {
+        errors.push(`Error syncing "${note.name}": ${error.message}`);
+      }
+    }
+    for (const [key, page] of byFcId) {
+      if (seen.has(key) || String(key).startsWith('local:')) continue;
+      try { await apagar(page); removed++; } catch (error) { errors.push(`Error removing "${page.name}": ${error.message}`); }
+    }
+    if (pagesWithEventConditions.length > 0) await this.#resolveEventConditions(pagesWithEventConditions, fcIdToPage, errors);
+    // Festival definitions created by the old importer dialog for these events (no text, wrong days).
+    const names = new Set(notes.map((x) => x.name));
+    const festivals = calendar.festivals ?? {};
+    const entries = Array.isArray(festivals) ? festivals.map((f, i) => [String(i), f]) : Object.entries(festivals);
+    const stale = entries.filter(([, f]) => f && names.has(f.name));
+    if (stale.length) {
+      for (const page of NoteManager.getAllNotes().filter((x) => x.calendarId === calendarId).map((x) => NoteManager.getFullNote(x.id)).filter(Boolean)) {
+        if (page.system?.linkedFestival && names.has(page.name)) await apagar(page).catch(() => null);
+      }
+      const def = calendar.toObject();
+      const staleNames = new Set(stale.map(([, f]) => f.name));
+      def.festivals = Array.isArray(def.festivals) ? def.festivals.filter((f) => !staleNames.has(f?.name))
+        : Object.fromEntries(Object.entries(def.festivals ?? {}).filter(([, f]) => !staleNames.has(f?.name)));
+      await CalendarManager.updateCustomCalendar(calendarId, def);
+    }
+    log(3, `FC sync: ${created} created, ${updated} updated, ${removed} removed, ${errors.length} errors`);
+    return { created, updated, removed, errors };
   }
 
   /**

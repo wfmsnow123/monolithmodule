@@ -108,6 +108,12 @@ describe('Monolith Fantasy-Calendar events', () => {
 
   it('imports all 87 events', () => expect(notes).toHaveLength(87));
 
+  it('keeps every event as a note with its description (no festival conversion)', () => {
+    expect(notes.every((n) => n.suggestedType === 'note')).toBe(true);
+    const withText = fc.events.filter((e) => e.description);
+    for (const e of withText) expect(notes.find((n) => String(n.originalId) === String(e.id))?.content).toBe(e.description);
+  });
+
   it('annual event lands on its FC month (0-based timespan 7 = Tollen) and day', () => {
     const n = byName('Vigília de Athelstan');
     expect(n.conditionTree).toBeTruthy();

@@ -20,7 +20,8 @@ Calendário da campanha Monolith para Foundry VTT 13 (13.351+).
 1. Desative o **Calendaria** original e o **Simple Timekeeping**, se estiverem instalados.
 2. Instale pelo manifest e ative no mundo.
 3. Na primeira abertura, o Mestre recebe o **calendário de Monolith já importado** (meses, semana, Telunia e Pilas, estações periódicas, eras, constelações e os 87 eventos), e ele vira o calendário ativo. O mundo recarrega uma vez.
-4. A sincronização com o Fantasy-Calendar já vem ligada para o calendário de Monolith: o Foundry acompanha a data do site. Para o Foundry também mudar a data do site, abra **Configurações do Calendário > Início > Fantasy-Calendar** e cole o token de acesso pessoal (fica só no seu navegador).
+4. A sincronização com o Fantasy-Calendar já vem ligada para o calendário de Monolith: o Foundry acompanha a data do site. Para o Foundry também mudar a data do site e enviar eventos, abra **Configurações do Calendário > Início > Fantasy-Calendar** e cole o token de acesso pessoal (fica salvo no mundo).
+5. **Eventos nos dois sentidos.** Os eventos do site viram notas do calendário, com descrição, datas e recorrência; o Foundry confere de novo a cada 10 verificações e pelo botão **Atualizar eventos**. Uma nota criada ou editada no Foundry (nome, texto, data) vai para o site. Apagar uma nota no Foundry não apaga o evento no site. Notas que vieram sem texto do importador antigo (como festivais) são trocadas pelas notas certas na primeira sincronização.
 
 ## O que foi tirado do Calendaria
 
@@ -34,7 +35,7 @@ Abas de Névoa de Guerra, Macros, Chat, Permissões, Tela, Módulo, Cinemáticas
 
 ## Desenvolvimento
 
-Fonte em `D:\FoundryDev\monolith-calendario` (git). `npm run build` gera `dist/`; `npm test` roda 1.633 testes, incluindo `dev/tests/monolith-fantasy-calendar.test.mjs`, que compara datas, dias da semana, luas, estações e eventos com os valores calculados pelas fórmulas do próprio Fantasy-Calendar.
+Fonte em `D:\FoundryDev\monolithmodule\monolith-calendario` (monorepo). `npm run build` gera `dist/`; `npm test` roda 1.645 testes, incluindo `dev/tests/monolith-fantasy-calendar.test.mjs`, que compara datas, dias da semana, luas, estações e eventos com os valores calculados pelas fórmulas do próprio Fantasy-Calendar.
 
 ---
 

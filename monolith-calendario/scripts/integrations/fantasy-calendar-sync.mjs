@@ -14,6 +14,8 @@
 
 import { CalendarManager } from '../calendar/_module.mjs';
 import { MODULE } from '../constants.mjs';
+import { createImporter } from '../importers/_module.mjs';
+import { NoteManager } from '../notes/_module.mjs';
 import { log } from '../utils/_module.mjs';
 
 const API = 'https://app.fantasy-calendar.com/api/v1';
@@ -26,6 +28,8 @@ const S = {
   CLOCK: 'fcUseClock',
   POLL: 'fcPollSeconds',
   TOKEN: 'fcToken',
+  TOKEN_WORLD: 'fcTokenMundo',
+  EVENTS: 'fcEvents',
   LAST: 'fcLastKnown'
 };
 
@@ -33,10 +37,18 @@ let pollTimer = null;
 let applyingRemote = false;
 let pushTimer = null;
 let lastChange = null;
+let applyingEvents = false;
+let eventsSignature = null;
+let pollCount = 0;
+let fcCalendarId = null;
+const pushEventTimers = new Map();
+const NOTE_TYPE = `${MODULE.ID}.calendarnote`;
 
 const get = (k) => game.settings.get(MODULE.ID, k);
 const set = (k, v) => game.settings.set(MODULE.ID, k, v);
 const isLeader = () => game.users.activeGM?.isSelf ?? false;
+/** Token do site: o salvo no mundo (fica para o Mestre em qualquer navegador) ou, antes dele, o deste navegador. */
+const getToken = () => String(get(S.TOKEN_WORLD) || get(S.TOKEN) || '').trim();
 
 /** Hash salvo, aceitando também o link inteiro do calendário colado no campo. */
 export function normalizeHash(value) {
@@ -56,7 +68,7 @@ export const looksLikeToken = (value) => /^\d+\|\S+$/.test(String(value ?? '').t
 async function repairTokenInHash() {
   const saved = get(S.HASH);
   if (!game.user.isGM || !looksLikeToken(saved)) return;
-  if (!get(S.TOKEN)) await set(S.TOKEN, String(saved).trim());
+  if (!getToken()) await set(S.TOKEN_WORLD, String(saved).trim());
   await set(S.HASH, MONOLITH_HASH);
   ui.notifications.warn('Fantasy-Calendar: o token estava salvo no lugar do calendário, visível para os jogadores. Corrigido; gere um token novo no site e apague o antigo.', { permanent: true });
 }
@@ -95,6 +107,12 @@ export function registerFantasyCalendarSettings() {
     scope: 'world', config: false, type: Number, default: 60, range: { min: 15, max: 3600, step: 15 }, onChange: () => restart()
   });
   game.settings.register(MODULE.ID, S.TOKEN, { scope: 'client', config: false, type: String, default: '' });
+  game.settings.register(MODULE.ID, S.TOKEN_WORLD, { scope: 'world', config: false, type: String, default: '' });
+  game.settings.register(MODULE.ID, S.EVENTS, {
+    name: 'Fantasy-Calendar: sincronizar os eventos',
+    hint: 'Eventos do site viram notas (com descrição); notas criadas ou editadas no Foundry vão para o site (com token).',
+    scope: 'world', config: false, type: Boolean, default: true
+  });
   game.settings.register(MODULE.ID, S.LAST, { scope: 'world', config: false, type: Object, default: {} });
   game.settings.registerMenu(MODULE.ID, 'fcConnection', {
     name: 'Fantasy-Calendar',
@@ -109,10 +127,14 @@ export function registerFantasyCalendarSettings() {
 /** Start polling and hooks (call during ready). */
 export async function initializeFantasyCalendarSync() {
   Hooks.on('updateWorldTime', onWorldTimeChanged);
+  Hooks.on('createJournalEntryPage', (page) => onNoteChanged(page, true));
+  Hooks.on('updateJournalEntryPage', (page, changes) => onNoteChanged(page, false, changes));
   await repairTokenInHash();
+  // O token deste navegador passa a ficar salvo no mundo, para não ter de colar de novo.
+  if (game.user.isGM && get(S.TOKEN) && !get(S.TOKEN_WORLD)) await set(S.TOKEN_WORLD, String(get(S.TOKEN)).trim());
   restart();
   globalThis.CALENDARIA ??= {};
-  globalThis.CALENDARIA.fantasyCalendar = { pull: () => pull(true), push: () => pushNow(), status, open: () => new FantasyCalendarApp().render(true) };
+  globalThis.CALENDARIA.fantasyCalendar = { pull: () => pull(true), push: () => pushNow(), events: () => pullEvents(true), status, open: () => new FantasyCalendarApp().render(true) };
 }
 
 function restart() {
@@ -121,6 +143,7 @@ function restart() {
   if (!game.ready || !isLeader() || !getHash()) return;
   if (get(S.PULL)) {
     pull(true);
+    if (get(S.EVENTS)) pullEvents(false);
     pollTimer = setInterval(() => poll(), Math.max(15, get(S.POLL)) * 1000);
   }
 }
@@ -129,7 +152,7 @@ async function request(path, { method = 'GET', body = null, auth = false } = {})
   const headers = { Accept: 'application/json' };
   if (body) headers['Content-Type'] = 'application/json';
   if (auth) {
-    const token = get(S.TOKEN);
+    const token = getToken();
     if (!token) throw new Error('Sem token do Fantasy-Calendar. Use a janela "Conexão com o Fantasy-Calendar".');
     headers.Authorization = `Bearer ${token}`;
   }
@@ -161,6 +184,7 @@ async function poll() {
     const lc = await request(`/calendar/${hash}/last_changed`);
     const stamp = lc?.last_dynamic_change ?? null;
     if (stamp && stamp !== lastChange) await pull(false, stamp);
+    if (get(S.EVENTS) && ++pollCount % 10 === 0) await pullEvents(false);
   } catch (err) {
     log(2, 'Fantasy-Calendar: falha ao verificar mudanças', err);
   }
@@ -206,14 +230,14 @@ async function pull(force = false, stamp = null) {
 }
 
 function onWorldTimeChanged() {
-  if (applyingRemote || !isLeader() || !get(S.PUSH) || !getHash() || !get(S.TOKEN)) return;
+  if (applyingRemote || !isLeader() || !get(S.PUSH) || !getHash() || !getToken()) return;
   clearTimeout(pushTimer);
   pushTimer = setTimeout(() => pushNow(), 2000);
 }
 
 async function pushNow() {
   const calendar = CalendarManager.getActiveCalendar();
-  if (!calendar || !isLeader() || !get(S.TOKEN)) return;
+  if (!calendar || !isLeader() || !getToken()) return;
   const spd = (calendar.days?.hoursPerDay ?? 24) * (calendar.days?.minutesPerHour ?? 60) * (calendar.days?.secondsPerMinute ?? 60);
   const now = game.time.worldTime;
   const last = get(S.LAST) ?? {};
@@ -238,8 +262,118 @@ async function pushNow() {
   }
 }
 
+/* ---------- Eventos (notas) ---------- */
+
+/** Calendário inteiro do site, no formato do export (events + categories). */
+async function fetchCalendar() {
+  const res = await request(`/calendar/${getHash()}`);
+  if (!Array.isArray(res?.events)) throw new Error('a resposta do site não trouxe os eventos');
+  fcCalendarId = res.id ?? fcCalendarId;
+  return { name: res.name, static_data: res.static_data, dynamic_data: res.dynamic_data, events: res.events, categories: res.event_categories ?? [] };
+}
+
+/** Puxa os eventos do site para as notas do calendário ativo (descrição, datas e recorrência). */
+async function pullEvents(notify = false) {
+  if (!isLeader() || !getHash()) return;
+  const calendarId = CalendarManager.getActiveCalendar()?.metadata?.id;
+  if (!calendarId) return;
+  try {
+    const data = await fetchCalendar();
+    const signature = `${calendarId}:${data.events.map((e) => `${e.id}@${e.updated_at}`).join(',')}`;
+    if (!notify && signature === eventsSignature) return;
+    const importer = createImporter('fantasy-calendar');
+    await importer.transform(data);
+    const notes = await importer.extractNotes(data);
+    applyingEvents = true;
+    let result;
+    try {
+      result = await importer.syncNotes(notes, { calendarId });
+    } finally {
+      setTimeout(() => (applyingEvents = false), 1000);
+    }
+    eventsSignature = signature;
+    if (notify || result.created || result.removed) {
+      ui.notifications.info(`Fantasy-Calendar: eventos sincronizados (${result.created} novos, ${result.updated} atualizados, ${result.removed} removidos).`);
+    }
+    if (result.errors.length) log(2, 'Fantasy-Calendar: erros ao sincronizar eventos', result.errors);
+  } catch (err) {
+    log(1, 'Fantasy-Calendar: falha ao puxar os eventos', err);
+    if (notify) ui.notifications.warn(`Fantasy-Calendar: ${err.message}`);
+  }
+}
+
+/** Nota do Foundry criada ou editada: vai para o site (só o Mestre ativo, com token). */
+function onNoteChanged(page, created, changes = {}) {
+  if (applyingEvents || page.type !== NOTE_TYPE || !isLeader() || !get(S.EVENTS) || !getHash() || !getToken()) return;
+  if (page.system?.linkedFestival) return;
+  const calendarId = CalendarManager.getActiveCalendar()?.metadata?.id;
+  if (!calendarId || page.getFlag(MODULE.ID, 'calendarId') !== calendarId) return;
+  if (!created) {
+    const relevant = 'name' in changes || foundry.utils.hasProperty(changes, 'text.content') || foundry.utils.hasProperty(changes, 'system.startDate');
+    if (!relevant) return;
+  }
+  clearTimeout(pushEventTimers.get(page.id));
+  pushEventTimers.set(page.id, setTimeout(() => {
+    pushEventTimers.delete(page.id);
+    pushEvent(page).catch((err) => {
+      log(1, 'Fantasy-Calendar: falha ao enviar o evento', err);
+      ui.notifications.warn(`Fantasy-Calendar: o evento "${page.name}" não foi enviado (${err.message}).`);
+    });
+  }, 1500));
+}
+
+/** Data de uma nota no formato do site: [ano, mês (índice), dia (1 em diante)]. */
+function fcDate(page) {
+  const d = page.system?.startDate ?? {};
+  return [Number(d.year) || 0, Number(d.month) || 0, (Number(d.dayOfMonth) || 0) + 1];
+}
+
+function oneTimeData(date) {
+  return {
+    has_duration: false, duration: 1, show_first_last: false, limited_repeat: false, limited_repeat_num: 1,
+    conditions: [['Date', '0', date]], connected_events: [], date, search_distance: 0, overrides: { moons: [] }
+  };
+}
+
+/** Nota sem recorrência nem condições: dá para mandar a data ao site sem perder nada. */
+function isOneTime(page) {
+  const sys = page.system ?? {};
+  return (sys.repeat ?? 'never') === 'never' && !sys.conditions?.length && !(sys.conditionTree?.children?.length ?? 0);
+}
+
+async function pushEvent(page) {
+  page = NoteManager.getFullNote(page.id) ?? page;
+  if (!page?.parent) return;
+  const fcId = page.getFlag(MODULE.ID, 'fcEventId');
+  const description = page.text?.content ?? '';
+  if (fcId) {
+    if (String(fcId).includes('#')) return; // evento do site dividido em várias notas: edite no site
+    const body = { name: page.name, description };
+    if (isOneTime(page)) body.data = oneTimeData(fcDate(page));
+    const res = await request(`/event/${fcId}`, { method: 'PUT', auth: true, body });
+    if (res?.error) throw new Error(res.message ?? 'o site recusou a edição');
+    return;
+  }
+  if (!fcCalendarId) await fetchCalendar();
+  if (!fcCalendarId) throw new Error('não descobri o calendário no site');
+  const body = {
+    calendar_id: fcCalendarId, name: page.name, description, event_category_id: null,
+    data: oneTimeData(fcDate(page)), settings: { color: 'Dark-Solid', text: 'text', hide: false, print: false }
+  };
+  const res = await request('/event', { method: 'POST', auth: true, body });
+  const id = res?.data?.id ?? res?.id;
+  if (!id) throw new Error(res?.message ?? 'o site não devolveu o evento criado');
+  applyingEvents = true;
+  try {
+    await page.setFlag(MODULE.ID, 'fcEventId', String(id));
+  } finally {
+    setTimeout(() => (applyingEvents = false), 500);
+  }
+  ui.notifications.info(`Fantasy-Calendar: evento "${page.name}" criado no site.`);
+}
+
 function status() {
-  return { hash: getHash(), pull: get(S.PULL), push: get(S.PUSH), clock: get(S.CLOCK), hasToken: !!get(S.TOKEN), lastKnown: get(S.LAST), lastChange, polling: !!pollTimer };
+  return { hash: getHash(), events: get(S.EVENTS), pull: get(S.PULL), push: get(S.PUSH), clock: get(S.CLOCK), hasToken: !!getToken(), lastKnown: get(S.LAST), lastChange, polling: !!pollTimer };
 }
 
 /**
@@ -257,7 +391,7 @@ export class FantasyCalendarApp extends foundry.applications.api.ApplicationV2 {
     window: { title: 'Fantasy-Calendar', icon: 'fas fa-link', resizable: true },
     position: { width: 520, height: 'auto' },
     form: { handler: FantasyCalendarApp.#onSubmit, closeOnSubmit: false, submitOnChange: false },
-    actions: { test: FantasyCalendarApp.#onTest, pullNow: FantasyCalendarApp.#onPull, clearToken: FantasyCalendarApp.#onClearToken }
+    actions: { test: FantasyCalendarApp.#onTest, pullNow: FantasyCalendarApp.#onPull, pullEvents: FantasyCalendarApp.#onPullEvents, clearToken: FantasyCalendarApp.#onClearToken }
   };
 
   #siteDate = null;
@@ -273,7 +407,7 @@ export class FantasyCalendarApp extends foundry.applications.api.ApplicationV2 {
         this.#siteDate = `erro: ${err.message}`;
       }
     }
-    return { hash, pull: get(S.PULL), push: get(S.PUSH), clock: get(S.CLOCK), poll: get(S.POLL), hasToken: !!get(S.TOKEN), siteDate: this.#siteDate };
+    return { hash, events: get(S.EVENTS), pull: get(S.PULL), push: get(S.PUSH), clock: get(S.CLOCK), poll: get(S.POLL), hasToken: !!getToken(), siteDate: this.#siteDate };
   }
 
   async _renderHTML(ctx) {
@@ -287,12 +421,14 @@ export class FantasyCalendarApp extends foundry.applications.api.ApplicationV2 {
       <h3 class="mono-heading">Sincronização</h3>
       <label class="mono-field"><span class="mono-field__label">Calendário no site</span><input class="mono-input" type="text" name="hash" autocomplete="off" spellcheck="false" data-1p-ignore data-lpignore="true" value="${esc(ctx.hash)}" placeholder="${MONOLITH_HASH}"><p class="mono-field__hint">Hash ou link do calendário (app.fantasy-calendar.com/calendars/...). Vazio desliga a sincronização.</p></label>
       <label class="mono-field"><span class="mono-field__label">Puxar a data do site</span><input class="mono-toggle" type="checkbox" role="switch" name="pull" ${chk(ctx.pull)}><p class="mono-field__hint">Verifica o site a cada ${esc(ctx.poll)} segundos.</p></label>
-      <label class="mono-field"><span class="mono-field__label">Enviar avanços para o site</span><input class="mono-toggle" type="checkbox" role="switch" name="push" ${chk(ctx.push)}><p class="mono-field__hint">Só funciona com o token salvo neste navegador.</p></label>
+      <label class="mono-field"><span class="mono-field__label">Enviar avanços para o site</span><input class="mono-toggle" type="checkbox" role="switch" name="push" ${chk(ctx.push)}><p class="mono-field__hint">Só funciona com o token salvo.</p></label>
+      <label class="mono-field"><span class="mono-field__label">Sincronizar os eventos</span><input class="mono-toggle" type="checkbox" role="switch" name="events" ${chk(ctx.events)}><p class="mono-field__hint">Eventos do site viram notas com descrição; notas criadas ou editadas aqui vão para o site (com o token). Apagar uma nota não apaga no site.</p></label>
       <label class="mono-field"><span class="mono-field__label">Sincronizar também a hora</span><input class="mono-check" type="checkbox" name="clock" ${chk(ctx.clock)}><p class="mono-field__hint">Desligado: só o dia muda, a hora do Foundry fica.</p></label>
-      <label class="mono-field"><span class="mono-field__label">Token de acesso pessoal</span><input class="mono-input" type="text" name="token" autocomplete="off" spellcheck="false" data-1p-ignore data-lpignore="true" style="-webkit-text-security:disc" placeholder="${ctx.hasToken ? 'salvo neste navegador' : 'cole o token aqui'}"><p class="mono-field__hint">Fica só neste navegador. Vazio mantém o atual.</p></label>
+      <label class="mono-field"><span class="mono-field__label">Token de acesso pessoal</span><input class="mono-input" type="text" name="token" autocomplete="off" spellcheck="false" data-1p-ignore data-lpignore="true" style="-webkit-text-security:disc" placeholder="${ctx.hasToken ? 'token salvo' : 'cole o token aqui'}"><p class="mono-field__hint">Fica salvo no mundo, para o Mestre em qualquer navegador. Vazio mantém o atual.</p></label>
       <input type="hidden" name="poll" value="${esc(ctx.poll)}">
       <footer class="mono-window__footer" style="margin:var(--space-4) calc(-1 * var(--space-4)) calc(-1 * var(--space-4))">
         ${ctx.hasToken ? '<button type="button" class="mono-btn mono-btn--ghost" data-action="clearToken">Apagar token</button>' : ''}
+        <button type="button" class="mono-btn" data-action="pullEvents">Atualizar eventos</button>
         <button type="button" class="mono-btn" data-action="pullNow">Puxar agora</button>
         <button type="button" class="mono-btn mono-btn--secondary" data-action="test">Testar</button>
         <button type="submit" class="mono-btn mono-btn--primary">Salvar</button>
@@ -317,8 +453,12 @@ export class FantasyCalendarApp extends foundry.applications.api.ApplicationV2 {
     await set(S.PULL, !!d.pull);
     await set(S.CLOCK, !!d.clock);
     await set(S.PUSH, !!d.push);
+    await set(S.EVENTS, !!d.events);
     await set(S.POLL, Math.max(15, Number(d.poll) || 60));
-    if (String(d.token ?? '').trim()) await set(S.TOKEN, String(d.token).trim());
+    if (String(d.token ?? '').trim()) {
+      await set(S.TOKEN_WORLD, String(d.token).trim());
+      await set(S.TOKEN, '');
+    }
     this.#siteDate = null;
     ui.notifications.info('Fantasy-Calendar: conexão salva.');
     restart();
@@ -335,7 +475,7 @@ export class FantasyCalendarApp extends foundry.applications.api.ApplicationV2 {
     } catch (err) {
       return ui.notifications.error(`Fantasy-Calendar: não consegui ler o calendário (${err.message}).`);
     }
-    if (!get(S.TOKEN)) return ui.notifications.info('Fantasy-Calendar: sem token, só a leitura está ativa.');
+    if (!getToken()) return ui.notifications.info('Fantasy-Calendar: sem token, só a leitura está ativa.');
     try {
       const res = await request(`/calendar/${hash}/changeDate`, { method: 'POST', auth: true, body: { unit: 'days', count: 0 } });
       ui.notifications.info(`Fantasy-Calendar: token válido, envio liberado (${res?.date_string ?? 'ok'}).`);
@@ -350,9 +490,15 @@ export class FantasyCalendarApp extends foundry.applications.api.ApplicationV2 {
     this.render();
   }
 
+  static async #onPullEvents() {
+    if (!game.user.isGM) return ui.notifications.warn('Só o Mestre sincroniza os eventos.');
+    await pullEvents(true);
+  }
+
   static async #onClearToken() {
     await set(S.TOKEN, '');
-    ui.notifications.info('Fantasy-Calendar: token apagado deste navegador.');
+    await set(S.TOKEN_WORLD, '');
+    ui.notifications.info('Fantasy-Calendar: token apagado.');
     this.render();
   }
 }
