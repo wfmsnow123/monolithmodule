@@ -2,7 +2,7 @@
   "id": "monolith-medidas",
   "title": "Monolith: Medidas Desesperadas",
   "description": "O Fio, as Medidas Desesperadas (configuráveis: custo, texto e o que cada uma faz), Queimar a Alma, Recusar a Morte, Morrendo, ainda e O Nome que Fica. Coração em cima do retrato da ficha Tidy 5e Clássica.",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "authors": [
     {
       "name": "snowxd"
@@ -54,5 +54,5 @@
   ],
   "url": "https://github.com/wfmsnow123/monolithmodule",
   "manifest": "https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-medidas/module.json",
-  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-medidas-v0.1.2/monolith-medidas.zip"
+  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-medidas-v0.1.3/monolith-medidas.zip"
 }

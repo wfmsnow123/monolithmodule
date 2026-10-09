@@ -5,7 +5,7 @@
    porque a Tidy estiliza botões, links e o retrato por conta própria. */
 .tidy5e-sheet .profile.mm-tem-coracao { position: relative; overflow: visible; }
 .tidy5e-sheet .profile a.monolith-tidy.mm-coracao {
-  position: absolute; top: -13px; left: 50%; transform: translateX(-50%); z-index: 6;
+  position: absolute; top: 2px; left: 50%; transform: translateX(-50%); z-index: 6;
   box-sizing: border-box; width: 34px; height: 34px; margin: 0; padding: 3px 0 0;
   display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 0;
   background: #0e1016; color: #c9c3b6; border: 1px solid #636b7e; border-radius: 50%;
