@@ -21,7 +21,8 @@ function montar(raiz) {
   if (!raiz) return;
   const ligado = game.settings.get(ID, "painelNaLista");
   raiz.classList.toggle("monolith-jogadores", ligado);
-  raiz.classList.toggle("recolhido", ligado && game.settings.get(ID, "hudRecolhido"));
+  // Esconder as linhas é coisa do Mestre; o jogador já tem o expandir nativo da lista.
+  raiz.classList.toggle("recolhido", ligado && game.user.isGM && game.settings.get(ID, "hudRecolhido"));
   const ativos = raiz.querySelector("#players-active");
   if (!ligado || !ativos) return;
 
@@ -62,7 +63,7 @@ function barra() {
     <button type="button" data-acao="enfase" data-tooltip="Rolar com Ênfase"><i class="fas fa-arrows-left-right-to-line"></i></button>
     ${trocaAtiva() ? `<button type="button" data-acao="troca" data-tooltip="Pedir uma troca"><i class="fas fa-handshake"></i></button>` : ""}
     ${descanso ? `<button type="button" data-acao="descanso" data-tooltip="Pedir descanso"><i class="fas fa-bed"></i></button>` : ""}
-    <button type="button" data-acao="recolher" data-tooltip="${game.settings.get(ID, "hudRecolhido") ? "Mostrar personagens" : "Esconder personagens"}"><i class="fas fa-${game.settings.get(ID, "hudRecolhido") ? "plus" : "minus"}"></i></button>`;
+    ${gm ? `<button type="button" data-acao="recolher" data-tooltip="${game.settings.get(ID, "hudRecolhido") ? "Mostrar personagens" : "Esconder personagens"}"><i class="fas fa-${game.settings.get(ID, "hudRecolhido") ? "plus" : "minus"}"></i></button>` : ""}`;
   el.addEventListener("click", ev => {
     const alvo = ev.target.closest("[data-acao]");
     if (!alvo) return;
