@@ -6,6 +6,7 @@ import {PerceptiveFlags, cDoorMoveTypes} from "./helpers/PerceptiveFlags.mjs";
 import { GeometricUtils } from "./utils/GeometricUtils.mjs";
 import { PerceptiveCompUtils, cLibWrapper } from "./compatibility/PerceptiveCompUtils.mjs";
 import {PerceptivePopups} from "./helpers/PerceptivePopups.mjs";
+import {vDCVisionFunctions} from "./helpers/BasicPatches.mjs";
 
 const cMovingDoors = new Set();
 
@@ -230,13 +231,12 @@ class DoorMovingManager {
 //hooks
 
 Hooks.once("init", function() {
-	//replace control visible to allow moved door controls to be visible as long as the replacement is visible
-	envolver("foundry.canvas.containers.DoorControl.prototype.isVisible", function(pWrapped, ...args) {
-		if (DoorMovingManager.DControlProxyVisible(this)) {
+	//moved door controls stay visible as long as the replacement is visible (through the single DoorControl.isVisible wrapper in BasicPatches)
+	vDCVisionFunctions.push(function(pDoorControl) {
+		if (DoorMovingManager.DControlProxyVisible(pDoorControl)) {
 			return true;
 		}
-		return pWrapped(...args);
-	}, "MIXED");
+	});
 });
 
 Hooks.on(cHook + "." + "DoorWheel", (pWall, pKeyInfos, pScrollInfos) => {
