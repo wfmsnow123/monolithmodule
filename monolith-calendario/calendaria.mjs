@@ -12,6 +12,7 @@ import CalendariaSettings from './scripts/settings-handler.mjs';
 import { initializeFantasyCalendarSync, registerFantasyCalendarSettings } from './scripts/integrations/fantasy-calendar-sync.mjs';
 import { registerMonolithSeedSettings, seedMonolithCalendar } from './scripts/integrations/monolith-seed.mjs';
 import { registerMonolithNightSettings, initializeMonolithNight } from './scripts/integrations/monolith-noite.mjs';
+import { registerMonolithMoonSettings, initializeMonolithMoon } from './scripts/integrations/monolith-lua.mjs';
 import { EventScheduler, ReminderScheduler, TimeClock, TimeTracker } from './scripts/time/_module.mjs';
 import {
   CalendariaSocket,
@@ -72,6 +73,7 @@ Hooks.once('init', async () => {
   registerFantasyCalendarSettings();
   registerMonolithSeedSettings();
   registerMonolithNightSettings();
+  registerMonolithMoonSettings();
   initializeLogger();
   registerKeybindings();
   registerHooks();
@@ -102,6 +104,7 @@ Hooks.once('ready', async () => {
   await NoteManager.initialize();
   await seedMonolithCalendar();
   initializeMonolithNight();
+  initializeMonolithMoon();
   if (game.user.isGM) {
     const activeCalendar = CalendarManager.getActiveCalendar();
     if (activeCalendar?.metadata?.id) await FestivalManager.seedFestivalNotes(activeCalendar.metadata.id, activeCalendar);

@@ -24,7 +24,7 @@
       }
     }
   },
-  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-calendario-v1.0.17-monolith.6/monolith-calendario.zip",
+  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-calendario-v1.0.17-monolith.7/monolith-calendario.zip",
   "esmodules": [
     "calendaria.mjs"
   ],
@@ -109,5 +109,5 @@
   "socket": true,
   "title": "Monolith: Calendário",
   "url": "https://github.com/wfmsnow123/monolithmodule",
-  "version": "1.0.17-monolith.6"
+  "version": "1.0.17-monolith.7"
 }
