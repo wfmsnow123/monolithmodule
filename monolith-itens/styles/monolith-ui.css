@@ -1,0 +1,279 @@
+/* Monolith: kit visual gerado por tools/build-ui.py a partir de design-system/. Não edite à mão. */
+
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=Barlow:wght@400;600&family=Bebas+Neue&family=JetBrains+Mono&display=swap");
+
+.mono,
+.mono-card {
+  --void-000: #07080b;
+  --void-100: #0e1016;
+  --void-200: #161a22;
+  --void-300: #2a303c;
+  --void-400: #636b7e;
+  --ink: #e6e2d8;
+  --ink-muted: #8f95a3;
+  --bone: #f1ece2;
+  --blood-500: #a3121b;
+  --blood-600: #c41d27;
+  --blood-text: #ec5960;
+  --blood-wash: #2a0b0e;
+  --cobalt-500: #28479a;
+  --cobalt-600: #3557b3;
+  --cobalt-text: #86a3e6;
+  --cobalt-wash: #0d1630;
+  --ward: #6b8ff0;
+  --ichor: #d29a3a;
+  --verdigris: #6fae99;
+  --shadow-pit: inset 0 1px 3px rgba(0,0,0,0.6);
+  --shadow-window: 0 12px 40px rgba(0,0,0,0.75);
+  --font-display: "Bebas Neue", "Oswald", Impact, "Arial Narrow", sans-serif;
+  --font-sans: "Barlow", "Segoe UI", system-ui, sans-serif;
+  --font-label: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --radius-none: 0px;
+  --radius-sm: 2px;
+  --radius-round: 999px;
+}
+
+body.theme-light .mono,
+body.theme-light .mono-card,
+.theme-light.mono,
+.theme-light.mono-card,
+.mono[data-theme="ossuary"],
+.mono-card[data-theme="ossuary"] {
+  --void-000: #e9e3d6;
+  --void-100: #f4efe4;
+  --void-200: #ddd5c4;
+  --void-300: #b9ad97;
+  --void-400: #7d725f;
+  --ink: #131419;
+  --ink-muted: #4c505b;
+  --bone: #f1ece2;
+  --blood-500: #9a1018;
+  --blood-600: #7a0b12;
+  --blood-text: #8e0f16;
+  --blood-wash: #f2d9d6;
+  --cobalt-500: #22408c;
+  --cobalt-600: #1a3170;
+  --cobalt-text: #1f3c86;
+  --cobalt-wash: #dbe2f2;
+  --ward: #2f56c4;
+  --ichor: #8a5a0e;
+  --verdigris: #2e6b58;
+  --shadow-pit: inset 0 1px 2px rgba(40,30,20,0.18);
+  --shadow-window: 0 10px 30px rgba(40,30,20,0.28);
+}
+
+/* Monolith — component styles. Loads after tokens.css; every value is a token. */
+
+.mono, .mono-root {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ink);
+  background: var(--void-100);
+}
+.mono *, .mono-root * { box-sizing: border-box; }
+.mono :focus-visible, .mono-root :focus-visible { outline: 2px solid var(--ward); outline-offset: 2px; }
+
+/* ---------- Button ---------- */
+.mono-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-1);
+  min-height: 32px; padding: var(--space-2) var(--space-4);
+  font-family: var(--font-label); font-size: 12px; line-height: 16px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  border: 1px solid var(--void-400); border-radius: var(--radius-sm);
+  background: var(--void-200); color: var(--ink); cursor: pointer;
+}
+.mono-btn:hover { border-color: var(--ink-muted); }
+.mono-btn--primary { background: var(--blood-500); border-color: var(--blood-500); color: var(--bone); }
+.mono-btn--primary:hover { background: var(--blood-600); border-color: var(--blood-600); }
+.mono-btn--secondary { background: var(--cobalt-500); border-color: var(--cobalt-500); color: var(--bone); }
+.mono-btn--secondary:hover { background: var(--cobalt-600); border-color: var(--cobalt-600); }
+.mono-btn--ghost { background: transparent; border-color: transparent; color: var(--blood-text); }
+.mono-btn--ghost:hover { border-color: var(--void-300); }
+.mono-btn[disabled] { opacity: .45; cursor: not-allowed; }
+
+/* ---------- Window (Foundry application frame) ---------- */
+.mono-window {
+  background: var(--void-100); color: var(--ink);
+  border: 1px solid var(--void-300); border-top: 3px solid var(--blood-500);
+  border-radius: var(--radius-none); box-shadow: var(--shadow-window);
+}
+.mono-window__header {
+  display: flex; align-items: center; gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: var(--void-000); border-bottom: 1px solid var(--void-300);
+}
+.mono-window__title {
+  flex: 1; margin: 0;
+  font-family: var(--font-display); font-size: 22px; line-height: 24px; font-weight: 400;
+  letter-spacing: 0.05em; text-transform: uppercase;
+}
+.mono-window__sigil { width: 8px; height: 16px; background: var(--blood-500); }
+.mono-window__close {
+  background: none; border: 0; color: var(--ink-muted); cursor: pointer;
+  font-family: var(--font-label); font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
+}
+.mono-window__close:hover { color: var(--blood-text); }
+.mono-window__body { padding: var(--space-4); }
+.mono-window__footer {
+  display: flex; justify-content: flex-end; gap: var(--space-2);
+  padding: var(--space-3) var(--space-4); border-top: 1px solid var(--void-300); background: var(--void-000);
+}
+
+/* ---------- Section heading ---------- */
+.mono-heading {
+  display: flex; align-items: center; gap: var(--space-2);
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-display); font-size: 20px; line-height: 24px; font-weight: 400;
+  letter-spacing: 0.05em; color: var(--ink);
+}
+.mono-heading::before { content: ""; width: 4px; height: 18px; background: var(--blood-500); }
+.mono-heading::after { content: ""; flex: 1; height: 1px; background: var(--void-300); }
+
+/* ---------- Setting field ---------- */
+.mono-field {
+  display: grid; grid-template-columns: 1fr minmax(160px, 45%); gap: var(--space-1) var(--space-4);
+  align-items: center; padding: var(--space-3) 0; border-bottom: 1px solid var(--void-300);
+}
+.mono-field__label { font-weight: 600; }
+.mono-field__hint { grid-column: 1 / -1; margin: 0; font-size: 12px; line-height: 16px; color: var(--ink-muted); }
+.mono-field__hint--warn { color: var(--ichor); }
+.mono-field__key { font-family: var(--font-mono); font-size: 12px; color: var(--ink-muted); }
+
+.mono-input, .mono-select {
+  width: 100%; min-height: 32px; padding: var(--space-1) var(--space-3);
+  font: inherit; color: var(--ink);
+  background: var(--void-200); border: 1px solid var(--void-400); border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-pit);
+}
+.mono-input::placeholder { color: var(--ink-muted); }
+.mono-input[aria-invalid="true"] { border-color: var(--blood-text); }
+.mono-select { appearance: none; padding-right: var(--space-8);
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - 16px) 50%, calc(100% - 11px) 50%; background-size: 5px 5px; background-repeat: no-repeat; }
+
+.mono-check { appearance: none; width: 18px; height: 18px; margin: 0; justify-self: end;
+  border: 1px solid var(--void-400); border-radius: var(--radius-sm); background: var(--void-200); cursor: pointer; display: grid; place-content: center; }
+.mono-check:checked { background: var(--blood-500); border-color: var(--blood-500); }
+.mono-check:checked::after { content: ""; width: 8px; height: 8px; background: var(--bone); }
+
+/* ---------- Toggle ---------- */
+.mono-toggle { appearance: none; position: relative; width: 40px; height: 20px; margin: 0; justify-self: end; cursor: pointer;
+  border: 1px solid var(--void-400); border-radius: var(--radius-round); background: var(--void-200); }
+.mono-toggle::after { content: ""; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px;
+  border-radius: var(--radius-round); background: var(--ink-muted); transition: left .12s; }
+.mono-toggle:checked { background: var(--cobalt-500); border-color: var(--cobalt-500); }
+.mono-toggle:checked::after { left: 22px; background: var(--bone); }
+
+/* ---------- Tabs ---------- */
+.mono-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--void-300); }
+.mono-tab {
+  padding: var(--space-2) var(--space-4); margin-bottom: -1px;
+  font-family: var(--font-label); font-size: 12px; line-height: 16px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink-muted); background: none; border: 0; border-bottom: 2px solid transparent; cursor: pointer;
+}
+.mono-tab:hover { color: var(--ink); }
+.mono-tab[aria-selected="true"] { color: var(--cobalt-text); border-bottom-color: var(--cobalt-500); background: var(--void-200); }
+
+/* ---------- Notice ---------- */
+.mono-notice {
+  padding: var(--space-3); border: 1px solid var(--void-400); border-radius: var(--radius-sm);
+  background: var(--void-200);
+}
+.mono-notice__title { display: flex; align-items: center; gap: var(--space-2); margin: 0 0 var(--space-1);
+  font-family: var(--font-label); font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+.mono-notice__title::before { content: ""; width: 8px; height: 8px; background: var(--void-400); transform: rotate(45deg); }
+.mono-notice__body { margin: 0; color: var(--ink); }
+.mono-notice--danger { background: var(--blood-wash); border-color: var(--blood-500); }
+.mono-notice--danger .mono-notice__title { color: var(--blood-text); }
+.mono-notice--danger .mono-notice__title::before { background: var(--blood-text); }
+.mono-notice--info { background: var(--cobalt-wash); border-color: var(--cobalt-500); }
+.mono-notice--info .mono-notice__title { color: var(--cobalt-text); }
+.mono-notice--info .mono-notice__title::before { background: var(--cobalt-text); }
+.mono-notice--warn { border-color: var(--ichor); background: var(--void-100); }
+.mono-notice--warn .mono-notice__title { color: var(--ichor); }
+.mono-notice--warn .mono-notice__title::before { background: var(--ichor); }
+
+/* ---------- Badge ---------- */
+.mono-badge {
+  display: inline-block; padding: 0 var(--space-2);
+  font-family: var(--font-label); font-size: 11px; line-height: 18px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+  border: 1px solid var(--void-400); border-radius: var(--radius-sm); color: var(--ink-muted);
+}
+.mono-badge--blood { background: var(--blood-500); border-color: var(--blood-500); color: var(--bone); }
+.mono-badge--cobalt { background: var(--cobalt-500); border-color: var(--cobalt-500); color: var(--bone); }
+
+
+/* ---------- Janelas do Foundry vestidas com o design system ---------- */
+.application.mono {
+  background: var(--void-100); color: var(--ink);
+  border: 1px solid var(--void-300); border-top: 3px solid var(--blood-500);
+  border-radius: var(--radius-none); box-shadow: var(--shadow-window);
+  font-family: var(--font-sans);
+}
+.application.mono > .window-header {
+  background: var(--void-000); color: var(--ink);
+  border-bottom: 1px solid var(--void-300); border-radius: var(--radius-none);
+}
+.application.mono > .window-header .window-title {
+  font-family: var(--font-display); font-weight: 400; font-size: 20px;
+  letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink);
+}
+.application.mono > .window-header .window-title::before {
+  content: ""; display: inline-block; width: 6px; height: 14px; margin-right: var(--space-2);
+  background: var(--blood-500); vertical-align: -1px;
+}
+.application.mono > .window-header .header-control { color: var(--ink-muted); }
+.application.mono > .window-header .header-control:hover { color: var(--blood-text); }
+/* Os botões do cabeçalho são o próprio ícone (fa-solid no <button>): a fonte de ícones vence qualquer fonte herdada. */
+.application.mono > .window-header .header-control.icon { font-family: var(--font-awesome, "Font Awesome 6 Pro"); font-weight: 900; }
+.application.mono > .window-content { background: var(--void-100); color: var(--ink); padding: var(--space-4); }
+.application.mono h1, .application.mono h2, .application.mono h3, .application.mono legend {
+  font-family: var(--font-display); font-weight: 400; letter-spacing: 0.05em; color: var(--ink);
+  border-color: var(--void-300);
+}
+.application.mono fieldset { border: 1px solid var(--void-300); border-radius: var(--radius-none); }
+.application.mono .hint, .application.mono p.hint { font-size: 12px; line-height: 16px; color: var(--ink-muted); }
+.application.mono input[type="text"], .application.mono input[type="number"], .application.mono input[type="password"],
+.application.mono select, .application.mono textarea {
+  background: var(--void-200); color: var(--ink); border: 1px solid var(--void-400);
+  border-radius: var(--radius-sm); box-shadow: var(--shadow-pit); font-family: var(--font-sans);
+}
+.application.mono input::placeholder, .application.mono textarea::placeholder { color: var(--ink-muted); }
+.application.mono input[type="checkbox"] { accent-color: var(--blood-500); }
+.application.mono button:not(.header-control):not(.mono-tab) {
+  font-family: var(--font-label); font-weight: 600; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+  background: var(--void-200); color: var(--ink); border: 1px solid var(--void-400); border-radius: var(--radius-sm);
+}
+.application.mono button:not(.header-control):not(.mono-tab):hover { border-color: var(--ink-muted); }
+.application.mono button[type="submit"], .application.mono button.mono-primary, .application.mono .form-footer button[data-action="ok"] {
+  background: var(--blood-500); border-color: var(--blood-500); color: var(--bone);
+}
+.application.mono button[type="submit"]:hover, .application.mono button.mono-primary:hover { background: var(--blood-600); border-color: var(--blood-600); }
+.application.mono button:disabled { opacity: 0.45; cursor: not-allowed; }
+.application.mono .form-group { border-bottom: 1px solid var(--void-300); padding: var(--space-2) 0; }
+.application.mono :focus-visible { outline: 2px solid var(--ward); outline-offset: 2px; }
+.application.mono a { color: var(--cobalt-text); }
+
+/* ---------- Cartões de chat ---------- */
+.mono-card {
+  background: var(--void-100); color: var(--ink); font-family: var(--font-sans);
+  border: 1px solid var(--void-300); border-top: 3px solid var(--blood-500); border-radius: var(--radius-none);
+}
+.mono-card > header {
+  display: flex; align-items: center; gap: var(--space-2);
+  padding: var(--space-1) var(--space-2); background: var(--void-000);
+  font-family: var(--font-display); font-size: 18px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink);
+}
+.mono-card > header i { color: var(--blood-text); }
+.mono-card .mono-card__body, .mono-card > p, .mono-card > ul { padding: var(--space-1) var(--space-2); margin: var(--space-1) 0; }
+.mono-card button { font-family: var(--font-label); letter-spacing: 0.12em; text-transform: uppercase; background: var(--blood-500); color: var(--bone); border: 1px solid var(--blood-500); border-radius: var(--radius-sm); }
+

@@ -1,0 +1,1269 @@
+[
+ {
+  "id": "cardapio-taverna-do-hanson",
+  "nome": "Taverna do Hanson",
+  "pasta": "Valenda",
+  "subtitulo": "Comida quente e bom vinho local. Valenda, à beira do Sern.",
+  "rodape": "Fiado só para quem o Hanson conhece. Velas apagadas na hora de dormir.",
+  "secoes": [
+   {
+    "titulo": "Da panela",
+    "itens": [
+     {
+      "nome": "Mingau quente",
+      "preco": "2 Mon"
+     },
+     {
+      "nome": "Ensopado de legumes",
+      "preco": "3 Mon"
+     },
+     {
+      "nome": "Torta de cebola",
+      "preco": "5 Mon"
+     },
+     {
+      "nome": "Torta de carne",
+      "preco": "8 Mon"
+     }
+    ]
+   },
+   {
+    "titulo": "Do fogo",
+    "itens": [
+     {
+      "nome": "Empada de frango com sálvia",
+      "preco": "7 Mon"
+     },
+     {
+      "nome": "Mawmeny",
+      "preco": "1 Lysar"
+     },
+     {
+      "nome": "Veado na manteiga de alho",
+      "preco": "2 Lysar",
+      "nota": "quando o Tomás traz caça"
+     }
+    ]
+   },
+   {
+    "titulo": "Para beber",
+    "itens": [
+     {
+      "nome": "Cerveja comum",
+      "preco": "2 Mon"
+     },
+     {
+      "nome": "Sidra",
+      "preco": "4 Mon"
+     },
+     {
+      "nome": "Vinho Belblossom, taça",
+      "preco": "3 Lysar"
+     },
+     {
+      "nome": "Garrafa de vinho Belblossom",
+      "preco": "1 Aurel"
+     }
+    ]
+   },
+   {
+    "titulo": "Quarto",
+    "itens": [
+     {
+      "nome": "Dormitório, por noite",
+      "preco": "5 Mon"
+     },
+     {
+      "nome": "Quarto simples",
+      "preco": "1 Lysar"
+     },
+     {
+      "nome": "Banho quente",
+      "preco": "4 Mon"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "cardapio-confeitaria-bennett",
+  "nome": "Confeitaria Bennett",
+  "pasta": "Valenda",
+  "subtitulo": "Barraca na Feira de Primar e encomendas para casamentos.",
+  "rodape": "Encomendas com uma semana de antecedência. A senhora Bennett não faz desconto.",
+  "secoes": [
+   {
+    "titulo": "Doces da semana",
+    "itens": [
+     {
+      "nome": "Pão torcido de leite e açúcar",
+      "preco": "3 Mon"
+     },
+     {
+      "nome": "Bolo de gengibre",
+      "preco": "5 Mon"
+     },
+     {
+      "nome": "Amêndoas açucaradas",
+      "preco": "5 Mon"
+     },
+     {
+      "nome": "Barras de tâmara",
+      "preco": "5 Mon"
+     }
+    ]
+   },
+   {
+    "titulo": "Da casa",
+    "itens": [
+     {
+      "nome": "Bolinho de queijo curado",
+      "preco": "1 Lysar"
+     },
+     {
+      "nome": "Peras em calda de vinho e mel",
+      "preco": "7 Mon"
+     },
+     {
+      "nome": "Doce de vinho com frutas da estação",
+      "preco": "3 Lysar",
+      "nota": "pote"
+     }
+    ]
+   },
+   {
+    "titulo": "Encomendas",
+    "itens": [
+     {
+      "nome": "Bolo de casamento pequeno",
+      "preco": "2 Aurel"
+     },
+     {
+      "nome": "Bolo de casamento grande",
+      "preco": "5 Aurel"
+     },
+     {
+      "nome": "Bandeja de doces para festa",
+      "preco": "1 Aurel"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "cardapio-padaria-graos-do-centeio",
+  "nome": "Padaria Grãos do Centeio",
+  "pasta": "Valenda",
+  "subtitulo": "Pães, bolos e roscas com farinha do Moinho do Sern.",
+  "rodape": "Forno aceso antes do sol. O que sobra à tarde vai para a capelinha de Zekes.",
+  "secoes": [
+   {
+    "titulo": "Pães",
+    "itens": [
+     {
+      "nome": "Pão de centeio",
+      "preco": "2 Mon"
+     },
+     {
+      "nome": "Pão de trigo, um quilo",
+      "preco": "2 Mon"
+     },
+     {
+      "nome": "Pão de Zekes",
+      "preco": "3 Mon",
+      "nota": "só na semana do Banquete"
+     }
+    ]
+   },
+   {
+    "titulo": "Para o caminho",
+    "itens": [
+     {
+      "nome": "Rosca doce",
+      "preco": "2 Mon"
+     },
+     {
+      "nome": "Biscoito duro, dois",
+      "preco": "1 Mon"
+     },
+     {
+      "nome": "Ração de viagem, um dia",
+      "preco": "5 Mon"
+     }
+    ]
+   },
+   {
+    "titulo": "Bolos",
+    "itens": [
+     {
+      "nome": "Bolo de gengibre",
+      "preco": "5 Mon"
+     },
+     {
+      "nome": "Torta de arroz",
+      "preco": "7 Mon"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "cardapio-vinicola-belblossom-degustacao",
+  "nome": "Vinícola Belblossom: degustação",
+  "pasta": "Valenda",
+  "subtitulo": "Vinho e queijo servidos por Darius Belblossom, nas colinas de Valenda.",
+  "rodape": "As cavernas-adega não são abertas a visitas.",
+  "secoes": [
+   {
+    "titulo": "Vinhos",
+    "itens": [
+     {
+      "nome": "Vinho Belblossom, taça",
+      "preco": "2 Lysar"
+     },
+     {
+      "nome": "Garrafa de vinho Belblossom",
+      "preco": "1 Aurel"
+     },
+     {
+      "nome": "Vinho tinto da adega, taça",
+      "preco": "1 Lysar"
+     }
+    ]
+   },
+   {
+    "titulo": "Da fazenda",
+    "itens": [
+     {
+      "nome": "Queijo curado Belblossom, prato",
+      "preco": "1 Lysar"
+     },
+     {
+      "nome": "Peça pequena de queijo curado",
+      "preco": "4 Lysar"
+     },
+     {
+      "nome": "Leite fresco",
+      "preco": "1 Mon"
+     }
+    ]
+   },
+   {
+    "titulo": "Degustação",
+    "itens": [
+     {
+      "nome": "Três taças e um prato de queijo",
+      "preco": "6 Lysar"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "cardapio-acougue-do-pierce",
+  "nome": "Açougue do Pierce",
+  "pasta": "Valenda",
+  "subtitulo": "O único açougue de Valenda. Caça quando o Tomás volta da mata.",
+  "rodape": "O Pierce não vende fiado e não pergunta de onde veio o dinheiro.",
+  "secoes": [
+   {
+    "titulo": "Carnes",
+    "itens": [
+     {
+      "nome": "Carne de gado, meio quilo",
+      "preco": "8 Mon"
+     },
+     {
+      "nome": "Frango inteiro",
+      "preco": "5 Mon"
+     },
+     {
+      "nome": "Toucinho",
+      "preco": "4 Mon"
+     },
+     {
+      "nome": "Linguiça defumada",
+      "preco": "5 Mon"
+     }
+    ]
+   },
+   {
+    "titulo": "Curados",
+    "itens": [
+     {
+      "nome": "Presunto defumado, pernil",
+      "preco": "3 Lysar"
+     },
+     {
+      "nome": "Carne seca",
+      "preco": "3 Mon"
+     }
+    ]
+   },
+   {
+    "titulo": "Caça",
+    "itens": [
+     {
+      "nome": "Lombo de veado",
+      "preco": "1 Lysar",
+      "nota": "por encomenda"
+     },
+     {
+      "nome": "Coelho",
+      "preco": "4 Mon"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "cardapio-mercado-coberto-de-altobaixo",
+  "nome": "Mercado coberto de Altobaixo",
+  "pasta": "Solmere",
+  "subtitulo": "Barracas de pescadores e curtidores, no distrito baixo de Solmere.",
+  "rodape": "Abre ao nascer do sol e fecha antes que os lampareiros terminem a ronda.",
+  "secoes": [
+   {
+    "titulo": "Peixaria",
+    "itens": [
+     {
+      "nome": "Peixe fresco",
+      "preco": "6 Mon"
+     },
+     {
+      "nome": "Lula frita",
+      "preco": "1 Lysar"
+     },
+     {
+      "nome": "Patas de caranguejo",
+      "preco": "1 Lysar"
+     }
+    ]
+   },
+   {
+    "titulo": "Hortas",
+    "itens": [
+     {
+      "nome": "Maço de cenouras, nabos ou pastinacas",
+      "preco": "1 Mon"
+     },
+     {
+      "nome": "Repolho",
+      "preco": "1 Mon"
+     },
+     {
+      "nome": "Abóbora",
+      "preco": "2 Mon"
+     },
+     {
+      "nome": "Cogumelos do bosque",
+      "preco": "2 Mon"
+     }
+    ]
+   },
+   {
+    "titulo": "Pomares",
+    "itens": [
+     {
+      "nome": "Maçãs ou peras, três",
+      "preco": "3 Mon"
+     },
+     {
+      "nome": "Cacho de uvas",
+      "preco": "2 Mon"
+     },
+     {
+      "nome": "Castanhas, punhado",
+      "preco": "1 Mon"
+     }
+    ]
+   },
+   {
+    "titulo": "Empório",
+    "itens": [
+     {
+      "nome": "Sal, um quilo",
+      "preco": "2 Lysar"
+     },
+     {
+      "nome": "Especiarias comuns",
+      "preco": "2 Lysar"
+     },
+     {
+      "nome": "Açafrão",
+      "preco": "4 Lysar"
+     },
+     {
+      "nome": "Mel, pote",
+      "preco": "6 Mon"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "cardapio-casa-de-pasto-da-arcada",
+  "nome": "Casa de pasto da Arcada",
+  "pasta": "Solmere",
+  "subtitulo": "Mesa farta no distrito da Arcada, para quem tem negócio na capital.",
+  "rodape": "Reservas com o maître. Não se entra armado.",
+  "secoes": [
+   {
+    "titulo": "Entradas",
+    "itens": [
+     {
+      "nome": "Salada de raízes",
+      "preco": "5 Mon"
+     },
+     {
+      "nome": "Funges",
+      "preco": "8 Mon"
+     },
+     {
+      "nome": "Ovos de basilisco",
+      "preco": "7 Mon"
+     }
+    ]
+   },
+   {
+    "titulo": "Pratos",
+    "itens": [
+     {
+      "nome": "Salomene",
+      "preco": "2 Lysar"
+     },
+     {
+      "nome": "Mawmeny",
+      "preco": "2 Lysar"
+     },
+     {
+      "nome": "Rique-manger",
+      "preco": "3 Lysar"
+     },
+     {
+      "nome": "Cinnamon brennet",
+      "preco": "5 Lysar"
+     },
+     {
+      "nome": "Veado na manteiga de alho",
+      "preco": "4 Lysar"
+     }
+    ]
+   },
+   {
+    "titulo": "Sobremesas",
+    "itens": [
+     {
+      "nome": "Mousse de maçã",
+      "preco": "4 Mon"
+     },
+     {
+      "nome": "Pudim de uva",
+      "preco": "6 Mon"
+     },
+     {
+      "nome": "Peras em calda",
+      "preco": "8 Mon"
+     }
+    ]
+   },
+   {
+    "titulo": "Adega",
+    "itens": [
+     {
+      "nome": "Vinho tinto envelhecido, garrafa",
+      "preco": "8 Lysar"
+     },
+     {
+      "nome": "Vinho Belblossom, garrafa",
+      "preco": "2 Aurel"
+     },
+     {
+      "nome": "Destilado, copo",
+      "preco": "8 Mon"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "cardapio-estalagem-da-estacao",
+  "nome": "Estalagem da Estação",
+  "pasta": "Solmere",
+  "subtitulo": "Em frente à estação da Thunderdope. Cheira a ferro, vapor e pão.",
+  "rodape": "Câmbio de moedas na estação, ao lado. Cuidado com bolsos no saguão.",
+  "secoes": [
+   {
+    "titulo": "Antes do trem",
+    "itens": [
+     {
+      "nome": "Mingau quente",
+      "preco": "3 Mon"
+     },
+     {
+      "nome": "Sanduíche de carne temperada",
+      "preco": "6 Mon"
+     },
+     {
+      "nome": "Leite quente com biscoito",
+      "preco": "3 Mon"
+     }
+    ]
+   },
+   {
+    "titulo": "Para a viagem",
+    "itens": [
+     {
+      "nome": "Ração de viagem, um dia",
+      "preco": "6 Mon"
+     },
+     {
+      "nome": "Rações para 5 dias",
+      "preco": "3 Lysar"
+     },
+     {
+      "nome": "Odre de água",
+      "preco": "3 Mon"
+     }
+    ]
+   },
+   {
+    "titulo": "Quartos",
+    "itens": [
+     {
+      "nome": "Quarto simples",
+      "preco": "2 Lysar"
+     },
+     {
+      "nome": "Quarto confortável",
+      "preco": "4 Lysar"
+     },
+     {
+      "nome": "Suíte",
+      "preco": "2 Aurel"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "cardapio-casa-de-cha-do-pinaculo",
+  "nome": "Casa de chá do Pináculo",
+  "pasta": "Solmere",
+  "subtitulo": "Chás, bolos e conversa baixa, perto do Pináculo.",
+  "rodape": "Silêncio depois do sino da Catedral.",
+  "secoes": [
+   {
+    "titulo": "Chás",
+    "itens": [
+     {
+      "nome": "Chá da casa",
+      "preco": "3 Mon"
+     },
+     {
+      "nome": "Chá de ervas da estação",
+      "preco": "3 Mon"
+     },
+     {
+      "nome": "Chá com leite e mel",
+      "preco": "5 Mon"
+     }
+    ]
+   },
+   {
+    "titulo": "Para acompanhar",
+    "itens": [
+     {
+      "nome": "Pão torcido de leite e açúcar",
+      "preco": "3 Mon"
+     },
+     {
+      "nome": "Bolo de gengibre",
+      "preco": "6 Mon"
+     },
+     {
+      "nome": "Torta de arroz",
+      "preco": "8 Mon"
+     }
+    ]
+   },
+   {
+    "titulo": "Dia do Chá",
+    "itens": [
+     {
+      "nome": "Bule servido à moda de Yoake",
+      "preco": "1 Lysar",
+      "nota": "4 de Zoryen"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "cardapio-taverna-dos-lampareiros",
+  "nome": "Taverna dos Lampareiros",
+  "pasta": "Solmere",
+  "subtitulo": "Onde a Guilda dos Lampareiros come depois da ronda.",
+  "rodape": "Quem chega sem lanterna depois do escuro paga a primeira rodada.",
+  "secoes": [
+   {
+    "titulo": "Da noite",
+    "itens": [
+     {
+      "nome": "Ensopado de legumes",
+      "preco": "5 Mon"
+     },
+     {
+      "nome": "Torta de carne",
+      "preco": "1 Lysar"
+     },
+     {
+      "nome": "Nuggets de beholder",
+      "preco": "1 Lysar"
+     }
+    ]
+   },
+   {
+    "titulo": "Do balcão",
+    "itens": [
+     {
+      "nome": "Cerveja comum",
+      "preco": "3 Mon"
+     },
+     {
+      "nome": "Hidromel",
+      "preco": "6 Mon"
+     },
+     {
+      "nome": "Destilado",
+      "preco": "8 Mon"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "cardapio-hospedaria-da-balanca",
+  "nome": "Hospedaria da Balança",
+  "pasta": "Interior e estradas",
+  "subtitulo": "Lexford, no vale baixo. Juristas, mercadores e pedreiros à mesma mesa.",
+  "rodape": "No Dia da Balança, a casa serve a primeira taça de graça.",
+  "secoes": [
+   {
+    "titulo": "Do dia",
+    "itens": [
+     {
+      "nome": "Ensopado de legumes",
+      "preco": "5 Mon"
+     },
+     {
+      "nome": "Empada de frango",
+      "preco": "1 Lysar"
+     },
+     {
+      "nome": "Salomene",
+      "preco": "2 Lysar"
+     }
+    ]
+   },
+   {
+    "titulo": "Para beber",
+    "itens": [
+     {
+      "nome": "Cerveja comum",
+      "preco": "3 Mon"
+     },
+     {
+      "nome": "Vinho doce de fruta",
+      "preco": "1 Lysar"
+     },
+     {
+      "nome": "Vinho tinto envelhecido",
+      "preco": "2 Lysar"
+     }
+    ]
+   },
+   {
+    "titulo": "Quarto",
+    "itens": [
+     {
+      "nome": "Quarto simples",
+      "preco": "2 Lysar"
+     },
+     {
+      "nome": "Quarto confortável",
+      "preco": "4 Lysar"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "cardapio-taberna-do-muro",
+  "nome": "Taberna do Muro",
+  "pasta": "Interior e estradas",
+  "subtitulo": "Daenish, à sombra da Muralha. Lavradores de dia, guardas de noite.",
+  "rodape": "Proibido falar de Kretânia depois da terceira caneca.",
+  "secoes": [
+   {
+    "titulo": "Comida",
+    "itens": [
+     {
+      "nome": "Mingau quente",
+      "preco": "1 Mon"
+     },
+     {
+      "nome": "Ensopado de legumes",
+      "preco": "2 Mon"
+     },
+     {
+      "nome": "Pão de centeio com toucinho",
+      "preco": "3 Mon"
+     },
+     {
+      "nome": "Torta de carne",
+      "preco": "6 Mon"
+     }
+    ]
+   },
+   {
+    "titulo": "Bebida",
+    "itens": [
+     {
+      "nome": "Cerveja comum",
+      "preco": "2 Mon"
+     },
+     {
+      "nome": "Sidra",
+      "preco": "3 Mon"
+     },
+     {
+      "nome": "Destilado",
+      "preco": "5 Mon"
+     }
+    ]
+   },
+   {
+    "titulo": "Pouso",
+    "itens": [
+     {
+      "nome": "Feno no estábulo",
+      "preco": "1 Mon"
+     },
+     {
+      "nome": "Dormitório",
+      "preco": "4 Mon"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "cardapio-casa-da-sidra-de-caezar",
+  "nome": "Casa da Sidra de Caezar",
+  "pasta": "Interior e estradas",
+  "subtitulo": "Entre os pomares e o templo de Zekes.",
+  "rodape": "Na colheita, quem ajuda a apanhar maçã bebe de graça à noite.",
+  "secoes": [
+   {
+    "titulo": "Sidras",
+    "itens": [
+     {
+      "nome": "Sidra nova, caneca",
+      "preco": "3 Mon"
+     },
+     {
+      "nome": "Sidra velha, caneca",
+      "preco": "5 Mon"
+     },
+     {
+      "nome": "Garrafa de sidra",
+      "preco": "1 Lysar"
+     }
+    ]
+   },
+   {
+    "titulo": "Do pomar",
+    "itens": [
+     {
+      "nome": "Maçãs assadas com mel",
+      "preco": "3 Mon"
+     },
+     {
+      "nome": "Rique-manger",
+      "preco": "1 Lysar"
+     },
+     {
+      "nome": "Mousse de maçã",
+      "preco": "3 Mon"
+     },
+     {
+      "nome": "Peras em calda",
+      "preco": "5 Mon"
+     }
+    ]
+   },
+   {
+    "titulo": "Petiscos",
+    "itens": [
+     {
+      "nome": "Queijo de rochedo",
+      "preco": "4 Mon"
+     },
+     {
+      "nome": "Castanhas assadas",
+      "preco": "1 Mon"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "cardapio-casa-de-pasto-do-porto-de-foz-clara",
+  "nome": "Casa de pasto do porto de Foz Clara",
+  "pasta": "Interior e estradas",
+  "subtitulo": "Terra de trigo e de pesca, no sul de Polésia. Cheiro de sal do mar.",
+  "rodape": "Missa de Solaris ao amanhecer; a cozinha só abre depois.",
+  "secoes": [
+   {
+    "titulo": "Do rio e do mar",
+    "itens": [
+     {
+      "nome": "Salmão defumado",
+      "preco": "8 Mon"
+     },
+     {
+      "nome": "Salomene",
+      "preco": "1 Lysar"
+     },
+     {
+      "nome": "Peixe fresco grelhado",
+      "preco": "6 Mon"
+     },
+     {
+      "nome": "Lula frita",
+      "preco": "8 Mon"
+     }
+    ]
+   },
+   {
+    "titulo": "Da terra",
+    "itens": [
+     {
+      "nome": "Sanduíche de carne temperada",
+      "preco": "5 Mon"
+     },
+     {
+      "nome": "Pão recém-assado",
+      "preco": "1 Mon"
+     }
+    ]
+   },
+   {
+    "titulo": "Para beber",
+    "itens": [
+     {
+      "nome": "Chá",
+      "preco": "2 Mon"
+     },
+     {
+      "nome": "Cerveja comum",
+      "preco": "2 Mon"
+     },
+     {
+      "nome": "Destilado",
+      "preco": "5 Mon"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "cardapio-estalagem-da-roda-quebrada",
+  "nome": "Estalagem da Roda Quebrada",
+  "pasta": "Interior e estradas",
+  "subtitulo": "Taberna de estrada entre Valenda e Elendor, onde as carroças param.",
+  "rodape": "Portões fechados ao escurecer. Quem bate depois espera o dia.",
+  "secoes": [
+   {
+    "titulo": "Para quem chega",
+    "itens": [
+     {
+      "nome": "Mingau quente",
+      "preco": "2 Mon"
+     },
+     {
+      "nome": "Ensopado de legumes",
+      "preco": "3 Mon"
+     },
+     {
+      "nome": "Torta de carne",
+      "preco": "8 Mon"
+     }
+    ]
+   },
+   {
+    "titulo": "Para quem segue",
+    "itens": [
+     {
+      "nome": "Ração de viagem, um dia",
+      "preco": "5 Mon"
+     },
+     {
+      "nome": "Odre de água",
+      "preco": "2 Mon"
+     },
+     {
+      "nome": "Ração e cuidado do cavalo",
+      "preco": "3 Mon"
+     }
+    ]
+   },
+   {
+    "titulo": "Para beber",
+    "itens": [
+     {
+      "nome": "Cerveja comum",
+      "preco": "2 Mon"
+     },
+     {
+      "nome": "Hidromel",
+      "preco": "5 Mon"
+     }
+    ]
+   },
+   {
+    "titulo": "Pouso",
+    "itens": [
+     {
+      "nome": "Feno",
+      "preco": "1 Mon"
+     },
+     {
+      "nome": "Dormitório",
+      "preco": "5 Mon"
+     },
+     {
+      "nome": "Quarto simples",
+      "preco": "1 Lysar"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "cardapio-cantina-da-guarnicao-de-elendor",
+  "nome": "Cantina da Guarnição de Elendor",
+  "pasta": "Interior e estradas",
+  "subtitulo": "Rio, peixe salgado e cerveja derramada.",
+  "rodape": "Farda abotoada à mesa. A Câmara confere as contas no fim do mês.",
+  "secoes": [
+   {
+    "titulo": "Rancho",
+    "itens": [
+     {
+      "nome": "Peixe salgado com pão",
+      "preco": "3 Mon"
+     },
+     {
+      "nome": "Ensopado de legumes",
+      "preco": "3 Mon"
+     },
+     {
+      "nome": "Pão de goblin",
+      "preco": "3 Mon"
+     }
+    ]
+   },
+   {
+    "titulo": "Para a ronda",
+    "itens": [
+     {
+      "nome": "Biscoito duro",
+      "preco": "1 Mon"
+     },
+     {
+      "nome": "Carne seca",
+      "preco": "3 Mon"
+     }
+    ]
+   },
+   {
+    "titulo": "Balcão",
+    "itens": [
+     {
+      "nome": "Cerveja comum",
+      "preco": "2 Mon"
+     },
+     {
+      "nome": "Destilado",
+      "preco": "6 Mon"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "cardapio-barraca-o-grifo-faminto",
+  "nome": "Barraca O Grifo Faminto",
+  "pasta": "Interior e estradas",
+  "subtitulo": "Petiscos de nome feio e gosto bom, de feira em feira.",
+  "rodape": "Nenhum monstro foi ferido. Quase nenhum.",
+  "secoes": [
+   {
+    "titulo": "Petiscos",
+    "itens": [
+     {
+      "nome": "Queijo de rochedo",
+      "preco": "5 Mon"
+     },
+     {
+      "nome": "Pão de goblin",
+      "preco": "3 Mon"
+     },
+     {
+      "nome": "Ovos de basilisco",
+      "preco": "6 Mon"
+     },
+     {
+      "nome": "Cogumelos de Calignis",
+      "preco": "6 Mon"
+     },
+     {
+      "nome": "Mini dracowings",
+      "preco": "7 Mon"
+     }
+    ]
+   },
+   {
+    "titulo": "Para os corajosos",
+    "itens": [
+     {
+      "nome": "Olho de grifo",
+      "preco": "1 Lysar"
+     },
+     {
+      "nome": "Patas de aranha gigante",
+      "preco": "1 Lysar"
+     },
+     {
+      "nome": "Dentes de troll",
+      "preco": "1 Lysar"
+     },
+     {
+      "nome": "Tentáculos de kraken",
+      "preco": "1 Lysar"
+     },
+     {
+      "nome": "Lâminas de dragão",
+      "preco": "1 Lysar"
+     }
+    ]
+   },
+   {
+    "titulo": "Para as crianças",
+    "itens": [
+     {
+      "nome": "Néctar de fada",
+      "preco": "2 Lysar",
+      "nota": "servido frio"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "cardapio-banquete-de-zekes",
+  "nome": "Banquete de Zekes",
+  "pasta": "Festas da estação",
+  "subtitulo": "7 de Zoryen, depois da colheita. A mesa é comprida e todos sentam juntos.",
+  "rodape": "Quem come leva alguma coisa para a mesa. Quem não tem nada, leva as mãos para servir.",
+  "secoes": [
+   {
+    "titulo": "Para repartir",
+    "itens": [
+     {
+      "nome": "Pão de Zekes",
+      "preco": "oferenda"
+     },
+     {
+      "nome": "Ensopado de legumes",
+      "preco": "oferenda"
+     },
+     {
+      "nome": "Torta de carne",
+      "preco": "oferenda"
+     }
+    ]
+   },
+   {
+    "titulo": "Da colheita",
+    "itens": [
+     {
+      "nome": "Maçãs, peras e uvas",
+      "preco": "oferenda"
+     },
+     {
+      "nome": "Castanhas assadas",
+      "preco": "oferenda"
+     },
+     {
+      "nome": "Pudim de uva",
+      "preco": "oferenda"
+     }
+    ]
+   },
+   {
+    "titulo": "Para brindar",
+    "itens": [
+     {
+      "nome": "Sidra nova",
+      "preco": "oferenda"
+     },
+     {
+      "nome": "Vinho da vindima",
+      "preco": "oferenda"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "cardapio-feira-do-fim-do-ciclo",
+  "nome": "Feira do Fim do Ciclo",
+  "pasta": "Festas da estação",
+  "subtitulo": "29 de Zoryen, antes do inverno. A última feira grande de Polésia no ano.",
+  "rodape": "As barracas fecham com o sino do meio-dia. Depois, cada um para a sua casa e as suas velas.",
+  "secoes": [
+   {
+    "titulo": "Barracas de comida",
+    "itens": [
+     {
+      "nome": "Linguiça defumada no pão",
+      "preco": "6 Mon"
+     },
+     {
+      "nome": "Empada de frango",
+      "preco": "7 Mon"
+     },
+     {
+      "nome": "Castanhas assadas",
+      "preco": "1 Mon"
+     },
+     {
+      "nome": "Maçãs secas",
+      "preco": "2 Mon"
+     }
+    ]
+   },
+   {
+    "titulo": "Para guardar o inverno",
+    "itens": [
+     {
+      "nome": "Presunto defumado",
+      "preco": "3 Lysar"
+     },
+     {
+      "nome": "Favas secas",
+      "preco": "1 Mon"
+     },
+     {
+      "nome": "Abóbora",
+      "preco": "2 Mon"
+     },
+     {
+      "nome": "Barril de chucrute",
+      "preco": "1 Lysar"
+     }
+    ]
+   },
+   {
+    "titulo": "Doces",
+    "itens": [
+     {
+      "nome": "Amêndoas açucaradas",
+      "preco": "5 Mon"
+     },
+     {
+      "nome": "Bolo de gengibre",
+      "preco": "5 Mon"
+     },
+     {
+      "nome": "Doce de vinho da Bennett",
+      "preco": "3 Lysar"
+     }
+    ]
+   },
+   {
+    "titulo": "Para beber",
+    "itens": [
+     {
+      "nome": "Cerveja comum",
+      "preco": "2 Mon"
+     },
+     {
+      "nome": "Hidromel",
+      "preco": "5 Mon"
+     },
+     {
+      "nome": "Vinho doce de fruta",
+      "preco": "8 Mon"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "cardapio-dia-do-cervejeiro-e-do-cozinheiro",
+  "nome": "Dia do Cervejeiro e do Cozinheiro",
+  "pasta": "Festas da estação",
+  "subtitulo": "21 de Zoryen. Tabernas de portas abertas e cozinheiros na rua.",
+  "rodape": "Quem passar mal paga a limpeza.",
+  "secoes": [
+   {
+    "titulo": "Cervejas da festa",
+    "itens": [
+     {
+      "nome": "Cerveja comum, caneca",
+      "preco": "1 Mon"
+     },
+     {
+      "nome": "Cerveja de lúpulo novo",
+      "preco": "3 Mon"
+     },
+     {
+      "nome": "Hidromel",
+      "preco": "4 Mon"
+     }
+    ]
+   },
+   {
+    "titulo": "Da rua",
+    "itens": [
+     {
+      "nome": "Mini dracowings",
+      "preco": "6 Mon"
+     },
+     {
+      "nome": "Nuggets de beholder",
+      "preco": "8 Mon"
+     },
+     {
+      "nome": "Sanduíche de carne temperada",
+      "preco": "5 Mon"
+     }
+    ]
+   },
+   {
+    "titulo": "Concurso",
+    "itens": [
+     {
+      "nome": "Prato do cozinheiro vencedor",
+      "preco": "1 Lysar",
+      "nota": "sai às quatro da tarde"
+     }
+    ]
+   }
+  ]
+ }
+]

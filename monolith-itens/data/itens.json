@@ -1,0 +1,1833 @@
+[
+ {
+  "id": "mingau-quente",
+  "nome": "Mingau quente",
+  "pasta": "Comida/Pratos de taverna",
+  "tipo": "comida",
+  "img": "icons/consumables/food/bowl-stew-tofu-potato-brown.webp",
+  "preco": "2 pc",
+  "peso": 1,
+  "descricao": "<p>Trigo grosso cozido no leite e engrossado com gema. O desjejum de quem acorda antes do sol.</p>"
+ },
+ {
+  "id": "ensopado-de-legumes",
+  "nome": "Ensopado de legumes",
+  "pasta": "Comida/Pratos de taverna",
+  "tipo": "comida",
+  "img": "icons/consumables/food/bowl-stew-brown.webp",
+  "preco": "3 pc",
+  "peso": 1,
+  "descricao": "<p>Cenoura, raiz de salsa, pera e repolho num caldo grosso. Rende o dia inteiro na panela da taberna.</p>"
+ },
+ {
+  "id": "salada-de-raizes",
+  "nome": "Salada de raízes",
+  "pasta": "Comida/Pratos de taverna",
+  "tipo": "comida",
+  "img": "icons/consumables/food/bowl-salad-green.webp",
+  "preco": "3 pc",
+  "peso": 0.5,
+  "descricao": "<p>Cenoura, pastinaca e nabo crus, cortados fino e temperados com vinagre de vinho.</p>"
+ },
+ {
+  "id": "funges",
+  "nome": "Funges",
+  "pasta": "Comida/Pratos de taverna",
+  "tipo": "comida",
+  "img": "icons/consumables/mushrooms/crimini-button-brown.webp",
+  "preco": "4 pc",
+  "peso": 0.5,
+  "descricao": "<p>Alho-poró e cogumelos refogados com açafrão. Barato para o cheiro que faz.</p>"
+ },
+ {
+  "id": "torta-de-cebola",
+  "nome": "Torta de cebola",
+  "pasta": "Comida/Pratos de taverna",
+  "tipo": "comida",
+  "img": "icons/consumables/grains/pastry-bread-brown.webp",
+  "preco": "5 pc",
+  "peso": 1,
+  "descricao": "<p>Massa rústica recheada de cebola cozida devagar até ficar doce.</p>"
+ },
+ {
+  "id": "empada-de-frango",
+  "nome": "Empada de frango",
+  "pasta": "Comida/Pratos de taverna",
+  "tipo": "comida",
+  "img": "icons/consumables/grains/pastry-bread-brown.webp",
+  "preco": "7 pc",
+  "peso": 1,
+  "descricao": "<p>Frango desfiado com sálvia numa massa fechada. Viaja bem embrulhada em pano.</p>"
+ },
+ {
+  "id": "torta-de-carne",
+  "nome": "Torta de carne",
+  "pasta": "Comida/Pratos de taverna",
+  "tipo": "comida",
+  "img": "icons/consumables/grains/bread-loaf-orange.webp",
+  "preco": "8 pc",
+  "peso": 1,
+  "descricao": "<p>Carne picada e cebola sob uma tampa de massa grossa. A mais pedida nas tabernas de estrada.</p>"
+ },
+ {
+  "id": "salomene",
+  "nome": "Salomene",
+  "pasta": "Comida/Pratos de taverna",
+  "tipo": "comida",
+  "img": "icons/consumables/food/plate-fish-grilled-brown.webp",
+  "preco": "1 pp",
+  "peso": 1,
+  "descricao": "<p>Filé de peixe frito servido sobre arroz. Melhor perto do rio, onde o peixe chega no mesmo dia.</p>"
+ },
+ {
+  "id": "mawmeny",
+  "nome": "Mawmeny",
+  "pasta": "Comida/Pratos de taverna",
+  "tipo": "comida",
+  "img": "icons/consumables/food/plate-steak-grilled-brown-green.webp",
+  "preco": "1 pp",
+  "peso": 1,
+  "descricao": "<p>Carne desfiada num molho escuro e grosso, de especiarias e vinho reduzido.</p>"
+ },
+ {
+  "id": "veado-na-manteiga-de-alho",
+  "nome": "Veado na manteiga de alho",
+  "pasta": "Comida/Pratos de taverna",
+  "tipo": "comida",
+  "img": "icons/consumables/food/steak-cooked-grilled-brown.webp",
+  "preco": "2 pp",
+  "peso": 1.5,
+  "descricao": "<p>Lombo de veado assado e regado com manteiga de alho. Prato de caçador e de feriado.</p>"
+ },
+ {
+  "id": "rique-manger",
+  "nome": "Rique-manger",
+  "pasta": "Comida/Pratos de taverna",
+  "tipo": "comida",
+  "img": "icons/consumables/food/plate-chicken-grilled-mushroom-brown.webp",
+  "preco": "1 pp",
+  "peso": 1,
+  "descricao": "<p>Maçã frita com ovos batidos e açafrão. Doce e salgado ao mesmo tempo.</p>"
+ },
+ {
+  "id": "cinnamon-brennet",
+  "nome": "Cinnamon brennet",
+  "pasta": "Comida/Pratos de taverna",
+  "tipo": "comida",
+  "img": "icons/consumables/food/shank-meat-bone-glazed-brown.webp",
+  "preco": "2 pp",
+  "peso": 1.5,
+  "descricao": "<p>Carne cozida no vinho com canela e amêndoas. Caro, perfumado, de mesa de festa.</p>"
+ },
+ {
+  "id": "pao-torcido-de-leite-e-acucar",
+  "nome": "Pão torcido de leite e açúcar",
+  "pasta": "Comida/Sobremesas",
+  "tipo": "comida",
+  "img": "icons/consumables/grains/bread-loaf-boule-tan.webp",
+  "preco": "3 pc",
+  "peso": 0.5,
+  "descricao": "<p>Massa de leite trançada e polvilhada de açúcar.</p>"
+ },
+ {
+  "id": "mousse-de-maca",
+  "nome": "Mousse de maçã",
+  "pasta": "Comida/Sobremesas",
+  "tipo": "comida",
+  "img": "icons/consumables/food/berries-cream-bowl-mint-red.webp",
+  "preco": "4 pc",
+  "peso": 0.5,
+  "descricao": "<p>Maçã cozida e batida até virar creme, servida fria na tigela.</p>"
+ },
+ {
+  "id": "bolo-de-gengibre",
+  "nome": "Bolo de gengibre",
+  "pasta": "Comida/Sobremesas",
+  "tipo": "comida",
+  "img": "icons/consumables/grains/pastry-bread-brown.webp",
+  "preco": "5 pc",
+  "peso": 0.5,
+  "descricao": "<p>Bolo escuro e úmido, de gengibre e mel. Dura dias sem endurecer.</p>"
+ },
+ {
+  "id": "pudim-de-uva",
+  "nome": "Pudim de uva",
+  "pasta": "Comida/Sobremesas",
+  "tipo": "comida",
+  "img": "icons/consumables/food/preserves-jam-jelly-jar-brown-red.webp",
+  "preco": "5 pc",
+  "peso": 0.5,
+  "descricao": "<p>Uva cozida com farinha e açúcar até firmar. Sobremesa de fim de colheita.</p>"
+ },
+ {
+  "id": "amendoas-acucaradas",
+  "nome": "Amêndoas açucaradas",
+  "pasta": "Comida/Sobremesas",
+  "tipo": "comida",
+  "img": "icons/consumables/nuts/almond-shelled-brown.webp",
+  "preco": "5 pc",
+  "peso": 0.25,
+  "descricao": "<p>Amêndoas cobertas de calda de açúcar endurecida. Vendidas em cartucho de papel.</p>"
+ },
+ {
+  "id": "barras-de-tamara",
+  "nome": "Barras de tâmara",
+  "pasta": "Comida/Sobremesas",
+  "tipo": "comida",
+  "img": "icons/consumables/food/dried-fruit-candy-brown.webp",
+  "preco": "5 pc",
+  "peso": 0.25,
+  "descricao": "<p>Tâmaras prensadas com nozes em tabletes. Doce de viagem.</p>"
+ },
+ {
+  "id": "torta-de-arroz",
+  "nome": "Torta de arroz",
+  "pasta": "Comida/Sobremesas",
+  "tipo": "comida",
+  "img": "icons/consumables/grains/pastry-bread-brown.webp",
+  "preco": "7 pc",
+  "peso": 0.5,
+  "descricao": "<p>Arroz cozido no leite, assado em massa até dourar por cima.</p>"
+ },
+ {
+  "id": "peras-em-calda",
+  "nome": "Peras em calda",
+  "pasta": "Comida/Sobremesas",
+  "tipo": "comida",
+  "img": "icons/consumables/fruit/pear-ripe-yellow.webp",
+  "preco": "7 pc",
+  "peso": 0.5,
+  "descricao": "<p>Peras inteiras cozidas em vinho e mel.</p>"
+ },
+ {
+  "id": "queijo-de-rochedo",
+  "nome": "Queijo de rochedo",
+  "pasta": "Comida/Petiscos de taverna",
+  "tipo": "comida",
+  "img": "icons/consumables/food/cheese-cube-gold.webp",
+  "preco": "5 pc",
+  "peso": 0.25,
+  "descricao": "<p>Cubos de queijo duro e salgado, cortados em pedras irregulares.</p>"
+ },
+ {
+  "id": "pao-de-goblin",
+  "nome": "Pão de goblin",
+  "pasta": "Comida/Petiscos de taverna",
+  "tipo": "comida",
+  "img": "icons/consumables/grains/bread-loaf-sliced-wheat-brown.webp",
+  "preco": "3 pc",
+  "peso": 0.25,
+  "descricao": "<p>Pão escuro, pequeno e torto. Ninguém sabe de onde veio o nome; todo mundo pede.</p>"
+ },
+ {
+  "id": "ovos-de-basilisco",
+  "nome": "Ovos de basilisco",
+  "pasta": "Comida/Petiscos de taverna",
+  "tipo": "comida",
+  "img": "icons/consumables/eggs/eggs-white.webp",
+  "preco": "6 pc",
+  "peso": 0.25,
+  "descricao": "<p>Ovos cozidos marinados em vinagre e páprica, de casca tingida.</p>"
+ },
+ {
+  "id": "cogumelos-de-calignis",
+  "nome": "Cogumelos de Calignis",
+  "pasta": "Comida/Petiscos de taverna",
+  "tipo": "comida",
+  "img": "icons/consumables/mushrooms/convex-bolete-brown.webp",
+  "preco": "6 pc",
+  "peso": 0.25,
+  "descricao": "<p>Cogumelos inteiros na manteiga e no alho, servidos no espeto.</p>"
+ },
+ {
+  "id": "mini-dracowings",
+  "nome": "Mini dracowings",
+  "pasta": "Comida/Petiscos de taverna",
+  "tipo": "comida",
+  "img": "icons/consumables/food/cooked-drumstick-chicken-turkey-brown.webp",
+  "preco": "7 pc",
+  "peso": 0.25,
+  "descricao": "<p>Asinhas de frango apimentadas e tostadas na brasa.</p>"
+ },
+ {
+  "id": "olho-de-grifo",
+  "nome": "Olho de grifo",
+  "pasta": "Comida/Petiscos de taverna",
+  "tipo": "comida",
+  "img": "icons/consumables/eggs/egg-broken-yolk-yellow.webp",
+  "preco": "1 pp",
+  "peso": 0.25,
+  "descricao": "<p>Ovo frito sobre uma rodela de pão com toucinho. A gema é o olho.</p>"
+ },
+ {
+  "id": "patas-de-aranha-gigante",
+  "nome": "Patas de aranha gigante",
+  "pasta": "Comida/Petiscos de taverna",
+  "tipo": "comida",
+  "img": "icons/consumables/meat/crab-leg-shell-white-red.webp",
+  "preco": "1 pp",
+  "peso": 0.25,
+  "descricao": "<p>Patas de caranguejo assadas, quebradas na mesa.</p>"
+ },
+ {
+  "id": "dentes-de-troll",
+  "nome": "Dentes de troll",
+  "pasta": "Comida/Petiscos de taverna",
+  "tipo": "comida",
+  "img": "icons/consumables/nuts/chestnut-roasted-brown-white.webp",
+  "preco": "1 pp",
+  "peso": 0.25,
+  "descricao": "<p>Castanhas assadas na casca, servidas quentes num cone.</p>"
+ },
+ {
+  "id": "nuggets-de-beholder",
+  "nome": "Nuggets de beholder",
+  "pasta": "Comida/Petiscos de taverna",
+  "tipo": "comida",
+  "img": "icons/consumables/food/drumstick-fried-brown.webp",
+  "preco": "1 pp",
+  "peso": 0.25,
+  "descricao": "<p>Bolinhos de carne empanados e fritos.</p>"
+ },
+ {
+  "id": "tentaculos-de-kraken",
+  "nome": "Tentáculos de kraken",
+  "pasta": "Comida/Petiscos de taverna",
+  "tipo": "comida",
+  "img": "icons/consumables/meat/octopus-tentacle-cut-purple.webp",
+  "preco": "1 pp",
+  "peso": 0.25,
+  "descricao": "<p>Lula frita em anéis, com sal grosso.</p>"
+ },
+ {
+  "id": "laminas-de-dragao",
+  "nome": "Lâminas de dragão",
+  "pasta": "Comida/Petiscos de taverna",
+  "tipo": "comida",
+  "img": "icons/consumables/food/dried-meat-jerky-fish-red.webp",
+  "preco": "1 pp",
+  "peso": 0.25,
+  "descricao": "<p>Tiras de carne seca curada com pimenta. Duras de mastigar.</p>"
+ },
+ {
+  "id": "nectar-de-fada",
+  "nome": "Néctar de fada",
+  "pasta": "Comida/Petiscos de taverna",
+  "tipo": "bebida",
+  "img": "icons/consumables/drinks/pitcher-dripping-white.webp",
+  "preco": "2 pp",
+  "peso": 0.5,
+  "descricao": "<p>Mel diluído com frutas silvestres, servido frio da adega. Doce demais para quem não é criança.</p>"
+ },
+ {
+  "id": "agua",
+  "nome": "Água",
+  "pasta": "Bebidas",
+  "tipo": "bebida",
+  "img": "icons/consumables/drinks/water-jug-clay-brown.webp",
+  "preco": "1 pc",
+  "peso": 1,
+  "descricao": "<p>Uma caneca de água limpa. Fora das cidades, ninguém garante que esteja.</p>"
+ },
+ {
+  "id": "leite",
+  "nome": "Leite",
+  "pasta": "Bebidas",
+  "tipo": "bebida",
+  "img": "icons/consumables/drinks/pitcher-dripping-white.webp",
+  "preco": "1 pc",
+  "peso": 1,
+  "descricao": "<p>Leite fresco do dia. Dos Belblossom, se for em Valenda.</p>"
+ },
+ {
+  "id": "cha",
+  "nome": "Chá",
+  "pasta": "Bebidas",
+  "tipo": "bebida",
+  "img": "icons/consumables/drinks/tea-jug-gourd-brown.webp",
+  "preco": "2 pc",
+  "peso": 0.5,
+  "descricao": "<p>Infusão quente de folhas e ervas da estação.</p>"
+ },
+ {
+  "id": "cerveja-comum",
+  "nome": "Cerveja comum",
+  "pasta": "Bebidas",
+  "tipo": "bebida",
+  "img": "icons/consumables/drinks/alcohol-beer-mug-yellow.webp",
+  "preco": "2 pc",
+  "peso": 1,
+  "descricao": "<p>Cerveja clara e rala, de lúpulo da região. A caneca de todo dia.</p>"
+ },
+ {
+  "id": "sidra",
+  "nome": "Sidra",
+  "pasta": "Bebidas",
+  "tipo": "bebida",
+  "img": "icons/consumables/drinks/alcohol-beer-stein-wooden-brown.webp",
+  "preco": "4 pc",
+  "peso": 1,
+  "descricao": "<p>Sidra de maçã, turva e azeda, dos pomares de Caezar.</p>"
+ },
+ {
+  "id": "hidromel",
+  "nome": "Hidromel",
+  "pasta": "Bebidas",
+  "tipo": "bebida",
+  "img": "icons/consumables/drinks/alcohol-jug-spirits-brown.webp",
+  "preco": "5 pc",
+  "peso": 1,
+  "descricao": "<p>Mel fermentado, doce e traiçoeiro.</p>"
+ },
+ {
+  "id": "destilado",
+  "nome": "Destilado",
+  "pasta": "Bebidas",
+  "tipo": "bebida",
+  "img": "icons/consumables/drinks/alcohol-jar-spirits-gray.webp",
+  "preco": "6 pc",
+  "peso": 0.5,
+  "descricao": "<p>Aguardente de cereal ou de fruta, servida num copo pequeno. Esquenta o peito.</p>"
+ },
+ {
+  "id": "vinho-doce-de-fruta",
+  "nome": "Vinho doce de fruta",
+  "pasta": "Bebidas",
+  "tipo": "bebida",
+  "img": "icons/consumables/drinks/wine-amphora-clay-pink.webp",
+  "preco": "8 pc",
+  "peso": 1,
+  "descricao": "<p>Vinho de ameixa, cereja ou amora, adoçado com mel.</p>"
+ },
+ {
+  "id": "vinho-tinto-envelhecido",
+  "nome": "Vinho tinto envelhecido",
+  "pasta": "Bebidas",
+  "tipo": "bebida",
+  "img": "icons/consumables/drinks/wine-amphora-clay-red.webp",
+  "preco": "2 pp",
+  "peso": 1,
+  "descricao": "<p>Tinto de barril, guardado anos em adega. Taça.</p>"
+ },
+ {
+  "id": "garrafa-de-cerveja-comum",
+  "nome": "Garrafa de cerveja comum",
+  "pasta": "Bebidas",
+  "tipo": "bebida",
+  "img": "icons/consumables/drinks/alcohol-beer-stein-wooden-metal-brown.webp",
+  "preco": "2 pp",
+  "peso": 2,
+  "descricao": "<p>Garrafa de cerveja da casa, para levar.</p>",
+  "porcoes": 4
+ },
+ {
+  "id": "garrafa-de-sidra",
+  "nome": "Garrafa de sidra",
+  "pasta": "Bebidas",
+  "tipo": "bebida",
+  "img": "icons/consumables/drinks/alcohol-spirits-bottle-green.webp",
+  "preco": "2 pp",
+  "peso": 2,
+  "descricao": "<p>Garrafa de sidra de Caezar.</p>",
+  "porcoes": 4
+ },
+ {
+  "id": "garrafa-de-hidromel",
+  "nome": "Garrafa de hidromel",
+  "pasta": "Bebidas",
+  "tipo": "bebida",
+  "img": "icons/consumables/drinks/alcohol-jug-spirits-brown.webp",
+  "preco": "3 pp",
+  "peso": 2,
+  "descricao": "<p>Garrafa de hidromel.</p>",
+  "porcoes": 4
+ },
+ {
+  "id": "garrafa-de-destilado",
+  "nome": "Garrafa de destilado",
+  "pasta": "Bebidas",
+  "tipo": "bebida",
+  "img": "icons/consumables/drinks/alcohol-spirits-bottle-blue.webp",
+  "preco": "4 pp",
+  "peso": 1.5,
+  "descricao": "<p>Garrafa de aguardente.</p>",
+  "porcoes": 6
+ },
+ {
+  "id": "garrafa-de-vinho-doce",
+  "nome": "Garrafa de vinho doce",
+  "pasta": "Bebidas",
+  "tipo": "bebida",
+  "img": "icons/consumables/drinks/wine-bottle-glass-white.webp",
+  "preco": "4 pp",
+  "peso": 2,
+  "descricao": "<p>Garrafa de vinho doce de fruta.</p>",
+  "porcoes": 4
+ },
+ {
+  "id": "garrafa-de-tinto-envelhecido",
+  "nome": "Garrafa de tinto envelhecido",
+  "pasta": "Bebidas",
+  "tipo": "bebida",
+  "img": "icons/consumables/drinks/wine-amphora-clay-red.webp",
+  "preco": "8 pp",
+  "peso": 2,
+  "descricao": "<p>Garrafa de vinho tinto de guarda.</p>",
+  "porcoes": 4
+ },
+ {
+  "id": "odre-de-agua",
+  "nome": "Odre de água",
+  "pasta": "Bebidas",
+  "tipo": "bebida",
+  "img": "icons/consumables/drinks/water-jug-clay-brown.webp",
+  "preco": "2 pc",
+  "peso": 5,
+  "descricao": "<p>Odre de couro cheio, um dia de água para uma pessoa.</p>",
+  "porcoes": 4
+ },
+ {
+  "id": "vinho-belblossom",
+  "nome": "Vinho Belblossom",
+  "pasta": "Comida/De Polésia",
+  "tipo": "bebida",
+  "img": "icons/consumables/drinks/wine-amphora-clay-red.webp",
+  "preco": "3 pp",
+  "peso": 1,
+  "descricao": "<p>O tinto da vinícola Belblossom, de Valenda, na Polésia Interior. Taça. Darius serve com queijo.</p>"
+ },
+ {
+  "id": "garrafa-de-vinho-belblossom",
+  "nome": "Garrafa de vinho Belblossom",
+  "pasta": "Comida/De Polésia",
+  "tipo": "bebida",
+  "img": "icons/consumables/drinks/wine-bottle-glass-white.webp",
+  "preco": "1 po",
+  "peso": 2,
+  "descricao": "<p>Garrafa selada com o brasão Belblossom. Presente de casamento em Valenda.</p>",
+  "porcoes": 4
+ },
+ {
+  "id": "queijo-curado-belblossom",
+  "nome": "Queijo curado Belblossom",
+  "pasta": "Comida/De Polésia",
+  "tipo": "comida",
+  "img": "icons/consumables/food/cheese-wheel-round-yellow.webp",
+  "preco": "4 pp",
+  "peso": 2,
+  "descricao": "<p>Queijo curado nas cavernas-adega de Valenda, de receita guardada pela família Belblossom. Uma peça pequena.</p>",
+  "porcoes": 6
+ },
+ {
+  "id": "queijo-envelhecido-de-varenholdt",
+  "nome": "Queijo envelhecido de Varenholdt",
+  "pasta": "Comida/De Polésia",
+  "tipo": "comida",
+  "img": "icons/consumables/food/cheese-wedge-swiss-yellow.webp",
+  "preco": "6 pp",
+  "peso": 1,
+  "descricao": "<p>Uma das últimas peças da vila de Varenholdt, abandonada. Ainda aparece em despensas de Valenda, cada vez mais cara.</p>",
+  "porcoes": 4
+ },
+ {
+  "id": "pao-de-centeio-do-moinho-do-sern",
+  "nome": "Pão de centeio do Moinho do Sern",
+  "pasta": "Comida/De Polésia",
+  "tipo": "comida",
+  "img": "icons/consumables/grains/bread-loaf-boule-rustic-brown.webp",
+  "preco": "2 pc",
+  "peso": 1,
+  "descricao": "<p>Pão escuro da padaria Grãos do Centeio, feito com farinha do Moinho do Sern.</p>",
+  "porcoes": 2
+ },
+ {
+  "id": "rosca-da-graos-do-centeio",
+  "nome": "Rosca da Grãos do Centeio",
+  "pasta": "Comida/De Polésia",
+  "tipo": "comida",
+  "img": "icons/consumables/grains/donut-baked-brown.webp",
+  "preco": "2 pc",
+  "peso": 0.25,
+  "descricao": "<p>Rosca doce de Valenda, assada de manhã cedo.</p>"
+ },
+ {
+  "id": "doce-de-vinho-da-bennett",
+  "nome": "Doce de vinho da Bennett",
+  "pasta": "Comida/De Polésia",
+  "tipo": "comida",
+  "img": "icons/consumables/food/preserves-jam-jelly-jar-brown-red.webp",
+  "preco": "3 pp",
+  "peso": 0.5,
+  "descricao": "<p>Calda de vinho envelhecido com frutas da estação, da confeitaria Bennett. Vendido na Feira de Primar.</p>"
+ },
+ {
+  "id": "bolinho-de-queijo-curado-da-bennett",
+  "nome": "Bolinho de queijo curado da Bennett",
+  "pasta": "Comida/De Polésia",
+  "tipo": "comida",
+  "img": "icons/consumables/grains/pastry-bread-brown.webp",
+  "preco": "1 pp",
+  "peso": 0.25,
+  "descricao": "<p>Massa amanteigada recheada de queijo curado. Caro, como tudo da Bennett.</p>"
+ },
+ {
+  "id": "salmao-defumado-de-foz-clara",
+  "nome": "Salmão defumado de Foz Clara",
+  "pasta": "Comida/De Polésia",
+  "tipo": "comida",
+  "img": "icons/consumables/meat/salmon-fish-fillet-pink-gray.webp",
+  "preco": "8 pc",
+  "peso": 1,
+  "descricao": "<p>Salmão do rio, defumado pelos pescadores de Foz Clara, no sul de Polésia.</p>",
+  "porcoes": 2
+ },
+ {
+  "id": "sanduiche-de-carne-temperada",
+  "nome": "Sanduíche de carne temperada",
+  "pasta": "Comida/De Polésia",
+  "tipo": "comida",
+  "img": "icons/consumables/grains/bread-loaf-sliced-wheat-brown.webp",
+  "preco": "5 pc",
+  "peso": 0.5,
+  "descricao": "<p>Pão recém-assado com carne bem temperada. Comida de beira de estrada no sul.</p>"
+ },
+ {
+  "id": "peixe-salgado-de-elendor",
+  "nome": "Peixe salgado de Elendor",
+  "pasta": "Comida/De Polésia",
+  "tipo": "comida",
+  "img": "icons/consumables/meat/fish-whole-blue.webp",
+  "preco": "4 pc",
+  "peso": 1,
+  "descricao": "<p>Peixe de rio escalado e salgado nos barris do porto de Elendor.</p>",
+  "porcoes": 2
+ },
+ {
+  "id": "pao-de-zekes",
+  "nome": "Pão de Zekes",
+  "pasta": "Comida/De Polésia",
+  "tipo": "comida",
+  "img": "icons/consumables/grains/bread-loaf-wheat-brown.webp",
+  "preco": "3 pc",
+  "peso": 1,
+  "descricao": "<p>Pão grande e redondo, partido em pedaços e repartido no Banquete de Zekes, depois da colheita.</p>",
+  "porcoes": 4
+ },
+ {
+  "id": "pao-de-trigo",
+  "nome": "Pão de trigo",
+  "pasta": "Comida/Mercado",
+  "tipo": "comida",
+  "img": "icons/consumables/grains/bread-loaf-wheat-brown.webp",
+  "preco": "2 pc",
+  "peso": 2,
+  "descricao": "<p>Um pão de trigo de cerca de um quilo.</p>",
+  "porcoes": 4
+ },
+ {
+  "id": "pedaco-de-queijo",
+  "nome": "Pedaço de queijo",
+  "pasta": "Comida/Mercado",
+  "tipo": "comida",
+  "img": "icons/consumables/food/cheese-wedge-swiss-white.webp",
+  "preco": "3 pc",
+  "peso": 0.5,
+  "descricao": "<p>Um pedaço de queijo fresco do mercado.</p>",
+  "porcoes": 2
+ },
+ {
+  "id": "frango-inteiro",
+  "nome": "Frango inteiro",
+  "pasta": "Comida/Mercado",
+  "tipo": "comida",
+  "img": "icons/consumables/food/chicken-bird-cooked.webp",
+  "preco": "5 pc",
+  "peso": 3,
+  "descricao": "<p>Frango limpo, para assar ou cozinhar.</p>",
+  "porcoes": 4
+ },
+ {
+  "id": "carne-de-gado",
+  "nome": "Carne de gado",
+  "pasta": "Comida/Mercado",
+  "tipo": "comida",
+  "img": "icons/consumables/meat/steak-raw-red-pink.webp",
+  "preco": "8 pc",
+  "peso": 1,
+  "descricao": "<p>Meio quilo de carne crua. Estraga em dois dias sem sal.</p>",
+  "porcoes": 2
+ },
+ {
+  "id": "peixe-fresco",
+  "nome": "Peixe fresco",
+  "pasta": "Comida/Mercado",
+  "tipo": "comida",
+  "img": "icons/consumables/meat/fish-whole-blue.webp",
+  "preco": "6 pc",
+  "peso": 1,
+  "descricao": "<p>Peixe do dia, inteiro.</p>",
+  "porcoes": 2
+ },
+ {
+  "id": "ovos",
+  "nome": "Ovos",
+  "pasta": "Comida/Mercado",
+  "tipo": "comida",
+  "img": "icons/consumables/eggs/eggs-white.webp",
+  "preco": "2 pc",
+  "peso": 0.5,
+  "descricao": "<p>Meia dúzia de ovos de galinha.</p>",
+  "porcoes": 3
+ },
+ {
+  "id": "toucinho",
+  "nome": "Toucinho",
+  "pasta": "Comida/Mercado",
+  "tipo": "comida",
+  "img": "icons/consumables/meat/side-pork-fat-skin-pink.webp",
+  "preco": "4 pc",
+  "peso": 1,
+  "descricao": "<p>Toucinho salgado de porco. Dá gosto a qualquer panela.</p>",
+  "porcoes": 4
+ },
+ {
+  "id": "linguica-defumada",
+  "nome": "Linguiça defumada",
+  "pasta": "Comida/Mercado",
+  "tipo": "comida",
+  "img": "icons/consumables/food/sausage-bratwurst-mustard-red-yellow.webp",
+  "preco": "5 pc",
+  "peso": 0.5,
+  "descricao": "<p>Linguiça de porco defumada, de pendurar na cozinha.</p>",
+  "porcoes": 2
+ },
+ {
+  "id": "presunto-defumado",
+  "nome": "Presunto defumado",
+  "pasta": "Comida/Mercado",
+  "tipo": "comida",
+  "img": "icons/consumables/food/cooked-grilled-ham-hock-glazed-brown.webp",
+  "preco": "3 pp",
+  "peso": 5,
+  "descricao": "<p>Pernil inteiro, curado e defumado. Aguenta o inverno.</p>",
+  "porcoes": 10
+ },
+ {
+  "id": "manteiga",
+  "nome": "Manteiga",
+  "pasta": "Comida/Mercado",
+  "tipo": "comida",
+  "img": "icons/consumables/food/cheese-cube-orange.webp",
+  "preco": "3 pc",
+  "peso": 0.5,
+  "descricao": "<p>Manteiga salgada em pote de barro.</p>",
+  "porcoes": 4
+ },
+ {
+  "id": "mel",
+  "nome": "Mel",
+  "pasta": "Comida/Mercado",
+  "tipo": "comida",
+  "img": "icons/consumables/food/honey-beehive-brown.webp",
+  "preco": "6 pc",
+  "peso": 1,
+  "descricao": "<p>Pote de mel de abelha. Adoça, conserva e cura garganta.</p>",
+  "porcoes": 6
+ },
+ {
+  "id": "maca",
+  "nome": "Maçã",
+  "pasta": "Comida/Frutas e castanhas",
+  "tipo": "comida",
+  "img": "icons/consumables/fruit/apple-red-tree-green.webp",
+  "preco": "1 pc",
+  "peso": 0.25,
+  "descricao": "<p>Maçã dos pomares de Caezar. A fruta mais comum do outono polesiano.</p>"
+ },
+ {
+  "id": "pera",
+  "nome": "Pera",
+  "pasta": "Comida/Frutas e castanhas",
+  "tipo": "comida",
+  "img": "icons/consumables/fruit/pear-ripe-yellow.webp",
+  "preco": "1 pc",
+  "peso": 0.25,
+  "descricao": "<p>Pera madura, doce e granulada.</p>"
+ },
+ {
+  "id": "uvas",
+  "nome": "Uvas",
+  "pasta": "Comida/Frutas e castanhas",
+  "tipo": "comida",
+  "img": "icons/consumables/fruit/grapes-bunch-purple.webp",
+  "preco": "2 pc",
+  "peso": 0.25,
+  "descricao": "<p>Um cacho de uvas de mesa, da época da vindima.</p>"
+ },
+ {
+  "id": "ameixas",
+  "nome": "Ameixas",
+  "pasta": "Comida/Frutas e castanhas",
+  "tipo": "comida",
+  "img": "icons/consumables/fruit/plum-ripe-purple.webp",
+  "preco": "1 pc",
+  "peso": 0.25,
+  "descricao": "<p>Um punhado de ameixas roxas.</p>"
+ },
+ {
+  "id": "marmelo",
+  "nome": "Marmelo",
+  "pasta": "Comida/Frutas e castanhas",
+  "tipo": "comida",
+  "img": "icons/consumables/fruit/quince-ripe-yellow.webp",
+  "preco": "1 pc",
+  "peso": 0.25,
+  "descricao": "<p>Duro e azedo cru; vira doce no tacho.</p>"
+ },
+ {
+  "id": "cerejas",
+  "nome": "Cerejas",
+  "pasta": "Comida/Frutas e castanhas",
+  "tipo": "comida",
+  "img": "icons/consumables/fruit/cherry-stemmed-red.webp",
+  "preco": "2 pc",
+  "peso": 0.25,
+  "descricao": "<p>Cerejas da primavera, em conserva fora da estação.</p>"
+ },
+ {
+  "id": "figos",
+  "nome": "Figos",
+  "pasta": "Comida/Frutas e castanhas",
+  "tipo": "comida",
+  "img": "icons/consumables/fruit/fig-ripe-purple.webp",
+  "preco": "2 pc",
+  "peso": 0.25,
+  "descricao": "<p>Figos maduros do fim do verão.</p>"
+ },
+ {
+  "id": "amoras-silvestres",
+  "nome": "Amoras silvestres",
+  "pasta": "Comida/Frutas e castanhas",
+  "tipo": "comida",
+  "img": "icons/consumables/fruit/berry-bunch-red-green.webp",
+  "preco": "1 pc",
+  "peso": 0.25,
+  "descricao": "<p>Colhidas na beira da estrada, de graça para quem tem paciência com espinho.</p>"
+ },
+ {
+  "id": "morangos-silvestres",
+  "nome": "Morangos silvestres",
+  "pasta": "Comida/Frutas e castanhas",
+  "tipo": "comida",
+  "img": "icons/consumables/fruit/strawberry-ripe-red.webp",
+  "preco": "2 pc",
+  "peso": 0.25,
+  "descricao": "<p>Pequenos e perfumados, da mata.</p>"
+ },
+ {
+  "id": "macas-secas",
+  "nome": "Maçãs secas",
+  "pasta": "Comida/Frutas e castanhas",
+  "tipo": "comida",
+  "img": "icons/consumables/food/dried-fruit-candy-brown.webp",
+  "preco": "2 pc",
+  "peso": 0.25,
+  "descricao": "<p>Rodelas de maçã secas ao sol. Duram meses.</p>"
+ },
+ {
+  "id": "castanhas",
+  "nome": "Castanhas",
+  "pasta": "Comida/Frutas e castanhas",
+  "tipo": "comida",
+  "img": "icons/consumables/nuts/chestnut-american-green-brown.webp",
+  "preco": "1 pc",
+  "peso": 0.25,
+  "descricao": "<p>Castanhas do outono, para assar na brasa.</p>"
+ },
+ {
+  "id": "nozes",
+  "nome": "Nozes",
+  "pasta": "Comida/Frutas e castanhas",
+  "tipo": "comida",
+  "img": "icons/consumables/nuts/walnut-shell-brown.webp",
+  "preco": "2 pc",
+  "peso": 0.25,
+  "descricao": "<p>Um punhado de nozes com casca.</p>"
+ },
+ {
+  "id": "avelas",
+  "nome": "Avelãs",
+  "pasta": "Comida/Frutas e castanhas",
+  "tipo": "comida",
+  "img": "icons/consumables/nuts/hazelnuts-shelled-whole.webp",
+  "preco": "2 pc",
+  "peso": 0.25,
+  "descricao": "<p>Avelãs descascadas.</p>"
+ },
+ {
+  "id": "azeitonas",
+  "nome": "Azeitonas",
+  "pasta": "Comida/Frutas e castanhas",
+  "tipo": "comida",
+  "img": "icons/consumables/fruit/olives-stem-black.webp",
+  "preco": "3 pc",
+  "peso": 0.25,
+  "descricao": "<p>Azeitonas curtidas em salmoura.</p>"
+ },
+ {
+  "id": "cenouras",
+  "nome": "Cenouras",
+  "pasta": "Comida/Legumes e raízes",
+  "tipo": "comida",
+  "img": "icons/consumables/vegetable/root-carrot-orange.webp",
+  "preco": "1 pc",
+  "peso": 0.5,
+  "descricao": "<p>Um maço de cenouras.</p>"
+ },
+ {
+  "id": "nabos",
+  "nome": "Nabos",
+  "pasta": "Comida/Legumes e raízes",
+  "tipo": "comida",
+  "img": "icons/consumables/vegetable/root-turnip-yellow.webp",
+  "preco": "1 pc",
+  "peso": 0.5,
+  "descricao": "<p>Nabos de inverno, de raiz grossa.</p>"
+ },
+ {
+  "id": "pastinacas",
+  "nome": "Pastinacas",
+  "pasta": "Comida/Legumes e raízes",
+  "tipo": "comida",
+  "img": "icons/consumables/vegetable/root-parsnip-grey.webp",
+  "preco": "1 pc",
+  "peso": 0.5,
+  "descricao": "<p>Raiz branca e adocicada, base dos ensopados.</p>"
+ },
+ {
+  "id": "repolho",
+  "nome": "Repolho",
+  "pasta": "Comida/Legumes e raízes",
+  "tipo": "comida",
+  "img": "icons/consumables/vegetable/cabbage-head-leafy-green.webp",
+  "preco": "1 pc",
+  "peso": 0.5,
+  "descricao": "<p>Uma cabeça de repolho. Vira chucrute no barril.</p>"
+ },
+ {
+  "id": "alho-poro",
+  "nome": "Alho-poró",
+  "pasta": "Comida/Legumes e raízes",
+  "tipo": "comida",
+  "img": "icons/consumables/vegetable/leek-onion-green.webp",
+  "preco": "1 pc",
+  "peso": 0.5,
+  "descricao": "<p>Um maço de alho-poró.</p>"
+ },
+ {
+  "id": "cebolas",
+  "nome": "Cebolas",
+  "pasta": "Comida/Legumes e raízes",
+  "tipo": "comida",
+  "img": "icons/consumables/vegetable/onion-yellow.webp",
+  "preco": "1 pc",
+  "peso": 0.5,
+  "descricao": "<p>Três cebolas amarelas.</p>"
+ },
+ {
+  "id": "alho",
+  "nome": "Alho",
+  "pasta": "Comida/Legumes e raízes",
+  "tipo": "comida",
+  "img": "icons/consumables/vegetable/garlic-white.webp",
+  "preco": "1 pc",
+  "peso": 0.5,
+  "descricao": "<p>Uma cabeça de alho. Há quem pendure na porta.</p>"
+ },
+ {
+  "id": "ervilhas",
+  "nome": "Ervilhas",
+  "pasta": "Comida/Legumes e raízes",
+  "tipo": "comida",
+  "img": "icons/consumables/vegetable/peas-pods-green.webp",
+  "preco": "1 pc",
+  "peso": 0.5,
+  "descricao": "<p>Vagens de ervilha, frescas ou secas.</p>"
+ },
+ {
+  "id": "favas-secas",
+  "nome": "Favas secas",
+  "pasta": "Comida/Legumes e raízes",
+  "tipo": "comida",
+  "img": "icons/consumables/vegetable/lima-beans-pod-brown.webp",
+  "preco": "1 pc",
+  "peso": 0.5,
+  "descricao": "<p>Favas secas, para a sopa do inverno.</p>"
+ },
+ {
+  "id": "abobora",
+  "nome": "Abóbora",
+  "pasta": "Comida/Legumes e raízes",
+  "tipo": "comida",
+  "img": "icons/consumables/vegetable/squash-pumpkin-flat-orange.webp",
+  "preco": "2 pc",
+  "peso": 0.5,
+  "descricao": "<p>Abóbora de casca dura. Guarda bem até a primavera.</p>"
+ },
+ {
+  "id": "beterrabas",
+  "nome": "Beterrabas",
+  "pasta": "Comida/Legumes e raízes",
+  "tipo": "comida",
+  "img": "icons/consumables/vegetable/root-beet-bulb-purple.webp",
+  "preco": "1 pc",
+  "peso": 0.5,
+  "descricao": "<p>Beterrabas roxas, que tingem tudo que tocam.</p>"
+ },
+ {
+  "id": "cogumelos-do-bosque",
+  "nome": "Cogumelos do bosque",
+  "pasta": "Comida/Legumes e raízes",
+  "tipo": "comida",
+  "img": "icons/consumables/mushrooms/umbonate-brown.webp",
+  "preco": "2 pc",
+  "peso": 0.5,
+  "descricao": "<p>Cogumelos colhidos no outono. Quem não conhece, não come.</p>"
+ },
+ {
+  "id": "racao-de-viagem",
+  "nome": "Ração de viagem",
+  "pasta": "Comida/Viagem",
+  "tipo": "comida",
+  "img": "icons/consumables/grains/breadsticks-crackers-wrapped-ration-brown.webp",
+  "preco": "5 pc",
+  "peso": 2,
+  "descricao": "<p>Um dia de comida seca: carne seca, pão duro e fruta em conserva, embrulhados em pano encerado.</p>"
+ },
+ {
+  "id": "racoes-para-5-dias",
+  "nome": "Rações para 5 dias",
+  "pasta": "Comida/Viagem",
+  "tipo": "comida",
+  "img": "icons/consumables/grains/breadsticks-crackers-wrapped-ration-brown.webp",
+  "preco": "2 pp",
+  "peso": 10,
+  "descricao": "<p>Cinco dias de carne seca, pão duro e fruta em conserva.</p>",
+  "porcoes": 5
+ },
+ {
+  "id": "racoes-para-10-dias",
+  "nome": "Rações para 10 dias",
+  "pasta": "Comida/Viagem",
+  "tipo": "comida",
+  "img": "icons/consumables/grains/sacks-grain-white.webp",
+  "preco": "5 pp",
+  "peso": 20,
+  "descricao": "<p>Dez dias de rações num saco de lona.</p>",
+  "porcoes": 10
+ },
+ {
+  "id": "biscoito-duro",
+  "nome": "Biscoito duro",
+  "pasta": "Comida/Viagem",
+  "tipo": "comida",
+  "img": "icons/consumables/grains/breadsticks-crackers-wrapped-ration-brown.webp",
+  "preco": "1 pc",
+  "peso": 0.5,
+  "descricao": "<p>Biscoito de marinheiro, assado duas vezes. Amolece na sopa ou na saliva.</p>",
+  "porcoes": 2
+ },
+ {
+  "id": "carne-seca",
+  "nome": "Carne seca",
+  "pasta": "Comida/Viagem",
+  "tipo": "comida",
+  "img": "icons/consumables/food/dried-meat-jerky-fish-red.webp",
+  "preco": "3 pc",
+  "peso": 0.5,
+  "descricao": "<p>Tiras de carne salgada e seca ao vento.</p>",
+  "porcoes": 2
+ },
+ {
+  "id": "sal",
+  "nome": "Sal",
+  "pasta": "Ingredientes",
+  "tipo": "ingrediente",
+  "img": "icons/consumables/food/salt-seasoning-spice-pink.webp",
+  "preco": "2 pp",
+  "peso": 2,
+  "descricao": "<p>Um quilo de sal grosso. Conserva carne, peixe e, dizem, a porta de casa.</p>"
+ },
+ {
+  "id": "especiarias-comuns",
+  "nome": "Especiarias comuns",
+  "pasta": "Ingredientes",
+  "tipo": "ingrediente",
+  "img": "icons/consumables/food/spice-anise-pod.webp",
+  "preco": "2 pp",
+  "peso": 0.1,
+  "descricao": "<p>Canela, gengibre e cravo para uma panela.</p>"
+ },
+ {
+  "id": "acafrao",
+  "nome": "Açafrão",
+  "pasta": "Ingredientes",
+  "tipo": "ingrediente",
+  "img": "icons/consumables/plants/dried-herb-bundle-brown.webp",
+  "preco": "4 pp",
+  "peso": 0.1,
+  "descricao": "<p>Estigmas de açafrão para uma receita. Raro e caro.</p>"
+ },
+ {
+  "id": "ervas-secas",
+  "nome": "Ervas secas",
+  "pasta": "Ingredientes",
+  "tipo": "ingrediente",
+  "img": "icons/consumables/plants/herb-tied-bundle-dried-yellow.webp",
+  "preco": "2 pc",
+  "peso": 0.1,
+  "descricao": "<p>Maço de sálvia, tomilho e louro.</p>"
+ },
+ {
+  "id": "farinha-de-trigo",
+  "nome": "Farinha de trigo",
+  "pasta": "Ingredientes",
+  "tipo": "ingrediente",
+  "img": "icons/consumables/grains/sack-rice-flour-brown.webp",
+  "preco": "2 pc",
+  "peso": 5,
+  "descricao": "<p>Saco pequeno de farinha do Moinho do Sern.</p>"
+ },
+ {
+  "id": "farinha-de-centeio",
+  "nome": "Farinha de centeio",
+  "pasta": "Ingredientes",
+  "tipo": "ingrediente",
+  "img": "icons/consumables/grains/sack-grain-open-white.webp",
+  "preco": "1 pc",
+  "peso": 5,
+  "descricao": "<p>Farinha escura de centeio.</p>"
+ },
+ {
+  "id": "aveia",
+  "nome": "Aveia",
+  "pasta": "Ingredientes",
+  "tipo": "ingrediente",
+  "img": "icons/consumables/grains/sack-oats-glowing-white.webp",
+  "preco": "1 pc",
+  "peso": 5,
+  "descricao": "<p>Aveia em grão, para mingau ou para cavalo.</p>"
+ },
+ {
+  "id": "arroz",
+  "nome": "Arroz",
+  "pasta": "Ingredientes",
+  "tipo": "ingrediente",
+  "img": "icons/consumables/grains/sack-rice-open-brown.webp",
+  "preco": "3 pc",
+  "peso": 5,
+  "descricao": "<p>Arroz trazido pelos barcos do rio.</p>"
+ },
+ {
+  "id": "acucar",
+  "nome": "Açúcar",
+  "pasta": "Ingredientes",
+  "tipo": "ingrediente",
+  "img": "icons/consumables/grains/sack-grain-open-white.webp",
+  "preco": "1 pp",
+  "peso": 1,
+  "descricao": "<p>Açúcar de pão, raspado na hora.</p>"
+ },
+ {
+  "id": "vinagre-de-vinho",
+  "nome": "Vinagre de vinho",
+  "pasta": "Ingredientes",
+  "tipo": "ingrediente",
+  "img": "icons/consumables/drinks/wine-bottle-glass-white.webp",
+  "preco": "3 pc",
+  "peso": 1,
+  "descricao": "<p>Vinagre das vinhas de Valenda.</p>"
+ },
+ {
+  "id": "banha",
+  "nome": "Banha",
+  "pasta": "Ingredientes",
+  "tipo": "ingrediente",
+  "img": "icons/consumables/food/cheese-cube-orange.webp",
+  "preco": "2 pc",
+  "peso": 1,
+  "descricao": "<p>Banha de porco em pote, para fritar e conservar.</p>"
+ },
+ {
+  "id": "lupulo",
+  "nome": "Lúpulo",
+  "pasta": "Ingredientes",
+  "tipo": "ingrediente",
+  "img": "icons/consumables/plants/herb-tied-bundle-green.webp",
+  "preco": "3 pc",
+  "peso": 0.25,
+  "descricao": "<p>Uma porção de lúpulo seco, para cerveja.</p>"
+ },
+ {
+  "id": "trapos",
+  "nome": "Trapos",
+  "pasta": "Roupas/Corpo",
+  "tipo": "roupa",
+  "img": "icons/equipment/chest/shirt-simple-tattered-grey.webp",
+  "preco": "1 pc",
+  "peso": 2,
+  "descricao": "<p>Pano remendado que já foi roupa. CA 8 + Destreza.</p>",
+  "armadura": {
+   "tipo": "light",
+   "ca": 8,
+   "proficiente": true
+  }
+ },
+ {
+  "id": "camisola-de-dormir",
+  "nome": "Camisola de dormir",
+  "pasta": "Roupas/Corpo",
+  "tipo": "roupa",
+  "img": "icons/equipment/chest/shirt-simple-white.webp",
+  "preco": "2 pp",
+  "peso": 1,
+  "descricao": "<p>Linho fino e comprido, de dormir. CA 8 + Destreza.</p>",
+  "armadura": {
+   "tipo": "light",
+   "ca": 8,
+   "proficiente": true
+  }
+ },
+ {
+  "id": "roupa-de-baixo-de-linho",
+  "nome": "Roupa de baixo de linho",
+  "pasta": "Roupas/Corpo",
+  "tipo": "roupa",
+  "img": "icons/equipment/chest/shirt-simple-white.webp",
+  "preco": "1 pp",
+  "peso": 1,
+  "descricao": "<p>Camisa e ceroulas de linho cru. CA 8 + Destreza.</p>",
+  "armadura": {
+   "tipo": "light",
+   "ca": 8,
+   "proficiente": true
+  }
+ },
+ {
+  "id": "roupas-comuns",
+  "nome": "Roupas comuns",
+  "pasta": "Roupas/Corpo",
+  "tipo": "roupa",
+  "img": "icons/equipment/chest/shirt-collared-brown.webp",
+  "preco": "5 pp",
+  "peso": 3,
+  "descricao": "<p>Camisa folgada, calças ou saia de lã e cinto. O que todo mundo veste em Polésia. CA 10 + Destreza.</p>",
+  "armadura": {
+   "tipo": "light",
+   "ca": 10,
+   "proficiente": true
+  }
+ },
+ {
+  "id": "roupas-de-trabalho",
+  "nome": "Roupas de trabalho",
+  "pasta": "Roupas/Corpo",
+  "tipo": "roupa",
+  "img": "icons/equipment/chest/vest-leather-brown.webp",
+  "preco": "6 pp",
+  "peso": 4,
+  "descricao": "<p>Lã grossa e avental de couro, de quem trabalha na lavoura, na ferraria ou no curtume. CA 10 + Destreza.</p>",
+  "armadura": {
+   "tipo": "light",
+   "ca": 10,
+   "proficiente": true
+  }
+ },
+ {
+  "id": "roupas-de-viajante",
+  "nome": "Roupas de viajante",
+  "pasta": "Roupas/Corpo",
+  "tipo": "roupa",
+  "img": "icons/equipment/chest/vest-cloth-tattered-tan.webp",
+  "preco": "2 po",
+  "peso": 4,
+  "descricao": "<p>Lã encorpada, bolsos fundos e tecido que aguenta chuva e estrada. CA 10 + Destreza.</p>",
+  "armadura": {
+   "tipo": "light",
+   "ca": 10,
+   "proficiente": true
+  }
+ },
+ {
+  "id": "vestido-simples",
+  "nome": "Vestido simples",
+  "pasta": "Roupas/Corpo",
+  "tipo": "roupa",
+  "img": "icons/equipment/chest/robe-layered-teal.webp",
+  "preco": "6 pp",
+  "peso": 3,
+  "descricao": "<p>Vestido de lã com corpete amarrado e avental. CA 10 + Destreza.</p>",
+  "armadura": {
+   "tipo": "light",
+   "ca": 10,
+   "proficiente": true
+  }
+ },
+ {
+  "id": "gibao-acolchoado",
+  "nome": "Gibão acolchoado",
+  "pasta": "Roupas/Corpo",
+  "tipo": "roupa",
+  "img": "icons/equipment/chest/coat-collared-red.webp",
+  "preco": "8 pp",
+  "peso": 4,
+  "descricao": "<p>Casaco curto e justo, acolchoado, com mangas de amarrar. A moda das cidades. CA 10 + Destreza.</p>",
+  "armadura": {
+   "tipo": "light",
+   "ca": 10,
+   "proficiente": true
+  }
+ },
+ {
+  "id": "roupas-finas",
+  "nome": "Roupas finas",
+  "pasta": "Roupas/Corpo",
+  "tipo": "roupa",
+  "img": "icons/equipment/chest/coat-collared-red-gold.webp",
+  "preco": "2 po",
+  "peso": 6,
+  "descricao": "<p>Seda, veludo e bordado, no corte que o alfaiate Jakob Zenik faz para os ricos de Valenda. CA 10 + Destreza.</p>",
+  "armadura": {
+   "tipo": "light",
+   "ca": 10,
+   "proficiente": true
+  }
+ },
+ {
+  "id": "traje-de-corte",
+  "nome": "Traje de corte",
+  "pasta": "Roupas/Corpo",
+  "tipo": "roupa",
+  "img": "icons/equipment/chest/robe-layered-blue.webp",
+  "preco": "8 po",
+  "peso": 8,
+  "descricao": "<p>Azul e dourado, as cores do palácio de Solmere. Para audiências e bailes. CA 10 + Destreza.</p>",
+  "armadura": {
+   "tipo": "light",
+   "ca": 10,
+   "proficiente": true
+  }
+ },
+ {
+  "id": "vestes-de-solaris",
+  "nome": "Vestes de Solaris",
+  "pasta": "Roupas/Corpo",
+  "tipo": "roupa",
+  "img": "icons/equipment/chest/robe-layered-white.webp",
+  "preco": "8 pp",
+  "peso": 4,
+  "descricao": "<p>Vestes brancas e douradas do clero de Solaris. CA 10 + Destreza.</p>",
+  "armadura": {
+   "tipo": "light",
+   "ca": 10,
+   "proficiente": true
+  }
+ },
+ {
+  "id": "habito-de-zekes",
+  "nome": "Hábito de Zekes",
+  "pasta": "Roupas/Corpo",
+  "tipo": "roupa",
+  "img": "icons/equipment/chest/robe-collared-blue.webp",
+  "preco": "6 pp",
+  "peso": 4,
+  "descricao": "<p>Hábito simples de lã dos irmãos de Zekes, deus da comunhão. CA 10 + Destreza.</p>",
+  "armadura": {
+   "tipo": "light",
+   "ca": 10,
+   "proficiente": true
+  }
+ },
+ {
+  "id": "farda-de-guarnicao",
+  "nome": "Farda de guarnição",
+  "pasta": "Roupas/Corpo",
+  "tipo": "roupa",
+  "img": "icons/equipment/chest/coat-collared-studded-red.webp",
+  "preco": "1 po",
+  "peso": 5,
+  "descricao": "<p>Farda de lã com as cores da cidade. Como a da guarnição de Elendor. CA 10 + Destreza.</p>",
+  "armadura": {
+   "tipo": "light",
+   "ca": 10,
+   "proficiente": true
+  }
+ },
+ {
+  "id": "traje-de-cena",
+  "nome": "Traje de cena",
+  "pasta": "Roupas/Corpo",
+  "tipo": "roupa",
+  "img": "icons/equipment/chest/robe-collared-pink.webp",
+  "preco": "6 pp",
+  "peso": 4,
+  "descricao": "<p>Roupa de saltimbanco e de teatro, de cores fortes. CA 10 + Destreza.</p>",
+  "armadura": {
+   "tipo": "light",
+   "ca": 10,
+   "proficiente": true
+  }
+ },
+ {
+  "id": "capa-de-viagem",
+  "nome": "Capa de viagem",
+  "pasta": "Roupas/Acessórios",
+  "tipo": "roupa",
+  "img": "icons/equipment/back/cloak-brown.webp",
+  "preco": "1 pp",
+  "peso": 2,
+  "descricao": "<p>Capa de lã sem capuz, presa por um alfinete.</p>",
+  "armadura": {
+   "tipo": "clothing"
+  }
+ },
+ {
+  "id": "manto-com-capuz",
+  "nome": "Manto com capuz",
+  "pasta": "Roupas/Acessórios",
+  "tipo": "roupa",
+  "img": "icons/equipment/back/cloak-hooded-red.webp",
+  "preco": "3 pp",
+  "peso": 3,
+  "descricao": "<p>Manto de lã grossa com capuz fundo.</p>",
+  "armadura": {
+   "tipo": "clothing"
+  }
+ },
+ {
+  "id": "manto-com-brasao",
+  "nome": "Manto com brasão",
+  "pasta": "Roupas/Acessórios",
+  "tipo": "roupa",
+  "img": "icons/equipment/back/cloak-collared-blue-gold.webp",
+  "preco": "2 po",
+  "peso": 3,
+  "descricao": "<p>Manto com o brasão da casa ou da ordem bordado nas costas.</p>",
+  "armadura": {
+   "tipo": "clothing"
+  }
+ },
+ {
+  "id": "capa-de-pele",
+  "nome": "Capa de pele",
+  "pasta": "Roupas/Acessórios",
+  "tipo": "roupa",
+  "img": "icons/equipment/back/cloak-brown-fur-brown.webp",
+  "preco": "1 po",
+  "peso": 4,
+  "descricao": "<p>Capa forrada de pele para o inverno.</p>",
+  "armadura": {
+   "tipo": "clothing"
+  }
+ },
+ {
+  "id": "botas-de-couro",
+  "nome": "Botas de couro",
+  "pasta": "Roupas/Acessórios",
+  "tipo": "roupa",
+  "img": "icons/equipment/feet/boots-leather-brown.webp",
+  "preco": "6 pp",
+  "peso": 2,
+  "descricao": "<p>Botas de cano alto, feitas para estrada.</p>",
+  "armadura": {
+   "tipo": "clothing"
+  }
+ },
+ {
+  "id": "sapatos-de-couro",
+  "nome": "Sapatos de couro",
+  "pasta": "Roupas/Acessórios",
+  "tipo": "roupa",
+  "img": "icons/equipment/feet/boots-collared-simple-brown.webp",
+  "preco": "3 pp",
+  "peso": 1,
+  "descricao": "<p>Sapatos baixos de couro, de cidade.</p>",
+  "armadura": {
+   "tipo": "clothing"
+  }
+ },
+ {
+  "id": "tamancos",
+  "nome": "Tamancos",
+  "pasta": "Roupas/Acessórios",
+  "tipo": "roupa",
+  "img": "icons/equipment/feet/boots-folded-leather-brown.webp",
+  "preco": "2 pc",
+  "peso": 1,
+  "descricao": "<p>Sola de madeira e tira de couro. Barulhentos, mas não furam.</p>",
+  "armadura": {
+   "tipo": "clothing"
+  }
+ },
+ {
+  "id": "chapeu-de-feltro",
+  "nome": "Chapéu de feltro",
+  "pasta": "Roupas/Acessórios",
+  "tipo": "roupa",
+  "img": "icons/equipment/head/hat-belted-simple-brown.webp",
+  "preco": "2 pp",
+  "peso": 0.5,
+  "descricao": "<p>Chapéu de aba larga, de feltro.</p>",
+  "armadura": {
+   "tipo": "clothing"
+  }
+ },
+ {
+  "id": "boina-de-couro",
+  "nome": "Boina de couro",
+  "pasta": "Roupas/Acessórios",
+  "tipo": "roupa",
+  "img": "icons/equipment/head/cap-simple-leather-brown.webp",
+  "preco": "1 pp",
+  "peso": 0.25,
+  "descricao": "<p>Boina curta de couro, de artesão.</p>",
+  "armadura": {
+   "tipo": "clothing"
+  }
+ },
+ {
+  "id": "lenco-de-cabeca",
+  "nome": "Lenço de cabeça",
+  "pasta": "Roupas/Acessórios",
+  "tipo": "roupa",
+  "img": "icons/equipment/head/headwrap-cloth-white.webp",
+  "preco": "3 pc",
+  "peso": 0.1,
+  "descricao": "<p>Lenço de linho amarrado na cabeça.</p>",
+  "armadura": {
+   "tipo": "clothing"
+  }
+ },
+ {
+  "id": "luvas-de-couro",
+  "nome": "Luvas de couro",
+  "pasta": "Roupas/Acessórios",
+  "tipo": "roupa",
+  "img": "icons/equipment/hand/glove-simple-leather-brown-blue.webp",
+  "preco": "2 pp",
+  "peso": 0.25,
+  "descricao": "<p>Luvas de couro macio.</p>",
+  "armadura": {
+   "tipo": "clothing"
+  }
+ },
+ {
+  "id": "luvas-de-trabalho",
+  "nome": "Luvas de trabalho",
+  "pasta": "Roupas/Acessórios",
+  "tipo": "roupa",
+  "img": "icons/equipment/hand/glove-frayed-cloth-grey.webp",
+  "preco": "5 pc",
+  "peso": 0.25,
+  "descricao": "<p>Luvas de pano grosso, de lavoura e de carga.</p>",
+  "armadura": {
+   "tipo": "clothing"
+  }
+ },
+ {
+  "id": "cinto-de-couro",
+  "nome": "Cinto de couro",
+  "pasta": "Roupas/Acessórios",
+  "tipo": "roupa",
+  "img": "icons/equipment/waist/belt-leather-brown.webp",
+  "preco": "5 pc",
+  "peso": 0.5,
+  "descricao": "<p>Cinto simples com fivela de ferro.</p>",
+  "armadura": {
+   "tipo": "clothing"
+  }
+ },
+ {
+  "id": "avental-de-couro",
+  "nome": "Avental de couro",
+  "pasta": "Roupas/Acessórios",
+  "tipo": "roupa",
+  "img": "icons/equipment/waist/belt-buckle-ring-leather-tan.webp",
+  "preco": "4 pc",
+  "peso": 1,
+  "descricao": "<p>Avental de couro de ferreiro, cozinheiro ou curtidor.</p>",
+  "armadura": {
+   "tipo": "clothing"
+  }
+ },
+ {
+  "id": "armadura-acolchoada",
+  "nome": "Armadura acolchoada",
+  "pasta": "Armaduras/Leves",
+  "tipo": "armadura",
+  "img": "icons/equipment/chest/breastplate-quilted-brown.webp",
+  "preco": "5 po",
+  "peso": 8,
+  "descricao": "<p>Camadas de pano e enchimento costuradas. Quente e barulhenta.</p>",
+  "armadura": {
+   "tipo": "light",
+   "ca": 11,
+   "dex": null,
+   "forca": null,
+   "furtividade": true,
+   "base": "padded"
+  }
+ },
+ {
+  "id": "armadura-de-couro",
+  "nome": "Armadura de couro",
+  "pasta": "Armaduras/Leves",
+  "tipo": "armadura",
+  "img": "icons/equipment/chest/breastplate-scale-leather.webp",
+  "preco": "10 po",
+  "peso": 10,
+  "descricao": "<p>Couro curtido e endurecido no óleo. Dorme-se com ela sem perder o sono.</p>",
+  "armadura": {
+   "tipo": "light",
+   "ca": 11,
+   "dex": null,
+   "forca": null,
+   "furtividade": false,
+   "base": "leather"
+  }
+ },
+ {
+  "id": "couro-batido",
+  "nome": "Couro batido",
+  "pasta": "Armaduras/Leves",
+  "tipo": "armadura",
+  "img": "icons/equipment/chest/breastplate-layered-leather-studded-brown.webp",
+  "preco": "45 po",
+  "peso": 13,
+  "descricao": "<p>Couro reforçado com rebites de metal.</p>",
+  "armadura": {
+   "tipo": "light",
+   "ca": 12,
+   "dex": null,
+   "forca": null,
+   "furtividade": false,
+   "base": "studded"
+  }
+ },
+ {
+  "id": "gibao-de-peles",
+  "nome": "Gibão de peles",
+  "pasta": "Armaduras/Médias",
+  "tipo": "armadura",
+  "img": "icons/equipment/chest/vest-leather-tattered-white.webp",
+  "preco": "10 po",
+  "peso": 12,
+  "descricao": "<p>Peles e couros grossos, de quem vive no mato.</p>",
+  "armadura": {
+   "tipo": "medium",
+   "ca": 12,
+   "dex": 2,
+   "forca": null,
+   "furtividade": false,
+   "base": "hide"
+  }
+ },
+ {
+  "id": "camisao-de-malha",
+  "nome": "Camisão de malha",
+  "pasta": "Armaduras/Médias",
+  "tipo": "armadura",
+  "img": "icons/equipment/chest/breastplate-collared-steel-grey.webp",
+  "preco": "50 po",
+  "peso": 20,
+  "descricao": "<p>Malha de anéis usada sob a roupa.</p>",
+  "armadura": {
+   "tipo": "medium",
+   "ca": 13,
+   "dex": 2,
+   "forca": null,
+   "furtividade": false,
+   "base": "chainshirt"
+  }
+ },
+ {
+  "id": "brunea",
+  "nome": "Brunea",
+  "pasta": "Armaduras/Médias",
+  "tipo": "armadura",
+  "img": "icons/equipment/chest/breastplate-metal-scaled-grey.webp",
+  "preco": "50 po",
+  "peso": 45,
+  "descricao": "<p>Escamas de metal sobre couro, com manoplas.</p>",
+  "armadura": {
+   "tipo": "medium",
+   "ca": 14,
+   "dex": 2,
+   "forca": null,
+   "furtividade": true,
+   "base": "scalemail"
+  }
+ },
+ {
+  "id": "peitoral",
+  "nome": "Peitoral",
+  "pasta": "Armaduras/Médias",
+  "tipo": "armadura",
+  "img": "icons/equipment/chest/breastplate-cuirass-steel-grey.webp",
+  "preco": "400 po",
+  "peso": 20,
+  "descricao": "<p>Placa ajustada ao tronco. A peça de quem pode pagar ferreiro de Elendor.</p>",
+  "armadura": {
+   "tipo": "medium",
+   "ca": 14,
+   "dex": 2,
+   "forca": null,
+   "furtividade": false,
+   "base": "breastplate"
+  }
+ },
+ {
+  "id": "peitoral-cerimonial-polesiano",
+  "nome": "Peitoral cerimonial polesiano",
+  "pasta": "Armaduras/Médias",
+  "tipo": "armadura",
+  "img": "icons/equipment/chest/breastplate-layered-gilded-orange.webp",
+  "preco": "800 po",
+  "peso": 22,
+  "descricao": "<p>Peitoral gravado em ouro e esmalte azul, de desfile e de corte. Como o que o imperador Aurelian não tira.</p>",
+  "armadura": {
+   "tipo": "medium",
+   "ca": 14,
+   "dex": 2,
+   "forca": null,
+   "furtividade": false,
+   "base": "breastplate"
+  }
+ },
+ {
+  "id": "meia-armadura",
+  "nome": "Meia-armadura",
+  "pasta": "Armaduras/Médias",
+  "tipo": "armadura",
+  "img": "icons/equipment/chest/breastplate-layered-steel.webp",
+  "preco": "750 po",
+  "peso": 40,
+  "descricao": "<p>Placas moldadas que cobrem quase todo o corpo.</p>",
+  "armadura": {
+   "tipo": "medium",
+   "ca": 15,
+   "dex": 2,
+   "forca": null,
+   "furtividade": true,
+   "base": "halfplate"
+  }
+ },
+ {
+  "id": "cota-de-aneis",
+  "nome": "Cota de anéis",
+  "pasta": "Armaduras/Pesadas",
+  "tipo": "armadura",
+  "img": "icons/equipment/chest/breastplate-banded-leather-brown.webp",
+  "preco": "30 po",
+  "peso": 40,
+  "descricao": "<p>Couro com anéis pesados costurados.</p>",
+  "armadura": {
+   "tipo": "heavy",
+   "ca": 14,
+   "dex": 0,
+   "forca": null,
+   "furtividade": true,
+   "base": "ringmail"
+  }
+ },
+ {
+  "id": "cota-de-malha",
+  "nome": "Cota de malha",
+  "pasta": "Armaduras/Pesadas",
+  "tipo": "armadura",
+  "img": "icons/equipment/chest/breastplate-banded-steel.webp",
+  "preco": "75 po",
+  "peso": 55,
+  "descricao": "<p>Malha de anéis entrelaçados sobre forro acolchoado.</p>",
+  "armadura": {
+   "tipo": "heavy",
+   "ca": 16,
+   "dex": 0,
+   "forca": 13,
+   "furtividade": true,
+   "base": "chainmail"
+  }
+ },
+ {
+  "id": "cota-de-talas",
+  "nome": "Cota de talas",
+  "pasta": "Armaduras/Pesadas",
+  "tipo": "armadura",
+  "img": "icons/equipment/chest/breastplate-banded-steel-studded.webp",
+  "preco": "200 po",
+  "peso": 60,
+  "descricao": "<p>Tiras verticais de metal rebitadas em couro.</p>",
+  "armadura": {
+   "tipo": "heavy",
+   "ca": 17,
+   "dex": 0,
+   "forca": 15,
+   "furtividade": true,
+   "base": "splint"
+  }
+ },
+ {
+  "id": "armadura-de-placas",
+  "nome": "Armadura de placas",
+  "pasta": "Armaduras/Pesadas",
+  "tipo": "armadura",
+  "img": "icons/equipment/chest/breastplate-layered-steel-grey.webp",
+  "preco": "1500 po",
+  "peso": 65,
+  "descricao": "<p>Placas de aço encaixadas da cabeça aos pés. Ninguém dorme bem dentro dela.</p>",
+  "armadura": {
+   "tipo": "heavy",
+   "ca": 18,
+   "dex": 0,
+   "forca": 15,
+   "furtividade": true,
+   "base": "plate"
+  }
+ },
+ {
+  "id": "escudo",
+  "nome": "Escudo",
+  "pasta": "Armaduras/Escudos",
+  "tipo": "armadura",
+  "img": "icons/equipment/shield/heater-wooden-steel-boss.webp",
+  "preco": "10 po",
+  "peso": 6,
+  "descricao": "<p>Escudo de madeira com bossa de ferro.</p>",
+  "armadura": {
+   "tipo": "shield",
+   "ca": 2,
+   "dex": null,
+   "forca": null,
+   "furtividade": false,
+   "base": "shield"
+  }
+ },
+ {
+  "id": "broquel",
+  "nome": "Broquel",
+  "pasta": "Armaduras/Escudos",
+  "tipo": "armadura",
+  "img": "icons/equipment/shield/buckler-wooden-boss-steel.webp",
+  "preco": "10 po",
+  "peso": 6,
+  "descricao": "<p>Escudo pequeno e redondo, de punho.</p>",
+  "armadura": {
+   "tipo": "shield",
+   "ca": 2,
+   "dex": null,
+   "forca": null,
+   "furtividade": false,
+   "base": "shield"
+  }
+ }
+]

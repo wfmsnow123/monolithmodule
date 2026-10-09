@@ -1,0 +1,21 @@
+<div class="mono-root mi-importar">
+  <div class="mono-notice mono-notice--info">
+    <p class="mono-notice__title">O que entra no mundo</p>
+    <p class="mono-notice__body"><b>{{totalItens}}</b> itens na pasta <b>{{raizItens}}</b> da aba Itens{{#if jaImportados}} ({{jaImportados}} já importados, serão atualizados){{/if}}, e <b>{{totalCardapios}}</b> cardápios na pasta <b>{{raizJornal}}</b> do Jornal. Pode rodar de novo quando o módulo trouxer itens novos.</p>
+  </div>
+
+  <h3 class="mono-heading">Importar</h3>
+  <label class="mono-field"><span class="mono-field__label">Itens</span><input class="mono-toggle" type="checkbox" role="switch" name="itens" checked>
+    <p class="mono-field__hint">Comidas, bebidas, ingredientes, roupas e armaduras, com preço e peso.</p></label>
+  <label class="mono-field"><span class="mono-field__label">Cardápios</span><input class="mono-toggle" type="checkbox" role="switch" name="cardapios" checked>
+    <p class="mono-field__hint">Tavernas, estalagens e casas de pasto de Polésia, prontos para mostrar à mesa.</p></label>
+
+  <h3 class="mono-heading">Pastas</h3>
+  <ul class="mi-pastas">
+    {{#each pastas}}<li><span>{{{nome}}}</span><b>{{n}}</b></li>{{/each}}
+  </ul>
+
+  <footer class="mono-window__footer mi-rodape">
+    <button type="submit" class="mono-btn mono-btn--primary"><i class="fas fa-file-import"></i> Importar</button>
+  </footer>
+</div>

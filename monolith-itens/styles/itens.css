@@ -1,0 +1,22 @@
+/* Monolith: Itens & Miscelânea. Usa os tokens do design system (styles/monolith-ui.css). */
+
+/* ---------- Janela de importação ---------- */
+.monolith-itens > .window-content { overflow-y: auto; max-height: calc(100vh - 120px); }
+.mi-importar .mono-notice { margin-bottom: var(--space-3); }
+.mi-pastas { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 2px var(--space-4); }
+.mi-pastas li { display: flex; justify-content: space-between; gap: var(--space-2); padding: 2px 0; border-bottom: 1px solid var(--void-300); font-size: 13px; }
+.mi-pastas b { font-family: var(--font-label); color: var(--ink-muted); }
+.mi-rodape { margin: var(--space-4) calc(-1 * var(--space-4)) calc(-1 * var(--space-4)); }
+
+/* ---------- Cardápio (dentro do tema Pergaminho; sem o Journals continua legível) ---------- */
+.mi-cardapio-pagina h1 { text-align: center; margin-bottom: 0; }
+.mi-cardapio-pagina .mi-subtitulo { text-align: center; font-style: italic; opacity: 0.8; margin-top: 2px; }
+.mi-cardapio-pagina h2 { margin: 1.1em 0 0.3em; border-bottom: 1px solid currentColor; }
+.mi-cardapio { list-style: none; margin: 0; padding: 0; }
+.mi-cardapio li { display: flex; align-items: baseline; gap: 0.5em; margin: 0.25em 0; }
+.mi-cardapio li::after { content: none; }
+.mi-cardapio .mi-prato { flex: 1; display: flex; align-items: baseline; gap: 0.5em; }
+.mi-cardapio .mi-prato::after { content: ""; flex: 1; border-bottom: 1px dotted currentColor; opacity: 0.5; transform: translateY(-0.25em); }
+.mi-cardapio .mi-prato em { font-size: 0.85em; opacity: 0.75; }
+.mi-cardapio .mi-preco { white-space: nowrap; font-weight: 600; }
+.mi-cardapio-pagina .mi-rodape { margin-top: 1.2em; text-align: center; font-style: italic; font-size: 0.9em; opacity: 0.8; }
