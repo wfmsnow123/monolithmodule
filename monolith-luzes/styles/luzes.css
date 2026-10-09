@@ -1,0 +1,36 @@
+/* Monolith: Luzes. Tokens do design system em monolith-ui.css. */
+
+/* ---------- HUD do token ---------- */
+#token-hud .monolith-luz-btn.active { color: #ffb15e; box-shadow: 0 0 10px rgba(255, 140, 50, 0.6); }
+#token-hud .monolith-luz-btn { position: relative; }
+#token-hud .monolith-luz-paleta {
+  position: absolute; right: calc(100% + 8px); top: 0; z-index: 10; min-width: 230px;
+  display: flex; flex-direction: column; padding: 4px;
+  background: #0e1016; border: 1px solid #2a303c; border-top: 3px solid #a3121b; box-shadow: 0 8px 22px rgba(0, 0, 0, 0.6);
+  font-family: "Barlow", "Segoe UI", sans-serif; font-size: 13px; color: #e6e2d8; pointer-events: all;
+}
+#token-hud .monolith-luz-paleta .linha { display: flex; align-items: center; gap: 8px; padding: 4px 6px; cursor: pointer; border-bottom: 1px solid #2a303c; }
+#token-hud .monolith-luz-paleta .linha:last-child { border-bottom: 0; }
+#token-hud .monolith-luz-paleta .linha:hover { background: #1d2230; }
+#token-hud .monolith-luz-paleta .linha img { width: 26px; height: 26px; border: 1px solid #636b7e; }
+#token-hud .monolith-luz-paleta .linha .nome { flex: 1; white-space: nowrap; }
+#token-hud .monolith-luz-paleta .linha small { color: #8f95a3; }
+#token-hud .monolith-luz-paleta .linha.acesa { box-shadow: inset 3px 0 0 #ff9b4a; }
+#token-hud .monolith-luz-paleta .linha.acesa .nome { color: #ffc773; }
+#token-hud .monolith-luz-paleta .tempo { font-family: "JetBrains Mono", monospace; font-size: 11px; color: #8f95a3; }
+#token-hud .monolith-luz-paleta .cobrir { color: #8f95a3; }
+#token-hud .monolith-luz-paleta .cobrir:hover { color: #e6e2d8; }
+
+/* ---------- Editor ---------- */
+.monolith-luzes-editor > .window-content { overflow-y: auto; }
+.ml-editor .hint { font-size: 12px; line-height: 16px; color: var(--ink-muted); margin: 0 0 var(--space-3); }
+.ml-editor fieldset.ml-fonte { margin-bottom: var(--space-3); padding: var(--space-3); border: 1px solid var(--void-300); border-left: 3px solid #ff9b4a; background: var(--void-000); }
+.ml-editor .ml-linha { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-3); align-items: center; margin-bottom: var(--space-2); }
+.ml-editor .ml-linha > label { display: flex; gap: var(--space-2); align-items: center; font-weight: 600; white-space: nowrap; }
+.ml-editor .ml-linha > label.largo { flex: 1; }
+.ml-editor .ml-linha > label.largo input { flex: 1; }
+.ml-editor .ml-linha input[type="number"] { width: 64px; }
+.ml-editor .ml-linha input[type="color"] { width: 40px; height: 26px; padding: 0; }
+.ml-editor .ml-linha button { margin-left: auto; width: auto; flex: 0 0 auto; }
+.ml-editor label.bloco { display: flex; flex-direction: column; gap: 2px; font-weight: 600; margin-bottom: var(--space-2); }
+.ml-editor .rodape { position: sticky; bottom: 0; display: flex; gap: var(--space-2); justify-content: flex-end; background: var(--void-000); padding: var(--space-3); border-top: 1px solid var(--void-300); margin: 0 calc(-1 * var(--space-4)) calc(-1 * var(--space-4)); }

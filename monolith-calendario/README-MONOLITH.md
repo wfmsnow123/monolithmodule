@@ -13,6 +13,7 @@ Calendário da campanha Monolith para Foundry VTT 13 (13.351+).
 - **Estações periódicas contínuas.** O ciclo de estações corre a partir do dia 0, independente do ano, igual às "periodic seasons" do site. Condições de notas, dia e porcentagem da estação e o gancho de troca de estação passam a concordar com o calendário.
 - **Importador do Fantasy-Calendar fiel ao site.** Ano 0, dia da semana, luas, estações periódicas e eventos (mês, dia, estação, lua, "a cada N", grupos "e/ou/não/pelo menos N") caem nos mesmos dias que no site.
 - **Sincronização com app.fantasy-calendar.com.** Puxa a data do site periodicamente; opcionalmente envia os avanços feitos no Foundry.
+- **Céu carmesim à noite.** Entre o pôr e o nascer do sol, um degradê vermelho bem fraco aparece nas bordas da tela, entrando e saindo devagar em uma hora. Intensidade, cor e pulso nas configurações; cada jogador pode desligar para si.
 
 ## Instalação
 

@@ -52,3 +52,18 @@
 /* Rodapé do painel de configurações sem links */
 .calendaria .settings-footer .footer-center .module-name { font-family: var(--font-display); font-size: 16px; letter-spacing: 0.05em; text-transform: uppercase; }
 .calendaria .settings-footer .footer-right:empty { display: none; }
+
+/* Céu carmesim à noite: degradê fraco nas bordas, sobre o mapa e sem bloquear cliques. */
+#monolith-noite {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  --mn-cor: #8e0f16; --mn-alfa: 0;
+  background:
+    radial-gradient(ellipse 120% 95% at 50% 50%, transparent 58%, color-mix(in srgb, var(--mn-cor) calc(var(--mn-alfa) * 100%), transparent) 100%),
+    linear-gradient(180deg, color-mix(in srgb, var(--mn-cor) calc(var(--mn-alfa) * 55%), transparent), transparent 22%);
+  opacity: 0; transition: opacity 4s ease, background 4s ease;
+  mix-blend-mode: screen;
+}
+#monolith-noite.ativo { opacity: 1; }
+#monolith-noite.ativo.pulsa { animation: monolith-noite-pulso 14s ease-in-out infinite; }
+@keyframes monolith-noite-pulso { 0%, 100% { opacity: 1; } 50% { opacity: 0.72; } }
+@media (prefers-reduced-motion: reduce) { #monolith-noite.ativo.pulsa { animation: none; } }

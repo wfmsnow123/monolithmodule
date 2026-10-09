@@ -1,0 +1,55 @@
+{
+  "id": "monolith-luzes",
+  "title": "Monolith: Luzes",
+  "description": "Tochas, velas, lamparinas e lanternas como itens: o jogador acende o que carrega e a luz vai com o token. A chama queima com o tempo do mundo, gasta tochas e óleo, lanternas podem ser cobertas, e uma tocha largada no chão (Item Piles) continua acesa. Substitui o Torch.",
+  "version": "0.1.0",
+  "authors": [
+    {
+      "name": "snowxd"
+    }
+  ],
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13.351"
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "dnd5e",
+        "type": "system",
+        "compatibility": {
+          "minimum": "5.0.0"
+        }
+      }
+    ],
+    "conflicts": [
+      {
+        "id": "torch",
+        "type": "module",
+        "reason": "Os dois controlam a luz do token."
+      }
+    ],
+    "recommends": [
+      {
+        "id": "item-piles",
+        "type": "module",
+        "reason": "Soltar uma tocha acesa no chão deixa a pilha iluminada."
+      },
+      {
+        "id": "monolith-calendario",
+        "type": "module",
+        "reason": "O tempo do calendário queima as chamas."
+      }
+    ]
+  },
+  "esmodules": [
+    "scripts/main.mjs"
+  ],
+  "styles": [
+    "styles/monolith-ui.css",
+    "styles/luzes.css"
+  ],
+  "url": "https://github.com/wfmsnow123/monolithmodule",
+  "manifest": "https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-luzes/module.json",
+  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-luzes-v0.1.0/monolith-luzes.zip"
+}
