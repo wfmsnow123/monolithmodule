@@ -20,6 +20,9 @@ export function palavras() {
 /** "comida", "bebida" ou null para um item com quantidade. */
 export function categoriaDoItem(item) {
   if (!item?.system || !("quantity" in item.system)) return null;
+  // Marca explícita (itens do Monolith: Itens & Miscelânea, ou posta à mão): vale mais que o nome.
+  const marca = item.flags?.[ID]?.categoria;
+  if (marca === "comida" || marca === "bebida") return marca;
   return categorizar({ nome: item.name, subtipo: item.system.type?.value }, palavras());
 }
 
