@@ -201,17 +201,20 @@ export async function abrirPedido() {
     if (armaduraPesada(a)) avisos.push("de armadura");
     return `<label class="mr-check"><input type="checkbox" name="a-${a.id}" checked> ${esc(a.name)}${avisos.length ? ` <span class="mr-aviso">(${avisos.join(", ")})</span>` : ""}</label>`;
   };
+  // Seções recolhíveis: só o tipo de descanso começa aberto; o cabeçalho de cada uma resume o que está marcado.
+  const secao = (id, titulo, corpo, { aberta = false, attrs = "" } = {}) => `<details class="mr-secao" data-secao="${id}" ${aberta ? "open" : ""} ${attrs}>
+      <summary><span class="mr-titulo">${titulo}</span><span class="mr-resumo" data-resumo="${id}"></span></summary>
+      <div class="mr-corpo">${corpo}</div></details>`;
   const content = `<div class="mr-form">
-    <fieldset><legend>Descanso</legend>${Object.entries(TIPOS).map(([k, t], i) => `<label class="mr-check"><input type="radio" name="tipo" value="${k}" ${i === 1 ? "checked" : ""}> <i class="fas ${t.icon}"></i> ${t.nome} (${t.minutos >= 60 ? t.minutos / 60 + " h" : t.minutos + " min"})</label>`).join("")}</fieldset>
-    <fieldset><legend>Vigília</legend>
+    ${secao("descanso", "Descanso", `<div class="mr-tipos">${Object.entries(TIPOS).map(([k, t], i) => `<label class="mr-check"><input type="radio" name="tipo" value="${k}" ${i === 1 ? "checked" : ""}> <i class="fas ${t.icon}"></i> ${t.nome} (${t.minutos >= 60 ? t.minutos / 60 + " h" : t.minutos + " min"})</label>`).join("")}</div>`, { aberta: true })}
+    ${secao("vigilia", "Vigília", `
       <label class="mr-check"><input type="checkbox" name="sono" checked> Sono inteiro (8 horas sem interrupção)</label>
       <p class="mr-hint">Acampamento Exposto: o grupo faz um teste em grupo de Sabedoria (Sobrevivência), ou Constituição para quem é proficiente na resistência de Constituição.</p>
       <div class="mr-grid">${FATORES.map((f) => `<label class="mr-check"><input type="checkbox" name="f-${f.id}" data-valor="${f.valor}"> ${f.rotulo} (${f.valor > 0 ? "+" : ""}${f.valor})</label>`).join("")}</div>
       <p class="mr-cd">CD do acampamento: <b data-cd>10</b> <span class="mr-hint">(sem fatores, o acampamento é Abrigado e não precisa de teste)</span></p>
-      <label class="mr-check"><input type="checkbox" name="agitada"> O grupo falhou: Vigília Agitada</label>
-    </fieldset>
-    <fieldset><legend>Personagens</legend><div class="mr-grid">${chars.map(linhaChar).join("")}</div></fieldset>
-    <fieldset data-comida><legend>Comida</legend>
+      <label class="mr-check"><input type="checkbox" name="agitada"> O grupo falhou: Vigília Agitada</label>`)}
+    ${secao("personagens", "Personagens", `<div class="mr-grid">${chars.map(linhaChar).join("")}</div>`)}
+    ${secao("comida", "Comida", `
       <label class="mr-check"><input type="checkbox" name="comida" ${game.settings.get(ID, "comidaExigida") ? "checked" : ""}> Exigir comida: abre a fogueira para o grupo juntar a refeição</label>
       <div class="mr-qtd">
         <label>Comida por pessoa <input type="number" name="racoes" min="0" step="1" value="${game.settings.get(ID, "racoesPorPessoa")}"></label>
@@ -219,26 +222,33 @@ export async function abrirPedido() {
       </div>
       <p class="mr-hint">Quem come:</p>
       <div class="mr-grid">${chars.map((a) => `<label class="mr-check"><input type="checkbox" name="c-${a.id}" checked> ${esc(a.name)}</label>`).join("")}</div>
-      <p class="mr-hint">Com comida exigida, o descanso só é pedido quando o Mestre serve a refeição na fogueira.</p>
-    </fieldset>
-    <fieldset><legend>Opções</legend>
+      <p class="mr-hint">Com comida exigida, o descanso só é pedido quando o Mestre serve a refeição na fogueira.</p>`, { attrs: "data-comida" })}
+    ${secao("opcoes", "Opções", `
       <label class="mr-check"><input type="checkbox" name="avancar" checked> Avançar o relógio do mundo pela duração</label>
-      <label class="mr-check"><input type="checkbox" name="ignorar"> Ignorar o limite por dia</label>
-    </fieldset></div>`;
-  const dados = await foundry.applications.api.DialogV2.prompt({ classes: ["mono"], window: { title: "Monolith: descanso", icon: "fas fa-bed" },
-    position: { width: 480 },
+      <label class="mr-check"><input type="checkbox" name="ignorar"> Ignorar o limite por dia</label>`)}</div>`;
+  const dados = await foundry.applications.api.DialogV2.prompt({ classes: ["mono", "monolith-descanso"], window: { title: "Monolith: descanso", icon: "fas fa-bed", resizable: true },
+    position: { width: 640 },
     content,
     render: (ev, dialog) => {
       const el = dialog.element;
+      const marcado = (n) => !!el.querySelector(`[name="${n}"]`)?.checked;
+      const contar = (prefixo) => [...el.querySelectorAll(`[name^="${prefixo}"]`)].filter((i) => i.checked).length;
+      const resumo = (id, texto) => { const s = el.querySelector(`[data-resumo="${id}"]`); if (s) s.textContent = texto; };
       const atualizar = () => {
-        const soma = FATORES.reduce((s, f) => s + (el.querySelector(`[name="f-${f.id}"]`)?.checked ? f.valor : 0), 0);
+        const soma = FATORES.reduce((s, f) => s + (marcado(`f-${f.id}`) ? f.valor : 0), 0);
         el.querySelector("[data-cd]").textContent = String(10 + soma);
+        const t = TIPOS[el.querySelector('[name="tipo"]:checked')?.value];
+        el.querySelector("[data-comida]").hidden = t === TIPOS.folego;
+        resumo("descanso", t ? `${t.nome}, ${t.minutos >= 60 ? t.minutos / 60 + " h" : t.minutos + " min"}` : "");
+        resumo("vigilia", [soma ? `CD ${10 + soma}` : "Abrigado", marcado("sono") ? "sono inteiro" : "sono interrompido", marcado("agitada") ? "Agitada" : ""].filter(Boolean).join(", "));
+        resumo("personagens", `${contar("a-")} de ${chars.length}`);
+        const racoes = el.querySelector('[name="racoes"]')?.value, agua = el.querySelector('[name="agua"]')?.value;
+        resumo("comida", marcado("comida") ? `exigida: ${racoes} comida, ${agua} bebida, ${contar("c-")} comem` : "não exigida");
+        resumo("opcoes", [marcado("avancar") ? "avança o relógio" : "relógio parado", marcado("ignorar") ? "ignora o limite" : ""].filter(Boolean).join(", "));
       };
-      el.querySelectorAll('[name^="f-"]').forEach((i) => i.addEventListener("change", atualizar));
-      const comida = el.querySelector("[data-comida]");
-      const tipo = () => { comida.hidden = el.querySelector('[name="tipo"]:checked')?.value === "folego"; };
-      el.querySelectorAll('[name="tipo"]').forEach((i) => i.addEventListener("change", tipo));
-      tipo();
+      el.querySelector(".mr-form").addEventListener("change", atualizar);
+      el.querySelector(".mr-form").addEventListener("input", atualizar);
+      atualizar();
     },
     ok: {
       label: "Pedir descanso",
