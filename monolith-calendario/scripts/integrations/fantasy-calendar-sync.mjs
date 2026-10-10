@@ -143,7 +143,7 @@ function restart() {
   if (!game.ready || !isLeader() || !getHash()) return;
   if (get(S.PULL)) {
     pull(true);
-    if (get(S.EVENTS)) pullEvents(false);
+    if (get(S.EVENTS)) pullEvents(false).then(() => enviarPendentes({ limite: 10 }));
     pollTimer = setInterval(() => poll(), Math.max(15, get(S.POLL)) * 1000);
   }
 }
@@ -303,8 +303,16 @@ async function pullEvents(notify = false) {
 }
 
 /** Nota do Foundry criada ou editada: vai para o site (só o Mestre ativo, com token). */
+let avisouSemToken = false;
+
 function onNoteChanged(page, created, changes = {}) {
-  if (applyingEvents || page.type !== NOTE_TYPE || !isLeader() || !get(S.EVENTS) || !getHash() || !getToken()) return;
+  if (applyingEvents || page.type !== NOTE_TYPE || !isLeader() || !get(S.EVENTS) || !getHash()) return;
+  if (!getToken()) {
+    // Sem token a nota fica só no Foundry: avisa o Mestre uma vez, em vez de não fazer nada calado.
+    if (!avisouSemToken) ui.notifications.warn('Fantasy-Calendar: a nota não foi para o site porque não há token salvo. Cole o token na janela do Fantasy-Calendar; as notas pendentes vão quando o mundo abrir de novo ou pelo botão "Enviar pendentes".');
+    avisouSemToken = true;
+    return;
+  }
   if (page.system?.linkedFestival) return;
   const calendarId = CalendarManager.getActiveCalendar()?.metadata?.id;
   if (!calendarId || page.getFlag(MODULE.ID, 'calendarId') !== calendarId) return;
@@ -358,7 +366,7 @@ async function pushEvent(page) {
   if (!fcCalendarId) throw new Error('não descobri o calendário no site');
   const body = {
     calendar_id: fcCalendarId, name: page.name, description, event_category_id: null,
-    data: oneTimeData(fcDate(page)), settings: { color: 'Dark-Solid', text: 'text', hide: false, print: false }
+    data: oneTimeData(fcDate(page)), settings: { color: 'Dark-Solid', text: 'text', hide: escondida(page), print: false }
   };
   const res = await request('/event', { method: 'POST', auth: true, body });
   const id = res?.data?.id ?? res?.id;
@@ -370,6 +378,47 @@ async function pushEvent(page) {
     setTimeout(() => (applyingEvents = false), 500);
   }
   ui.notifications.info(`Fantasy-Calendar: evento "${page.name}" criado no site.`);
+}
+
+/** Nota oculta ou secreta no Calendário vai escondida no site (hide do Fantasy-Calendar). */
+function escondida(page) {
+  const v = page.system?.visibility;
+  return !!v && v !== 'visible';
+}
+
+/**
+ * Notas criadas no Foundry que ainda não estão no site (sem fcEventId): manda cada uma.
+ * Pega o que escapou do envio automático (nota criada antes da sincronização, ou com outro Mestre liderando).
+ * Com limite, só envia sozinho se forem poucas; acima disso avisa e espera o botão.
+ */
+async function enviarPendentes({ limite = Infinity, avisar = false } = {}) {
+  // Sozinho só o Mestre que lidera; pelo botão (avisar), qualquer Mestre.
+  if (!(avisar ? game.user.isGM : isLeader()) || !get(S.EVENTS) || !getHash() || !getToken()) return 0;
+  const calendarId = CalendarManager.getActiveCalendar()?.metadata?.id;
+  if (!calendarId) return 0;
+  const pendentes = NoteManager.getAllNotes()
+    .filter((n) => n.calendarId === calendarId)
+    .map((n) => NoteManager.getFullNote(n.id))
+    .filter((p) => p && p.type === NOTE_TYPE && !p.getFlag(MODULE.ID, 'fcEventId') && !p.system?.linkedFestival);
+  if (!pendentes.length) {
+    if (avisar) ui.notifications.info('Fantasy-Calendar: nenhuma nota pendente.');
+    return 0;
+  }
+  if (pendentes.length > limite) {
+    ui.notifications.info(`Fantasy-Calendar: ${pendentes.length} notas do Foundry ainda não estão no site. Use "Enviar pendentes" na janela do Fantasy-Calendar.`);
+    return 0;
+  }
+  let n = 0;
+  for (const page of pendentes) {
+    try {
+      await pushEvent(page);
+      n++;
+    } catch (err) {
+      log(1, 'Fantasy-Calendar: falha ao enviar nota pendente', err);
+      ui.notifications.warn(`Fantasy-Calendar: o evento "${page.name}" não foi enviado (${err.message}).`);
+    }
+  }
+  return n;
 }
 
 function status() {
@@ -391,7 +440,7 @@ export class FantasyCalendarApp extends foundry.applications.api.ApplicationV2 {
     window: { title: 'Fantasy-Calendar', icon: 'fas fa-link', resizable: true },
     position: { width: 520, height: 'auto' },
     form: { handler: FantasyCalendarApp.#onSubmit, closeOnSubmit: false, submitOnChange: false },
-    actions: { test: FantasyCalendarApp.#onTest, pullNow: FantasyCalendarApp.#onPull, pullEvents: FantasyCalendarApp.#onPullEvents, clearToken: FantasyCalendarApp.#onClearToken }
+    actions: { test: FantasyCalendarApp.#onTest, pullNow: FantasyCalendarApp.#onPull, pullEvents: FantasyCalendarApp.#onPullEvents, pushPending: FantasyCalendarApp.#onPushPending, clearToken: FantasyCalendarApp.#onClearToken }
   };
 
   #siteDate = null;
@@ -429,6 +478,7 @@ export class FantasyCalendarApp extends foundry.applications.api.ApplicationV2 {
       <footer class="mono-window__footer" style="margin:var(--space-4) calc(-1 * var(--space-4)) calc(-1 * var(--space-4))">
         ${ctx.hasToken ? '<button type="button" class="mono-btn mono-btn--ghost" data-action="clearToken">Apagar token</button>' : ''}
         <button type="button" class="mono-btn" data-action="pullEvents">Atualizar eventos</button>
+        <button type="button" class="mono-btn" data-action="pushPending">Enviar pendentes</button>
         <button type="button" class="mono-btn" data-action="pullNow">Puxar agora</button>
         <button type="button" class="mono-btn mono-btn--secondary" data-action="test">Testar</button>
         <button type="submit" class="mono-btn mono-btn--primary">Salvar</button>
@@ -488,6 +538,13 @@ export class FantasyCalendarApp extends foundry.applications.api.ApplicationV2 {
     await pull(true);
     this.#siteDate = null;
     this.render();
+  }
+
+  static async #onPushPending() {
+    if (!game.user.isGM) return ui.notifications.warn('Só o Mestre envia os eventos.');
+    if (!getToken()) return ui.notifications.warn('Fantasy-Calendar: cole o token antes de enviar.');
+    await pullEvents(false);
+    await enviarPendentes({ avisar: true });
   }
 
   static async #onPullEvents() {
