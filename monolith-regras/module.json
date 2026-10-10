@@ -2,7 +2,7 @@
   "id": "monolith-regras",
   "title": "Monolith: Regras da Casa",
   "description": "Regras de Monolith para dnd5e: Exaustão de 10 níveis, Inspiração e Inspiração Heróica, Ênfase. Recursos incorporados e adaptados (cada um liga e desliga): Lembretes de vantagem, Percepção, Visão, Montaria, Barra de Chefe, Ordenar inventário, Troca e Retratos. Substitui Advantage Reminder, Perceptive, Vision 5e, Rideable, Bossbar, Illandril's Inventory Sorter, Let's Trade 5e e Tokenizer.",
-  "version": "0.8.4",
+  "version": "0.8.5",
   "authors": [
     {
       "name": "snowxd"
@@ -73,7 +73,7 @@
   "socket": true,
   "url": "https://github.com/wfmsnow123/monolithmodule",
   "manifest": "https://raw.githubusercontent.com/wfmsnow123/monolithmodule/main/monolith-regras/module.json",
-  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-regras-v0.8.4/monolith-regras.zip",
+  "download": "https://github.com/wfmsnow123/monolithmodule/releases/download/monolith-regras-v0.8.5/monolith-regras.zip",
   "languages": [
     {
       "lang": "pt-BR",
