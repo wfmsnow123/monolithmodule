@@ -102,7 +102,7 @@ export function registrarRecursos() {
   game.settings.register(ID, "recursosMigrados", { scope: "world", config: false, type: Object, default: {} });
   game.settings.registerMenu(ID, "recursos", {
     name: "Recursos", label: "Ligar e configurar recursos", icon: "fas fa-puzzle-piece",
-    hint: "Percepção, Visão, Montaria, Lembretes, Barra de Chefe, Inventário, Troca e Retratos: cada um pode ser ligado, desligado e configurado aqui.",
+    hint: "Percepção, Visão, Montaria, Lembretes, Barra de Chefe, Inventário, Troca, Retratos e Editar selecionadas: cada um pode ser ligado, desligado e configurado aqui.",
     type: JanelaRecursos, restricted: true
   });
 

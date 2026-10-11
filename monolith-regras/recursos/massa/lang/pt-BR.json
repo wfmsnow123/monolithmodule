@@ -1,0 +1,9 @@
+{
+  "MONOLITH": {
+    "massa": {
+      "aplicar": "Aplicar às outras {n} selecionadas",
+      "dica": "Ao salvar, só os campos que você mudar vão para as outras selecionadas. A posição de cada uma não muda.",
+      "feito": "Editar selecionadas: {campos} campo(s) aplicado(s) a mais {n}."
+    }
+  }
+}

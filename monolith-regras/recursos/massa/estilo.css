@@ -1,0 +1,8 @@
+/* Recurso Editar selecionadas: a caixa "Aplicar às outras N selecionadas" na configuração. */
+.monolith-massa {
+  display: flex; align-items: center; gap: 8px; margin: 8px 0 4px; padding: 6px 10px;
+  border: 1px solid #28479a; border-left: 3px solid #3557b3; border-radius: 2px;
+  background: rgba(40, 71, 154, 0.15); font-weight: 600; cursor: pointer;
+}
+.monolith-massa input { margin: 0; flex: none; }
+.monolith-massa i { color: #86a3e6; }

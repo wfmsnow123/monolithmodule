@@ -8,5 +8,6 @@ import chefe from "./chefe/index.mjs";
 import inventario from "./inventario/index.mjs";
 import troca from "./troca/index.mjs";
 import retratos from "./retratos/index.mjs";
+import massa from "./massa/index.mjs";
 
-for (const def of [lembretes, percepcao, visao, montaria, chefe, inventario, troca, retratos]) definirRecurso(def);
+for (const def of [lembretes, percepcao, visao, montaria, chefe, inventario, troca, retratos, massa]) definirRecurso(def);
