@@ -43,7 +43,7 @@ O dono recebe aviso quando faltam 10 minutos e quando se apaga.
 Em Configurações > Monolith: Luzes > **Editar fontes de luz**: nomes que contam, tipo (objeto, magia ou qualquer), alcance, ângulo, cor, animação, queima, o que gasta e o modo coberto. **Importar do Torch** lê o JSON de fontes extras do Torch. Um item com nome diferente pode receber a fonte à mão em **Fonte de luz...** no cabeçalho da ficha dele (Mestre).
 
 ## Configurações
-Jogadores acendem as próprias luzes; só acende o que está equipado; quem gasta combustível ao acender (jogador, Mestre); quem pode usar a luz sem item e o alcance dela; arrastar luz para o mapa.
+Tamanho do ícone do objeto carregado no canto do token (padrão 20% do lado do token); Jogadores acendem as próprias luzes; só acende o que está equipado; quem gasta combustível ao acender (jogador, Mestre); quem pode usar a luz sem item e o alcance dela; arrastar luz para o mapa.
 
 ## Vindo do Torch
 Na primeira abertura com o Mestre, o módulo lê as configurações que o Torch deixou no mundo (mesmo desligado) e traz: tochas dos jogadores, consumo do jogador e do Mestre, luz sem item (fallback) e o nome e alcance dela. Se o Torch tinha fontes extras (gameLightSources), pergunta se quer trazê-las. "Dancing lights vision" não tem equivalente (os Globos de Luz são luz no token).

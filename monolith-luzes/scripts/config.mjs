@@ -92,6 +92,13 @@ export function registrarConfiguracoes(Editor, aoMudar) {
   reg("avulsaNome", { name: "Luz avulsa: nome", type: String, default: "Tocha" });
   reg("avulsaBrilho", { name: "Luz avulsa: luz plena (pés)", type: Number, default: 20, onChange: aoMudar });
   reg("avulsaPenumbra", { name: "Luz avulsa: penumbra (pés)", type: Number, default: 40, onChange: aoMudar });
+  reg("tamanhoIcone", {
+    name: "Tamanho do ícone no token",
+    hint: "O ícone do objeto de luz que o token carrega junto, no canto do token, em % do lado do token.",
+    type: Number, default: 20, range: { min: 10, max: 40, step: 1 },
+    // Redesenha os tokens; o gancho refreshToken refaz o ícone no tamanho novo.
+    onChange: () => canvas?.tokens?.placeables.forEach((t) => t.renderFlags.set({ refresh: true }))
+  });
   reg("colocarNoMapa", {
     name: "Arrastar luz para o mapa",
     hint: "Soltar uma tocha ou lanterna da ficha no mapa deixa o objeto ali (aceso ou não). Segure Shift ao soltar para deixar o Item Piles ou o Foundry cuidarem do item.",

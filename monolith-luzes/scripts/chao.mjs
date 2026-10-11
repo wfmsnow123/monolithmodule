@@ -467,7 +467,7 @@ export function atualizarIcones(token) {
     c = token[SIMB] = token.addChild(new PIXI.Container());
     c.eventMode = "none";
   }
-  const lado = Math.max(16, Math.min(token.w, token.h) * 0.36);
+  const lado = Math.max(12, Math.min(token.w, token.h) * (Number(cfg("tamanhoIcone")) || 20) / 100);
   c.position.set(token.w - lado * 0.8, token.h - lado * 0.8);
   const chave = `${lado}|${l.map((e) => `${e.item?.img}:${e.aceso ? 1 : 0}`).join(";")}`;
   if (c.chave === chave) return;
