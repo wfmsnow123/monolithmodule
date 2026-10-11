@@ -428,14 +428,14 @@ export default class CalendariaSettings {
         hint: 'CALENDARIA.Settings.DarknessSync.Hint',
         scope: 'world',
         config: false,
-        type: new BooleanField({ initial: false })
+        type: new BooleanField({ initial: true })
       },
       [SETTINGS.DARKNESS_SYNC_ALL_SCENES]: {
         name: 'CALENDARIA.Settings.DarknessSyncAllScenes.Name',
         hint: 'CALENDARIA.Settings.DarknessSyncAllScenes.Hint',
         scope: 'world',
         config: false,
-        type: new BooleanField({ initial: false })
+        type: new BooleanField({ initial: true })
       },
       [SETTINGS.DARKNESS_WEATHER_SYNC]: {
         name: 'CALENDARIA.Settings.DarknessWeatherSync.Name',

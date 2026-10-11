@@ -165,6 +165,8 @@ export class SettingsPanel extends HandlebarsApplicationMixin(ApplicationV2) {
         { id: 'notes', group: 'primary', icon: 'fas fa-sticky-note', label: 'CALENDARIA.Common.Notes', tabGroup: 'calendar', gmOnly: true },
         { id: 'time', group: 'primary', icon: 'fas fa-clock', label: 'CALENDARIA.Common.Time', tabGroup: 'calendar', gmOnly: true },
         { id: 'weather', group: 'primary', icon: 'fas fa-cloud-sun', label: 'CALENDARIA.Common.Weather', tabGroup: 'calendar', gmOnly: true },
+        // Monolith: a aba do mapa volta (escuridão, ambiente e luas sincronizados com a hora).
+        { id: 'canvas', group: 'primary', icon: 'fas fa-map', label: 'CALENDARIA.SettingsPanel.Tab.Canvas', tabGroup: 'calendar', gmOnly: true },
         { id: 'theme', group: 'primary', icon: 'fas fa-palette', label: 'CALENDARIA.SettingsPanel.Tab.Theme', tabGroup: 'calendar' },
         { id: 'bigcal', group: 'primary', icon: 'fas fa-calendar-days', label: 'CALENDARIA.Common.BigCal', tabGroup: 'apps' },
         { id: 'miniCal', group: 'primary', icon: 'fas fa-compress', label: 'CALENDARIA.Common.MiniCal', tabGroup: 'apps' },
