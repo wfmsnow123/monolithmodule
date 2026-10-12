@@ -99,9 +99,11 @@ export function registerFantasyCalendarSettings() {
   });
   game.settings.register(MODULE.ID, S.CLOCK, {
     name: 'Fantasy-Calendar: sincronizar também a hora',
-    hint: 'Desligado: só o dia é sincronizado e a hora do Foundry é preservada (use se o relógio do calendário no site está desativado).',
-    scope: 'world', config: false, type: Boolean, default: false
+    hint: 'Ligado: a hora vai e volta junto com o dia. Desligado: só o dia é sincronizado e a hora do Foundry é preservada. Para ver a hora no site, ligue o relógio nas configurações do calendário de lá.',
+    scope: 'world', config: false, type: Boolean, default: true
   });
+  // Monolith: na primeira abertura com a hora ligada por padrão, o Foundry manda a hora para o site (em vez de puxar a do site).
+  game.settings.register(MODULE.ID, 'fcHoraMigrada', { scope: 'world', config: false, type: Boolean, default: false });
   game.settings.register(MODULE.ID, S.POLL, {
     name: 'Fantasy-Calendar: intervalo de verificação (segundos)',
     scope: 'world', config: false, type: Number, default: 60, range: { min: 15, max: 3600, step: 15 }, onChange: () => restart()
@@ -142,7 +144,9 @@ function restart() {
   pollTimer = null;
   if (!game.ready || !isLeader() || !getHash()) return;
   if (get(S.PULL)) {
-    pull(true);
+    // Primeira vez com a hora sincronizada: a hora do Foundry vale; depois, segue puxando normalmente.
+    if (!get('fcHoraMigrada') && get(S.CLOCK) && get(S.PUSH) && getToken()) set('fcHoraMigrada', true).then(() => pushNow());
+    else pull(true);
     if (get(S.EVENTS)) pullEvents(false).then(() => enviarPendentes({ limite: 10 }));
     pollTimer = setInterval(() => poll(), Math.max(15, get(S.POLL)) * 1000);
   }
@@ -240,15 +244,16 @@ async function pushNow() {
   if (!calendar || !isLeader() || !getToken()) return;
   const spd = (calendar.days?.hoursPerDay ?? 24) * (calendar.days?.minutesPerHour ?? 60) * (calendar.days?.secondsPerMinute ?? 60);
   const now = game.time.worldTime;
-  const last = get(S.LAST) ?? {};
-  if (!Number.isFinite(last.day)) return pull(true);
   const hash = getHash();
   try {
-    const deltaDays = dayNumber(calendar, now) - last.day;
+    // Monolith: diferença absoluta até o que o site tem agora (não a partir do último valor anotado).
+    const dd = readDynamicData(await request(`/calendar/${hash}/dynamic_data`));
+    const siteTime = calendar.componentsToTime(fcToComponents(dd));
+    const deltaDays = dayNumber(calendar, now) - dayNumber(calendar, siteTime);
     if (deltaDays) await request(`/calendar/${hash}/changeDate`, { method: 'POST', auth: true, body: { unit: 'days', count: deltaDays } });
-    let minuteOfDay = last.minuteOfDay ?? 0;
+    const nowMinute = Math.floor((((now % spd) + spd) % spd) / 60);
+    let minuteOfDay = (dd.hour ?? 0) * 60 + (dd.minute ?? 0);
     if (get(S.CLOCK)) {
-      const nowMinute = Math.floor((((now % spd) + spd) % spd) / 60);
       const deltaMinutes = nowMinute - minuteOfDay;
       if (deltaMinutes) await request(`/calendar/${hash}/changeDate`, { method: 'POST', auth: true, body: { unit: 'minutes', count: deltaMinutes } });
       minuteOfDay = nowMinute;
